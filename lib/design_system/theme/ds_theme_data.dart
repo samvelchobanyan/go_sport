@@ -6,43 +6,59 @@ class DSThemeData {
   static ThemeData get mainTheme {
     return ThemeData(
       useMaterial3: true,
-      // 1. Устанавливаем светлый режим (текст станет темным, системные иконки — черными)
       brightness: Brightness.light, 
-      
-      // 2. Фон теперь берется из светлой палитры
       scaffoldBackgroundColor: DSColors.background,
       
-      // 3. Используем светлую схему цветов
       colorScheme: const ColorScheme.light(
         primary: DSColors.primary,
+        onPrimary: DSColors.black, // Текст на желтых кнопках будет черным
         surface: DSColors.surface,
-        onSurface: DSColors.textMain, // Основной текст будет темным
+        onSurface: DSColors.textMain,
+        secondary: DSColors.accentBlue,
+        outlineVariant: DSColors.divider, // Цвет для разделителей
       ),
 
-      // 4. Шрифты (они теперь автоматически будут темными на светлом фоне)
       textTheme: const TextTheme(
         displayLarge: DSTypography.h1,
+        headlineMedium: DSTypography.h2,   // Добавили наш h2
         bodyLarge: DSTypography.bodyL,
         bodyMedium: DSTypography.bodyM,
+        labelLarge: DSTypography.label,    // Добавили наш bold label
         labelSmall: DSTypography.caption,
       ),
 
-      // 5. Карточки (как в расписании и списках)
       cardTheme: CardThemeData(
-        color: DSColors.surface, // Белый или светло-серый
-        elevation: 0,            // Плоский дизайн как на макетах
+        color: DSColors.surface,
+        elevation: 0,
         margin: EdgeInsets.zero,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16), // Скругление чуть больше, для мягкости
+          borderRadius: BorderRadius.circular(16),
         ),
       ),
       
-      // Добавляем стиль для AppBar (шапки)
+      dividerTheme: const DividerThemeData(
+        color: DSColors.divider,
+        thickness: 1,
+        space: 1,
+      ),
+
       appBarTheme: const AppBarTheme(
-        backgroundColor: Colors.transparent,
+        backgroundColor: DSColors.background, // Лучше сделать как фон, чтобы не было шва
         elevation: 0,
         centerTitle: true,
+        scrolledUnderElevation: 0, // Чтобы при скролле AppBar не менял цвет
         iconTheme: IconThemeData(color: DSColors.textMain),
+        titleTextStyle: DSTypography.bodyL, // Заголовок в AppBar обычно 17px SemiBold
+      ),
+
+      // Настройка нижнего меню (визуально как на макете)
+      bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+        backgroundColor: DSColors.surface,
+        selectedItemColor: DSColors.textMain,
+        unselectedItemColor: DSColors.textGrey,
+        type: BottomNavigationBarType.fixed,
+        showSelectedLabels: true,
+        showUnselectedLabels: true,
       ),
     );
   }

@@ -7,9 +7,14 @@ class DSColors {
   static const Color primary = Color(0xFFFFE600);    // Тот самый желтый акцент
   static const Color textMain = Color(0xFF1D1D1F);   // Почти черный текст
   static const Color textGrey = Color(0xFF86868B);   // Серый текст для подписей
-  
+  static const Color secondaryBackground = Color(0xFFF2F2F7); 
+  static const Color black = Color(0xFF000000); 
   // Статусы
   static const Color error = Color(0xFFFF3B30);
   static const Color success = Color(0xFF34C759);
+
+  static const Color accentBlue = Color(0xFF3544C4); // Синий для промо-карточек
+  static const Color divider = Color(0xFFE5E5E5);   // Для тонких линий Separation
+  static const List<Color> storyGradient = [Color(0xFFFFE600), Color(0xFFFF3B30), Color(0xFF3544C4)];
 }
 
