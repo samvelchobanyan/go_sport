@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
+import '../../../../domain/entities/story.dart';
 import '../../../shared_widgets/wave_section_header.dart';
 import 'home_controller.dart';
 
