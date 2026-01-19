@@ -21,7 +21,7 @@ class StoryOverlay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.transparent,
+      backgroundColor: DSColors.transparent,
       body: Stack(
         children: [
           // Background image (full screen, including system areas)
@@ -79,8 +79,8 @@ class StoryOverlay extends StatelessWidget {
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
-                    Colors.transparent,
-                    Colors.black.withOpacity(0.8),
+                    DSColors.transparent,
+                    DSColors.black.withOpacity(0.8),
                   ],
                 ),
               ),
@@ -104,7 +104,7 @@ class StoryOverlay extends StatelessWidget {
                         ),
                       ),
 
-                      const SizedBox(height: 12),
+                      const SizedBox(height: 10),
 
                       // Description
                       Text(
@@ -117,9 +117,11 @@ class StoryOverlay extends StatelessWidget {
                       const SizedBox(height: DSSpacing.l),
 
                       // CTA Button
-                      GestureDetector(
-                        onTap: () => onAction(story.ctaTargetType, story.ctaTargetId),
-                        child: Container(
+                      Padding(
+                        padding: const EdgeInsets.all(24),
+                        child: GestureDetector(
+                          onTap: () => onAction(story.ctaTargetType, story.ctaTargetId),
+                          child: Container(
                           width: double.infinity,
                           height: 56,
                           decoration: BoxDecoration(
@@ -145,6 +147,7 @@ class StoryOverlay extends StatelessWidget {
                               ),
                             ],
                           ),
+                        ),
                         ),
                       ),
 
