@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/features/shared_widgets/dotted_divider.dart';
 import 'news_detail_controller.dart';
 
 class NewsDetailScreen extends ConsumerWidget {
@@ -69,12 +70,46 @@ class NewsDetailScreen extends ConsumerWidget {
                 padding: const EdgeInsets.only(right: 16.0),
                 child: Align(
                   alignment: Alignment.center,
-                  child: Text(
-                    '— ${article.author}',
-                    style: context.bodyL?.copyWith(
-                      color: DSColors.blue,
-                      fontWeight: FontWeight.w600,
-                    ),
+                  child: Builder(
+                    builder: (context) {
+                      final parts = article.author.split(' ');
+                      final firstName = parts.isNotEmpty ? parts[0] : '';
+                      final lastName = parts.length > 1 ? parts.sublist(1).join(' ') : '';
+                      return Row(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(top: 6.0),
+                            child: Container(
+                              width: 14,
+                              height: 2,
+                              color: DSColors.orange,
+                            ),
+                          ),
+                          const SizedBox(width:2),
+                          Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Text(
+                                firstName,
+                                style: context.subtitleM?.copyWith(
+                                  color: DSColors.gray60,
+                                ),
+                              ),
+                              if (lastName.isNotEmpty)
+                                Text(
+                                  lastName,
+                                  style: context.subtitleM?.copyWith(
+                                    color: DSColors.gray60,
+                                  ),
+                                ),
+                            ],
+                          ),
+                        ],
+                      );
+                    },
                   ),
                 ),
               ),
@@ -84,7 +119,7 @@ class NewsDetailScreen extends ConsumerWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-              const SizedBox(height: 16),
+              const SizedBox(height: 8),
 
               // Изображение
               Padding(
@@ -104,7 +139,7 @@ class NewsDetailScreen extends ConsumerWidget {
                   ),
                 ),
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: 14),
 
               // Заголовок
               Padding(
@@ -114,7 +149,7 @@ class NewsDetailScreen extends ConsumerWidget {
                   style: context.h2,
                 ),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: 15),
 
               // Subtitle (цитата)
               if (article.subtitle != null) ...[
@@ -132,14 +167,14 @@ class NewsDetailScreen extends ConsumerWidget {
                     padding: const EdgeInsets.only(left: 16),
                     child: Text(
                       article.subtitle!,
-                      style: context.bodyL?.copyWith(
+                      style: context.subtitleM?.copyWith(
                         fontStyle: FontStyle.italic,
                         color: DSColors.gray60,
                       ),
                     ),
                   ),
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: 15),
               ],
 
               // Контент
@@ -150,7 +185,14 @@ class NewsDetailScreen extends ConsumerWidget {
                   style: context.bodyL?.copyWith(height: 1.6),
                 ),
               ),
-              const SizedBox(height: 32),
+              const SizedBox(height: 16),
+
+              // Divider
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 24.0),
+                child: DottedDivider(),
+              ),
+              const SizedBox(height: 16),
 
               // Нижние кнопки
               Padding(
@@ -165,8 +207,8 @@ class NewsDetailScreen extends ConsumerWidget {
                             .toggleLike();
                       },
                       child: Container(
-                        width: 60,
-                        height: 60,
+                        width: 48,
+                        height: 48,
                         decoration: BoxDecoration(
                           color: DSColors.blue,
                           shape: BoxShape.circle,
@@ -186,8 +228,8 @@ class NewsDetailScreen extends ConsumerWidget {
                         // Share functionality - будет реализовано позже
                       },
                       child: Container(
-                        width: 60,
-                        height: 60,
+                        width: 48,
+                        height: 48,
                         decoration: BoxDecoration(
                           color: DSColors.divider,
                           shape: BoxShape.circle,
@@ -232,7 +274,7 @@ class NewsDetailScreen extends ConsumerWidget {
                   ],
                 ),
               ),
-              const SizedBox(height: 120), // Пространство для MiniPlayer и BottomNav
+              const SizedBox(height: 21), // Пространство для MiniPlayer и BottomNav
             ],
           ),
         ),

@@ -22,7 +22,7 @@ class MockNewsRepository implements NewsRepository {
       author: 'James Peterson',
       imageUrl: 'https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?auto=format&fit=crop&w=800&q=80',
       publishedAt: DateTime(2025, 5, 10),
-      content: 'Latest news from the Premier League press conferences...',
+      content: 'have failed to establish that the most serious categories of alleged unlawful information gathering (UIG) – phone hacking and phone tapping – took place at Associated at all, and their allegation of burglary to order was struck out by the court.There can be little doubt that journalists and executives across the Mail titles engaged in or were complicit in the culture of unlawful information gathering that wrecked the lives of so many.Over the next nine weeks, several members of the group of claimants – which also include campaigner Doreen Lawrence, actress Sadie Frost and former politician Simon Hughes – are expected to give evidence.Harry is expected to provide his testimony on Thursday, according to a draft trial timetable. It will be the second time he has appeared in the witness box. He previously became the first senior British royal to give evidence on a witness stand in more than 130 years in a different lawsuit in 2023.Hes not expected to make any other formal public appearances.',
       likesCount: 12,
       isLiked: false,
     ),

@@ -141,8 +141,6 @@ class StoryOverlay extends StatelessWidget {
                                 story.ctaLabel,
                                 style: context.subtitleLBold?.copyWith(
                                   color: DSColors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
                                 ),
                               ),
                             ],
