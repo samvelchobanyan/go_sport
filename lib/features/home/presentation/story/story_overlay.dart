@@ -24,7 +24,7 @@ class StoryOverlay extends StatelessWidget {
       backgroundColor: Colors.transparent,
       body: Stack(
         children: [
-          // Background image
+          // Background image (full screen, including system areas)
           Positioned.fill(
             child: CachedNetworkImage(
               imageUrl: story.imageUrl,
@@ -46,30 +46,23 @@ class StoryOverlay extends StatelessWidget {
             ),
           ),
 
-          // Close button (top-right)
-          SafeArea(
-            child: Align(
-              alignment: Alignment.topRight,
-              child: Padding(
-                padding: const EdgeInsets.only(
-                  right: DSSpacing.m,
-                  top: DSSpacing.m,
+          // Close button (top-right, respecting safe area)
+          Positioned(
+            top: MediaQuery.of(context).padding.top + DSSpacing.m,
+            right: DSSpacing.m,
+            child: GestureDetector(
+              onTap: onClose,
+              child: Container(
+                width: 44,
+                height: 44,
+                decoration: BoxDecoration(
+                  color: DSColors.white.withOpacity(0.9),
+                  shape: BoxShape.circle,
                 ),
-                child: GestureDetector(
-                  onTap: onClose,
-                  child: Container(
-                    width: 44,
-                    height: 44,
-                    decoration: BoxDecoration(
-                      color: DSColors.white.withOpacity(0.9),
-                      shape: BoxShape.circle,
-                    ),
-                    child: Icon(
-                      Icons.close,
-                      size: 24,
-                      color: DSColors.black,
-                    ),
-                  ),
+                child: Icon(
+                  Icons.close,
+                  size: 24,
+                  color: DSColors.black,
                 ),
               ),
             ),

@@ -20,9 +20,12 @@ mixin _$NewsArticle {
   String get id => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   String? get subtitle => throw _privateConstructorUsedError;
+  String get author => throw _privateConstructorUsedError;
   String get imageUrl => throw _privateConstructorUsedError;
   DateTime get publishedAt => throw _privateConstructorUsedError;
   String get content => throw _privateConstructorUsedError;
+  int get likesCount => throw _privateConstructorUsedError;
+  bool get isLiked => throw _privateConstructorUsedError;
 
   /// Create a copy of NewsArticle
   /// with the given fields replaced by the non-null parameter values.
@@ -42,9 +45,12 @@ abstract class $NewsArticleCopyWith<$Res> {
     String id,
     String title,
     String? subtitle,
+    String author,
     String imageUrl,
     DateTime publishedAt,
     String content,
+    int likesCount,
+    bool isLiked,
   });
 }
 
@@ -66,9 +72,12 @@ class _$NewsArticleCopyWithImpl<$Res, $Val extends NewsArticle>
     Object? id = null,
     Object? title = null,
     Object? subtitle = freezed,
+    Object? author = null,
     Object? imageUrl = null,
     Object? publishedAt = null,
     Object? content = null,
+    Object? likesCount = null,
+    Object? isLiked = null,
   }) {
     return _then(
       _value.copyWith(
@@ -84,6 +93,10 @@ class _$NewsArticleCopyWithImpl<$Res, $Val extends NewsArticle>
                 ? _value.subtitle
                 : subtitle // ignore: cast_nullable_to_non_nullable
                       as String?,
+            author: null == author
+                ? _value.author
+                : author // ignore: cast_nullable_to_non_nullable
+                      as String,
             imageUrl: null == imageUrl
                 ? _value.imageUrl
                 : imageUrl // ignore: cast_nullable_to_non_nullable
@@ -96,6 +109,14 @@ class _$NewsArticleCopyWithImpl<$Res, $Val extends NewsArticle>
                 ? _value.content
                 : content // ignore: cast_nullable_to_non_nullable
                       as String,
+            likesCount: null == likesCount
+                ? _value.likesCount
+                : likesCount // ignore: cast_nullable_to_non_nullable
+                      as int,
+            isLiked: null == isLiked
+                ? _value.isLiked
+                : isLiked // ignore: cast_nullable_to_non_nullable
+                      as bool,
           )
           as $Val,
     );
@@ -115,9 +136,12 @@ abstract class _$$NewsArticleImplCopyWith<$Res>
     String id,
     String title,
     String? subtitle,
+    String author,
     String imageUrl,
     DateTime publishedAt,
     String content,
+    int likesCount,
+    bool isLiked,
   });
 }
 
@@ -138,9 +162,12 @@ class __$$NewsArticleImplCopyWithImpl<$Res>
     Object? id = null,
     Object? title = null,
     Object? subtitle = freezed,
+    Object? author = null,
     Object? imageUrl = null,
     Object? publishedAt = null,
     Object? content = null,
+    Object? likesCount = null,
+    Object? isLiked = null,
   }) {
     return _then(
       _$NewsArticleImpl(
@@ -156,6 +183,10 @@ class __$$NewsArticleImplCopyWithImpl<$Res>
             ? _value.subtitle
             : subtitle // ignore: cast_nullable_to_non_nullable
                   as String?,
+        author: null == author
+            ? _value.author
+            : author // ignore: cast_nullable_to_non_nullable
+                  as String,
         imageUrl: null == imageUrl
             ? _value.imageUrl
             : imageUrl // ignore: cast_nullable_to_non_nullable
@@ -168,6 +199,14 @@ class __$$NewsArticleImplCopyWithImpl<$Res>
             ? _value.content
             : content // ignore: cast_nullable_to_non_nullable
                   as String,
+        likesCount: null == likesCount
+            ? _value.likesCount
+            : likesCount // ignore: cast_nullable_to_non_nullable
+                  as int,
+        isLiked: null == isLiked
+            ? _value.isLiked
+            : isLiked // ignore: cast_nullable_to_non_nullable
+                  as bool,
       ),
     );
   }
@@ -180,9 +219,12 @@ class _$NewsArticleImpl implements _NewsArticle {
     required this.id,
     required this.title,
     this.subtitle,
+    required this.author,
     required this.imageUrl,
     required this.publishedAt,
     required this.content,
+    required this.likesCount,
+    required this.isLiked,
   });
 
   @override
@@ -192,15 +234,21 @@ class _$NewsArticleImpl implements _NewsArticle {
   @override
   final String? subtitle;
   @override
+  final String author;
+  @override
   final String imageUrl;
   @override
   final DateTime publishedAt;
   @override
   final String content;
+  @override
+  final int likesCount;
+  @override
+  final bool isLiked;
 
   @override
   String toString() {
-    return 'NewsArticle(id: $id, title: $title, subtitle: $subtitle, imageUrl: $imageUrl, publishedAt: $publishedAt, content: $content)';
+    return 'NewsArticle(id: $id, title: $title, subtitle: $subtitle, author: $author, imageUrl: $imageUrl, publishedAt: $publishedAt, content: $content, likesCount: $likesCount, isLiked: $isLiked)';
   }
 
   @override
@@ -212,11 +260,15 @@ class _$NewsArticleImpl implements _NewsArticle {
             (identical(other.title, title) || other.title == title) &&
             (identical(other.subtitle, subtitle) ||
                 other.subtitle == subtitle) &&
+            (identical(other.author, author) || other.author == author) &&
             (identical(other.imageUrl, imageUrl) ||
                 other.imageUrl == imageUrl) &&
             (identical(other.publishedAt, publishedAt) ||
                 other.publishedAt == publishedAt) &&
-            (identical(other.content, content) || other.content == content));
+            (identical(other.content, content) || other.content == content) &&
+            (identical(other.likesCount, likesCount) ||
+                other.likesCount == likesCount) &&
+            (identical(other.isLiked, isLiked) || other.isLiked == isLiked));
   }
 
   @override
@@ -225,9 +277,12 @@ class _$NewsArticleImpl implements _NewsArticle {
     id,
     title,
     subtitle,
+    author,
     imageUrl,
     publishedAt,
     content,
+    likesCount,
+    isLiked,
   );
 
   /// Create a copy of NewsArticle
@@ -244,9 +299,12 @@ abstract class _NewsArticle implements NewsArticle {
     required final String id,
     required final String title,
     final String? subtitle,
+    required final String author,
     required final String imageUrl,
     required final DateTime publishedAt,
     required final String content,
+    required final int likesCount,
+    required final bool isLiked,
   }) = _$NewsArticleImpl;
 
   @override
@@ -256,11 +314,17 @@ abstract class _NewsArticle implements NewsArticle {
   @override
   String? get subtitle;
   @override
+  String get author;
+  @override
   String get imageUrl;
   @override
   DateTime get publishedAt;
   @override
   String get content;
+  @override
+  int get likesCount;
+  @override
+  bool get isLiked;
 
   /// Create a copy of NewsArticle
   /// with the given fields replaced by the non-null parameter values.

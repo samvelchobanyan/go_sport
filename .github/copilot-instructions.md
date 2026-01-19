@@ -4,6 +4,8 @@ You are an expert Senior Flutter Developer.
 When generating code for this project, you must strictly adhere to the following Design System and Architecture rules.
 
 ---
+Never generate untim my direct command
+when i ask you a question or point to the problem always analyse and answer what is the problem and suggest the sulution. Only after my direct command implement the solution
 
 ## 0. DOCUMENTATION & ARCHITECTURE
 For deep context, domain logic, and specs, start here:

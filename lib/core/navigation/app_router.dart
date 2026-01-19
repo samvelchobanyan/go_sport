@@ -4,6 +4,8 @@ import 'package:go_sport/core/navigation/routes.dart';
 import 'package:go_sport/features/home/presentation/home/home_screen.dart';
 import 'package:go_sport/features/music/presentation/music/music_screen.dart';
 import 'package:go_sport/features/radio/presentation/radio/radio_screen.dart';
+import 'package:go_sport/features/news/presentation/news_list/news_list_screen.dart';
+import 'package:go_sport/features/news/presentation/news_detail/news_detail_screen.dart';
 
 final GoRouter appRouter = GoRouter(
   initialLocation: AppRoutes.home,
@@ -19,6 +21,20 @@ final GoRouter appRouter = GoRouter(
             GoRoute(
               path: AppRoutes.home,
               builder: (context, state) => const HomeScreen(),
+              routes: [
+                // News routes (nested in Home branch)
+                GoRoute(
+                  path: 'news',
+                  builder: (context, state) => const NewsListScreen(),
+                ),
+                GoRoute(
+                  path: 'news/:id',
+                  builder: (context, state) {
+                    final id = state.pathParameters['id']!;
+                    return NewsDetailScreen(articleId: id);
+                  },
+                ),
+              ],
             ),
           ],
         ),

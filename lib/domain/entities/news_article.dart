@@ -8,8 +8,11 @@ class NewsArticle with _$NewsArticle {
     required String id,
     required String title,
     String? subtitle,
+    required String author,
     required String imageUrl,
     required DateTime publishedAt,
     required String content,
+    required int likesCount,
+    required bool isLiked,
   }) = _NewsArticle;
 }

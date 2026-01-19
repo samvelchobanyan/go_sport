@@ -53,13 +53,16 @@ class HomeScreen extends ConsumerWidget {
       backgroundColor: Colors.transparent,
       barrierColor: Colors.black.withOpacity(0.9),
       enableDrag: true,
-      builder: (modalContext) => StoryOverlay(
-        story: story,
-        onClose: () => Navigator.of(modalContext).pop(),
-        onAction: (targetType, targetId) {
-          Navigator.of(modalContext).pop();
-          _handleStoryAction(context, targetType, targetId);
-        },
+      builder: (modalContext) => MediaQuery(
+        data: MediaQuery.of(context),
+        child: StoryOverlay(
+          story: story,
+          onClose: () => Navigator.of(modalContext).pop(),
+          onAction: (targetType, targetId) {
+            Navigator.of(modalContext).pop();
+            _handleStoryAction(context, targetType, targetId);
+          },
+        ),
       ),
     );
   }
@@ -185,10 +188,9 @@ class HomeScreen extends ConsumerWidget {
                   SliverToBoxAdapter(
                     child: Padding(
                       padding: const EdgeInsets.only(top: 32, bottom: 16),
-                      child: InkWell(
+                      child: GestureDetector(
                         onTap: () {
-                          // TODO: навигация на экран списка новостей
-                          print('Navigate to News List');
+                          context.push('/news');
                         },
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -224,8 +226,7 @@ class HomeScreen extends ConsumerWidget {
                             NewsItem(
                               article: article,
                               onTap: () {
-                                // TODO: навигация на детальный экран новости
-                                print('News tapped: ${article.id}');
+                                context.push('/news/${article.id}');
                               },
                             ),
                             if (!isLast) ...[
