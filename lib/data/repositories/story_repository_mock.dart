@@ -34,6 +34,36 @@ class StoryRepositoryMock implements StoryRepository {
       ctaTargetType: 'video',
       ctaTargetId: 'video_billie_1',
     ),
+    const Story(
+      id: 's4',
+      title: 'Radio Go Sport4',
+      imageUrl: 'https://images.unsplash.com/photo-1593697821252-0c9137d9fc45?auto=format&fit=crop&w=800&q=80',
+      text: 'Live interview with the champions starts in 10 minutes.44',
+      isViewed: true, // Будет серая обводка
+      ctaLabel: 'Tune in',
+      ctaTargetType: 'radio',
+      ctaTargetId: 'radio_main',
+    ),
+    const Story(
+      id: 's5',
+      title: 'Radio Go Sport5',
+      imageUrl: 'https://images.unsplash.com/photo-1593697821252-0c9137d9fc45?auto=format&fit=crop&w=800&q=80',
+      text: 'Live interview with the champions starts in 10 minutes.',
+      isViewed: true, // Будет серая обводка
+      ctaLabel: 'Tune in',
+      ctaTargetType: 'radio',
+      ctaTargetId: 'radio_main',
+    ),
+    const Story(
+      id: 's6',
+      title: 'Radio Go Sport6',
+      imageUrl: 'https://images.unsplash.com/photo-1593697821252-0c9137d9fc45?auto=format&fit=crop&w=800&q=80',
+      text: 'Live interview with the champions starts in 10 minutes.',
+      isViewed: true, // Будет серая обводка
+      ctaLabel: 'Tune in',
+      ctaTargetType: 'radio',
+      ctaTargetId: 'radio_main',
+    ),
   ];
 
   @override

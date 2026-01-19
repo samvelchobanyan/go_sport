@@ -1,21 +1,17 @@
-class Story {
-  final String id;
-  final String title;
-  final String text;
-  final String imageUrl;
-  final bool isViewed;
-  final String ctaLabel;
-  final String ctaTargetType;
-  final String ctaTargetId;
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-  const Story({
-    required this.id,
-    required this.title,
-    required this.text,
-    required this.imageUrl,
-    this.isViewed = false,
-    required this.ctaLabel,
-    required this.ctaTargetType,
-    required this.ctaTargetId,
-  });
+part 'story.freezed.dart';
+
+@freezed
+class Story with _$Story {
+  const factory Story({
+    required String id,
+    required String title,
+    required String text,
+    required String imageUrl,
+    @Default(false) bool isViewed,
+    required String ctaLabel,
+    required String ctaTargetType,
+    required String ctaTargetId,
+  }) = _Story;
 }

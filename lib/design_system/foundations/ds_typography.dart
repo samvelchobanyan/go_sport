@@ -4,53 +4,131 @@ import 'ds_colors.dart';
 class DSTypography {
   // Крупный заголовок (например, на экране News или Home)
   static const TextStyle h1 = TextStyle(
+    fontFamily: 'Noah',
     fontSize: 28,
-    fontWeight: FontWeight.bold,
-    color: DSColors.textMain,
+    fontWeight: FontWeight.w400,
+    color: DSColors.black,
     letterSpacing: -0.5,
     height: 1.2,
   );
 
   // Заголовки разделов (Featured playlists, News)
   static const TextStyle h2 = TextStyle(
-    fontSize: 22,
-    fontWeight: FontWeight.bold,
-    color: DSColors.textMain,
-    letterSpacing: -0.4,
-    height: 1.2,
+    fontFamily: 'Noah',
+    fontSize: 21,
+    fontWeight: FontWeight.w500, // Noah Black файл с весом 500
+    height: 1.19, // 25px / 21px
+    letterSpacing: 0,
+    leadingDistribution: TextLeadingDistribution.even,
+    color: DSColors.black,
   );
 
-  // Заголовки карточек новостей, названия треков
-  static const TextStyle bodyL = TextStyle(
-    fontSize: 17,
+  static const TextStyle h3 = TextStyle(
+    fontFamily: 'Noah',
+    fontSize: 18,
+    fontWeight: FontWeight.w400,
+    height: 1.22,
+    letterSpacing: 0,
+    leadingDistribution: TextLeadingDistribution.even,
+    color: DSColors.black,
+  );
+
+    // ===== Subtitles =====
+
+  static const TextStyle subtitleLBold = TextStyle(
+    fontFamily: 'Montserrat',
+    fontSize: 14,
+    fontWeight: FontWeight.w700,
+    height: 1.29, // 18 / 14
+    letterSpacing: 0,
+    leadingDistribution: TextLeadingDistribution.even,
+    color: DSColors.black,
+  );
+
+  static const TextStyle subtitleLSemi = TextStyle(
+    fontFamily: 'Montserrat',
+    fontSize: 14,
     fontWeight: FontWeight.w600,
-    color: DSColors.textMain,
-    letterSpacing: -0.4,
-    height: 1.3,
+    height: 1.29, // 18 / 14
+    letterSpacing: 0,
+    leadingDistribution: TextLeadingDistribution.even,
+    color: DSColors.black,
   );
 
-  // Основной текст, описание, имена артистов
-  static const TextStyle bodyM = TextStyle(
-    fontSize: 15,
-    fontWeight: FontWeight.normal,
-    color: DSColors.textMain,
-    height: 1.4,
-  );
+  // ===== Body / Text =====
 
-  // Мелкие подписи, даты, таймстампы
-  static const TextStyle caption = TextStyle(
+  static const TextStyle subtitleMBold = TextStyle(
+    fontFamily: 'Montserrat',
     fontSize: 13,
-    fontWeight: FontWeight.normal,
-    color: DSColors.textGrey,
-    height: 1.2,
+    fontWeight: FontWeight.w700,
+    height: 1.38, // 18 / 13
+    letterSpacing: 0,
+    leadingDistribution: TextLeadingDistribution.even,
+    color: DSColors.black,
   );
 
-  // Стиль для кнопок и акцентных меток (теги, "Started")
-  static const TextStyle label = TextStyle(
+  static const TextStyle subtitleM = TextStyle(
+    fontFamily: 'Montserrat',
+    fontSize: 13,
+    fontWeight: FontWeight.w600,
+    height: 1.38, // 18 / 13
+    letterSpacing: 0,
+    leadingDistribution: TextLeadingDistribution.even,
+    color: DSColors.black,
+  );
+
+  static const TextStyle textL = TextStyle(
+    fontFamily: 'Montserrat',
     fontSize: 12,
-    fontWeight: FontWeight.bold,
-    color: DSColors.textMain,
-    letterSpacing: 0.5,
-    height: 1.0,
+    fontWeight: FontWeight.w600,
+    height: 1.33, // 16 / 12
+    letterSpacing: 0,
+    leadingDistribution: TextLeadingDistribution.even,
+    color: DSColors.black,
+  );
+
+  static const TextStyle bodyL = TextStyle(
+    fontFamily: 'Montserrat',
+    fontSize: 13,
+    fontWeight: FontWeight.w500,
+    height: 1.54, // 20 / 13
+    letterSpacing: 0,
+    leadingDistribution: TextLeadingDistribution.even,
+    color: DSColors.black,
+  );
+
+  // ===== Labels =====
+
+  static const TextStyle label = TextStyle(
+    fontFamily: 'Montserrat',
+    fontSize: 11,
+    fontWeight: FontWeight.w500,
+    height: 1.36, // 15 / 11
+    letterSpacing: 0,
+    leadingDistribution: TextLeadingDistribution.even,
+    color: DSColors.black,
+  );
+
+  static const TextStyle fieldLabel = TextStyle(
+    fontFamily: 'Montserrat',
+    fontSize: 11,
+    fontWeight: FontWeight.w600,
+    height: 1.36, // 15 / 11
+    letterSpacing: 0,
+    leadingDistribution: TextLeadingDistribution.even,
+    color: DSColors.black,
+  );
+
+  static const TextStyle navLabel = TextStyle(
+    fontFamily: 'Montserrat',
+    fontSize: 10,
+    fontWeight: FontWeight.w600,
+    height: 1.2, // 12 / 10
+    letterSpacing: 0,
+    leadingDistribution: TextLeadingDistribution.even,
+    color: DSColors.black,
   );
 }
+
+
+

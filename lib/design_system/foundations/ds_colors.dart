@@ -1,20 +1,39 @@
 import 'package:flutter/material.dart';
 
 class DSColors {
-  // Константы из твоих макетов
-  static const Color background = Color(0xFFF5F5F7); // Светло-серый/белый фон
-  static const Color surface = Color(0xFFFFFFFF);    // Чисто белые карточки
-  static const Color primary = Color(0xFFFFE600);    // Тот самый желтый акцент
-  static const Color textMain = Color(0xFF1D1D1F);   // Почти черный текст
-  static const Color textGrey = Color(0xFF86868B);   // Серый текст для подписей
-  static const Color secondaryBackground = Color(0xFFF2F2F7); 
-  static const Color black = Color(0xFF000000); 
-  // Статусы
-  static const Color error = Color(0xFFFF3B30);
-  static const Color success = Color(0xFF34C759);
+  const DSColors._();
 
-  static const Color accentBlue = Color(0xFF3544C4); // Синий для промо-карточек
-  static const Color divider = Color(0xFFE5E5E5);   // Для тонких линий Separation
-  static const List<Color> storyGradient = [Color(0xFFFFE600), Color(0xFFFF3B30), Color(0xFF3544C4)];
+  // Base
+  static const black = Color(0xFF000000); // rgba(0,0,0,1)
+  static const white = Color(0xFFFFFFFF); // rgba(255,255,255,1)
+
+  // Brand
+  static const blue   = Color(0xFF404AC3); // rgba(64,74,195,1)
+  static const lime   = Color(0xFFCFDC28); // rgba(207,220,40,1)
+  static const orange = Color(0xFFF55F2A); // rgba(245,95,42,1)
+
+  static const errorColor    = Color(0xFFFF3B30); // rgba(255,59,48,1)
+  static const transparent = Colors.transparent;
+
+  // Grayscale (black with opacity)
+  // gray90 = darkest, gray5 = lightest
+  static const gray90 = Color(0xE6000000); // 90%
+  static const gray80 = Color(0xCC000000); // 80%
+  static const gray70 = Color(0xB3000000); // 70%
+  static const gray60 = Color(0x99000000); // 60%
+  static const gray50 = Color(0x80000000); // 50%
+  static const gray40 = Color(0x66000000); // 40%
+  static const gray30 = Color(0x4D000000); // 30%
+  static const gray20 = Color(0x33000000); // 20%
+  static const gray10 = Color(0x1A000000); // 10%
+  static const gray5  = Color(0x0D000000); // 5%
+
+  static const divider = gray20; // rgba(245,245,247,1)
+
+  static const List<Color> storyGradient = [
+    Color(0xFF404AC3), // синий из Figma
+    Color(0xFFCFDC28), // желто-зеленый из Figma
+    Color(0xFF404AC3), // синий (замыкаем круг)
+  ];
 }
 

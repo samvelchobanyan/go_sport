@@ -7,28 +7,68 @@ class DSThemeData {
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.light, 
-      scaffoldBackgroundColor: DSColors.background,
+      scaffoldBackgroundColor: DSColors.white,
       
       colorScheme: const ColorScheme.light(
-        primary: DSColors.primary,
-        onPrimary: DSColors.black, // Текст на желтых кнопках будет черным
-        surface: DSColors.surface,
-        onSurface: DSColors.textMain,
-        secondary: DSColors.accentBlue,
-        outlineVariant: DSColors.divider, // Цвет для разделителей
+      // Primary = основной интерактив (blue)
+      primary: DSColors.blue,
+      onPrimary: DSColors.white,
+
+      // Secondary = бренд-акцент (orange)
+      secondary: DSColors.orange,
+      onSecondary: DSColors.white,
+
+      // Tertiary = яркий лайм (под кнопки/акцентные поверхности)
+      tertiary: DSColors.lime,
+      onTertiary: DSColors.black, // как ты и хотел: текст на "желтом" = черный
+
+      surface: DSColors.white,
+      onSurface: DSColors.black,
+
+      // Dividers / strokes
+      outlineVariant: DSColors.gray20,
+
+      // Errors
+      error: DSColors.errorColor,
+      onError: DSColors.white,
       ),
 
       textTheme: const TextTheme(
-        displayLarge: DSTypography.h1,
-        headlineMedium: DSTypography.h2,   // Добавили наш h2
-        bodyLarge: DSTypography.bodyL,
-        bodyMedium: DSTypography.bodyM,
-        labelLarge: DSTypography.label,    // Добавили наш bold label
-        labelSmall: DSTypography.caption,
+        // ========================================================
+        // HEADLINES (Крупные заголовки экранов и секций - Noah)
+        // ========================================================
+        headlineLarge: DSTypography.h1,   // 28px — Заголовки экранов (News, Home)
+        headlineMedium: DSTypography.h2,  // 21px — Заголовки секций (Featured, Latest)
+        headlineSmall: DSTypography.h3,   // 18px — Подзаголовки
+
+        // ========================================================
+        // TITLES (Элементы списков - Montserrat)
+        // Иерархия: 14px -> 13px Bold -> 13px SemiBold
+        // ========================================================
+        titleLarge: DSTypography.subtitleLBold,  // 14px Bold (Названия треков, альбомов)
+        titleMedium: DSTypography.subtitleMBold, // 13px Bold (Вторичный акцент)
+        titleSmall: DSTypography.subtitleM,      // 13px SemiBold (Мелкий заголовок)
+
+        // ========================================================
+        // BODY (Основной контент - Montserrat)
+        // ========================================================
+        bodyLarge: DSTypography.subtitleLSemi, // 14px SemiBold (Вступления, акценты)
+        
+        // [ВАЖНО] Дефолтный стиль для всего текста в приложении
+        bodyMedium: DSTypography.bodyL,        // 13px Medium (Основной текст)
+        
+        bodySmall: DSTypography.textL,         // 12px SemiBold (Мелкие подписи)
+
+        // ========================================================
+        // LABELS (Интерфейс и кнопки - Montserrat)
+        // ========================================================
+        labelLarge: DSTypography.fieldLabel,   // 11px w600 (Текст кнопок)
+        labelMedium: DSTypography.label,       // 11px w500
+        labelSmall: DSTypography.label,        // 11px w500
       ),
 
       cardTheme: CardThemeData(
-        color: DSColors.surface,
+        color: DSColors.white,
         elevation: 0,
         margin: EdgeInsets.zero,
         shape: RoundedRectangleBorder(
@@ -43,22 +83,24 @@ class DSThemeData {
       ),
 
       appBarTheme: const AppBarTheme(
-        backgroundColor: DSColors.background, // Лучше сделать как фон, чтобы не было шва
+        backgroundColor: DSColors.white, // Лучше сделать как фон, чтобы не было шва
         elevation: 0,
         centerTitle: true,
         scrolledUnderElevation: 0, // Чтобы при скролле AppBar не менял цвет
-        iconTheme: IconThemeData(color: DSColors.textMain),
+        iconTheme: IconThemeData(color: DSColors.black),
         titleTextStyle: DSTypography.bodyL, // Заголовок в AppBar обычно 17px SemiBold
       ),
 
       // Настройка нижнего меню (визуально как на макете)
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-        backgroundColor: DSColors.surface,
-        selectedItemColor: DSColors.textMain,
-        unselectedItemColor: DSColors.textGrey,
+        backgroundColor: DSColors.white,
+        selectedItemColor: DSColors.black,
+        unselectedItemColor: DSColors.gray50,
         type: BottomNavigationBarType.fixed,
         showSelectedLabels: true,
         showUnselectedLabels: true,
+        selectedLabelStyle: DSTypography.navLabel,
+        unselectedLabelStyle: DSTypography.navLabel,
       ),
     );
   }
