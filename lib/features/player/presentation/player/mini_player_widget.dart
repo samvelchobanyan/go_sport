@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'dart:ui';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/components/icons/ds_heart_icon.dart';
-import 'package:go_sport/design_system/components/icons/ds_play_icon.dart';
-import 'package:go_sport/design_system/components/icons/ds_pause_icon.dart';
 import 'package:go_sport/design_system/components/icons/ds_wave_icon.dart';
 import 'package:go_sport/design_system/components/icons/ds_bit_icon.dart';
 
@@ -118,10 +117,12 @@ class _MiniPlayerWidgetState extends State<MiniPlayerWidget>
                     ? const DSBitIcon(
                         color: DSColors.white,
                         size: 24,
+                        isAnimated: true,
                       )
                     : const DSWaveIcon(
                         color: DSColors.white,
                         size: 24,
+                        isAnimated: true,
                       ),
               ),
       ),
@@ -191,7 +192,7 @@ class _MiniPlayerWidgetState extends State<MiniPlayerWidget>
               padding: const EdgeInsets.symmetric(vertical: 7),
               child: DSHeartIcon(
                 color: DSColors.blue,
-                size: 24,
+                size: 32,
                 isFilled: _isLiked,
               ),
             ),
@@ -199,24 +200,36 @@ class _MiniPlayerWidgetState extends State<MiniPlayerWidget>
           const SizedBox(width: 8),
           // Play/Pause icon
           GestureDetector(
-            onTap: () {
-              setState(() {
-                _isPlaying = !_isPlaying;
-              });
-            },
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8),
-              child: _isPlaying
-                  ? const DSPauseIcon(
-                      color: DSColors.blue,
-                      size: 32,
-                    )
-                  : const DSPlayIcon(
-                      color: DSColors.blue,
-                      size: 32,
-                    ),
-            ),
-          ),
+  onTap: () {
+    setState(() {
+      _isPlaying = !_isPlaying;
+    });
+  },
+  child: Padding(
+    padding: const EdgeInsets.symmetric(vertical: 8),
+    child: AnimatedSwitcher(
+      duration: const Duration(milliseconds: 200),
+      transitionBuilder: (child, animation) {
+        return FadeTransition(
+          opacity: animation,
+          child: child,
+        );
+      },
+      child: SvgPicture.asset(
+        _isPlaying 
+          ? 'assets/icons/pause.svg' 
+          : 'assets/icons/play.svg',
+        key: ValueKey(_isPlaying),
+        colorFilter: ColorFilter.mode(
+          DSColors.blue,
+          BlendMode.srcIn,
+        ),
+        width: 32,
+        height: 32,
+      ),
+    ),
+  ),
+),
         ],
       ),
     );
@@ -283,15 +296,17 @@ class _MiniPlayerWidgetState extends State<MiniPlayerWidget>
             },
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 8),
-              child: _isPlaying
-                  ? const DSPauseIcon(
-                      color: DSColors.lime,
-                      size: 32,
-                    )
-                  : const DSPlayIcon(
-                      color: DSColors.lime,
-                      size: 32,
-                    ),
+              child: SvgPicture.asset(
+                _isPlaying 
+                  ? 'assets/icons/pause.svg' 
+                  : 'assets/icons/play.svg',
+                colorFilter: ColorFilter.mode(
+                  DSColors.lime,
+                  BlendMode.srcIn,
+                ),
+                width: 32,
+                height: 32,
+              ),
             ),
           ),
         ],

@@ -1,34 +1,99 @@
 import 'package:flutter/material.dart';
 
-class DSWaveIcon extends StatelessWidget {
+class DSWaveIcon extends StatefulWidget {
   final Color color;
   final double size;
+  final bool isAnimated;
 
   const DSWaveIcon({
     super.key,
     required this.color,
     this.size = 24.0,
+    this.isAnimated = false,
   });
 
   @override
+  State<DSWaveIcon> createState() => _DSWaveIconState();
+}
+
+class _DSWaveIconState extends State<DSWaveIcon>
+    with SingleTickerProviderStateMixin {
+  AnimationController? _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _initAnimation();
+  }
+
+  @override
+  void didUpdateWidget(covariant DSWaveIcon oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.isAnimated != oldWidget.isAnimated) {
+      _initAnimation();
+    }
+  }
+
+  void _initAnimation() {
+    if (widget.isAnimated) {
+      _controller ??= AnimationController(
+        duration: const Duration(milliseconds: 2000),
+        vsync: this,
+      )..repeat();
+    } else {
+      _controller?.dispose();
+      _controller = null;
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller?.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    if (_controller != null) {
+      return AnimatedBuilder(
+        animation: _controller!,
+        builder: (context, child) {
+          return CustomPaint(
+            size: Size(widget.size, widget.size),
+            painter: _WaveIconPainter(
+              color: widget.color,
+              animationValue: _controller!.value,
+            ),
+          );
+        },
+      );
+    }
+
     return CustomPaint(
-      size: Size(size, size),
-      painter: _WaveIconPainter(color: color),
+      size: Size(widget.size, widget.size),
+      painter: _WaveIconPainter(
+        color: widget.color,
+        animationValue: null,
+      ),
     );
   }
 }
 
 class _WaveIconPainter extends CustomPainter {
   final Color color;
+  final double? animationValue;
 
-  _WaveIconPainter({required this.color});
+  _WaveIconPainter({required this.color, this.animationValue});
+
+  double _getWaveOpacity(double phase) {
+    if (animationValue == null) return 1.0;
+    final wave = (animationValue! + phase) % 1.0;
+    return (wave < 0.5) ? wave * 2 : (1.0 - wave) * 2;
+  }
 
   @override
   void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = color
-      ..style = PaintingStyle.fill;
+    final paint = Paint()..style = PaintingStyle.fill;
 
     // Apply circular clipping (rx="12" means circular)
     canvas.save();
@@ -171,12 +236,32 @@ class _WaveIconPainter extends CustomPainter {
     path7.cubicTo(21.9867 * scale, 4.13268 * scale, 21.9919 * scale, 3.58353 * scale, 22.3262 * scale, 3.24816 * scale);
     path7.close();
 
+    // Path 1 (outermost left): phase = 0.0
+    paint.color = color.withOpacity(_getWaveOpacity(0.0));
     canvas.drawPath(path1, paint);
+
+    // Path 2 (second left): phase = 0.15
+    paint.color = color.withOpacity(_getWaveOpacity(0.15));
     canvas.drawPath(path2, paint);
+
+    // Path 3 (third left): phase = 0.3
+    paint.color = color.withOpacity(_getWaveOpacity(0.3));
     canvas.drawPath(path3, paint);
+
+    // Path 4 (center speaker): NO animation
+    paint.color = color;
     canvas.drawPath(path4, paint);
+
+    // Path 5 (third right): phase = 0.3
+    paint.color = color.withOpacity(_getWaveOpacity(0.3));
     canvas.drawPath(path5, paint);
+
+    // Path 6 (second right): phase = 0.15
+    paint.color = color.withOpacity(_getWaveOpacity(0.15));
     canvas.drawPath(path6, paint);
+
+    // Path 7 (outermost right): phase = 0.0
+    paint.color = color.withOpacity(_getWaveOpacity(0.0));
     canvas.drawPath(path7, paint);
 
     canvas.restore();
@@ -184,6 +269,7 @@ class _WaveIconPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(_WaveIconPainter oldDelegate) {
-    return oldDelegate.color != color;
+    return oldDelegate.color != color ||
+        oldDelegate.animationValue != animationValue;
   }
 }

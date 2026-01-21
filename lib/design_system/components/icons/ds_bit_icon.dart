@@ -1,28 +1,92 @@
 import 'package:flutter/material.dart';
 
-class DSBitIcon extends StatelessWidget {
+class DSBitIcon extends StatefulWidget {
   final Color color;
   final double size;
+  final bool isAnimated;
 
   const DSBitIcon({
     super.key,
     required this.color,
     this.size = 24.0,
+    this.isAnimated = false,
   });
 
   @override
+  State<DSBitIcon> createState() => _DSBitIconState();
+}
+
+class _DSBitIconState extends State<DSBitIcon>
+    with SingleTickerProviderStateMixin {
+  AnimationController? _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _initAnimation();
+  }
+
+  @override
+  void didUpdateWidget(covariant DSBitIcon oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.isAnimated != oldWidget.isAnimated) {
+      _initAnimation();
+    }
+  }
+
+  void _initAnimation() {
+    if (widget.isAnimated) {
+      _controller ??= AnimationController(
+        duration: const Duration(milliseconds: 1200),
+        vsync: this,
+      )..repeat();
+    } else {
+      _controller?.dispose();
+      _controller = null;
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller?.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    if (_controller != null) {
+      return AnimatedBuilder(
+        animation: _controller!,
+        builder: (context, child) {
+          return CustomPaint(
+            size: Size(widget.size, widget.size),
+            painter: _BitIconPainter(
+              color: widget.color,
+              animationValue: _controller!.value,
+            ),
+          );
+        },
+      );
+    }
+
     return CustomPaint(
-      size: Size(size, size),
-      painter: _BitIconPainter(color: color),
+      size: Size(widget.size, widget.size),
+      painter: _BitIconPainter(
+        color: widget.color,
+        animationValue: null,
+      ),
     );
   }
 }
 
 class _BitIconPainter extends CustomPainter {
   final Color color;
+  final double? animationValue;
 
-  _BitIconPainter({required this.color});
+  _BitIconPainter({
+    required this.color,
+    this.animationValue,
+  });
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -31,72 +95,47 @@ class _BitIconPainter extends CustomPainter {
       ..style = PaintingStyle.fill;
 
     final scale = size.width / 24.0;
-    final cornerRadius = 1.0 * scale; // rx="1" from SVG
+    final cornerRadius = 1.0 * scale;
 
-    // Bar 1: x="3" y="1.97156" width="2" height="19.9519"
-    final bar1 = RRect.fromRectAndRadius(
-      Rect.fromLTWH(
-        3.0 * scale,
-        1.97156 * scale,
-        2.0 * scale,
-        19.9519 * scale,
-      ),
-      Radius.circular(cornerRadius),
-    );
+    final bars = [
+      {'x': 3.0, 'y': 1.97156, 'height': 19.9519},
+      {'x': 6.99991, 'y': 3.56152, 'height': 16.772},
+      {'x': 11.0001, 'y': 0.577515, 'height': 22.7399},
+      {'x': 15.0, 'y': 7.45361, 'height': 8.98779},
+      {'x': 18.9999, 'y': 5.94739, 'height': 12.0},
+    ];
 
-    // Bar 2: x="6.99991" y="3.56152" width="2" height="16.772"
-    final bar2 = RRect.fromRectAndRadius(
-      Rect.fromLTWH(
-        6.99991 * scale,
-        3.56152 * scale,
-        2.0 * scale,
-        16.772 * scale,
-      ),
-      Radius.circular(cornerRadius),
-    );
+    for (int i = 0; i < bars.length; i++) {
+      final bar = bars[i];
+      final baseX = bar['x']! * scale;
+      final baseY = bar['y']! * scale;
+      final baseHeight = bar['height']! * scale;
 
-    // Bar 3: x="11.0001" y="0.577515" width="2" height="22.7399"
-    final bar3 = RRect.fromRectAndRadius(
-      Rect.fromLTWH(
-        11.0001 * scale,
-        0.577515 * scale,
-        2.0 * scale,
-        22.7399 * scale,
-      ),
-      Radius.circular(cornerRadius),
-    );
+      double height = baseHeight;
+      double y = baseY;
 
-    // Bar 4: x="15" y="7.45361" width="2" height="8.98779"
-    final bar4 = RRect.fromRectAndRadius(
-      Rect.fromLTWH(
-        15.0 * scale,
-        7.45361 * scale,
-        2.0 * scale,
-        8.98779 * scale,
-      ),
-      Radius.circular(cornerRadius),
-    );
+      if (animationValue != null) {
+        final phase = i * 0.2;
+        final wave = (animationValue! + phase) % 1.0;
+        final bounce = 1.0 - (wave - 0.5).abs() * 2;
+        final heightMultiplier = 0.5 + (bounce * 0.5);
+        height = baseHeight * heightMultiplier;
+        final heightDiff = baseHeight - height;
+        y = baseY + (heightDiff / 2);
+      }
 
-    // Bar 5: x="18.9999" y="5.94739" width="2" height="12"
-    final bar5 = RRect.fromRectAndRadius(
-      Rect.fromLTWH(
-        18.9999 * scale,
-        5.94739 * scale,
-        2.0 * scale,
-        12.0 * scale,
-      ),
-      Radius.circular(cornerRadius),
-    );
+      final barRect = RRect.fromRectAndRadius(
+        Rect.fromLTWH(baseX, y, 2.0 * scale, height),
+        Radius.circular(cornerRadius),
+      );
 
-    canvas.drawRRect(bar1, paint);
-    canvas.drawRRect(bar2, paint);
-    canvas.drawRRect(bar3, paint);
-    canvas.drawRRect(bar4, paint);
-    canvas.drawRRect(bar5, paint);
+      canvas.drawRRect(barRect, paint);
+    }
   }
 
   @override
   bool shouldRepaint(_BitIconPainter oldDelegate) {
-    return oldDelegate.color != color;
+    return oldDelegate.color != color ||
+        oldDelegate.animationValue != animationValue;
   }
 }
