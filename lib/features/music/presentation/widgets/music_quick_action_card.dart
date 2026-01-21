@@ -1,0 +1,59 @@
+import 'package:flutter/material.dart';
+import 'package:go_sport/design_system/ds_extensions.dart';
+import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_radius.dart';
+
+class MusicQuickActionCard extends StatelessWidget {
+  final Widget icon;
+  final String title;
+  final String subtitle;
+  final VoidCallback onTap;
+
+  const MusicQuickActionCard({
+    super.key,
+    required this.icon,
+    required this.title,
+    required this.subtitle,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          color: const Color.fromARGB(185, 255, 255, 255),
+          borderRadius: BorderRadius.circular(DSRadius.l),
+        ),
+        child: Row(
+          children: [
+            Container(
+              width: 36,
+              height: 22,
+              decoration: BoxDecoration(
+                color: Color.fromRGBO(64, 74, 195, 0.05),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: icon,
+            ),
+            const SizedBox(width: 12),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(title, style: context.subtitleMBold),
+                const SizedBox(height: 2),
+                Text(
+                  subtitle,
+                  style: context.label?.copyWith(color: DSColors.grey60),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

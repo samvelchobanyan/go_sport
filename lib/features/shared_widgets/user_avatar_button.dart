@@ -40,10 +40,10 @@ class UserAvatarButton extends StatelessWidget {
 
   Widget _buildPlaceholder() {
     return Container(
-      color: DSColors.gray20,
+      color: DSColors.grey20,
       child: Icon(
         Icons.person,
-        color: DSColors.gray50,
+        color: DSColors.grey50,
         size: size * 0.6,
       ),
     );

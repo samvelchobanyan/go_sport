@@ -7,7 +7,6 @@ import '../../../../domain/entities/story.dart';
 import '../../../shared_widgets/wave_section_header.dart';
 import 'home_controller.dart';
 
-// Импорты твоих виджетов (проверь пути, если они лежат в другом месте)
 import '../../../shared_widgets/user_avatar_button.dart';
 import '../../../shared_widgets/search_button.dart';
 import '../../../shared_widgets/playlist_card.dart';
@@ -79,7 +78,7 @@ class HomeScreen extends ConsumerWidget {
         ),
         data: (stories, news, playlists) => RefreshIndicator(
           onRefresh: () => ref.read(homeControllerProvider.notifier).load(),
-          child: CustomScrollView(
+          child: CustomScrollView( 
             slivers: [
               SliverAppBar(
                 backgroundColor: DSColors.white,

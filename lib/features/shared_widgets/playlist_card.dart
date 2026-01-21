@@ -31,7 +31,7 @@ class PlaylistCard extends StatelessWidget {
               child: Image.network(
                 imageUrl,
                 fit: BoxFit.cover,
-                errorBuilder: (_, __, ___) => Container(color: DSColors.gray20),
+                errorBuilder: (_, __, ___) => Container(color: DSColors.grey20),
               ),
             ),
             const SizedBox(height: 6),

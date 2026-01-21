@@ -1,22 +1,375 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 
-class MusicScreen extends StatelessWidget {
+import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/core/di/repository_providers.dart';
+import 'package:go_sport/features/home/presentation/home/home_controller.dart';
+import 'package:go_sport/features/music/presentation/widgets/music_quick_action_card.dart';
+import 'package:go_sport/features/music/presentation/widgets/artist_card.dart';
+import 'package:go_sport/features/shared_widgets/playlist_card.dart';
+
+import '../../../shared_widgets/user_avatar_button.dart';
+import '../../../shared_widgets/search_button.dart';
+import '../../../shared_widgets/wave_section_header.dart';
+
+class MusicScreen extends ConsumerWidget {
   const MusicScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(homeControllerProvider);
+
+    // Quick action cards data
+    final cards = [
+      {
+        'icon': SvgPicture.asset('assets/icons/heart.svg'),
+        'title': 'My Favorites',
+        'subtitle': '30 tracks',
+      },
+      {
+        'icon': SvgPicture.asset('assets/icons/playlists.svg'),
+        'title': 'My Playlist',
+        'subtitle': '14 playlists',
+      },
+      {
+        'icon': SvgPicture.asset('assets/icons/nota.svg'),
+        'title': 'My Albums',
+        'subtitle': '21 albums',
+      },
+      {
+        'icon': SvgPicture.asset('assets/icons/artist.svg'),
+        'title': 'My Artists',
+        'subtitle': '16 artists',
+      },
+      {
+        'icon': SvgPicture.asset('assets/icons/dynamic_bg.svg'),
+        'title': 'New Episodes',
+        'subtitle': '6 episodes',
+      },
+      {
+        'icon': SvgPicture.asset('assets/icons/dynamic.svg'),
+        'title': 'My Programs',
+        'subtitle': '14 programs',
+      },
+    ];
+
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Music',
-          style: context.subtitleLBold,
+      backgroundColor: Colors.white,
+      body: state.when(
+        loading: () => const Center(child: CircularProgressIndicator()),
+        data: (stories, news, playlists) => RefreshIndicator(
+          onRefresh: () => ref.read(homeControllerProvider.notifier).load(),
+          child: Stack(
+            children: [
+              Image.asset(
+                'assets/images/music_bg.png',
+                width: MediaQuery.of(context).size.width,
+                fit: BoxFit.cover,
+              ),
+              CustomScrollView(
+                slivers: [
+                  /// 🔹 AppBar
+                  SliverAppBar(
+                    backgroundColor: Colors.transparent,
+                    elevation: 0,
+                    pinned: true,
+                    floating: true,
+                    leading: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: UserAvatarButton(
+                        imageUrl: null,
+                        onTap: () {
+                          // TODO: navigate to profile
+                        },
+                      ),
+                    ),
+                    title: Text('Music', style: context.h2),
+                    centerTitle: true,
+                    actions: [
+                      SearchButton(
+                        onTap: () {
+                          // TODO: open music search
+                        },
+                      ),
+                    ],
+                  ),
+
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Wrap(
+                        spacing: 8,
+                        runSpacing: 8,
+                        children: cards.map((card) {
+                          return SizedBox(
+                            width:
+                                (MediaQuery.of(context).size.width -
+                                    16 * 2 -
+                                    8) /
+                                2,
+                            child: MusicQuickActionCard(
+                              icon: card['icon'] as SvgPicture,
+                              title: card['title'] as String,
+                              subtitle: card['subtitle'] as String,
+                              onTap: () {
+                                final title = card['title'] as String;
+                                switch (title) {
+                                  case 'My Favorites':
+                                    context.push('/music/favorites');
+                                    break;
+                                  case 'My Playlist':
+                                    context.push('/music/myplaylists');
+                                    break;
+                                  case 'My Albums':
+                                    context.push('/music/myalbums');
+                                    break;
+                                  case 'My Artists':
+                                    context.push('/music/myartists');
+                                    break;
+                                  case 'New Episodes':
+                                    context.push('/music/episodes');
+                                    break;
+                                  case 'My Programs':
+                                    context.push('/music/myprograms');
+                                    break;
+                                  default:
+                                    debugPrint('Unknown card: $title');
+                                }
+                              },
+                            ),
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                  ),
+
+                  // rounded corners box
+                  SliverToBoxAdapter(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(20),
+                          topRight: Radius.circular(20),
+                        ),
+                      ),
+                      clipBehavior: Clip.antiAlias,
+                      child: SizedBox(height: 16),
+                    ),
+                  ),
+
+                  // playlist title
+                  SliverToBoxAdapter(
+                    child: Container(
+                      color: Colors.white, // whole section background
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Section header
+                          const Padding(
+                            padding: EdgeInsets.all(16),
+                            child: WaveSectionHeader(
+                              title: 'Featured playlists',
+                              showAnimation: true,
+                            ),
+                          ),
+
+                          // playlist list
+                          if (playlists.isNotEmpty)
+                            SizedBox(
+                              height: 210,
+                              child: ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 16,
+                                ),
+                                itemCount: playlists.length,
+                                itemBuilder: (context, index) {
+                                  return Padding(
+                                    padding: const EdgeInsets.only(right: 12),
+                                    child: PlaylistCard(
+                                      title: playlists[index].title,
+                                      imageUrl: playlists[index].imageUrl,
+                                      trackCount: playlists[index].trackCount,
+                                      onTap: () {
+                                        print(
+                                          'Playlist tapped: ${playlists[index].id}',
+                                        );
+                                      },
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
+                  ),
+
+                  // albums title
+                  SliverToBoxAdapter(
+                    child: Container(
+                      color: Colors.white, // whole section background
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Section header
+                          const Padding(
+                            padding: EdgeInsets.all(16),
+                            child: WaveSectionHeader(
+                              title: 'Featured albums',
+                              showAnimation: true,
+                            ),
+                          ),
+
+                          // albums list
+                          if (playlists.isNotEmpty)
+                            SizedBox(
+                              height: 210,
+                              child: ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 16,
+                                ),
+                                itemCount: playlists.length,
+                                itemBuilder: (context, index) {
+                                  return Padding(
+                                    padding: const EdgeInsets.only(right: 12),
+                                    child: PlaylistCard(
+                                      title: playlists[index].title,
+                                      imageUrl: playlists[index].imageUrl,
+                                      trackCount: playlists[index].trackCount,
+                                      onTap: () {
+                                        print(
+                                          'Album  tapped: ${playlists[index].id}',
+                                        );
+                                      },
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
+                  ),
+
+                  // featured artists section
+                  SliverToBoxAdapter(
+                    child: Container(
+                      color: Colors.white, // whole section background
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Section header
+                          const Padding(
+                            padding: EdgeInsets.all(16),
+                            child: WaveSectionHeader(
+                              title: 'Featured artists',
+                              showAnimation: true,
+                            ),
+                          ),
+
+                          // artists list
+                          FutureBuilder(
+                            future: ref
+                                .read(artistRepositoryProvider)
+                                .getFeaturedArtists(),
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return SizedBox(
+                                  height: 170,
+                                  child: Center(
+                                    child: CircularProgressIndicator(
+                                      color: DSColors.blue,
+                                    ),
+                                  ),
+                                );
+                              }
+
+                              if (snapshot.hasError ||
+                                  !snapshot.hasData ||
+                                  snapshot.data!.isEmpty) {
+                                return const SizedBox.shrink();
+                              }
+
+                              final artists = snapshot.data!;
+                              return SizedBox(
+                                height: 170,
+                                child: ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 16,
+                                  ),
+                                  itemCount: artists.length,
+                                  itemBuilder: (context, index) {
+                                    return Padding(
+                                      padding: const EdgeInsets.only(right: 16),
+                                      child: ArtistCard(
+                                        name: artists[index].title,
+                                        imageUrl: artists[index].imageUrl,
+                                        onTap: () {
+                                          print(
+                                            'Artist tapped: ${artists[index].id}',
+                                          );
+                                        },
+                                      ),
+                                    );
+                                  },
+                                ),
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
-      ),
-      body: Center(
-        child: Text(
-          'Music Screen',
-          style: context.h2,
+        empty: () => Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text('Контента пока нет'),
+              const SizedBox(height: 16),
+              TextButton(
+                onPressed: () =>
+                    ref.read(homeControllerProvider.notifier).load(),
+                child: const Text('Обновить'),
+              ),
+            ],
+          ),
+        ),
+
+        error: (message) => Center(
+          child: Padding(
+            padding: const EdgeInsets.all(24.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(
+                  Icons.error_outline,
+                  color: DSColors.errorColor,
+                  size: 48,
+                ),
+                const SizedBox(height: 16),
+                Text(message, textAlign: TextAlign.center),
+                const SizedBox(height: 24),
+                ElevatedButton(
+                  onPressed: () =>
+                      ref.read(homeControllerProvider.notifier).load(),
+                  child: const Text('Повторить запрос'),
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );

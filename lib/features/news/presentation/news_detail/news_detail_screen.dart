@@ -44,12 +44,14 @@ class NewsDetailScreen extends ConsumerWidget {
                 const SizedBox(height: 8),
                 Text(
                   message,
-                  style: context.textL?.copyWith(color: DSColors.gray60),
+                  style: context.textL?.copyWith(color: DSColors.grey60),
                 ),
                 const SizedBox(height: 16),
                 ElevatedButton(
                   onPressed: () {
-                    ref.read(newsDetailControllerProvider(articleId).notifier).load();
+                    ref
+                        .read(newsDetailControllerProvider(articleId).notifier)
+                        .load();
                   },
                   child: const Text('Retry'),
                 ),
@@ -74,7 +76,8 @@ class NewsDetailScreen extends ConsumerWidget {
                     builder: (context) {
                       final parts = article.author.split(' ');
                       final firstName = parts.isNotEmpty ? parts[0] : '';
-                      final lastName = parts.length > 1 ? parts.sublist(1).join(' ') : '';
+                      final lastName =
+                          parts.length > 1 ? parts.sublist(1).join(' ') : '';
                       return Row(
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -87,7 +90,7 @@ class NewsDetailScreen extends ConsumerWidget {
                               color: DSColors.orange,
                             ),
                           ),
-                          const SizedBox(width:2),
+                          const SizedBox(width: 2),
                           Column(
                             mainAxisSize: MainAxisSize.min,
                             crossAxisAlignment: CrossAxisAlignment.end,
@@ -95,14 +98,14 @@ class NewsDetailScreen extends ConsumerWidget {
                               Text(
                                 firstName,
                                 style: context.subtitleM?.copyWith(
-                                  color: DSColors.gray60,
+                                  color: DSColors.grey60,
                                 ),
                               ),
                               if (lastName.isNotEmpty)
                                 Text(
                                   lastName,
                                   style: context.subtitleM?.copyWith(
-                                    color: DSColors.gray60,
+                                    color: DSColors.grey60,
                                   ),
                                 ),
                             ],
@@ -119,166 +122,170 @@ class NewsDetailScreen extends ConsumerWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-              const SizedBox(height: 8),
+                const SizedBox(height: 8),
 
-              // Изображение
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: Image.network(
-                    article.imageUrl,
-                    width: double.infinity,
-                    height: 240,
-                    fit: BoxFit.cover,
-                    errorBuilder: (_, __, ___) => Container(
-                      color: DSColors.divider,
+                // Изображение
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: Image.network(
+                      article.imageUrl,
                       width: double.infinity,
                       height: 240,
+                      fit: BoxFit.cover,
+                      errorBuilder: (_, __, ___) => Container(
+                        color: DSColors.divider,
+                        width: double.infinity,
+                        height: 240,
+                      ),
                     ),
                   ),
                 ),
-              ),
-              const SizedBox(height: 14),
+                const SizedBox(height: 14),
 
-              // Заголовок
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                child: Text(
-                  article.title,
-                  style: context.h2,
-                ),
-              ),
-              const SizedBox(height: 15),
-
-              // Subtitle (цитата)
-              if (article.subtitle != null) ...[
+                // Заголовок
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border(
-                        left: BorderSide(
-                          color: DSColors.blue,
-                          width: 3,
-                        ),
-                      ),
-                    ),
-                    padding: const EdgeInsets.only(left: 16),
-                    child: Text(
-                      article.subtitle!,
-                      style: context.subtitleM?.copyWith(
-                        fontStyle: FontStyle.italic,
-                        color: DSColors.gray60,
-                      ),
-                    ),
+                  child: Text(
+                    article.title,
+                    style: context.h2,
                   ),
                 ),
                 const SizedBox(height: 15),
-              ],
 
-              // Контент
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                child: Text(
-                  article.content,
-                  style: context.bodyL?.copyWith(height: 1.6),
-                ),
-              ),
-              const SizedBox(height: 16),
-
-              // Divider
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 24.0),
-                child: DottedDivider(),
-              ),
-              const SizedBox(height: 16),
-
-              // Нижние кнопки
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                child: Row(
-                  children: [
-                    // Like button
-                    GestureDetector(
-                      onTap: () {
-                        ref
-                            .read(newsDetailControllerProvider(articleId).notifier)
-                            .toggleLike();
-                      },
-                      child: Container(
-                        width: 48,
-                        height: 48,
-                        decoration: BoxDecoration(
-                          color: DSColors.blue,
-                          shape: BoxShape.circle,
-                        ),
-                        child: Icon(
-                          article.isLiked ? Icons.thumb_up : Icons.thumb_up_outlined,
-                          color: DSColors.white,
-                          size: 24,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 16),
-
-                    // Share button
-                    GestureDetector(
-                      onTap: () {
-                        // Share functionality - будет реализовано позже
-                      },
-                      child: Container(
-                        width: 48,
-                        height: 48,
-                        decoration: BoxDecoration(
-                          color: DSColors.divider,
-                          shape: BoxShape.circle,
-                        ),
-                        child: Icon(
-                          Icons.share_outlined,
-                          color: DSColors.black,
-                          size: 24,
-                        ),
-                      ),
-                    ),
-                    const Spacer(),
-
-                    // Likes counter
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 8,
-                      ),
+                // Subtitle (цитата)
+                if (article.subtitle != null) ...[
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                    child: Container(
                       decoration: BoxDecoration(
-                        border: Border.all(color: DSColors.divider, width: 1),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.thumb_up,
-                            size: 16,
+                        border: Border(
+                          left: BorderSide(
                             color: DSColors.blue,
+                            width: 3,
                           ),
-                          const SizedBox(width: 6),
-                          Text(
-                            '${article.likesCount}',
-                            style: context.bodyL?.copyWith(
-                              color: DSColors.black,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ],
+                        ),
+                      ),
+                      padding: const EdgeInsets.only(left: 16),
+                      child: Text(
+                        article.subtitle!,
+                        style: context.subtitleM?.copyWith(
+                          fontStyle: FontStyle.italic,
+                          color: DSColors.grey60,
+                        ),
                       ),
                     ),
-                  ],
+                  ),
+                  const SizedBox(height: 15),
+                ],
+
+                // Контент
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                  child: Text(
+                    article.content,
+                    style: context.bodyL?.copyWith(height: 1.6),
+                  ),
                 ),
-              ),
-              const SizedBox(height: 21), // Пространство для MiniPlayer и BottomNav
-            ],
+                const SizedBox(height: 16),
+
+                // Divider
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 24.0),
+                  child: DottedDivider(),
+                ),
+                const SizedBox(height: 16),
+
+                // Нижние кнопки
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                  child: Row(
+                    children: [
+                      // Like button
+                      GestureDetector(
+                        onTap: () {
+                          ref
+                              .read(newsDetailControllerProvider(articleId)
+                                  .notifier)
+                              .toggleLike();
+                        },
+                        child: Container(
+                          width: 48,
+                          height: 48,
+                          decoration: BoxDecoration(
+                            color: DSColors.blue,
+                            shape: BoxShape.circle,
+                          ),
+                          child: Icon(
+                            article.isLiked
+                                ? Icons.thumb_up
+                                : Icons.thumb_up_outlined,
+                            color: DSColors.white,
+                            size: 24,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+
+                      // Share button
+                      GestureDetector(
+                        onTap: () {
+                          // Share functionality - будет реализовано позже
+                        },
+                        child: Container(
+                          width: 48,
+                          height: 48,
+                          decoration: BoxDecoration(
+                            color: DSColors.divider,
+                            shape: BoxShape.circle,
+                          ),
+                          child: Icon(
+                            Icons.share_outlined,
+                            color: DSColors.black,
+                            size: 24,
+                          ),
+                        ),
+                      ),
+                      const Spacer(),
+
+                      // Likes counter
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 8,
+                        ),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: DSColors.divider, width: 1),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.thumb_up,
+                              size: 16,
+                              color: DSColors.blue,
+                            ),
+                            const SizedBox(width: 6),
+                            Text(
+                              '${article.likesCount}',
+                              style: context.bodyL?.copyWith(
+                                color: DSColors.black,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(
+                    height: 21), // Пространство для MiniPlayer и BottomNav
+              ],
+            ),
           ),
         ),
-      ),
       ),
     );
   }

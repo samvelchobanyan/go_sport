@@ -30,17 +30,17 @@ class StoryOverlay extends StatelessWidget {
               imageUrl: story.imageUrl,
               fit: BoxFit.cover,
               placeholder: (context, url) => Container(
-                color: DSColors.gray20,
+                color: DSColors.grey20,
                 child: const Center(
                   child: CircularProgressIndicator(),
                 ),
               ),
               errorWidget: (context, url, error) => Container(
-                color: DSColors.gray20,
+                color: DSColors.grey20,
                 child: Icon(
                   Icons.broken_image,
                   size: 64,
-                  color: DSColors.gray50,
+                  color: DSColors.grey50,
                 ),
               ),
             ),
@@ -120,37 +120,39 @@ class StoryOverlay extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.all(24),
                         child: GestureDetector(
-                          onTap: () => onAction(story.ctaTargetType, story.ctaTargetId),
+                          onTap: () =>
+                              onAction(story.ctaTargetType, story.ctaTargetId),
                           child: Container(
-                          width: double.infinity,
-                          height: 56,
-                          decoration: BoxDecoration(
-                            color: DSColors.lime,
-                            borderRadius: BorderRadius.circular(28),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.campaign,
-                                size: 20,
-                                color: DSColors.black,
-                              ),
-                              const SizedBox(width: 8),
-                              Text(
-                                story.ctaLabel,
-                                style: context.subtitleLBold?.copyWith(
+                            width: double.infinity,
+                            height: 56,
+                            decoration: BoxDecoration(
+                              color: DSColors.lime,
+                              borderRadius: BorderRadius.circular(28),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.campaign,
+                                  size: 20,
                                   color: DSColors.black,
                                 ),
-                              ),
-                            ],
+                                const SizedBox(width: 8),
+                                Text(
+                                  story.ctaLabel,
+                                  style: context.subtitleLBold?.copyWith(
+                                    color: DSColors.black,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
                         ),
                       ),
 
                       SizedBox(
-                        height: MediaQuery.of(context).padding.bottom + DSSpacing.l,
+                        height:
+                            MediaQuery.of(context).padding.bottom + DSSpacing.l,
                       ),
                     ],
                   ),

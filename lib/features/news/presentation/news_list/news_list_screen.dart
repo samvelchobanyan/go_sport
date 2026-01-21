@@ -79,7 +79,7 @@ class _NewsListScreenState extends ConsumerState<NewsListScreen> {
               const SizedBox(height: 8),
               Text(
                 message,
-                style: context.textL?.copyWith(color: DSColors.gray60),
+                style: context.textL?.copyWith(color: DSColors.grey60),
               ),
               const SizedBox(height: 16),
               ElevatedButton(
