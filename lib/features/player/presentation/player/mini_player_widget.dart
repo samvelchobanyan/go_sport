@@ -1,151 +1,300 @@
 import 'package:flutter/material.dart';
-import 'package:go_sport/design_system/foundations/ds_colors.dart';
-import 'package:go_sport/design_system/foundations/ds_spacing.dart';
-import 'package:go_sport/design_system/foundations/ds_radius.dart';
-import 'package:go_sport/design_system/ds_extensions.dart';
 import 'dart:ui';
+import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/ds_extensions.dart';
+import 'package:go_sport/design_system/components/icons/ds_heart_icon.dart';
+import 'package:go_sport/design_system/components/icons/ds_play_icon.dart';
+import 'package:go_sport/design_system/components/icons/ds_pause_icon.dart';
+import 'package:go_sport/design_system/components/icons/ds_wave_icon.dart';
+import 'package:go_sport/design_system/components/icons/ds_bit_icon.dart';
 
-class MiniPlayerWidget extends StatelessWidget {
+const double _kMiniPlayerHeight = 72.0;
+const double _kActivePanelWidthRatio = 0.8;
+const double _kInactivePanelWidthRatio = 0.2;
+const Duration _kAnimationDuration = Duration(milliseconds: 300);
+const Curve _kAnimationCurve = Curves.easeInOut;
+
+class MiniPlayerWidget extends StatefulWidget {
   const MiniPlayerWidget({super.key});
+
+  @override
+  State<MiniPlayerWidget> createState() => _MiniPlayerWidgetState();
+}
+
+class _MiniPlayerWidgetState extends State<MiniPlayerWidget>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _animationController;
+  bool _isMusicMode = true; // Initial mode: Music
+  bool _isPlaying = false;
+  bool _isLiked = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+      duration: _kAnimationDuration,
+      vsync: this,
+    );
+  }
+
+  void _toggleMode() {
+    setState(() {
+      _isMusicMode = !_isMusicMode;
+    });
+    if (_isMusicMode) {
+      _animationController.reverse();
+    } else {
+      _animationController.forward();
+    }
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 55,
-      padding: const EdgeInsets.only(
-        left: DSSpacing.m,
-        right: DSSpacing.m,
-        bottom: 0,
-        top: 7,
+      height: _kMiniPlayerHeight,
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 7),
+      child: AnimatedBuilder(
+        animation: _animationController,
+        builder: (context, child) {
+          return Row(
+            children: [
+              // Left panel (Radio)
+              _buildPanel(
+                isMusicPanel: false,
+                isActive: !_isMusicMode,
+                onTap: !_isMusicMode ? null : _toggleMode,
+              ),
+              const SizedBox(width: 8),
+              // Right panel (Music)
+              _buildPanel(
+                isMusicPanel: true,
+                isActive: _isMusicMode,
+                onTap: _isMusicMode ? null : _toggleMode,
+              ),
+            ],
+          );
+        },
       ),
-      decoration: const BoxDecoration(
-        color: DSColors.white,
-      ),
+    );
+  }
+
+  Widget _buildPanel({
+    required bool isMusicPanel,
+    required bool isActive,
+    required VoidCallback? onTap,
+  }) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final availableWidth = screenWidth - 32 - 8; // minus horizontal padding (16*2) and gap (8)
+
+    // Calculate target widths
+    final activeWidth = availableWidth * _kActivePanelWidthRatio;
+    final inactiveWidth = availableWidth * _kInactivePanelWidthRatio;
+
+    // Interpolate width based on animation
+    // For Music panel: lerp from active (80%) to inactive (20%) as animation goes 0.0 -> 1.0
+    // For Radio panel: lerp from inactive (20%) to active (80%) as animation goes 0.0 -> 1.0
+    final animatedWidth = isMusicPanel
+        ? lerpDouble(activeWidth, inactiveWidth, _animationController.value)!
+        : lerpDouble(inactiveWidth, activeWidth, _animationController.value)!;
+
+    return GestureDetector(
+      onTap: onTap,
       child: Container(
-        height: 48,
-        child: Row(
+        width: animatedWidth,
+        decoration: BoxDecoration(
+          color: isMusicPanel ? DSColors.lime : DSColors.blue,
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: isActive
+            ? (isMusicPanel ? _buildMusicContent() : _buildRadioContent())
+            : Center(
+                child: isMusicPanel
+                    ? const DSBitIcon(
+                        color: DSColors.white,
+                        size: 24,
+                      )
+                    : const DSWaveIcon(
+                        color: DSColors.white,
+                        size: 24,
+                      ),
+              ),
+      ),
+    );
+  }
+
+  Widget _buildMusicContent() {
+    return Padding(
+      padding: const EdgeInsets.only(left: 7, right: 6),
+      child: Row(
         children: [
-          // Left: Radio button
+          // Album cover
           Container(
             width: 44,
             height: 44,
             decoration: BoxDecoration(
-              color: DSColors.blue,
-              borderRadius: BorderRadius.circular(DSRadius.m),
-            ),
-            child: const Icon(
-              Icons.radio,
               color: DSColors.white,
-              size: 20,
+              borderRadius: BorderRadius.circular(4.25),
+              image: const DecorationImage(
+                image: NetworkImage(
+                  'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=300&q=80',
+                ),
+                fit: BoxFit.cover,
+              ),
             ),
           ),
-          
-          const SizedBox(width: DSSpacing.s),
-          
-          // Center: Track info container
+          const SizedBox(width: 7),
+          // Text block
           Expanded(
-            child: Container(
-              height: 44,
-              padding: const EdgeInsets.symmetric(
-                horizontal: DSSpacing.s,
-                vertical: 4,
-              ),
-              decoration: BoxDecoration(
-                gradient: const LinearGradient(
-                  colors: DSColors.storyGradient,
-                  begin: Alignment.centerLeft,
-                  end: Alignment.centerRight,
-                ),
-                borderRadius: BorderRadius.circular(DSRadius.m),
-              ),
-              child: Row(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 7),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // Album cover
-                  Container(
-                    width: 36,
-                    height: 36,
-                    decoration: BoxDecoration(
-                      color: DSColors.white,
-                      borderRadius: BorderRadius.circular(DSRadius.s),
-                      image: const DecorationImage(
-                        image: NetworkImage(
-                          'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=300&q=80',
-                        ),
-                        fit: BoxFit.cover,
-                      ),
+                  Text(
+                    'Good Feelings',
+                    style: context.subtitleM?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: DSColors.black,
                     ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
-                  
-                  const SizedBox(width: DSSpacing.s),
-                  
-                  // Track info
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Good Feelings',
-                          style: context.subtitleM?.copyWith(
-                            color: DSColors.white,
-                          ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        Text(
-                          'Coldplay',
-                          style: context.textL?.copyWith(
-                            color: DSColors.gray20,
-                          ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ],
+                  const SizedBox(height: 2),
+                  Text(
+                    'Coldplay',
+                    style: context.textL?.copyWith(
+                      color: DSColors.gray70,
                     ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ],
               ),
             ),
           ),
-          
-          const SizedBox(width: DSSpacing.s),
-          
-          // Right controls
-          Row(
-            children: [
-              // Like button
-              Container(
-                width: 44,
-                height: 44,
-                decoration: BoxDecoration(
-                  color: DSColors.transparent,
-                  borderRadius: BorderRadius.circular(DSRadius.circular),
-                ),
-                child: const Icon(
-                  Icons.favorite_border,
-                  color: DSColors.black,
-                  size: 20,
-                ),
+          const SizedBox(width: 8),
+          // Like icon
+          GestureDetector(
+            onTap: () {
+              setState(() {
+                _isLiked = !_isLiked;
+              });
+            },
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 7),
+              child: DSHeartIcon(
+                color: DSColors.blue,
+                size: 24,
+                isFilled: _isLiked,
               ),
-              
-              // Play button
-              Container(
-                width: 44,
-                height: 44,
-                decoration: BoxDecoration(
-                  color: DSColors.black,
-                  borderRadius: BorderRadius.circular(DSRadius.circular),
-                ),
-                child: const Icon(
-                  Icons.play_arrow,
-                  color: DSColors.white,
-                  size: 20,
-                ),
-              ),
-            ],
+            ),
+          ),
+          const SizedBox(width: 8),
+          // Play/Pause icon
+          GestureDetector(
+            onTap: () {
+              setState(() {
+                _isPlaying = !_isPlaying;
+              });
+            },
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8),
+              child: _isPlaying
+                  ? const DSPauseIcon(
+                      color: DSColors.blue,
+                      size: 32,
+                    )
+                  : const DSPlayIcon(
+                      color: DSColors.blue,
+                      size: 32,
+                    ),
+            ),
           ),
         ],
-        ),
+      ),
+    );
+  }
+
+  Widget _buildRadioContent() {
+    return Padding(
+      padding: const EdgeInsets.only(left: 7, right: 6),
+      child: Row(
+        children: [
+          // Station cover
+          Container(
+            width: 44,
+            height: 44,
+            decoration: BoxDecoration(
+              color: DSColors.white,
+              borderRadius: BorderRadius.circular(4.25),
+              image: const DecorationImage(
+                image: NetworkImage(
+                  'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=300&q=80',
+                ),
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+          const SizedBox(width: 7),
+          // Text block
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 7),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'Radio Sport FM',
+                    style: context.subtitleM?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: DSColors.white,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    'Live broadcast',
+                    style: context.textL?.copyWith(
+                      color: DSColors.white.withOpacity(0.7),
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(width: 8),
+          // Play/Pause icon
+          GestureDetector(
+            onTap: () {
+              setState(() {
+                _isPlaying = !_isPlaying;
+              });
+            },
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8),
+              child: _isPlaying
+                  ? const DSPauseIcon(
+                      color: DSColors.lime,
+                      size: 32,
+                    )
+                  : const DSPlayIcon(
+                      color: DSColors.lime,
+                      size: 32,
+                    ),
+            ),
+          ),
+        ],
       ),
     );
   }
