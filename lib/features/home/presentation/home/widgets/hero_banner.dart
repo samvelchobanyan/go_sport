@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_radius.dart';
 
 class PodcastBanner extends StatelessWidget {
   final VoidCallback? onTap;
@@ -20,7 +21,7 @@ class PodcastBanner extends StatelessWidget {
           aspectRatio: 329 / 169,
           child: Container(
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(DSRadius.m),
               image: const DecorationImage(
                 image: AssetImage('assets/images/podcast_banner.png'),
                 fit: BoxFit.cover,
@@ -62,7 +63,7 @@ class PodcastBanner extends StatelessWidget {
                     ),
                     decoration: BoxDecoration(
                       color: DSColors.black,
-                      borderRadius: BorderRadius.circular(20),
+                      borderRadius: BorderRadius.circular(DSRadius.l),
                     ),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,

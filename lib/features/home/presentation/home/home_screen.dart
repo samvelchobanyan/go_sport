@@ -16,6 +16,7 @@ import '../../../shared_widgets/dotted_divider.dart';
 import 'widgets/hero_banner.dart';
 import 'widgets/story_item.dart';
 import 'widgets/news_item.dart';
+import 'widgets/home_skeleton.dart';
 import '../story/story_overlay.dart';
 
 import 'package:go_router/go_router.dart';
@@ -74,9 +75,7 @@ class HomeScreen extends ConsumerWidget {
     return Scaffold(
       backgroundColor: DSColors.white,
       body: state.when(
-        loading: () => const Center(
-          child: CircularProgressIndicator(),
-        ),
+        loading: () => const HomeSkeleton(),
         data: (stories, news, playlists) => RefreshIndicator(
           onRefresh: () => ref.read(homeControllerProvider.notifier).load(),
           child: CustomScrollView(

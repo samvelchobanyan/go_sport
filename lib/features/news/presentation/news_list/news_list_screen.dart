@@ -6,6 +6,7 @@ import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/features/home/presentation/home/widgets/news_item.dart';
 import 'package:go_sport/features/shared_widgets/dotted_divider.dart';
 import 'news_list_controller.dart';
+import 'widgets/news_list_screen_skeleton.dart';
 
 class NewsListScreen extends ConsumerStatefulWidget {
   const NewsListScreen({super.key});
@@ -65,9 +66,7 @@ class _NewsListScreenState extends ConsumerState<NewsListScreen> {
         ],
       ),
       body: state.when(
-        loading: () => Center(
-          child: CircularProgressIndicator(color: DSColors.blue),
-        ),
+        loading: () => const NewsListScreenSkeleton(),
         error: (message) => Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,

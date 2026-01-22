@@ -3,8 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/features/shared_widgets/dotted_divider.dart';
 import 'news_detail_controller.dart';
+import 'widgets/news_detail_screen_skeleton.dart';
 
 class NewsDetailScreen extends ConsumerWidget {
   final String articleId;
@@ -21,9 +23,7 @@ class NewsDetailScreen extends ConsumerWidget {
     return Scaffold(
       backgroundColor: DSColors.white,
       body: state.when(
-        loading: () => Center(
-          child: CircularProgressIndicator(color: DSColors.blue),
-        ),
+        loading: () => const NewsDetailScreenSkeleton(),
         error: (message) => Scaffold(
           appBar: AppBar(
             backgroundColor: DSColors.white,
@@ -125,7 +125,7 @@ class NewsDetailScreen extends ConsumerWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24.0),
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(DSRadius.s),
                   child: Image.network(
                     article.imageUrl,
                     width: double.infinity,
@@ -251,7 +251,7 @@ class NewsDetailScreen extends ConsumerWidget {
                       ),
                       decoration: BoxDecoration(
                         border: Border.all(color: DSColors.divider, width: 1),
-                        borderRadius: BorderRadius.circular(20),
+                        borderRadius: BorderRadius.circular(DSRadius.l),
                       ),
                       child: Row(
                         children: [

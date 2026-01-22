@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'dart:ui';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/components/icons/ds_heart_icon.dart';
 import 'package:go_sport/design_system/components/icons/ds_wave_icon.dart';
@@ -108,7 +109,7 @@ class _MiniPlayerWidgetState extends State<MiniPlayerWidget>
         width: animatedWidth,
         decoration: BoxDecoration(
           color: isMusicPanel ? DSColors.lime : DSColors.blue,
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(DSRadius.s),
         ),
         child: isActive
             ? (isMusicPanel ? _buildMusicContent() : _buildRadioContent())

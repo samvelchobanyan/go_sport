@@ -126,7 +126,7 @@ class StoryOverlay extends StatelessWidget {
                           height: 56,
                           decoration: BoxDecoration(
                             color: DSColors.lime,
-                            borderRadius: BorderRadius.circular(28),
+                            borderRadius: BorderRadius.circular(DSRadius.xl),
                           ),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
