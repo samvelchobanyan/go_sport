@@ -21,12 +21,20 @@ sealed class NewsDetailState with _$NewsDetailState {
 class NewsDetailController extends AutoDisposeFamilyNotifier<NewsDetailState, String> {
   @override
   NewsDetailState build(String articleId) {
-    Future.microtask(() => load());
+    final cached = ref.read(newsRepositoryProvider).getCachedArticle(articleId);
+    if (cached != null) {
+      return NewsDetailState.data(article: cached);
+    }
+
+    Future.microtask(load);
     return const NewsDetailState.loading();
   }
 
   Future<void> load() async {
-    state = const NewsDetailState.loading();
+    final hasData = state is _NewsDetailData;
+    if (!hasData) {
+      state = const NewsDetailState.loading();
+    }
 
     try {
       final article = await ref.read(newsRepositoryProvider).getArticle(arg);

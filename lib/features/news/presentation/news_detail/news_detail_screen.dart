@@ -126,15 +126,18 @@ class NewsDetailScreen extends ConsumerWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 24.0),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(DSRadius.s),
-                  child: Image.network(
-                    article.imageUrl,
-                    width: double.infinity,
-                    height: 240,
-                    fit: BoxFit.cover,
-                    errorBuilder: (_, __, ___) => Container(
-                      color: DSColors.divider,
+                  child: Hero(
+                    tag: 'newsImage:$articleId',
+                    child: Image.network(
+                      article.imageUrl,
                       width: double.infinity,
                       height: 240,
+                      fit: BoxFit.cover,
+                      errorBuilder: (_, __, ___) => Container(
+                        color: DSColors.divider,
+                        width: double.infinity,
+                        height: 240,
+                      ),
                     ),
                   ),
                 ),

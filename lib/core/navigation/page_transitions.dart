@@ -10,8 +10,8 @@ import 'package:go_router/go_router.dart';
 CustomTransitionPage<T> fadeSlidePage<T>({
   required GoRouterState state,
   required Widget child,
-  Duration forwardDuration = const Duration(milliseconds: 400),
-  Duration reverseDuration = const Duration(milliseconds: 300),
+  Duration forwardDuration = const Duration(milliseconds: 360),
+  Duration reverseDuration = const Duration(milliseconds: 260),
 }) {
   return CustomTransitionPage<T>(
     key: state.pageKey,
@@ -29,10 +29,7 @@ CustomTransitionPage<T> fadeSlidePage<T>({
         opacity: curved,
         child: SlideTransition(
           position: curved.drive(
-            Tween(
-              begin: const Offset(0, 0.12),
-              end: Offset.zero,
-            ),
+            Tween(begin: const Offset(0.18, 0), end: Offset.zero),
           ),
           child: child,
         ),
