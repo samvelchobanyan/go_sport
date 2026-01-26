@@ -2,9 +2,6 @@ import '../../domain/repositories/news_repository.dart';
 import '../../domain/entities/news_article.dart';
 
 class MockNewsRepository implements NewsRepository {
-  // Кеш — хранит загруженные статьи по id
-  final Map<String, NewsArticle> _cache = {};
-
   final List<NewsArticle> _mockData = [
     NewsArticle(
       id: '1',
@@ -269,57 +266,27 @@ class MockNewsRepository implements NewsRepository {
   ];
 
   @override
-  NewsArticle? getCachedArticle(String id) {
-    return _cache[id];
-  }
-
-  @override
   Future<List<NewsArticle>> getNews({
     required int page,
     required int pageSize,
   }) async {
     await Future.delayed(const Duration(milliseconds: 800));
-
-    // Кешируем все загруженные статьи
-    for (final article in _mockData) {
-      _cache[article.id] = article;
-    }
-
     return _mockData;
   }
 
   @override
   Future<NewsArticle> getArticle(String id) async {
-    // Сначала проверяем кеш — мгновенный ответ
-    if (_cache.containsKey(id)) {
-      return _cache[id]!;
-    }
-
-    // Fallback для deep links — имитация сетевого запроса
     await Future.delayed(const Duration(milliseconds: 500));
-    final article = _mockData.firstWhere(
+    return _mockData.firstWhere(
       (article) => article.id == id,
       orElse: () => throw Exception('Article not found: $id'),
     );
-    _cache[id] = article;
-    return article;
   }
 
   @override
   Future<void> toggleLike(String id) async {
     await Future.delayed(const Duration(milliseconds: 300));
-    final index = _mockData.indexWhere((article) => article.id == id);
-    if (index != -1) {
-      final article = _mockData[index];
-      final updated = article.copyWith(
-        isLiked: !article.isLiked,
-        likesCount: article.isLiked
-            ? article.likesCount - 1
-            : article.likesCount + 1,
-      );
-      // Обновляем и "сервер", и кеш
-      _mockData[index] = updated;
-      _cache[id] = updated;
-    }
+    // В реальном API здесь будет HTTP запрос
+    // Состояние обновляется в domain state (optimistic update)
   }
 }

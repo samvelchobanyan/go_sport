@@ -7,12 +7,7 @@ abstract class NewsRepository {
     required int pageSize,
   });
 
-  /// Получить статью из in-memory кеша.
-  ///
-  /// Возвращает `null`, если статья ещё не была загружена в текущей сессии.
-  NewsArticle? getCachedArticle(String id);
-
-  /// Получить детальную информацию
+  /// Получить детальную информацию о статье
   Future<NewsArticle> getArticle(String id);
 
   /// Переключить лайк на статье

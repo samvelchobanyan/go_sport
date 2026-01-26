@@ -1,0 +1,56 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+import '../entities/playlist.dart';
+import '../repositories/playlist_repository.dart';
+import '../../core/di/repository_providers.dart';
+
+part 'featured_playlists_state.freezed.dart';
+
+@freezed
+class FeaturedPlaylistsState with _$FeaturedPlaylistsState {
+  const factory FeaturedPlaylistsState({
+    @Default({}) Map<String, Playlist> playlists,
+    @Default(false) bool isLoading,
+    String? error,
+  }) = _FeaturedPlaylistsState;
+}
+
+extension FeaturedPlaylistsStateX on FeaturedPlaylistsState {
+  List<Playlist> get playlistsList => playlists.values.toList();
+  
+  Playlist? getPlaylist(String id) => playlists[id];
+}
+
+class FeaturedPlaylistsNotifier extends Notifier<FeaturedPlaylistsState> {
+  late final PlaylistRepository _repository;
+
+  @override
+  FeaturedPlaylistsState build() {
+    _repository = ref.watch(playlistRepositoryProvider);
+    Future.microtask(() => loadPlaylists());
+    return const FeaturedPlaylistsState();
+  }
+
+  Future<void> loadPlaylists() async {
+    state = state.copyWith(isLoading: true, error: null);
+
+    try {
+      final playlists = await _repository.getFeaturedPlaylists();
+      final playlistsMap = {for (final p in playlists) p.id: p};
+      state = state.copyWith(playlists: playlistsMap, isLoading: false);
+    } catch (e) {
+      state = state.copyWith(isLoading: false, error: e.toString());
+    }
+  }
+
+  Future<void> refresh() async {
+    state = state.copyWith(playlists: {});
+    await loadPlaylists();
+  }
+}
+
+final featuredPlaylistsStateProvider =
+    NotifierProvider<FeaturedPlaylistsNotifier, FeaturedPlaylistsState>(
+  FeaturedPlaylistsNotifier.new,
+);
