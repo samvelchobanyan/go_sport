@@ -1,6 +1,6 @@
 # Audio App — Architecture Specification
 
-Version: 1.0  
+Version: 1.1  
 Status: Canonical (v1_raw)  
 Audience: Developers, AI agents (Copilot, Codex, Claude)
 
@@ -46,15 +46,20 @@ lib/
 │   └── theme/                    # Сборка темы на основе токенов
 │       └── ds_theme_data.dart
 │
-├── domain/                       # БИЗНЕС-ЛОГИКА (Чистый Dart)
+├── domain/                       # БИЗНЕС-ЛОГИКА (Чистый Dart + State)
 │   ├── entities/                 # Модели данных (Freezed)
 │   │   ├── track.dart
 │   │   ├── artist.dart
 │   │   ├── story.dart
 │   │   └── news_article.dart
-│   └── repositories/             # Интерфейсы (Контракты)
-│       ├── track_repository.dart
-│       └── news_repository.dart
+│   ├── repositories/             # Интерфейсы (Контракты)
+│   │   ├── track_repository.dart
+│   │   └── news_repository.dart
+│   └── state/                    # Domain State Providers
+│       ├── news_state.dart
+│       ├── tracks_state.dart
+│       ├── albums_state.dart
+│       └── player_state.dart
 │
 ├── data/                         # РЕАЛИЗАЦИЯ (Инфраструктура)
 │   ├── dto/                      # JSON-модели (Data Transfer Objects)
@@ -86,11 +91,11 @@ lib/
 └── main.dart                     # Точка входа и инициализация Riverpod
 
 Design System is isolated: visual changes are made only inside design_system.
-Controller Pattern: each feature screen has exactly two files — Screen + Controller.
+Controller Pattern: each feature screen has exactly two files — Screen + Controller (when controller is needed).
 
 ## 2. Layer responsibility and access rules
 
-- Domain layer contains pure business models and repository interfaces.
+- Domain layer contains pure business models, repository interfaces, and domain state.
 - Data layer implements domain repositories and owns all infrastructure details.
 - Features layer depends only on domain abstractions and shared UI/system utilities.
 - Direct access to ApiClient, DTOs, or repository implementations from features is forbidden.
@@ -107,7 +112,7 @@ ApiClient is a shared infrastructure component located in `core/network/`.
 ## 3. Domain Layer Specification
 
 
-This document describes the **domain layer** of the audio app: entities, repositories, and folder structure.
+This document describes the **domain layer** of the audio app: entities, repositories, state, and folder structure.
 
 The domain layer is **UI-agnostic** and **API-agnostic**. It defines *what the app works with*, not *how data is fetched*.
 
@@ -138,6 +143,15 @@ lib/
       radio_repository.dart
       story_repository.dart
       news_repository.dart
+    state/
+      news_state.dart
+      tracks_state.dart
+      albums_state.dart
+      artists_state.dart
+      programs_state.dart
+      playlists_state.dart
+      radio_state.dart
+      player_state.dart
 ```
 
 ### 3.2. `domain/entities/*`
@@ -189,14 +203,27 @@ All repositories are defined as `abstract class`es in `domain/repositories/*`.
 They do not know anything about HTTP, Dio, JSON, or persistence.
 Detailed repository interfaces (methods and signatures) are defined in DOMAIN_SPEC.md.
 
+---
 
+### 3.6. `domain/state/*`
+
+Contains **Domain State Providers** — long-lived state management for business entities.
+
+- Uses Riverpod StateNotifier
+- Operates on domain entities only
+- Does not know about DTOs, API details, or UI
+- Provides business operations (load, toggleLike, refresh)
+- Lives longer than screens (survives navigation)
+
+See Section 8 (State Management Policy) for detailed rules.
 
 ---
 
-### 3.6 Summary
+### 3.7 Summary
 
 - Domain layer contains pure entities (no JSON/HTTP/persistence).
 - Domain layer defines repository interfaces; implementations live in the data layer.
+- Domain layer contains domain state providers for shared business data.
 
 ---
 
@@ -229,6 +256,7 @@ lib/
   domain/
     entities/
     repositories/
+    state/
   data/
     dto/
       track_dto.dart
@@ -252,7 +280,7 @@ lib/
 ```
 
 - `core/network/api_client.dart` – low-level HTTP client (Dio/HttpClient wrapper).
-- `domain/` – pure domain entities and repository interfaces (see DOMAIN_SPEC.md).
+- `domain/` – pure domain entities, repository interfaces, and domain state (see DOMAIN_SPEC.md).
 - `data/dto/` – models that reflect API responses and handle JSON parsing + basic validation.
 - `data/repositories/` – concrete implementations of domain repositories using DTOs + `ApiClient`.
 
@@ -343,8 +371,9 @@ Non-goals:
 - Features/controllers MUST NOT construct `ApiClient` or repository implementations directly.
 - Features/controllers MAY read only:
   - domain repository providers (interfaces)
+  - domain state providers
   - feature-safe services (e.g., playback controller, analytics) if explicitly provided via `core/di/`
-- Domain layer MUST NOT depend on DI.
+- Domain layer MUST NOT depend on DI (except for `domain/state/` which uses Riverpod).
 
 ---
 
@@ -363,7 +392,7 @@ Screen state models in the features layer SHOULD be implemented using Freezed.
 Naming rules (fixed):
 - UI entry widgets are **Screen**: `AlbumScreen`, `RadioScreen`, etc.
 - Screen file names use `*_screen.dart`
-- Each screen has its own controller file: `*_controller.dart`
+- Screen controller file (when needed): `*_controller.dart`
 - **No `*_providers.dart` by default**
 
 ---
@@ -373,23 +402,29 @@ Naming rules (fixed):
 **Included:**
 - Screens (Flutter UI)
 - Feature-local widgets (only when needed)
-- Screen state + logic + provider (kept inside controller file)
+- Screen controllers with UI-specific state (only when needed)
 
 **Excluded:**
 - HTTP / ApiClient (belongs to `core/`)
 - DTOs (belong to `data/dto/`)
 - repository implementations (belong to `data/repositories/`)
 - domain entities and repository interfaces (belong to `domain/`)
+- domain state (belongs to `domain/state/`)
 
 ---
 
-### 5.2. Mandatory Screen Files (approved)
+### 5.2. Screen Files
 
-For every screen we create exactly these mandatory files:
+For every screen we create:
 
+**Always required:**
 ```text
 <screen>_screen.dart
-<screen>_controller.dart   // includes: State + Notifier + Provider
+```
+
+**Optional (only when UI-specific state needed):**
+```text
+<screen>_controller.dart   // includes: UI State + Notifier + Provider
 ```
 
 Optional:
@@ -402,7 +437,7 @@ Optional:
 ```text
 features/<feature>/presentation/<screen>/
   <screen>_screen.dart
-  <screen>_controller.dart
+  <screen>_controller.dart   // optional
   widgets/                   // optional
 ```
 
@@ -511,6 +546,117 @@ lib/
 - Do not move playback logic into screens
 - Follow naming and structural conventions strictly
 - If something is unclear — ask, do not guess
+
+---
+
+## 8. State Management Policy
+
+### 8.1 Two Types of State
+
+**Domain State** — business data and operations:
+- Entities (articles, tracks, albums, playlists)
+- Loading status and errors
+- Business operations (toggleLike, load, refresh)
+- Lives in `domain/state/`
+- Long-lived (survives navigation between screens)
+
+**Screen State** — UI-specific state:
+- Search query, filters
+- Selected items (multi-select)
+- Scroll position, expanded/collapsed flags
+- Lives in `features/.../presentation/.../`
+- Short-lived (lives while screen is open)
+
+### 8.2 Usage Rules
+
+1. **Screen without UI-logic** — works directly with Domain State:
+```dart
+final newsState = ref.watch(newsStateProvider);
+```
+
+2. **Screen with UI-logic** — watches both:
+```dart
+final newsState = ref.watch(newsStateProvider);       // data
+final uiState = ref.watch(newsListControllerProvider); // UI state
+```
+
+3. **Forbidden** — proxying domain data through screen controller:
+```dart
+// ❌ Bad
+class NewsListController {
+  List<NewsArticle> get articles => _ref.read(newsStateProvider).articles;
+}
+
+// ✅ Good — screen gets data directly
+final newsState = ref.watch(newsStateProvider);
+```
+
+### 8.3 Domain State Structure
+
+```text
+domain/
+  entities/        # pure models (Freezed)
+  repositories/    # interfaces
+  state/           # Domain State Providers
+    news_state.dart
+    tracks_state.dart
+    albums_state.dart
+    player_state.dart
+```
+
+### 8.4 When Screen Controller is Needed
+
+**Needed:**
+- Search / filtering on screen
+- Multi-select
+- Local UI flags (isExpanded, isEditing)
+- Scroll/tab state that should persist
+
+**Not needed:**
+- Screen just displays data from Domain State
+- No UI-specific "memory"
+
+### 8.5 Domain State Provider Template
+
+```dart
+// domain/state/news_state.dart
+
+@freezed
+class NewsState with _$NewsState {
+  const factory NewsState({
+    @Default({}) Map<String, NewsArticle> articles,
+    @Default(false) bool isLoading,
+    String? error,
+  }) = _NewsState;
+}
+
+class NewsNotifier extends StateNotifier<NewsState> {
+  final NewsRepository _repository;
+
+  NewsNotifier(this._repository) : super(const NewsState());
+
+  Future<void> loadNews() async {
+    state = state.copyWith(isLoading: true, error: null);
+    try {
+      final articles = await _repository.getNews();
+      final articlesMap = {for (var a in articles) a.id: a};
+      state = state.copyWith(articles: articlesMap, isLoading: false);
+    } catch (e) {
+      state = state.copyWith(isLoading: false, error: e.toString());
+    }
+  }
+
+  void toggleLike(String id) { /* ... */ }
+  
+  NewsArticle? getArticle(String id) => state.articles[id];
+  List<NewsArticle> get articlesList => state.articles.values.toList();
+}
+
+final newsStateProvider = StateNotifierProvider<NewsNotifier, NewsState>((ref) {
+  final repository = ref.watch(newsRepositoryProvider);
+  return NewsNotifier(repository);
+});
+```
 
 ---
 
