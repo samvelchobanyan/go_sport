@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'playlist.dart';
+part of 'track.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -16,53 +16,61 @@ final _privateConstructorUsedError = UnsupportedError(
 );
 
 /// @nodoc
-mixin _$Playlist {
+mixin _$Track {
   String get id => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
+  String get artistName => throw _privateConstructorUsedError;
   String get imageUrl => throw _privateConstructorUsedError;
-  int get trackCount => throw _privateConstructorUsedError;
+  Duration get duration => throw _privateConstructorUsedError;
+  String get audioUrl => throw _privateConstructorUsedError;
+  DateTime? get releaseDate => throw _privateConstructorUsedError;
   bool get isLiked => throw _privateConstructorUsedError;
 
-  /// Create a copy of Playlist
+  /// Create a copy of Track
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $PlaylistCopyWith<Playlist> get copyWith =>
-      throw _privateConstructorUsedError;
+  $TrackCopyWith<Track> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $PlaylistCopyWith<$Res> {
-  factory $PlaylistCopyWith(Playlist value, $Res Function(Playlist) then) =
-      _$PlaylistCopyWithImpl<$Res, Playlist>;
+abstract class $TrackCopyWith<$Res> {
+  factory $TrackCopyWith(Track value, $Res Function(Track) then) =
+      _$TrackCopyWithImpl<$Res, Track>;
   @useResult
   $Res call({
     String id,
     String title,
+    String artistName,
     String imageUrl,
-    int trackCount,
+    Duration duration,
+    String audioUrl,
+    DateTime? releaseDate,
     bool isLiked,
   });
 }
 
 /// @nodoc
-class _$PlaylistCopyWithImpl<$Res, $Val extends Playlist>
-    implements $PlaylistCopyWith<$Res> {
-  _$PlaylistCopyWithImpl(this._value, this._then);
+class _$TrackCopyWithImpl<$Res, $Val extends Track>
+    implements $TrackCopyWith<$Res> {
+  _$TrackCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of Playlist
+  /// Create a copy of Track
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? id = null,
     Object? title = null,
+    Object? artistName = null,
     Object? imageUrl = null,
-    Object? trackCount = null,
+    Object? duration = null,
+    Object? audioUrl = null,
+    Object? releaseDate = freezed,
     Object? isLiked = null,
   }) {
     return _then(
@@ -75,14 +83,26 @@ class _$PlaylistCopyWithImpl<$Res, $Val extends Playlist>
                 ? _value.title
                 : title // ignore: cast_nullable_to_non_nullable
                       as String,
+            artistName: null == artistName
+                ? _value.artistName
+                : artistName // ignore: cast_nullable_to_non_nullable
+                      as String,
             imageUrl: null == imageUrl
                 ? _value.imageUrl
                 : imageUrl // ignore: cast_nullable_to_non_nullable
                       as String,
-            trackCount: null == trackCount
-                ? _value.trackCount
-                : trackCount // ignore: cast_nullable_to_non_nullable
-                      as int,
+            duration: null == duration
+                ? _value.duration
+                : duration // ignore: cast_nullable_to_non_nullable
+                      as Duration,
+            audioUrl: null == audioUrl
+                ? _value.audioUrl
+                : audioUrl // ignore: cast_nullable_to_non_nullable
+                      as String,
+            releaseDate: freezed == releaseDate
+                ? _value.releaseDate
+                : releaseDate // ignore: cast_nullable_to_non_nullable
+                      as DateTime?,
             isLiked: null == isLiked
                 ? _value.isLiked
                 : isLiked // ignore: cast_nullable_to_non_nullable
@@ -94,45 +114,50 @@ class _$PlaylistCopyWithImpl<$Res, $Val extends Playlist>
 }
 
 /// @nodoc
-abstract class _$$PlaylistImplCopyWith<$Res>
-    implements $PlaylistCopyWith<$Res> {
-  factory _$$PlaylistImplCopyWith(
-    _$PlaylistImpl value,
-    $Res Function(_$PlaylistImpl) then,
-  ) = __$$PlaylistImplCopyWithImpl<$Res>;
+abstract class _$$TrackImplCopyWith<$Res> implements $TrackCopyWith<$Res> {
+  factory _$$TrackImplCopyWith(
+    _$TrackImpl value,
+    $Res Function(_$TrackImpl) then,
+  ) = __$$TrackImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({
     String id,
     String title,
+    String artistName,
     String imageUrl,
-    int trackCount,
+    Duration duration,
+    String audioUrl,
+    DateTime? releaseDate,
     bool isLiked,
   });
 }
 
 /// @nodoc
-class __$$PlaylistImplCopyWithImpl<$Res>
-    extends _$PlaylistCopyWithImpl<$Res, _$PlaylistImpl>
-    implements _$$PlaylistImplCopyWith<$Res> {
-  __$$PlaylistImplCopyWithImpl(
-    _$PlaylistImpl _value,
-    $Res Function(_$PlaylistImpl) _then,
+class __$$TrackImplCopyWithImpl<$Res>
+    extends _$TrackCopyWithImpl<$Res, _$TrackImpl>
+    implements _$$TrackImplCopyWith<$Res> {
+  __$$TrackImplCopyWithImpl(
+    _$TrackImpl _value,
+    $Res Function(_$TrackImpl) _then,
   ) : super(_value, _then);
 
-  /// Create a copy of Playlist
+  /// Create a copy of Track
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? id = null,
     Object? title = null,
+    Object? artistName = null,
     Object? imageUrl = null,
-    Object? trackCount = null,
+    Object? duration = null,
+    Object? audioUrl = null,
+    Object? releaseDate = freezed,
     Object? isLiked = null,
   }) {
     return _then(
-      _$PlaylistImpl(
+      _$TrackImpl(
         id: null == id
             ? _value.id
             : id // ignore: cast_nullable_to_non_nullable
@@ -141,14 +166,26 @@ class __$$PlaylistImplCopyWithImpl<$Res>
             ? _value.title
             : title // ignore: cast_nullable_to_non_nullable
                   as String,
+        artistName: null == artistName
+            ? _value.artistName
+            : artistName // ignore: cast_nullable_to_non_nullable
+                  as String,
         imageUrl: null == imageUrl
             ? _value.imageUrl
             : imageUrl // ignore: cast_nullable_to_non_nullable
                   as String,
-        trackCount: null == trackCount
-            ? _value.trackCount
-            : trackCount // ignore: cast_nullable_to_non_nullable
-                  as int,
+        duration: null == duration
+            ? _value.duration
+            : duration // ignore: cast_nullable_to_non_nullable
+                  as Duration,
+        audioUrl: null == audioUrl
+            ? _value.audioUrl
+            : audioUrl // ignore: cast_nullable_to_non_nullable
+                  as String,
+        releaseDate: freezed == releaseDate
+            ? _value.releaseDate
+            : releaseDate // ignore: cast_nullable_to_non_nullable
+                  as DateTime?,
         isLiked: null == isLiked
             ? _value.isLiked
             : isLiked // ignore: cast_nullable_to_non_nullable
@@ -160,12 +197,15 @@ class __$$PlaylistImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$PlaylistImpl implements _Playlist {
-  const _$PlaylistImpl({
+class _$TrackImpl implements _Track {
+  const _$TrackImpl({
     required this.id,
     required this.title,
+    required this.artistName,
     required this.imageUrl,
-    required this.trackCount,
+    required this.duration,
+    required this.audioUrl,
+    this.releaseDate,
     this.isLiked = false,
   });
 
@@ -174,69 +214,99 @@ class _$PlaylistImpl implements _Playlist {
   @override
   final String title;
   @override
+  final String artistName;
+  @override
   final String imageUrl;
   @override
-  final int trackCount;
+  final Duration duration;
+  @override
+  final String audioUrl;
+  @override
+  final DateTime? releaseDate;
   @override
   @JsonKey()
   final bool isLiked;
 
   @override
   String toString() {
-    return 'Playlist(id: $id, title: $title, imageUrl: $imageUrl, trackCount: $trackCount, isLiked: $isLiked)';
+    return 'Track(id: $id, title: $title, artistName: $artistName, imageUrl: $imageUrl, duration: $duration, audioUrl: $audioUrl, releaseDate: $releaseDate, isLiked: $isLiked)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$PlaylistImpl &&
+            other is _$TrackImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.title, title) || other.title == title) &&
+            (identical(other.artistName, artistName) ||
+                other.artistName == artistName) &&
             (identical(other.imageUrl, imageUrl) ||
                 other.imageUrl == imageUrl) &&
-            (identical(other.trackCount, trackCount) ||
-                other.trackCount == trackCount) &&
+            (identical(other.duration, duration) ||
+                other.duration == duration) &&
+            (identical(other.audioUrl, audioUrl) ||
+                other.audioUrl == audioUrl) &&
+            (identical(other.releaseDate, releaseDate) ||
+                other.releaseDate == releaseDate) &&
             (identical(other.isLiked, isLiked) || other.isLiked == isLiked));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, id, title, imageUrl, trackCount, isLiked);
+  int get hashCode => Object.hash(
+    runtimeType,
+    id,
+    title,
+    artistName,
+    imageUrl,
+    duration,
+    audioUrl,
+    releaseDate,
+    isLiked,
+  );
 
-  /// Create a copy of Playlist
+  /// Create a copy of Track
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$PlaylistImplCopyWith<_$PlaylistImpl> get copyWith =>
-      __$$PlaylistImplCopyWithImpl<_$PlaylistImpl>(this, _$identity);
+  _$$TrackImplCopyWith<_$TrackImpl> get copyWith =>
+      __$$TrackImplCopyWithImpl<_$TrackImpl>(this, _$identity);
 }
 
-abstract class _Playlist implements Playlist {
-  const factory _Playlist({
+abstract class _Track implements Track {
+  const factory _Track({
     required final String id,
     required final String title,
+    required final String artistName,
     required final String imageUrl,
-    required final int trackCount,
+    required final Duration duration,
+    required final String audioUrl,
+    final DateTime? releaseDate,
     final bool isLiked,
-  }) = _$PlaylistImpl;
+  }) = _$TrackImpl;
 
   @override
   String get id;
   @override
   String get title;
   @override
+  String get artistName;
+  @override
   String get imageUrl;
   @override
-  int get trackCount;
+  Duration get duration;
+  @override
+  String get audioUrl;
+  @override
+  DateTime? get releaseDate;
   @override
   bool get isLiked;
 
-  /// Create a copy of Playlist
+  /// Create a copy of Track
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$PlaylistImplCopyWith<_$PlaylistImpl> get copyWith =>
+  _$$TrackImplCopyWith<_$TrackImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

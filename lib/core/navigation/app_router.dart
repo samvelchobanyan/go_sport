@@ -7,6 +7,7 @@ import 'package:go_sport/features/music/presentation/music/music_screen.dart';
 import 'package:go_sport/features/radio/presentation/radio/radio_screen.dart';
 import 'package:go_sport/features/news/presentation/news_list/news_list_screen.dart';
 import 'package:go_sport/features/news/presentation/news_detail/news_detail_screen.dart';
+import 'package:go_sport/features/playlists/presentation/playlist/playlist_screen.dart';
 
 final GoRouter appRouter = GoRouter(
   initialLocation: AppRoutes.home,
@@ -52,6 +53,18 @@ final GoRouter appRouter = GoRouter(
             GoRoute(
               path: AppRoutes.music,
               builder: (context, state) => const MusicScreen(),
+              routes: [
+                GoRoute(
+                  path: 'playlist/:id',
+                  pageBuilder: (context, state) {
+                    final id = state.pathParameters['id']!;
+                    return fadeSlidePage(
+                      state: state,
+                      child: PlaylistScreen(playlistId: id),
+                    );
+                  },
+                ),
+              ],
             ),
           ],
         ),

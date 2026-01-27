@@ -248,15 +248,16 @@ class HomeScreen extends ConsumerWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   itemCount: playlists.length,
                   itemBuilder: (context, index) {
+                    final playlist = playlists[index];
                     return Padding(
                       padding: const EdgeInsets.only(right: 12),
                       child: PlaylistCard(
-                        title: playlists[index].title,
-                        imageUrl: playlists[index].imageUrl,
-                        trackCount: playlists[index].trackCount,
+                        id: playlist.id,
+                        title: playlist.title,
+                        imageUrl: playlist.imageUrl,
+                        trackCount: playlist.trackCount,
                         onTap: () {
-                          // TODO: навигация на экран плейлиста
-                          debugPrint('Playlist tapped: ${playlists[index].id}');
+                          context.push('/music/playlist/${playlist.id}');
                         },
                       ),
                     );
