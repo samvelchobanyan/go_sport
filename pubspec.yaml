@@ -20,6 +20,9 @@ dependencies:
   google_fonts: ^6.2.1
   flutter_svg: ^2.0.10+1
   
+  # Audio
+  just_audio: ^0.9.42
+  
   # Navigation
   go_router: ^14.2.0
 

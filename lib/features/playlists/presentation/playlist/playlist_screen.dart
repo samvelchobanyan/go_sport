@@ -4,8 +4,10 @@ import 'package:go_router/go_router.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/domain/state/featured_playlists_state.dart';
+import 'package:go_sport/domain/state/player_state.dart';
 import 'package:go_sport/features/shared_widgets/dotted_divider.dart';
 
+import '../../../../domain/entities/track.dart';
 import 'playlist_controller.dart';
 import 'widgets/playlist_hero.dart';
 import 'widgets/track_tile.dart';
@@ -46,9 +48,19 @@ class _PlaylistScreenState extends ConsumerState<PlaylistScreen> {
     });
   }
 
-  void _onTrackTap(int index) {
-    // TODO: Play track at index
-    debugPrint('Track tapped at index: $index');
+  void _onTrackTap(List<Track> tracks, int index) {
+    final playlist = ref.read(featuredPlaylistsStateProvider).getPlaylist(widget.playlistId);
+    if (playlist == null) return;
+
+    ref.read(playerStateProvider.notifier).playQueue(
+      tracks,
+      source: QueueSource.playlist(
+        id: playlist.id,
+        title: playlist.title,
+        imageUrl: playlist.imageUrl,
+      ),
+      startIndex: index,
+    );
   }
 
   void _onTrackMenuTap(int index) {
@@ -56,9 +68,18 @@ class _PlaylistScreenState extends ConsumerState<PlaylistScreen> {
     debugPrint('Track menu tapped at index: $index');
   }
 
-  void _onPlayTap() {
-    // TODO: Play all tracks
-    debugPrint('Play all tapped');
+  void _onPlayTap(List<Track> tracks) {
+    final playlist = ref.read(featuredPlaylistsStateProvider).getPlaylist(widget.playlistId);
+    if (playlist == null || tracks.isEmpty) return;
+
+    ref.read(playerStateProvider.notifier).playQueue(
+      tracks,
+      source: QueueSource.playlist(
+        id: playlist.id,
+        title: playlist.title,
+        imageUrl: playlist.imageUrl,
+      ),
+    );
   }
 
   @override
@@ -137,15 +158,19 @@ class _PlaylistScreenState extends ConsumerState<PlaylistScreen> {
             ],
           ),
         ),
-        data: (tracks) => Stack(
-          children: [
-            // Hero background (fixed position with parallax)
-            PlaylistHero(
-              playlist: playlist,
-              scrollOffset: _scrollOffset,
-              onLikeTap: () => ref.read(playlistControllerProvider(widget.playlistId).notifier).toggleLike(),
-              onPlayTap: _onPlayTap,
-            ),
+        data: (tracks) {
+          final playerState = ref.watch(playerStateProvider);
+          final playingTrackId = playerState.currentTrack?.id;
+
+          return Stack(
+            children: [
+              // Hero background (fixed position with parallax)
+              PlaylistHero(
+                playlist: playlist,
+                scrollOffset: _scrollOffset,
+                onLikeTap: () => ref.read(playlistControllerProvider(widget.playlistId).notifier).toggleLike(),
+                onPlayTap: () => _onPlayTap(tracks),
+              ),
 
             // Scrollable content
             SingleChildScrollView(
@@ -181,9 +206,11 @@ class _PlaylistScreenState extends ConsumerState<PlaylistScreen> {
                           ),
                           itemBuilder: (context, index) {
                             final track = tracks[index];
+                            final isPlaying = track.id == playingTrackId && playerState.isPlaying;
                             return TrackTile(
                               track: track,
-                              onTap: () => _onTrackTap(index),
+                              isPlaying: isPlaying,
+                              onTap: () => _onTrackTap(tracks, index),
                               onMenuTap: () => _onTrackMenuTap(index),
                             );
                           },
@@ -195,7 +222,8 @@ class _PlaylistScreenState extends ConsumerState<PlaylistScreen> {
               ),
             ),
           ],
-        ),
+        );
+        },
       ),
     );
   }
