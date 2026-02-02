@@ -6,74 +6,56 @@ import 'package:go_sport/domain/entities/playlist.dart';
 
 class PlaylistHero extends StatelessWidget {
   final Playlist playlist;
-  final double scrollOffset;
   final VoidCallback onLikeTap;
   final VoidCallback onPlayTap;
 
   const PlaylistHero({
     super.key,
     required this.playlist,
-    required this.scrollOffset,
     required this.onLikeTap,
     required this.onPlayTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    final screenHeight = MediaQuery.of(context).size.height;
-    final heroHeight = screenHeight * 0.5;
-    
-    // Параллакс: изображение движется на 50% медленнее
-    final parallaxOffset = scrollOffset * 0.5;
-
-    return SizedBox(
-      height: heroHeight,
-      child: Stack(
-        fit: StackFit.expand,
-        children: [
-          // Background image with parallax
-          Positioned(
-            top: -parallaxOffset,
-            left: 0,
-            right: 0,
-            child: Hero(
-              tag: 'playlist-image-${playlist.id}',
-              child: Image.network(
-                playlist.imageUrl,
-                height: heroHeight + 100, // Extra height for parallax
-                fit: BoxFit.cover,
-                errorBuilder: (_, __, ___) => Container(
-                  height: heroHeight + 100,
-                  color: DSColors.gray40,
-                ),
-              ),
+    return Stack(
+      fit: StackFit.expand,
+      children: [
+        // Background image
+        Hero(
+          tag: 'playlist-image-${playlist.id}',
+          child: Image.network(
+            playlist.imageUrl,
+            fit: BoxFit.cover,
+            errorBuilder: (_, __, ___) => Container(
+              color: DSColors.gray40,
             ),
           ),
-          
-          // Gradient overlay
-          Positioned.fill(
-            child: DecoratedBox(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    DSColors.transparent,
-                    DSColors.black.withOpacity(0.3),
-                    DSColors.black.withOpacity(0.7),
-                  ],
-                  stops: const [0.0, 0.5, 1.0],
-                ),
-              ),
+        ),
+        
+        // Gradient overlay
+        const DecoratedBox(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                DSColors.transparent,
+                Color.fromRGBO(0, 0, 0, 0.3),
+                Color.fromRGBO(0, 0, 0, 0.7),
+              ],
+              stops: [0.0, 0.5, 1.0],
             ),
           ),
-          
-          // Title and buttons
-          Positioned(
-            left: 24,
-            right: 24,
-            bottom: 60,
+        ),
+        
+        // Title and buttons
+        Align(
+          alignment: Alignment.bottomCenter,
+          child: Padding(
+            padding: const EdgeInsets.only(bottom: 60, left: 24, right: 24),
             child: Column(
+              mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
@@ -131,8 +113,8 @@ class PlaylistHero extends StatelessWidget {
               ],
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

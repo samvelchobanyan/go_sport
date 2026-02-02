@@ -685,7 +685,8 @@ mixin _$PlayerState {
   QueueSource? get source => throw _privateConstructorUsedError; // Playback
   PlayerStatus get status => throw _privateConstructorUsedError;
   Duration get position => throw _privateConstructorUsedError;
-  Duration get bufferedPosition => throw _privateConstructorUsedError; // Error
+  Duration get bufferedPosition => throw _privateConstructorUsedError;
+  Duration get totalDuration => throw _privateConstructorUsedError; // Error
   String? get errorMessage => throw _privateConstructorUsedError;
 
   /// Create a copy of PlayerState
@@ -709,6 +710,7 @@ abstract class $PlayerStateCopyWith<$Res> {
     PlayerStatus status,
     Duration position,
     Duration bufferedPosition,
+    Duration totalDuration,
     String? errorMessage,
   });
 
@@ -736,6 +738,7 @@ class _$PlayerStateCopyWithImpl<$Res, $Val extends PlayerState>
     Object? status = null,
     Object? position = null,
     Object? bufferedPosition = null,
+    Object? totalDuration = null,
     Object? errorMessage = freezed,
   }) {
     return _then(
@@ -763,6 +766,10 @@ class _$PlayerStateCopyWithImpl<$Res, $Val extends PlayerState>
             bufferedPosition: null == bufferedPosition
                 ? _value.bufferedPosition
                 : bufferedPosition // ignore: cast_nullable_to_non_nullable
+                      as Duration,
+            totalDuration: null == totalDuration
+                ? _value.totalDuration
+                : totalDuration // ignore: cast_nullable_to_non_nullable
                       as Duration,
             errorMessage: freezed == errorMessage
                 ? _value.errorMessage
@@ -804,6 +811,7 @@ abstract class _$$PlayerStateImplCopyWith<$Res>
     PlayerStatus status,
     Duration position,
     Duration bufferedPosition,
+    Duration totalDuration,
     String? errorMessage,
   });
 
@@ -831,6 +839,7 @@ class __$$PlayerStateImplCopyWithImpl<$Res>
     Object? status = null,
     Object? position = null,
     Object? bufferedPosition = null,
+    Object? totalDuration = null,
     Object? errorMessage = freezed,
   }) {
     return _then(
@@ -859,6 +868,10 @@ class __$$PlayerStateImplCopyWithImpl<$Res>
             ? _value.bufferedPosition
             : bufferedPosition // ignore: cast_nullable_to_non_nullable
                   as Duration,
+        totalDuration: null == totalDuration
+            ? _value.totalDuration
+            : totalDuration // ignore: cast_nullable_to_non_nullable
+                  as Duration,
         errorMessage: freezed == errorMessage
             ? _value.errorMessage
             : errorMessage // ignore: cast_nullable_to_non_nullable
@@ -878,6 +891,7 @@ class _$PlayerStateImpl implements _PlayerState {
     this.status = PlayerStatus.idle,
     this.position = Duration.zero,
     this.bufferedPosition = Duration.zero,
+    this.totalDuration = Duration.zero,
     this.errorMessage,
   }) : _tracks = tracks;
 
@@ -907,13 +921,16 @@ class _$PlayerStateImpl implements _PlayerState {
   @override
   @JsonKey()
   final Duration bufferedPosition;
+  @override
+  @JsonKey()
+  final Duration totalDuration;
   // Error
   @override
   final String? errorMessage;
 
   @override
   String toString() {
-    return 'PlayerState(tracks: $tracks, currentIndex: $currentIndex, source: $source, status: $status, position: $position, bufferedPosition: $bufferedPosition, errorMessage: $errorMessage)';
+    return 'PlayerState(tracks: $tracks, currentIndex: $currentIndex, source: $source, status: $status, position: $position, bufferedPosition: $bufferedPosition, totalDuration: $totalDuration, errorMessage: $errorMessage)';
   }
 
   @override
@@ -930,6 +947,8 @@ class _$PlayerStateImpl implements _PlayerState {
                 other.position == position) &&
             (identical(other.bufferedPosition, bufferedPosition) ||
                 other.bufferedPosition == bufferedPosition) &&
+            (identical(other.totalDuration, totalDuration) ||
+                other.totalDuration == totalDuration) &&
             (identical(other.errorMessage, errorMessage) ||
                 other.errorMessage == errorMessage));
   }
@@ -943,6 +962,7 @@ class _$PlayerStateImpl implements _PlayerState {
     status,
     position,
     bufferedPosition,
+    totalDuration,
     errorMessage,
   );
 
@@ -963,6 +983,7 @@ abstract class _PlayerState implements PlayerState {
     final PlayerStatus status,
     final Duration position,
     final Duration bufferedPosition,
+    final Duration totalDuration,
     final String? errorMessage,
   }) = _$PlayerStateImpl;
 
@@ -978,7 +999,9 @@ abstract class _PlayerState implements PlayerState {
   @override
   Duration get position;
   @override
-  Duration get bufferedPosition; // Error
+  Duration get bufferedPosition;
+  @override
+  Duration get totalDuration; // Error
   @override
   String? get errorMessage;
 

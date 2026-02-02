@@ -1,8 +1,8 @@
 import 'dart:async';
 
+import 'package:audio_service/audio_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:just_audio/just_audio.dart' as ja;
 
 import '../entities/track.dart';
 import '../../core/audio/app_audio_handler.dart';
@@ -58,6 +58,7 @@ class PlayerState with _$PlayerState {
     @Default(PlayerStatus.idle) PlayerStatus status,
     @Default(Duration.zero) Duration position,
     @Default(Duration.zero) Duration bufferedPosition,
+    @Default(Duration.zero) Duration totalDuration,
 
     // Error
     String? errorMessage,
@@ -80,9 +81,13 @@ extension PlayerStateX on PlayerState {
 
   /// Progress 0.0 - 1.0
   double get progress {
-    final duration = currentTrack?.duration;
-    if (duration == null || duration == Duration.zero) return 0;
-    return position.inMilliseconds / duration.inMilliseconds;
+    // Prefer actual player duration over track metadata
+    final durationMs = totalDuration.inMilliseconds > 0 
+        ? totalDuration.inMilliseconds 
+        : (currentTrack?.duration.inMilliseconds ?? 0);
+        
+    if (durationMs == 0) return 0;
+    return position.inMilliseconds / durationMs;
   }
 
   /// Is currently playing
@@ -128,65 +133,82 @@ class PlayerNotifier extends Notifier<PlayerState> {
   }
 
   void _listenToAudioHandler() {
-    // Position updates
+    // Position updates (Direct stream from AppAudioHandler)
     _subscriptions.add(
       _audioHandler.positionStream.listen((position) {
         state = state.copyWith(position: position);
       }),
     );
 
-    // Buffered position updates
+    // Buffered position updates (Direct stream from AppAudioHandler)
     _subscriptions.add(
       _audioHandler.bufferedPositionStream.listen((buffered) {
         state = state.copyWith(bufferedPosition: buffered);
       }),
     );
-
-    // Player state updates
+    
+    // Total Duration updates (Direct stream from AppAudioHandler)
+    // Fixes VBR/Stream duration issues
     _subscriptions.add(
-      _audioHandler.playerStateStream.listen((playerState) {
-        _onPlayerStateChanged(playerState);
+      _audioHandler.durationStream.listen((duration) {
+        if (duration != null) {
+          state = state.copyWith(totalDuration: duration);
+        }
+      }),
+    );
+
+    // Playback state updates (From AudioService logic)
+    _subscriptions.add(
+      _audioHandler.playbackState.listen((playbackState) {
+        _onPlaybackStateChanged(playbackState);
+      }),
+    );
+
+    // Current ID updates (From AudioService)
+    _subscriptions.add(
+      _audioHandler.mediaItem.listen((mediaItem) {
+        if (mediaItem != null) {
+          _onMediaItemChanged(mediaItem);
+        }
       }),
     );
   }
 
-  void _onPlayerStateChanged(ja.PlayerState playerState) {
-    final processingState = playerState.processingState;
-    final playing = playerState.playing;
+  void _onMediaItemChanged(MediaItem mediaItem) {
+    // Sync UI index with System playing track
+    final index = state.tracks.indexWhere((t) => t.id == mediaItem.id);
+    if (index != -1 && index != state.currentIndex) {
+      state = state.copyWith(currentIndex: index);
+    }
+  }
+
+  void _onPlaybackStateChanged(PlaybackState playbackState) {
+    final processingState = playbackState.processingState;
+    final playing = playbackState.playing;
 
     PlayerStatus newStatus;
 
     switch (processingState) {
-      case ja.ProcessingState.idle:
+      case AudioProcessingState.idle:
         newStatus = PlayerStatus.idle;
         break;
-      case ja.ProcessingState.loading:
-      case ja.ProcessingState.buffering:
+      case AudioProcessingState.loading:
+      case AudioProcessingState.buffering:
         newStatus = PlayerStatus.loading;
         break;
-      case ja.ProcessingState.ready:
+      case AudioProcessingState.ready:
         newStatus = playing ? PlayerStatus.playing : PlayerStatus.paused;
         break;
-      case ja.ProcessingState.completed:
-        _onTrackCompleted();
-        return;
+      case AudioProcessingState.completed:
+        newStatus = PlayerStatus.completed;
+        break;
+      case AudioProcessingState.error:
+        newStatus = PlayerStatus.error;
+        break;
     }
 
     state = state.copyWith(status: newStatus);
   }
-
-  void _onTrackCompleted() {
-    if (hasNext) {
-      next();
-    } else {
-      state = state.copyWith(
-        status: PlayerStatus.completed,
-        position: Duration.zero,
-      );
-    }
-  }
-
-  bool get hasNext => state.hasNext;
 
   // === Public methods ===
 
@@ -198,6 +220,7 @@ class PlayerNotifier extends Notifier<PlayerState> {
   }) async {
     if (tracks.isEmpty) return;
 
+    // 1. Update UI State immediately (Optimistic update)
     state = state.copyWith(
       tracks: tracks,
       source: source,
@@ -207,9 +230,9 @@ class PlayerNotifier extends Notifier<PlayerState> {
       errorMessage: null,
     );
 
+    // 2. Delegate to AudioHandler
     try {
-      await _audioHandler.setSource(tracks[startIndex].audioUrl);
-      await _audioHandler.play();
+      await _audioHandler.setQueue(tracks, initialIndex: startIndex);
     } catch (e) {
       state = state.copyWith(
         status: PlayerStatus.error,
@@ -220,7 +243,6 @@ class PlayerNotifier extends Notifier<PlayerState> {
 
   /// Resume playback
   Future<void> play() async {
-    if (state.currentTrack == null) return;
     await _audioHandler.play();
   }
 
@@ -251,76 +273,17 @@ class PlayerNotifier extends Notifier<PlayerState> {
 
   /// Play next track
   Future<void> next() async {
-    if (!state.hasNext) return;
-
-    final newIndex = state.currentIndex + 1;
-    state = state.copyWith(
-      currentIndex: newIndex,
-      status: PlayerStatus.loading,
-      position: Duration.zero,
-    );
-
-    try {
-      await _audioHandler.setSource(state.tracks[newIndex].audioUrl);
-      await _audioHandler.play();
-    } catch (e) {
-      state = state.copyWith(
-        status: PlayerStatus.error,
-        errorMessage: e.toString(),
-      );
-    }
+    await _audioHandler.skipToNext();
   }
 
-  /// Play previous track (or restart current if position > 3 sec)
+  /// Play previous track
   Future<void> previous() async {
-    // If more than 3 seconds played, restart current track
-    if (state.position.inSeconds > 3) {
-      await seek(Duration.zero);
-      return;
-    }
-
-    if (!state.hasPrevious) {
-      await seek(Duration.zero);
-      return;
-    }
-
-    final newIndex = state.currentIndex - 1;
-    state = state.copyWith(
-      currentIndex: newIndex,
-      status: PlayerStatus.loading,
-      position: Duration.zero,
-    );
-
-    try {
-      await _audioHandler.setSource(state.tracks[newIndex].audioUrl);
-      await _audioHandler.play();
-    } catch (e) {
-      state = state.copyWith(
-        status: PlayerStatus.error,
-        errorMessage: e.toString(),
-      );
-    }
+    await _audioHandler.skipToPrevious();
   }
 
   /// Skip to specific track index
   Future<void> skipTo(int index) async {
-    if (index < 0 || index >= state.tracks.length) return;
-
-    state = state.copyWith(
-      currentIndex: index,
-      status: PlayerStatus.loading,
-      position: Duration.zero,
-    );
-
-    try {
-      await _audioHandler.setSource(state.tracks[index].audioUrl);
-      await _audioHandler.play();
-    } catch (e) {
-      state = state.copyWith(
-        status: PlayerStatus.error,
-        errorMessage: e.toString(),
-      );
-    }
+    await _audioHandler.skipToQueueItem(index);
   }
 }
 
