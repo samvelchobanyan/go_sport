@@ -3,19 +3,20 @@ import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/domain/entities/track.dart';
+import 'package:go_sport/shared/widgets/equalizer_indicator.dart';
 
 class TrackTile extends StatelessWidget {
   final Track track;
   final VoidCallback onTap;
   final VoidCallback onMenuTap;
-  final bool isPlaying;
+  final bool? isPlaying;
 
   const TrackTile({
     super.key,
     required this.track,
     required this.onTap,
     required this.onMenuTap,
-    this.isPlaying = false,
+    this.isPlaying,
   });
 
   String _formatDuration(Duration duration) {
@@ -54,13 +55,23 @@ class TrackTile extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    track.title,
-                    style: context.subtitleM?.copyWith(
-                      color: isPlaying ? DSColors.blue : DSColors.black,
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
+                  Row(
+                    children: [
+                      if (isPlaying != null) ...[
+                        EqualizerIndicator(isPlaying: isPlaying!),
+                        const SizedBox(width: 8),
+                      ],
+                      Expanded(
+                        child: Text(
+                          track.title,
+                          style: context.subtitleM?.copyWith(
+                            color: isPlaying != null ? DSColors.blue : DSColors.black,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
                   ),
                   const SizedBox(height: 2),
                   Text(

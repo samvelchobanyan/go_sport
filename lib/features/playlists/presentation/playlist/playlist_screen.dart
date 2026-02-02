@@ -171,18 +171,17 @@ class PlaylistScreen extends ConsumerWidget {
                   delegate: SliverChildBuilderDelegate(
                     (context, index) {
                       final track = tracks[index];
-                      // Improved logic: check if it matches playing ID
                       final isCurrentTrack = track.id == playingTrackId;
-                      // Pass context about playing state if needed, but TrackTile takes isPlaying
-                      // If user wants pausing to stop animation, use playerState.isPlaying
-                      final isPlaying = isCurrentTrack && playerState.isPlaying;
+                      final bool? trackPlayingState = isCurrentTrack
+                          ? playerState.isPlaying
+                          : null;
 
                       return Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           TrackTile(
                             track: track,
-                            isPlaying: isPlaying,
+                            isPlaying: trackPlayingState,
                             onTap: () => _onTrackTap(ref, tracks, index, playlist.title, playlist.imageUrl),
                             onMenuTap: () => _onTrackMenuTap(index),
                           ),
