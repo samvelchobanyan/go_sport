@@ -34,21 +34,33 @@ class TrackTile extends StatelessWidget {
         child: Row(
           children: [
             // Track image
-            ClipRRect(
-              borderRadius: BorderRadius.circular(DSRadius.xs),
-              child: Image.network(
-                track.imageUrl,
-                width: 48,
-                height: 48,
-                fit: BoxFit.cover,
-                errorBuilder: (_, __, ___) => Container(
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(DSRadius.xs),
+                boxShadow: [
+                  BoxShadow(
+                    color: DSColors.black.withOpacity(0.1),
+                    blurRadius: 4,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(DSRadius.xs),
+                child: Image.network(
+                  track.imageUrl,
                   width: 48,
                   height: 48,
-                  color: DSColors.gray20,
+                  fit: BoxFit.cover,
+                  errorBuilder: (_, __, ___) => Container(
+                    width: 48,
+                    height: 48,
+                    color: DSColors.gray20,
+                  ),
                 ),
               ),
             ),
-            const SizedBox(width: 12),
+            const SizedBox(width: 10),
             
             // Track info
             Expanded(
