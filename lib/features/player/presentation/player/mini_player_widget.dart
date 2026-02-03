@@ -26,9 +26,8 @@ class MiniPlayerWidget extends ConsumerStatefulWidget {
 class _MiniPlayerWidgetState extends ConsumerState<MiniPlayerWidget>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
-  bool _isMusicMode = true; // Initial mode: Music
+  bool _isMusicMode = true; // UI mode: which panel is expanded
   bool _isLiked = false;
-  bool _isRadioPlaying = false; // TODO: Connect to radio state later
 
   @override
   void initState() {
@@ -39,6 +38,7 @@ class _MiniPlayerWidgetState extends ConsumerState<MiniPlayerWidget>
     );
   }
 
+  /// Toggle between music and radio UI panels (does NOT affect playback)
   void _toggleMode() {
     setState(() {
       _isMusicMode = !_isMusicMode;
@@ -135,7 +135,10 @@ class _MiniPlayerWidgetState extends ConsumerState<MiniPlayerWidget>
   Widget _buildMusicContent() {
     final playerState = ref.watch(playerStateProvider);
     final track = playerState.currentTrack;
-    final isPlaying = playerState.isPlaying;
+    final isRadioMode = playerState.isRadioMode;
+    // Music is playing only if NOT in radio mode AND status is playing
+    final isMusicPlaying = !isRadioMode && playerState.isPlaying;
+    final isMusicLoading = !isRadioMode && playerState.status == PlayerStatus.loading;
     final imageUrl = playerState.displayImageUrl;
 
     // Show placeholder if no track is playing
@@ -218,7 +221,13 @@ class _MiniPlayerWidgetState extends ConsumerState<MiniPlayerWidget>
           // Play/Pause icon
           GestureDetector(
             onTap: () {
-              ref.read(playerStateProvider.notifier).togglePlayPause();
+              if (isRadioMode) {
+                // Currently playing radio - switch to music
+                ref.read(playerStateProvider.notifier).resumeMusic();
+              } else {
+                // Already in music mode - toggle play/pause
+                ref.read(playerStateProvider.notifier).togglePlayPause();
+              }
             },
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 8),
@@ -230,18 +239,33 @@ class _MiniPlayerWidgetState extends ConsumerState<MiniPlayerWidget>
                     child: child,
                   );
                 },
-                child: SvgPicture.asset(
-                  isPlaying 
-                    ? 'assets/icons/pause.svg' 
-                    : 'assets/icons/play.svg',
-                  key: ValueKey(isPlaying),
-                  colorFilter: ColorFilter.mode(
-                    DSColors.blue,
-                    BlendMode.srcIn,
-                  ),
-                  width: 32,
-                  height: 32,
-                ),
+                child: isMusicLoading
+                    ? SizedBox(
+                        key: const ValueKey('music-loading'),
+                        width: 32,
+                        height: 32,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8),
+                          child: CircularProgressIndicator(
+                            color: DSColors.blue,
+                            strokeWidth: 2,
+                          ),
+                        ),
+                      )
+                    : SizedBox(
+                        width: 32,
+                        height: 32,
+                        child: SvgPicture.asset(
+                          isMusicPlaying 
+                            ? 'assets/icons/pause.svg' 
+                            : 'assets/icons/play.svg',
+                          key: ValueKey(isMusicPlaying),
+                          colorFilter: const ColorFilter.mode(
+                            DSColors.blue,
+                            BlendMode.srcIn,
+                          ),
+                        ),
+                      ),
               ),
             ),
           ),
@@ -251,6 +275,24 @@ class _MiniPlayerWidgetState extends ConsumerState<MiniPlayerWidget>
   }
 
   Widget _buildRadioContent() {
+    final playerState = ref.watch(playerStateProvider);
+    final isRadioMode = playerState.isRadioMode;
+    final isRadioPlaying = isRadioMode && playerState.isPlaying;
+    final isRadioLoading = isRadioMode && playerState.status == PlayerStatus.loading;
+    
+    // Get radio info from source if available
+    final radioSource = playerState.source;
+    final String radioTitle;
+    final String radioImageUrl;
+    
+    if (radioSource is QueueSourceRadio) {
+      radioTitle = radioSource.title;
+      radioImageUrl = radioSource.imageUrl;
+    } else {
+      radioTitle = 'Go Sport Radio';
+      radioImageUrl = 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=300&q=80';
+    }
+
     return Padding(
       padding: const EdgeInsets.only(left: 7, right: 6),
       child: Row(
@@ -262,10 +304,8 @@ class _MiniPlayerWidgetState extends ConsumerState<MiniPlayerWidget>
             decoration: BoxDecoration(
               color: DSColors.white,
               borderRadius: BorderRadius.circular(4.25),
-              image: const DecorationImage(
-                image: NetworkImage(
-                  'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=300&q=80',
-                ),
+              image: DecorationImage(
+                image: NetworkImage(radioImageUrl),
                 fit: BoxFit.cover,
               ),
             ),
@@ -280,7 +320,7 @@ class _MiniPlayerWidgetState extends ConsumerState<MiniPlayerWidget>
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'Radio Sport FM',
+                    radioTitle,
                     style: context.subtitleM?.copyWith(
                       fontWeight: FontWeight.bold,
                       color: DSColors.white,
@@ -292,7 +332,7 @@ class _MiniPlayerWidgetState extends ConsumerState<MiniPlayerWidget>
                   Text(
                     'Live broadcast',
                     style: context.textL?.copyWith(
-                      color: DSColors.white.withOpacity(0.7),
+                      color: DSColors.white.withValues(alpha: 0.7),
                     ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
@@ -305,22 +345,51 @@ class _MiniPlayerWidgetState extends ConsumerState<MiniPlayerWidget>
           // Play/Pause icon
           GestureDetector(
             onTap: () {
-              setState(() {
-                _isRadioPlaying = !_isRadioPlaying;
-              });
+              if (isRadioMode) {
+                // Already in radio mode - toggle play/pause
+                ref.read(playerStateProvider.notifier).togglePlayPause();
+              } else {
+                // Not in radio mode - start radio (stops music)
+                ref.read(playerStateProvider.notifier).playRadio();
+              }
             },
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 8),
-              child: SvgPicture.asset(
-                _isRadioPlaying 
-                  ? 'assets/icons/pause.svg' 
-                  : 'assets/icons/play.svg',
-                colorFilter: ColorFilter.mode(
-                  DSColors.lime,
-                  BlendMode.srcIn,
-                ),
-                width: 32,
-                height: 32,
+              child: AnimatedSwitcher(
+                duration: const Duration(milliseconds: 200),
+                transitionBuilder: (child, animation) {
+                  return FadeTransition(
+                    opacity: animation,
+                    child: child,
+                  );
+                },
+                child: isRadioLoading
+                    ? SizedBox(
+                        key: const ValueKey('radio-loading'),
+                        width: 32,
+                        height: 32,
+                        child: Padding(
+                          padding: const EdgeInsets.all(6),
+                          child: CircularProgressIndicator(
+                            color: DSColors.lime,
+                            strokeWidth: 2,
+                          ),
+                        ),
+                      )
+                    : SizedBox(
+                        width: 32,
+                        height: 32,
+                        child: SvgPicture.asset(
+                          isRadioPlaying 
+                            ? 'assets/icons/pause.svg' 
+                            : 'assets/icons/play.svg',
+                          key: ValueKey(isRadioPlaying),
+                          colorFilter: const ColorFilter.mode(
+                            DSColors.lime,
+                            BlendMode.srcIn,
+                          ),
+                        ),
+                      ),
               ),
             ),
           ),

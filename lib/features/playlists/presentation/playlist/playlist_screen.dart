@@ -173,7 +173,7 @@ class PlaylistScreen extends ConsumerWidget {
                       final track = tracks[index];
                       final isCurrentTrack = track.id == playingTrackId;
                       final bool? trackPlayingState = isCurrentTrack
-                          ? playerState.isPlaying
+                          ? playerState.isPlaying && playerState.isRadioMode == false
                           : null;
 
                       return Column(

@@ -153,6 +153,34 @@ class AppAudioHandler extends BaseAudioHandler with QueueHandler, SeekHandler {
     }
   }
 
+  // === Radio Stream ===
+
+  /// Play a live radio stream
+  Future<void> playRadioStream({
+    required String url,
+    required String title,
+    required String imageUrl,
+  }) async {
+    // 1. Clear system queue (radio has no queue)
+    queue.add([]);
+
+    // 2. Set radio MediaItem for system notification / lock screen
+    mediaItem.add(MediaItem(
+      id: 'radio',
+      title: title,
+      artist: 'Live',
+      artUri: Uri.parse(imageUrl),
+      // duration is null for live streams
+    ));
+
+    // 3. Load and play the stream
+    await _player.setAudioSource(AudioSource.uri(Uri.parse(url)));
+    await _player.play();
+  }
+
+  /// ICY metadata stream for live radio (current song info)
+  Stream<IcyMetadata?> get icyMetadataStream => _player.icyMetadataStream;
+
   /// Dispose player resources
   Future<void> dispose() async {
     await _player.dispose();

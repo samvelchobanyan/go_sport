@@ -42,6 +42,12 @@ sealed class QueueSource with _$QueueSource {
     required String title,
     required String imageUrl,
   }) = QueueSourceProgram;
+
+  const factory QueueSource.radio({
+    required String title,
+    required String streamUrl,
+    required String imageUrl,
+  }) = QueueSourceRadio;
 }
 
 // === State ===
@@ -49,10 +55,13 @@ sealed class QueueSource with _$QueueSource {
 @freezed
 class PlayerState with _$PlayerState {
   const factory PlayerState({
-    // Queue
+    // Queue (Music)
     @Default([]) List<Track> tracks,
     @Default(0) int currentIndex,
     QueueSource? source,
+
+    // Saved music source (when switching to radio)
+    QueueSource? savedMusicSource,
 
     // Playback
     @Default(PlayerStatus.idle) PlayerStatus status,
@@ -93,9 +102,12 @@ extension PlayerStateX on PlayerState {
   /// Is currently playing
   bool get isPlaying => status == PlayerStatus.playing;
 
-  /// Has active track to show in MiniPlayer
-  bool get hasActiveTrack =>
-      currentTrack != null && status != PlayerStatus.idle;
+  /// Is in radio mode
+  bool get isRadioMode => source is QueueSourceRadio;
+
+  /// Has active playback to show in MiniPlayer (track or radio)
+  bool get hasActivePlayback =>
+      (currentTrack != null || isRadioMode) && status != PlayerStatus.idle;
 
   /// Image URL for display (track image or source image as fallback)
   String? get displayImageUrl {
@@ -108,6 +120,7 @@ extension PlayerStateX on PlayerState {
       album: (_, __, imageUrl) => imageUrl,
       playlist: (_, __, imageUrl) => imageUrl,
       program: (_, __, imageUrl) => imageUrl,
+      radio: (_, __, imageUrl) => imageUrl,
     );
   }
 }
@@ -284,6 +297,74 @@ class PlayerNotifier extends Notifier<PlayerState> {
   /// Skip to specific track index
   Future<void> skipTo(int index) async {
     await _audioHandler.skipToQueueItem(index);
+  }
+
+  // === Radio ===
+
+  /// Radio stream constants
+  static const _radioStreamUrl = 'https://ice1.somafm.com/groovesalad-128-mp3';
+  static const _radioTitle = 'Go Sport Radio';
+  static const _radioImageUrl = 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=300&q=80';
+
+  /// Start playing radio stream
+  Future<void> playRadio() async {
+    // 1. Save current music source for resume later (if not already radio)
+    final currentSource = state.source;
+    final savedSource = (currentSource is! QueueSourceRadio) 
+        ? currentSource 
+        : state.savedMusicSource;
+
+    // 2. Update UI state (keep tracks for resume later)
+    state = state.copyWith(
+      source: QueueSource.radio(
+        title: _radioTitle,
+        streamUrl: _radioStreamUrl,
+        imageUrl: _radioImageUrl,
+      ),
+      savedMusicSource: savedSource,
+      status: PlayerStatus.loading,
+      position: Duration.zero,
+      errorMessage: null,
+    );
+
+    // 3. Delegate to AudioHandler
+    try {
+      await _audioHandler.playRadioStream(
+        url: _radioStreamUrl,
+        title: _radioTitle,
+        imageUrl: _radioImageUrl,
+      );
+    } catch (e) {
+      state = state.copyWith(
+        source: savedSource,
+        status: PlayerStatus.error,
+        errorMessage: e.toString(),
+      );
+    }
+  }
+
+  /// Resume music playback (after radio)
+  Future<void> resumeMusic() async {
+    if (state.tracks.isEmpty) return;
+
+    final tracks = state.tracks;
+    final index = state.currentIndex;
+    final savedSource = state.savedMusicSource;
+
+    state = state.copyWith(
+      source: savedSource,
+      savedMusicSource: null,
+      status: PlayerStatus.loading,
+    );
+
+    try {
+      await _audioHandler.setQueue(tracks, initialIndex: index);
+    } catch (e) {
+      state = state.copyWith(
+        status: PlayerStatus.error,
+        errorMessage: e.toString(),
+      );
+    }
   }
 }
 

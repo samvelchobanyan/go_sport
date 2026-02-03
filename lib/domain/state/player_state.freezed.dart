@@ -17,7 +17,6 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$QueueSource {
-  String get id => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   String get imageUrl => throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -26,18 +25,22 @@ mixin _$QueueSource {
     required TResult Function(String id, String title, String imageUrl)
     playlist,
     required TResult Function(String id, String title, String imageUrl) program,
+    required TResult Function(String title, String streamUrl, String imageUrl)
+    radio,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String id, String title, String imageUrl)? album,
     TResult? Function(String id, String title, String imageUrl)? playlist,
     TResult? Function(String id, String title, String imageUrl)? program,
+    TResult? Function(String title, String streamUrl, String imageUrl)? radio,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String id, String title, String imageUrl)? album,
     TResult Function(String id, String title, String imageUrl)? playlist,
     TResult Function(String id, String title, String imageUrl)? program,
+    TResult Function(String title, String streamUrl, String imageUrl)? radio,
     required TResult orElse(),
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -45,18 +48,21 @@ mixin _$QueueSource {
     required TResult Function(QueueSourceAlbum value) album,
     required TResult Function(QueueSourcePlaylist value) playlist,
     required TResult Function(QueueSourceProgram value) program,
+    required TResult Function(QueueSourceRadio value) radio,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(QueueSourceAlbum value)? album,
     TResult? Function(QueueSourcePlaylist value)? playlist,
     TResult? Function(QueueSourceProgram value)? program,
+    TResult? Function(QueueSourceRadio value)? radio,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(QueueSourceAlbum value)? album,
     TResult Function(QueueSourcePlaylist value)? playlist,
     TResult Function(QueueSourceProgram value)? program,
+    TResult Function(QueueSourceRadio value)? radio,
     required TResult orElse(),
   }) => throw _privateConstructorUsedError;
 
@@ -74,7 +80,7 @@ abstract class $QueueSourceCopyWith<$Res> {
     $Res Function(QueueSource) then,
   ) = _$QueueSourceCopyWithImpl<$Res, QueueSource>;
   @useResult
-  $Res call({String id, String title, String imageUrl});
+  $Res call({String title, String imageUrl});
 }
 
 /// @nodoc
@@ -91,17 +97,9 @@ class _$QueueSourceCopyWithImpl<$Res, $Val extends QueueSource>
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? id = null,
-    Object? title = null,
-    Object? imageUrl = null,
-  }) {
+  $Res call({Object? title = null, Object? imageUrl = null}) {
     return _then(
       _value.copyWith(
-            id: null == id
-                ? _value.id
-                : id // ignore: cast_nullable_to_non_nullable
-                      as String,
             title: null == title
                 ? _value.title
                 : title // ignore: cast_nullable_to_non_nullable
@@ -218,6 +216,8 @@ class _$QueueSourceAlbumImpl implements QueueSourceAlbum {
     required TResult Function(String id, String title, String imageUrl)
     playlist,
     required TResult Function(String id, String title, String imageUrl) program,
+    required TResult Function(String title, String streamUrl, String imageUrl)
+    radio,
   }) {
     return album(id, title, imageUrl);
   }
@@ -228,6 +228,7 @@ class _$QueueSourceAlbumImpl implements QueueSourceAlbum {
     TResult? Function(String id, String title, String imageUrl)? album,
     TResult? Function(String id, String title, String imageUrl)? playlist,
     TResult? Function(String id, String title, String imageUrl)? program,
+    TResult? Function(String title, String streamUrl, String imageUrl)? radio,
   }) {
     return album?.call(id, title, imageUrl);
   }
@@ -238,6 +239,7 @@ class _$QueueSourceAlbumImpl implements QueueSourceAlbum {
     TResult Function(String id, String title, String imageUrl)? album,
     TResult Function(String id, String title, String imageUrl)? playlist,
     TResult Function(String id, String title, String imageUrl)? program,
+    TResult Function(String title, String streamUrl, String imageUrl)? radio,
     required TResult orElse(),
   }) {
     if (album != null) {
@@ -252,6 +254,7 @@ class _$QueueSourceAlbumImpl implements QueueSourceAlbum {
     required TResult Function(QueueSourceAlbum value) album,
     required TResult Function(QueueSourcePlaylist value) playlist,
     required TResult Function(QueueSourceProgram value) program,
+    required TResult Function(QueueSourceRadio value) radio,
   }) {
     return album(this);
   }
@@ -262,6 +265,7 @@ class _$QueueSourceAlbumImpl implements QueueSourceAlbum {
     TResult? Function(QueueSourceAlbum value)? album,
     TResult? Function(QueueSourcePlaylist value)? playlist,
     TResult? Function(QueueSourceProgram value)? program,
+    TResult? Function(QueueSourceRadio value)? radio,
   }) {
     return album?.call(this);
   }
@@ -272,6 +276,7 @@ class _$QueueSourceAlbumImpl implements QueueSourceAlbum {
     TResult Function(QueueSourceAlbum value)? album,
     TResult Function(QueueSourcePlaylist value)? playlist,
     TResult Function(QueueSourceProgram value)? program,
+    TResult Function(QueueSourceRadio value)? radio,
     required TResult orElse(),
   }) {
     if (album != null) {
@@ -288,7 +293,6 @@ abstract class QueueSourceAlbum implements QueueSource {
     required final String imageUrl,
   }) = _$QueueSourceAlbumImpl;
 
-  @override
   String get id;
   @override
   String get title;
@@ -405,6 +409,8 @@ class _$QueueSourcePlaylistImpl implements QueueSourcePlaylist {
     required TResult Function(String id, String title, String imageUrl)
     playlist,
     required TResult Function(String id, String title, String imageUrl) program,
+    required TResult Function(String title, String streamUrl, String imageUrl)
+    radio,
   }) {
     return playlist(id, title, imageUrl);
   }
@@ -415,6 +421,7 @@ class _$QueueSourcePlaylistImpl implements QueueSourcePlaylist {
     TResult? Function(String id, String title, String imageUrl)? album,
     TResult? Function(String id, String title, String imageUrl)? playlist,
     TResult? Function(String id, String title, String imageUrl)? program,
+    TResult? Function(String title, String streamUrl, String imageUrl)? radio,
   }) {
     return playlist?.call(id, title, imageUrl);
   }
@@ -425,6 +432,7 @@ class _$QueueSourcePlaylistImpl implements QueueSourcePlaylist {
     TResult Function(String id, String title, String imageUrl)? album,
     TResult Function(String id, String title, String imageUrl)? playlist,
     TResult Function(String id, String title, String imageUrl)? program,
+    TResult Function(String title, String streamUrl, String imageUrl)? radio,
     required TResult orElse(),
   }) {
     if (playlist != null) {
@@ -439,6 +447,7 @@ class _$QueueSourcePlaylistImpl implements QueueSourcePlaylist {
     required TResult Function(QueueSourceAlbum value) album,
     required TResult Function(QueueSourcePlaylist value) playlist,
     required TResult Function(QueueSourceProgram value) program,
+    required TResult Function(QueueSourceRadio value) radio,
   }) {
     return playlist(this);
   }
@@ -449,6 +458,7 @@ class _$QueueSourcePlaylistImpl implements QueueSourcePlaylist {
     TResult? Function(QueueSourceAlbum value)? album,
     TResult? Function(QueueSourcePlaylist value)? playlist,
     TResult? Function(QueueSourceProgram value)? program,
+    TResult? Function(QueueSourceRadio value)? radio,
   }) {
     return playlist?.call(this);
   }
@@ -459,6 +469,7 @@ class _$QueueSourcePlaylistImpl implements QueueSourcePlaylist {
     TResult Function(QueueSourceAlbum value)? album,
     TResult Function(QueueSourcePlaylist value)? playlist,
     TResult Function(QueueSourceProgram value)? program,
+    TResult Function(QueueSourceRadio value)? radio,
     required TResult orElse(),
   }) {
     if (playlist != null) {
@@ -475,7 +486,6 @@ abstract class QueueSourcePlaylist implements QueueSource {
     required final String imageUrl,
   }) = _$QueueSourcePlaylistImpl;
 
-  @override
   String get id;
   @override
   String get title;
@@ -592,6 +602,8 @@ class _$QueueSourceProgramImpl implements QueueSourceProgram {
     required TResult Function(String id, String title, String imageUrl)
     playlist,
     required TResult Function(String id, String title, String imageUrl) program,
+    required TResult Function(String title, String streamUrl, String imageUrl)
+    radio,
   }) {
     return program(id, title, imageUrl);
   }
@@ -602,6 +614,7 @@ class _$QueueSourceProgramImpl implements QueueSourceProgram {
     TResult? Function(String id, String title, String imageUrl)? album,
     TResult? Function(String id, String title, String imageUrl)? playlist,
     TResult? Function(String id, String title, String imageUrl)? program,
+    TResult? Function(String title, String streamUrl, String imageUrl)? radio,
   }) {
     return program?.call(id, title, imageUrl);
   }
@@ -612,6 +625,7 @@ class _$QueueSourceProgramImpl implements QueueSourceProgram {
     TResult Function(String id, String title, String imageUrl)? album,
     TResult Function(String id, String title, String imageUrl)? playlist,
     TResult Function(String id, String title, String imageUrl)? program,
+    TResult Function(String title, String streamUrl, String imageUrl)? radio,
     required TResult orElse(),
   }) {
     if (program != null) {
@@ -626,6 +640,7 @@ class _$QueueSourceProgramImpl implements QueueSourceProgram {
     required TResult Function(QueueSourceAlbum value) album,
     required TResult Function(QueueSourcePlaylist value) playlist,
     required TResult Function(QueueSourceProgram value) program,
+    required TResult Function(QueueSourceRadio value) radio,
   }) {
     return program(this);
   }
@@ -636,6 +651,7 @@ class _$QueueSourceProgramImpl implements QueueSourceProgram {
     TResult? Function(QueueSourceAlbum value)? album,
     TResult? Function(QueueSourcePlaylist value)? playlist,
     TResult? Function(QueueSourceProgram value)? program,
+    TResult? Function(QueueSourceRadio value)? radio,
   }) {
     return program?.call(this);
   }
@@ -646,6 +662,7 @@ class _$QueueSourceProgramImpl implements QueueSourceProgram {
     TResult Function(QueueSourceAlbum value)? album,
     TResult Function(QueueSourcePlaylist value)? playlist,
     TResult Function(QueueSourceProgram value)? program,
+    TResult Function(QueueSourceRadio value)? radio,
     required TResult orElse(),
   }) {
     if (program != null) {
@@ -662,7 +679,6 @@ abstract class QueueSourceProgram implements QueueSource {
     required final String imageUrl,
   }) = _$QueueSourceProgramImpl;
 
-  @override
   String get id;
   @override
   String get title;
@@ -678,11 +694,208 @@ abstract class QueueSourceProgram implements QueueSource {
 }
 
 /// @nodoc
+abstract class _$$QueueSourceRadioImplCopyWith<$Res>
+    implements $QueueSourceCopyWith<$Res> {
+  factory _$$QueueSourceRadioImplCopyWith(
+    _$QueueSourceRadioImpl value,
+    $Res Function(_$QueueSourceRadioImpl) then,
+  ) = __$$QueueSourceRadioImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({String title, String streamUrl, String imageUrl});
+}
+
+/// @nodoc
+class __$$QueueSourceRadioImplCopyWithImpl<$Res>
+    extends _$QueueSourceCopyWithImpl<$Res, _$QueueSourceRadioImpl>
+    implements _$$QueueSourceRadioImplCopyWith<$Res> {
+  __$$QueueSourceRadioImplCopyWithImpl(
+    _$QueueSourceRadioImpl _value,
+    $Res Function(_$QueueSourceRadioImpl) _then,
+  ) : super(_value, _then);
+
+  /// Create a copy of QueueSource
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? title = null,
+    Object? streamUrl = null,
+    Object? imageUrl = null,
+  }) {
+    return _then(
+      _$QueueSourceRadioImpl(
+        title: null == title
+            ? _value.title
+            : title // ignore: cast_nullable_to_non_nullable
+                  as String,
+        streamUrl: null == streamUrl
+            ? _value.streamUrl
+            : streamUrl // ignore: cast_nullable_to_non_nullable
+                  as String,
+        imageUrl: null == imageUrl
+            ? _value.imageUrl
+            : imageUrl // ignore: cast_nullable_to_non_nullable
+                  as String,
+      ),
+    );
+  }
+}
+
+/// @nodoc
+
+class _$QueueSourceRadioImpl implements QueueSourceRadio {
+  const _$QueueSourceRadioImpl({
+    required this.title,
+    required this.streamUrl,
+    required this.imageUrl,
+  });
+
+  @override
+  final String title;
+  @override
+  final String streamUrl;
+  @override
+  final String imageUrl;
+
+  @override
+  String toString() {
+    return 'QueueSource.radio(title: $title, streamUrl: $streamUrl, imageUrl: $imageUrl)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$QueueSourceRadioImpl &&
+            (identical(other.title, title) || other.title == title) &&
+            (identical(other.streamUrl, streamUrl) ||
+                other.streamUrl == streamUrl) &&
+            (identical(other.imageUrl, imageUrl) ||
+                other.imageUrl == imageUrl));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, title, streamUrl, imageUrl);
+
+  /// Create a copy of QueueSource
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$QueueSourceRadioImplCopyWith<_$QueueSourceRadioImpl> get copyWith =>
+      __$$QueueSourceRadioImplCopyWithImpl<_$QueueSourceRadioImpl>(
+        this,
+        _$identity,
+      );
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String id, String title, String imageUrl) album,
+    required TResult Function(String id, String title, String imageUrl)
+    playlist,
+    required TResult Function(String id, String title, String imageUrl) program,
+    required TResult Function(String title, String streamUrl, String imageUrl)
+    radio,
+  }) {
+    return radio(title, streamUrl, imageUrl);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String id, String title, String imageUrl)? album,
+    TResult? Function(String id, String title, String imageUrl)? playlist,
+    TResult? Function(String id, String title, String imageUrl)? program,
+    TResult? Function(String title, String streamUrl, String imageUrl)? radio,
+  }) {
+    return radio?.call(title, streamUrl, imageUrl);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String id, String title, String imageUrl)? album,
+    TResult Function(String id, String title, String imageUrl)? playlist,
+    TResult Function(String id, String title, String imageUrl)? program,
+    TResult Function(String title, String streamUrl, String imageUrl)? radio,
+    required TResult orElse(),
+  }) {
+    if (radio != null) {
+      return radio(title, streamUrl, imageUrl);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(QueueSourceAlbum value) album,
+    required TResult Function(QueueSourcePlaylist value) playlist,
+    required TResult Function(QueueSourceProgram value) program,
+    required TResult Function(QueueSourceRadio value) radio,
+  }) {
+    return radio(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(QueueSourceAlbum value)? album,
+    TResult? Function(QueueSourcePlaylist value)? playlist,
+    TResult? Function(QueueSourceProgram value)? program,
+    TResult? Function(QueueSourceRadio value)? radio,
+  }) {
+    return radio?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(QueueSourceAlbum value)? album,
+    TResult Function(QueueSourcePlaylist value)? playlist,
+    TResult Function(QueueSourceProgram value)? program,
+    TResult Function(QueueSourceRadio value)? radio,
+    required TResult orElse(),
+  }) {
+    if (radio != null) {
+      return radio(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class QueueSourceRadio implements QueueSource {
+  const factory QueueSourceRadio({
+    required final String title,
+    required final String streamUrl,
+    required final String imageUrl,
+  }) = _$QueueSourceRadioImpl;
+
+  @override
+  String get title;
+  String get streamUrl;
+  @override
+  String get imageUrl;
+
+  /// Create a copy of QueueSource
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$QueueSourceRadioImplCopyWith<_$QueueSourceRadioImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
 mixin _$PlayerState {
-  // Queue
+  // Queue (Music)
   List<Track> get tracks => throw _privateConstructorUsedError;
   int get currentIndex => throw _privateConstructorUsedError;
-  QueueSource? get source => throw _privateConstructorUsedError; // Playback
+  QueueSource? get source =>
+      throw _privateConstructorUsedError; // Saved music source (when switching to radio)
+  QueueSource? get savedMusicSource =>
+      throw _privateConstructorUsedError; // Playback
   PlayerStatus get status => throw _privateConstructorUsedError;
   Duration get position => throw _privateConstructorUsedError;
   Duration get bufferedPosition => throw _privateConstructorUsedError;
@@ -707,6 +920,7 @@ abstract class $PlayerStateCopyWith<$Res> {
     List<Track> tracks,
     int currentIndex,
     QueueSource? source,
+    QueueSource? savedMusicSource,
     PlayerStatus status,
     Duration position,
     Duration bufferedPosition,
@@ -715,6 +929,7 @@ abstract class $PlayerStateCopyWith<$Res> {
   });
 
   $QueueSourceCopyWith<$Res>? get source;
+  $QueueSourceCopyWith<$Res>? get savedMusicSource;
 }
 
 /// @nodoc
@@ -735,6 +950,7 @@ class _$PlayerStateCopyWithImpl<$Res, $Val extends PlayerState>
     Object? tracks = null,
     Object? currentIndex = null,
     Object? source = freezed,
+    Object? savedMusicSource = freezed,
     Object? status = null,
     Object? position = null,
     Object? bufferedPosition = null,
@@ -754,6 +970,10 @@ class _$PlayerStateCopyWithImpl<$Res, $Val extends PlayerState>
             source: freezed == source
                 ? _value.source
                 : source // ignore: cast_nullable_to_non_nullable
+                      as QueueSource?,
+            savedMusicSource: freezed == savedMusicSource
+                ? _value.savedMusicSource
+                : savedMusicSource // ignore: cast_nullable_to_non_nullable
                       as QueueSource?,
             status: null == status
                 ? _value.status
@@ -793,6 +1013,20 @@ class _$PlayerStateCopyWithImpl<$Res, $Val extends PlayerState>
       return _then(_value.copyWith(source: value) as $Val);
     });
   }
+
+  /// Create a copy of PlayerState
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $QueueSourceCopyWith<$Res>? get savedMusicSource {
+    if (_value.savedMusicSource == null) {
+      return null;
+    }
+
+    return $QueueSourceCopyWith<$Res>(_value.savedMusicSource!, (value) {
+      return _then(_value.copyWith(savedMusicSource: value) as $Val);
+    });
+  }
 }
 
 /// @nodoc
@@ -808,6 +1042,7 @@ abstract class _$$PlayerStateImplCopyWith<$Res>
     List<Track> tracks,
     int currentIndex,
     QueueSource? source,
+    QueueSource? savedMusicSource,
     PlayerStatus status,
     Duration position,
     Duration bufferedPosition,
@@ -817,6 +1052,8 @@ abstract class _$$PlayerStateImplCopyWith<$Res>
 
   @override
   $QueueSourceCopyWith<$Res>? get source;
+  @override
+  $QueueSourceCopyWith<$Res>? get savedMusicSource;
 }
 
 /// @nodoc
@@ -836,6 +1073,7 @@ class __$$PlayerStateImplCopyWithImpl<$Res>
     Object? tracks = null,
     Object? currentIndex = null,
     Object? source = freezed,
+    Object? savedMusicSource = freezed,
     Object? status = null,
     Object? position = null,
     Object? bufferedPosition = null,
@@ -855,6 +1093,10 @@ class __$$PlayerStateImplCopyWithImpl<$Res>
         source: freezed == source
             ? _value.source
             : source // ignore: cast_nullable_to_non_nullable
+                  as QueueSource?,
+        savedMusicSource: freezed == savedMusicSource
+            ? _value.savedMusicSource
+            : savedMusicSource // ignore: cast_nullable_to_non_nullable
                   as QueueSource?,
         status: null == status
             ? _value.status
@@ -888,6 +1130,7 @@ class _$PlayerStateImpl implements _PlayerState {
     final List<Track> tracks = const [],
     this.currentIndex = 0,
     this.source,
+    this.savedMusicSource,
     this.status = PlayerStatus.idle,
     this.position = Duration.zero,
     this.bufferedPosition = Duration.zero,
@@ -895,9 +1138,9 @@ class _$PlayerStateImpl implements _PlayerState {
     this.errorMessage,
   }) : _tracks = tracks;
 
-  // Queue
+  // Queue (Music)
   final List<Track> _tracks;
-  // Queue
+  // Queue (Music)
   @override
   @JsonKey()
   List<Track> get tracks {
@@ -911,6 +1154,9 @@ class _$PlayerStateImpl implements _PlayerState {
   final int currentIndex;
   @override
   final QueueSource? source;
+  // Saved music source (when switching to radio)
+  @override
+  final QueueSource? savedMusicSource;
   // Playback
   @override
   @JsonKey()
@@ -930,7 +1176,7 @@ class _$PlayerStateImpl implements _PlayerState {
 
   @override
   String toString() {
-    return 'PlayerState(tracks: $tracks, currentIndex: $currentIndex, source: $source, status: $status, position: $position, bufferedPosition: $bufferedPosition, totalDuration: $totalDuration, errorMessage: $errorMessage)';
+    return 'PlayerState(tracks: $tracks, currentIndex: $currentIndex, source: $source, savedMusicSource: $savedMusicSource, status: $status, position: $position, bufferedPosition: $bufferedPosition, totalDuration: $totalDuration, errorMessage: $errorMessage)';
   }
 
   @override
@@ -942,6 +1188,8 @@ class _$PlayerStateImpl implements _PlayerState {
             (identical(other.currentIndex, currentIndex) ||
                 other.currentIndex == currentIndex) &&
             (identical(other.source, source) || other.source == source) &&
+            (identical(other.savedMusicSource, savedMusicSource) ||
+                other.savedMusicSource == savedMusicSource) &&
             (identical(other.status, status) || other.status == status) &&
             (identical(other.position, position) ||
                 other.position == position) &&
@@ -959,6 +1207,7 @@ class _$PlayerStateImpl implements _PlayerState {
     const DeepCollectionEquality().hash(_tracks),
     currentIndex,
     source,
+    savedMusicSource,
     status,
     position,
     bufferedPosition,
@@ -980,6 +1229,7 @@ abstract class _PlayerState implements PlayerState {
     final List<Track> tracks,
     final int currentIndex,
     final QueueSource? source,
+    final QueueSource? savedMusicSource,
     final PlayerStatus status,
     final Duration position,
     final Duration bufferedPosition,
@@ -987,13 +1237,15 @@ abstract class _PlayerState implements PlayerState {
     final String? errorMessage,
   }) = _$PlayerStateImpl;
 
-  // Queue
+  // Queue (Music)
   @override
   List<Track> get tracks;
   @override
   int get currentIndex;
   @override
-  QueueSource? get source; // Playback
+  QueueSource? get source; // Saved music source (when switching to radio)
+  @override
+  QueueSource? get savedMusicSource; // Playback
   @override
   PlayerStatus get status;
   @override
