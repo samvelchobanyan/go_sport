@@ -330,7 +330,7 @@ class _MiniPlayerWidgetState extends ConsumerState<MiniPlayerWidget>
                   ),
                   const SizedBox(height: 2),
                   Text(
-                    'Live broadcast',
+                    playerState.radioNowPlaying ?? 'Live broadcast',
                     style: context.textL?.copyWith(
                       color: DSColors.white.withValues(alpha: 0.7),
                     ),

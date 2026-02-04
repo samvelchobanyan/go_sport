@@ -69,6 +69,9 @@ class PlayerState with _$PlayerState {
     @Default(Duration.zero) Duration bufferedPosition,
     @Default(Duration.zero) Duration totalDuration,
 
+    // Radio
+    String? radioNowPlaying,  // "Artist - Song Name" from ICY metadata
+
     // Error
     String? errorMessage,
   }) = _PlayerState;
@@ -185,6 +188,16 @@ class PlayerNotifier extends Notifier<PlayerState> {
         }
       }),
     );
+
+    // ICY metadata updates (Radio "Now Playing")
+    _subscriptions.add(
+      _audioHandler.icyMetadataStream.listen((icy) {
+        final title = icy?.info?.title;
+        if (state.isRadioMode && title != null && title.isNotEmpty) {
+          state = state.copyWith(radioNowPlaying: title);
+        }
+      }),
+    );
   }
 
   void _onMediaItemChanged(MediaItem mediaItem) {
@@ -240,6 +253,7 @@ class PlayerNotifier extends Notifier<PlayerState> {
       currentIndex: startIndex,
       status: PlayerStatus.loading,
       position: Duration.zero,
+      radioNowPlaying: null,  // Clear radio metadata
       errorMessage: null,
     );
 
@@ -355,6 +369,7 @@ class PlayerNotifier extends Notifier<PlayerState> {
       source: savedSource,
       savedMusicSource: null,
       status: PlayerStatus.loading,
+      radioNowPlaying: null,  // Clear radio metadata
     );
 
     try {

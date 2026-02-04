@@ -71,6 +71,16 @@ class RadioScreen extends ConsumerWidget {
             ),
             const SizedBox(height: 8),
             
+            // Now Playing (from ICY metadata) or "Live broadcast"
+            Text(
+              playerState.radioNowPlaying ?? 'Live broadcast',
+              style: context.bodyL?.copyWith(
+                color: DSColors.gray60,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 12),
+            
             // Live indicator
             if (isPlaying)
               Container(

@@ -899,7 +899,10 @@ mixin _$PlayerState {
   PlayerStatus get status => throw _privateConstructorUsedError;
   Duration get position => throw _privateConstructorUsedError;
   Duration get bufferedPosition => throw _privateConstructorUsedError;
-  Duration get totalDuration => throw _privateConstructorUsedError; // Error
+  Duration get totalDuration => throw _privateConstructorUsedError; // Radio
+  String? get radioNowPlaying =>
+      throw _privateConstructorUsedError; // "Artist - Song Name" from ICY metadata
+  // Error
   String? get errorMessage => throw _privateConstructorUsedError;
 
   /// Create a copy of PlayerState
@@ -925,6 +928,7 @@ abstract class $PlayerStateCopyWith<$Res> {
     Duration position,
     Duration bufferedPosition,
     Duration totalDuration,
+    String? radioNowPlaying,
     String? errorMessage,
   });
 
@@ -955,6 +959,7 @@ class _$PlayerStateCopyWithImpl<$Res, $Val extends PlayerState>
     Object? position = null,
     Object? bufferedPosition = null,
     Object? totalDuration = null,
+    Object? radioNowPlaying = freezed,
     Object? errorMessage = freezed,
   }) {
     return _then(
@@ -991,6 +996,10 @@ class _$PlayerStateCopyWithImpl<$Res, $Val extends PlayerState>
                 ? _value.totalDuration
                 : totalDuration // ignore: cast_nullable_to_non_nullable
                       as Duration,
+            radioNowPlaying: freezed == radioNowPlaying
+                ? _value.radioNowPlaying
+                : radioNowPlaying // ignore: cast_nullable_to_non_nullable
+                      as String?,
             errorMessage: freezed == errorMessage
                 ? _value.errorMessage
                 : errorMessage // ignore: cast_nullable_to_non_nullable
@@ -1047,6 +1056,7 @@ abstract class _$$PlayerStateImplCopyWith<$Res>
     Duration position,
     Duration bufferedPosition,
     Duration totalDuration,
+    String? radioNowPlaying,
     String? errorMessage,
   });
 
@@ -1078,6 +1088,7 @@ class __$$PlayerStateImplCopyWithImpl<$Res>
     Object? position = null,
     Object? bufferedPosition = null,
     Object? totalDuration = null,
+    Object? radioNowPlaying = freezed,
     Object? errorMessage = freezed,
   }) {
     return _then(
@@ -1114,6 +1125,10 @@ class __$$PlayerStateImplCopyWithImpl<$Res>
             ? _value.totalDuration
             : totalDuration // ignore: cast_nullable_to_non_nullable
                   as Duration,
+        radioNowPlaying: freezed == radioNowPlaying
+            ? _value.radioNowPlaying
+            : radioNowPlaying // ignore: cast_nullable_to_non_nullable
+                  as String?,
         errorMessage: freezed == errorMessage
             ? _value.errorMessage
             : errorMessage // ignore: cast_nullable_to_non_nullable
@@ -1135,6 +1150,7 @@ class _$PlayerStateImpl implements _PlayerState {
     this.position = Duration.zero,
     this.bufferedPosition = Duration.zero,
     this.totalDuration = Duration.zero,
+    this.radioNowPlaying,
     this.errorMessage,
   }) : _tracks = tracks;
 
@@ -1170,13 +1186,17 @@ class _$PlayerStateImpl implements _PlayerState {
   @override
   @JsonKey()
   final Duration totalDuration;
+  // Radio
+  @override
+  final String? radioNowPlaying;
+  // "Artist - Song Name" from ICY metadata
   // Error
   @override
   final String? errorMessage;
 
   @override
   String toString() {
-    return 'PlayerState(tracks: $tracks, currentIndex: $currentIndex, source: $source, savedMusicSource: $savedMusicSource, status: $status, position: $position, bufferedPosition: $bufferedPosition, totalDuration: $totalDuration, errorMessage: $errorMessage)';
+    return 'PlayerState(tracks: $tracks, currentIndex: $currentIndex, source: $source, savedMusicSource: $savedMusicSource, status: $status, position: $position, bufferedPosition: $bufferedPosition, totalDuration: $totalDuration, radioNowPlaying: $radioNowPlaying, errorMessage: $errorMessage)';
   }
 
   @override
@@ -1197,6 +1217,8 @@ class _$PlayerStateImpl implements _PlayerState {
                 other.bufferedPosition == bufferedPosition) &&
             (identical(other.totalDuration, totalDuration) ||
                 other.totalDuration == totalDuration) &&
+            (identical(other.radioNowPlaying, radioNowPlaying) ||
+                other.radioNowPlaying == radioNowPlaying) &&
             (identical(other.errorMessage, errorMessage) ||
                 other.errorMessage == errorMessage));
   }
@@ -1212,6 +1234,7 @@ class _$PlayerStateImpl implements _PlayerState {
     position,
     bufferedPosition,
     totalDuration,
+    radioNowPlaying,
     errorMessage,
   );
 
@@ -1234,6 +1257,7 @@ abstract class _PlayerState implements PlayerState {
     final Duration position,
     final Duration bufferedPosition,
     final Duration totalDuration,
+    final String? radioNowPlaying,
     final String? errorMessage,
   }) = _$PlayerStateImpl;
 
@@ -1253,7 +1277,10 @@ abstract class _PlayerState implements PlayerState {
   @override
   Duration get bufferedPosition;
   @override
-  Duration get totalDuration; // Error
+  Duration get totalDuration; // Radio
+  @override
+  String? get radioNowPlaying; // "Artist - Song Name" from ICY metadata
+  // Error
   @override
   String? get errorMessage;
 
