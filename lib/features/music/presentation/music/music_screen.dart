@@ -75,8 +75,8 @@ class MusicScreen extends ConsumerWidget {
                   SliverAppBar(
                     backgroundColor: Colors.transparent,
                     elevation: 0,
-                    pinned: true,
-                    floating: true,
+                    pinned: false,
+                    floating: false,
                     leading: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: UserAvatarButton(
