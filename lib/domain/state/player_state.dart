@@ -21,6 +21,11 @@ enum PlayerStatus {
   error,
 }
 
+enum PlaybackMode {
+  music,
+  radio,
+}
+
 // === Queue Source ===
 
 @freezed
@@ -42,12 +47,6 @@ sealed class QueueSource with _$QueueSource {
     required String title,
     required String imageUrl,
   }) = QueueSourceProgram;
-
-  const factory QueueSource.radio({
-    required String title,
-    required String streamUrl,
-    required String imageUrl,
-  }) = QueueSourceRadio;
 }
 
 // === State ===
@@ -55,13 +54,13 @@ sealed class QueueSource with _$QueueSource {
 @freezed
 class PlayerState with _$PlayerState {
   const factory PlayerState({
+    // Playback mode
+    @Default(PlaybackMode.music) PlaybackMode mode,
+
     // Queue (Music)
     @Default([]) List<Track> tracks,
     @Default(0) int currentIndex,
     QueueSource? source,
-
-    // Saved music source (when switching to radio)
-    QueueSource? savedMusicSource,
 
     // Playback
     @Default(PlayerStatus.idle) PlayerStatus status,
@@ -70,6 +69,9 @@ class PlayerState with _$PlayerState {
     @Default(Duration.zero) Duration totalDuration,
 
     // Radio
+    String? radioTitle,
+    String? radioStreamUrl,
+    String? radioImageUrl,
     String? radioNowPlaying,  // "Artist - Song Name" from ICY metadata
 
     // Error
@@ -106,7 +108,7 @@ extension PlayerStateX on PlayerState {
   bool get isPlaying => status == PlayerStatus.playing;
 
   /// Is in radio mode
-  bool get isRadioMode => source is QueueSourceRadio;
+  bool get isRadioMode => mode == PlaybackMode.radio;
 
   /// Has active playback to show in MiniPlayer (track or radio)
   bool get hasActivePlayback =>
@@ -123,7 +125,6 @@ extension PlayerStateX on PlayerState {
       album: (_, __, imageUrl) => imageUrl,
       playlist: (_, __, imageUrl) => imageUrl,
       program: (_, __, imageUrl) => imageUrl,
-      radio: (_, __, imageUrl) => imageUrl,
     );
   }
 }
@@ -248,6 +249,7 @@ class PlayerNotifier extends Notifier<PlayerState> {
 
     // 1. Update UI State immediately (Optimistic update)
     state = state.copyWith(
+      mode: PlaybackMode.music,
       tracks: tracks,
       source: source,
       currentIndex: startIndex,
@@ -322,26 +324,19 @@ class PlayerNotifier extends Notifier<PlayerState> {
 
   /// Start playing radio stream
   Future<void> playRadio() async {
-    // 1. Save current music source for resume later (if not already radio)
-    final currentSource = state.source;
-    final savedSource = (currentSource is! QueueSourceRadio) 
-        ? currentSource 
-        : state.savedMusicSource;
-
-    // 2. Update UI state (keep tracks for resume later)
+    // 1. Update UI state (keep tracks and music queue source for resume later)
     state = state.copyWith(
-      source: QueueSource.radio(
-        title: _radioTitle,
-        streamUrl: _radioStreamUrl,
-        imageUrl: _radioImageUrl,
-      ),
-      savedMusicSource: savedSource,
+      mode: PlaybackMode.radio,
+      radioTitle: _radioTitle,
+      radioStreamUrl: _radioStreamUrl,
+      radioImageUrl: _radioImageUrl,
       status: PlayerStatus.loading,
       position: Duration.zero,
+      radioNowPlaying: null,
       errorMessage: null,
     );
 
-    // 3. Delegate to AudioHandler
+    // 2. Delegate to AudioHandler
     try {
       await _audioHandler.playRadioStream(
         url: _radioStreamUrl,
@@ -350,7 +345,7 @@ class PlayerNotifier extends Notifier<PlayerState> {
       );
     } catch (e) {
       state = state.copyWith(
-        source: savedSource,
+        mode: PlaybackMode.music,
         status: PlayerStatus.error,
         errorMessage: e.toString(),
       );
@@ -363,11 +358,9 @@ class PlayerNotifier extends Notifier<PlayerState> {
 
     final tracks = state.tracks;
     final index = state.currentIndex;
-    final savedSource = state.savedMusicSource;
 
     state = state.copyWith(
-      source: savedSource,
-      savedMusicSource: null,
+      mode: PlaybackMode.music,
       status: PlayerStatus.loading,
       radioNowPlaying: null,  // Clear radio metadata
     );

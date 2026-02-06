@@ -16,18 +16,9 @@ class RadioScreen extends ConsumerWidget {
     final isPlaying = isRadioMode && playerState.isPlaying;
     final isLoading = isRadioMode && playerState.status == PlayerStatus.loading;
 
-    // Get radio info from source
-    final radioSource = playerState.source;
-    final String radioTitle;
-    final String radioImageUrl;
-
-    if (radioSource is QueueSourceRadio) {
-      radioTitle = radioSource.title;
-      radioImageUrl = radioSource.imageUrl;
-    } else {
-      radioTitle = 'Go Sport Radio';
-      radioImageUrl = 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=300&q=80';
-    }
+    final radioTitle = playerState.radioTitle ?? 'Go Sport Radio';
+    final radioImageUrl = playerState.radioImageUrl ??
+        'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=300&q=80';
 
     return Scaffold(
       backgroundColor: DSColors.white,

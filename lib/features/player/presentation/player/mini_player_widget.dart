@@ -14,7 +14,6 @@ const double _kMiniPlayerHeight = 72.0;
 const double _kActivePanelWidthRatio = 0.8;
 const double _kInactivePanelWidthRatio = 0.2;
 const Duration _kAnimationDuration = Duration(milliseconds: 300);
-const Curve _kAnimationCurve = Curves.easeInOut;
 
 class MiniPlayerWidget extends ConsumerStatefulWidget {
   const MiniPlayerWidget({super.key});
@@ -279,19 +278,10 @@ class _MiniPlayerWidgetState extends ConsumerState<MiniPlayerWidget>
     final isRadioMode = playerState.isRadioMode;
     final isRadioPlaying = isRadioMode && playerState.isPlaying;
     final isRadioLoading = isRadioMode && playerState.status == PlayerStatus.loading;
-    
-    // Get radio info from source if available
-    final radioSource = playerState.source;
-    final String radioTitle;
-    final String radioImageUrl;
-    
-    if (radioSource is QueueSourceRadio) {
-      radioTitle = radioSource.title;
-      radioImageUrl = radioSource.imageUrl;
-    } else {
-      radioTitle = 'Go Sport Radio';
-      radioImageUrl = 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=300&q=80';
-    }
+
+    final radioTitle = playerState.radioTitle ?? 'Go Sport Radio';
+    final radioImageUrl = playerState.radioImageUrl ??
+        'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=300&q=80';
 
     return Padding(
       padding: const EdgeInsets.only(left: 7, right: 6),
