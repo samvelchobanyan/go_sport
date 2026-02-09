@@ -10,6 +10,7 @@ import 'package:go_sport/design_system/components/icons/ds_wave_icon.dart';
 import 'package:go_sport/design_system/components/icons/ds_bit_icon.dart';
 import 'package:go_sport/domain/state/player_state.dart';
 import 'package:go_sport/domain/state/player_state_selectors.dart';
+import 'package:go_sport/features/player/presentation/player/full_player_screen.dart';
 
 const double _kMiniPlayerHeight = 72.0;
 const double _kActivePanelWidthRatio = 0.8;
@@ -79,7 +80,7 @@ class _MiniPlayerWidgetState extends ConsumerState<MiniPlayerWidget>
               _buildPanel(
                 isMusicPanel: true,
                 isActive: _isMusicMode,
-                onTap: _isMusicMode ? null : _toggleMode,
+                onTap: _isMusicMode ? () => FullPlayerScreen.show(context) : _toggleMode,
               ),
             ],
           );
