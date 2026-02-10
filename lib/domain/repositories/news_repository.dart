@@ -7,7 +7,7 @@ abstract class NewsRepository {
     required int pageSize,
   });
 
-  /// Получить детальную информацию
+  /// Получить детальную информацию о статье
   Future<NewsArticle> getArticle(String id);
 
   /// Переключить лайк на статье

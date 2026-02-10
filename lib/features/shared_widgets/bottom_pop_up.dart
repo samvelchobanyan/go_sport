@@ -68,7 +68,7 @@ void showItemOptionsBottomSheet({
                         Text(
                           subtitle,
                           style: context.textL?.copyWith(
-                            color: DSColors.grey60,
+                            color: DSColors.gray60,
                           ),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
@@ -80,7 +80,7 @@ void showItemOptionsBottomSheet({
               ],
             ),
             const SizedBox(height: 10),
-            DottedDivider(color: DSColors.grey20),
+            DottedDivider(color: DSColors.gray20),
             const SizedBox(height: 10),
             // Action buttons
             Column(

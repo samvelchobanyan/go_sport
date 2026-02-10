@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/domain/entities/news_article.dart';
 
 class NewsItem extends StatelessWidget {
@@ -17,7 +18,7 @@ class NewsItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(8),
+      borderRadius: BorderRadius.circular(DSRadius.s),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
         child: Row(
@@ -26,7 +27,7 @@ class NewsItem extends StatelessWidget {
             // Изображение новости
             Container(
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(DSRadius.s),
                 boxShadow: [
                   BoxShadow(
                     color: DSColors.black.withValues(alpha: 0.20),
@@ -37,13 +38,20 @@ class NewsItem extends StatelessWidget {
                 ],
               ),
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: Image.network(
-                  article.imageUrl,
-                  width: 84,
-                  height: 84,
-                  fit: BoxFit.cover,
-                  errorBuilder: (_, __, ___) => Container(color: DSColors.divider, width: 84, height: 84),
+                borderRadius: BorderRadius.circular(DSRadius.s),
+                child: Hero(
+                  tag: 'newsImage:${article.id}',
+                  child: Image.network(
+                    article.imageUrl,
+                    width: 84,
+                    height: 84,
+                    fit: BoxFit.cover,
+                    errorBuilder: (_, __, ___) => Container(
+                      color: DSColors.divider,
+                      width: 84,
+                      height: 84,
+                    ),
+                  ),
                 ),
               ),
             ),

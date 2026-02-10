@@ -47,7 +47,7 @@ class MusicQuickActionCard extends StatelessWidget {
                 const SizedBox(height: 2),
                 Text(
                   subtitle,
-                  style: context.label?.copyWith(color: DSColors.grey60),
+                  style: context.label?.copyWith(color: DSColors.gray60),
                 ),
               ],
             ),

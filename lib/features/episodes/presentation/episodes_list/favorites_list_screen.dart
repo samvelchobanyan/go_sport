@@ -95,7 +95,7 @@ class _FavoritesListScreenState extends ConsumerState<FavoritesListScreen> {
                             Text(
                               snapshot.error.toString(),
                               style: context.textL?.copyWith(
-                                color: DSColors.grey60,
+                                color: DSColors.gray60,
                               ),
                             ),
                             const SizedBox(height: 16),

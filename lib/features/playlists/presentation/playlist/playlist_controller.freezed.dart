@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'news_detail_controller.dart';
+part of 'playlist_controller.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -16,104 +16,105 @@ final _privateConstructorUsedError = UnsupportedError(
 );
 
 /// @nodoc
-mixin _$NewsDetailState {
+mixin _$PlaylistTracksState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(NewsArticle article) data,
+    required TResult Function(List<Track> tracks) data,
     required TResult Function(String message) error,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function(NewsArticle article)? data,
+    TResult? Function(List<Track> tracks)? data,
     TResult? Function(String message)? error,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(NewsArticle article)? data,
+    TResult Function(List<Track> tracks)? data,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_NewsDetailLoading value) loading,
-    required TResult Function(_NewsDetailData value) data,
-    required TResult Function(_NewsDetailError value) error,
+    required TResult Function(_PlaylistTracksLoading value) loading,
+    required TResult Function(_PlaylistTracksData value) data,
+    required TResult Function(_PlaylistTracksError value) error,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_NewsDetailLoading value)? loading,
-    TResult? Function(_NewsDetailData value)? data,
-    TResult? Function(_NewsDetailError value)? error,
+    TResult? Function(_PlaylistTracksLoading value)? loading,
+    TResult? Function(_PlaylistTracksData value)? data,
+    TResult? Function(_PlaylistTracksError value)? error,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_NewsDetailLoading value)? loading,
-    TResult Function(_NewsDetailData value)? data,
-    TResult Function(_NewsDetailError value)? error,
+    TResult Function(_PlaylistTracksLoading value)? loading,
+    TResult Function(_PlaylistTracksData value)? data,
+    TResult Function(_PlaylistTracksError value)? error,
     required TResult orElse(),
   }) => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $NewsDetailStateCopyWith<$Res> {
-  factory $NewsDetailStateCopyWith(
-    NewsDetailState value,
-    $Res Function(NewsDetailState) then,
-  ) = _$NewsDetailStateCopyWithImpl<$Res, NewsDetailState>;
+abstract class $PlaylistTracksStateCopyWith<$Res> {
+  factory $PlaylistTracksStateCopyWith(
+    PlaylistTracksState value,
+    $Res Function(PlaylistTracksState) then,
+  ) = _$PlaylistTracksStateCopyWithImpl<$Res, PlaylistTracksState>;
 }
 
 /// @nodoc
-class _$NewsDetailStateCopyWithImpl<$Res, $Val extends NewsDetailState>
-    implements $NewsDetailStateCopyWith<$Res> {
-  _$NewsDetailStateCopyWithImpl(this._value, this._then);
+class _$PlaylistTracksStateCopyWithImpl<$Res, $Val extends PlaylistTracksState>
+    implements $PlaylistTracksStateCopyWith<$Res> {
+  _$PlaylistTracksStateCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of NewsDetailState
+  /// Create a copy of PlaylistTracksState
   /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
-abstract class _$$NewsDetailLoadingImplCopyWith<$Res> {
-  factory _$$NewsDetailLoadingImplCopyWith(
-    _$NewsDetailLoadingImpl value,
-    $Res Function(_$NewsDetailLoadingImpl) then,
-  ) = __$$NewsDetailLoadingImplCopyWithImpl<$Res>;
+abstract class _$$PlaylistTracksLoadingImplCopyWith<$Res> {
+  factory _$$PlaylistTracksLoadingImplCopyWith(
+    _$PlaylistTracksLoadingImpl value,
+    $Res Function(_$PlaylistTracksLoadingImpl) then,
+  ) = __$$PlaylistTracksLoadingImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$NewsDetailLoadingImplCopyWithImpl<$Res>
-    extends _$NewsDetailStateCopyWithImpl<$Res, _$NewsDetailLoadingImpl>
-    implements _$$NewsDetailLoadingImplCopyWith<$Res> {
-  __$$NewsDetailLoadingImplCopyWithImpl(
-    _$NewsDetailLoadingImpl _value,
-    $Res Function(_$NewsDetailLoadingImpl) _then,
+class __$$PlaylistTracksLoadingImplCopyWithImpl<$Res>
+    extends _$PlaylistTracksStateCopyWithImpl<$Res, _$PlaylistTracksLoadingImpl>
+    implements _$$PlaylistTracksLoadingImplCopyWith<$Res> {
+  __$$PlaylistTracksLoadingImplCopyWithImpl(
+    _$PlaylistTracksLoadingImpl _value,
+    $Res Function(_$PlaylistTracksLoadingImpl) _then,
   ) : super(_value, _then);
 
-  /// Create a copy of NewsDetailState
+  /// Create a copy of PlaylistTracksState
   /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
 
-class _$NewsDetailLoadingImpl implements _NewsDetailLoading {
-  const _$NewsDetailLoadingImpl();
+class _$PlaylistTracksLoadingImpl implements _PlaylistTracksLoading {
+  const _$PlaylistTracksLoadingImpl();
 
   @override
   String toString() {
-    return 'NewsDetailState.loading()';
+    return 'PlaylistTracksState.loading()';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$NewsDetailLoadingImpl);
+        (other.runtimeType == runtimeType &&
+            other is _$PlaylistTracksLoadingImpl);
   }
 
   @override
@@ -123,7 +124,7 @@ class _$NewsDetailLoadingImpl implements _NewsDetailLoading {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(NewsArticle article) data,
+    required TResult Function(List<Track> tracks) data,
     required TResult Function(String message) error,
   }) {
     return loading();
@@ -133,7 +134,7 @@ class _$NewsDetailLoadingImpl implements _NewsDetailLoading {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function(NewsArticle article)? data,
+    TResult? Function(List<Track> tracks)? data,
     TResult? Function(String message)? error,
   }) {
     return loading?.call();
@@ -143,7 +144,7 @@ class _$NewsDetailLoadingImpl implements _NewsDetailLoading {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(NewsArticle article)? data,
+    TResult Function(List<Track> tracks)? data,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -156,9 +157,9 @@ class _$NewsDetailLoadingImpl implements _NewsDetailLoading {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_NewsDetailLoading value) loading,
-    required TResult Function(_NewsDetailData value) data,
-    required TResult Function(_NewsDetailError value) error,
+    required TResult Function(_PlaylistTracksLoading value) loading,
+    required TResult Function(_PlaylistTracksData value) data,
+    required TResult Function(_PlaylistTracksError value) error,
   }) {
     return loading(this);
   }
@@ -166,9 +167,9 @@ class _$NewsDetailLoadingImpl implements _NewsDetailLoading {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_NewsDetailLoading value)? loading,
-    TResult? Function(_NewsDetailData value)? data,
-    TResult? Function(_NewsDetailError value)? error,
+    TResult? Function(_PlaylistTracksLoading value)? loading,
+    TResult? Function(_PlaylistTracksData value)? data,
+    TResult? Function(_PlaylistTracksError value)? error,
   }) {
     return loading?.call(this);
   }
@@ -176,9 +177,9 @@ class _$NewsDetailLoadingImpl implements _NewsDetailLoading {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_NewsDetailLoading value)? loading,
-    TResult Function(_NewsDetailData value)? data,
-    TResult Function(_NewsDetailError value)? error,
+    TResult Function(_PlaylistTracksLoading value)? loading,
+    TResult Function(_PlaylistTracksData value)? data,
+    TResult Function(_PlaylistTracksError value)? error,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -188,88 +189,83 @@ class _$NewsDetailLoadingImpl implements _NewsDetailLoading {
   }
 }
 
-abstract class _NewsDetailLoading implements NewsDetailState {
-  const factory _NewsDetailLoading() = _$NewsDetailLoadingImpl;
+abstract class _PlaylistTracksLoading implements PlaylistTracksState {
+  const factory _PlaylistTracksLoading() = _$PlaylistTracksLoadingImpl;
 }
 
 /// @nodoc
-abstract class _$$NewsDetailDataImplCopyWith<$Res> {
-  factory _$$NewsDetailDataImplCopyWith(
-    _$NewsDetailDataImpl value,
-    $Res Function(_$NewsDetailDataImpl) then,
-  ) = __$$NewsDetailDataImplCopyWithImpl<$Res>;
+abstract class _$$PlaylistTracksDataImplCopyWith<$Res> {
+  factory _$$PlaylistTracksDataImplCopyWith(
+    _$PlaylistTracksDataImpl value,
+    $Res Function(_$PlaylistTracksDataImpl) then,
+  ) = __$$PlaylistTracksDataImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({NewsArticle article});
-
-  $NewsArticleCopyWith<$Res> get article;
+  $Res call({List<Track> tracks});
 }
 
 /// @nodoc
-class __$$NewsDetailDataImplCopyWithImpl<$Res>
-    extends _$NewsDetailStateCopyWithImpl<$Res, _$NewsDetailDataImpl>
-    implements _$$NewsDetailDataImplCopyWith<$Res> {
-  __$$NewsDetailDataImplCopyWithImpl(
-    _$NewsDetailDataImpl _value,
-    $Res Function(_$NewsDetailDataImpl) _then,
+class __$$PlaylistTracksDataImplCopyWithImpl<$Res>
+    extends _$PlaylistTracksStateCopyWithImpl<$Res, _$PlaylistTracksDataImpl>
+    implements _$$PlaylistTracksDataImplCopyWith<$Res> {
+  __$$PlaylistTracksDataImplCopyWithImpl(
+    _$PlaylistTracksDataImpl _value,
+    $Res Function(_$PlaylistTracksDataImpl) _then,
   ) : super(_value, _then);
 
-  /// Create a copy of NewsDetailState
+  /// Create a copy of PlaylistTracksState
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({Object? article = null}) {
+  $Res call({Object? tracks = null}) {
     return _then(
-      _$NewsDetailDataImpl(
-        article: null == article
-            ? _value.article
-            : article // ignore: cast_nullable_to_non_nullable
-                  as NewsArticle,
+      _$PlaylistTracksDataImpl(
+        tracks: null == tracks
+            ? _value._tracks
+            : tracks // ignore: cast_nullable_to_non_nullable
+                  as List<Track>,
       ),
     );
   }
-
-  /// Create a copy of NewsDetailState
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $NewsArticleCopyWith<$Res> get article {
-    return $NewsArticleCopyWith<$Res>(_value.article, (value) {
-      return _then(_value.copyWith(article: value));
-    });
-  }
 }
 
 /// @nodoc
 
-class _$NewsDetailDataImpl implements _NewsDetailData {
-  const _$NewsDetailDataImpl({required this.article});
+class _$PlaylistTracksDataImpl implements _PlaylistTracksData {
+  const _$PlaylistTracksDataImpl({required final List<Track> tracks})
+    : _tracks = tracks;
 
+  final List<Track> _tracks;
   @override
-  final NewsArticle article;
+  List<Track> get tracks {
+    if (_tracks is EqualUnmodifiableListView) return _tracks;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_tracks);
+  }
 
   @override
   String toString() {
-    return 'NewsDetailState.data(article: $article)';
+    return 'PlaylistTracksState.data(tracks: $tracks)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$NewsDetailDataImpl &&
-            (identical(other.article, article) || other.article == article));
+            other is _$PlaylistTracksDataImpl &&
+            const DeepCollectionEquality().equals(other._tracks, _tracks));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, article);
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(_tracks));
 
-  /// Create a copy of NewsDetailState
+  /// Create a copy of PlaylistTracksState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$NewsDetailDataImplCopyWith<_$NewsDetailDataImpl> get copyWith =>
-      __$$NewsDetailDataImplCopyWithImpl<_$NewsDetailDataImpl>(
+  _$$PlaylistTracksDataImplCopyWith<_$PlaylistTracksDataImpl> get copyWith =>
+      __$$PlaylistTracksDataImplCopyWithImpl<_$PlaylistTracksDataImpl>(
         this,
         _$identity,
       );
@@ -278,32 +274,32 @@ class _$NewsDetailDataImpl implements _NewsDetailData {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(NewsArticle article) data,
+    required TResult Function(List<Track> tracks) data,
     required TResult Function(String message) error,
   }) {
-    return data(article);
+    return data(tracks);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function(NewsArticle article)? data,
+    TResult? Function(List<Track> tracks)? data,
     TResult? Function(String message)? error,
   }) {
-    return data?.call(article);
+    return data?.call(tracks);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(NewsArticle article)? data,
+    TResult Function(List<Track> tracks)? data,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
     if (data != null) {
-      return data(article);
+      return data(tracks);
     }
     return orElse();
   }
@@ -311,9 +307,9 @@ class _$NewsDetailDataImpl implements _NewsDetailData {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_NewsDetailLoading value) loading,
-    required TResult Function(_NewsDetailData value) data,
-    required TResult Function(_NewsDetailError value) error,
+    required TResult Function(_PlaylistTracksLoading value) loading,
+    required TResult Function(_PlaylistTracksData value) data,
+    required TResult Function(_PlaylistTracksError value) error,
   }) {
     return data(this);
   }
@@ -321,9 +317,9 @@ class _$NewsDetailDataImpl implements _NewsDetailData {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_NewsDetailLoading value)? loading,
-    TResult? Function(_NewsDetailData value)? data,
-    TResult? Function(_NewsDetailError value)? error,
+    TResult? Function(_PlaylistTracksLoading value)? loading,
+    TResult? Function(_PlaylistTracksData value)? data,
+    TResult? Function(_PlaylistTracksError value)? error,
   }) {
     return data?.call(this);
   }
@@ -331,9 +327,9 @@ class _$NewsDetailDataImpl implements _NewsDetailData {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_NewsDetailLoading value)? loading,
-    TResult Function(_NewsDetailData value)? data,
-    TResult Function(_NewsDetailError value)? error,
+    TResult Function(_PlaylistTracksLoading value)? loading,
+    TResult Function(_PlaylistTracksData value)? data,
+    TResult Function(_PlaylistTracksError value)? error,
     required TResult orElse(),
   }) {
     if (data != null) {
@@ -343,45 +339,45 @@ class _$NewsDetailDataImpl implements _NewsDetailData {
   }
 }
 
-abstract class _NewsDetailData implements NewsDetailState {
-  const factory _NewsDetailData({required final NewsArticle article}) =
-      _$NewsDetailDataImpl;
+abstract class _PlaylistTracksData implements PlaylistTracksState {
+  const factory _PlaylistTracksData({required final List<Track> tracks}) =
+      _$PlaylistTracksDataImpl;
 
-  NewsArticle get article;
+  List<Track> get tracks;
 
-  /// Create a copy of NewsDetailState
+  /// Create a copy of PlaylistTracksState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$NewsDetailDataImplCopyWith<_$NewsDetailDataImpl> get copyWith =>
+  _$$PlaylistTracksDataImplCopyWith<_$PlaylistTracksDataImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$NewsDetailErrorImplCopyWith<$Res> {
-  factory _$$NewsDetailErrorImplCopyWith(
-    _$NewsDetailErrorImpl value,
-    $Res Function(_$NewsDetailErrorImpl) then,
-  ) = __$$NewsDetailErrorImplCopyWithImpl<$Res>;
+abstract class _$$PlaylistTracksErrorImplCopyWith<$Res> {
+  factory _$$PlaylistTracksErrorImplCopyWith(
+    _$PlaylistTracksErrorImpl value,
+    $Res Function(_$PlaylistTracksErrorImpl) then,
+  ) = __$$PlaylistTracksErrorImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String message});
 }
 
 /// @nodoc
-class __$$NewsDetailErrorImplCopyWithImpl<$Res>
-    extends _$NewsDetailStateCopyWithImpl<$Res, _$NewsDetailErrorImpl>
-    implements _$$NewsDetailErrorImplCopyWith<$Res> {
-  __$$NewsDetailErrorImplCopyWithImpl(
-    _$NewsDetailErrorImpl _value,
-    $Res Function(_$NewsDetailErrorImpl) _then,
+class __$$PlaylistTracksErrorImplCopyWithImpl<$Res>
+    extends _$PlaylistTracksStateCopyWithImpl<$Res, _$PlaylistTracksErrorImpl>
+    implements _$$PlaylistTracksErrorImplCopyWith<$Res> {
+  __$$PlaylistTracksErrorImplCopyWithImpl(
+    _$PlaylistTracksErrorImpl _value,
+    $Res Function(_$PlaylistTracksErrorImpl) _then,
   ) : super(_value, _then);
 
-  /// Create a copy of NewsDetailState
+  /// Create a copy of PlaylistTracksState
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({Object? message = null}) {
     return _then(
-      _$NewsDetailErrorImpl(
+      _$PlaylistTracksErrorImpl(
         message: null == message
             ? _value.message
             : message // ignore: cast_nullable_to_non_nullable
@@ -393,35 +389,35 @@ class __$$NewsDetailErrorImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$NewsDetailErrorImpl implements _NewsDetailError {
-  const _$NewsDetailErrorImpl({required this.message});
+class _$PlaylistTracksErrorImpl implements _PlaylistTracksError {
+  const _$PlaylistTracksErrorImpl({required this.message});
 
   @override
   final String message;
 
   @override
   String toString() {
-    return 'NewsDetailState.error(message: $message)';
+    return 'PlaylistTracksState.error(message: $message)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$NewsDetailErrorImpl &&
+            other is _$PlaylistTracksErrorImpl &&
             (identical(other.message, message) || other.message == message));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, message);
 
-  /// Create a copy of NewsDetailState
+  /// Create a copy of PlaylistTracksState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$NewsDetailErrorImplCopyWith<_$NewsDetailErrorImpl> get copyWith =>
-      __$$NewsDetailErrorImplCopyWithImpl<_$NewsDetailErrorImpl>(
+  _$$PlaylistTracksErrorImplCopyWith<_$PlaylistTracksErrorImpl> get copyWith =>
+      __$$PlaylistTracksErrorImplCopyWithImpl<_$PlaylistTracksErrorImpl>(
         this,
         _$identity,
       );
@@ -430,7 +426,7 @@ class _$NewsDetailErrorImpl implements _NewsDetailError {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(NewsArticle article) data,
+    required TResult Function(List<Track> tracks) data,
     required TResult Function(String message) error,
   }) {
     return error(message);
@@ -440,7 +436,7 @@ class _$NewsDetailErrorImpl implements _NewsDetailError {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function(NewsArticle article)? data,
+    TResult? Function(List<Track> tracks)? data,
     TResult? Function(String message)? error,
   }) {
     return error?.call(message);
@@ -450,7 +446,7 @@ class _$NewsDetailErrorImpl implements _NewsDetailError {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(NewsArticle article)? data,
+    TResult Function(List<Track> tracks)? data,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -463,9 +459,9 @@ class _$NewsDetailErrorImpl implements _NewsDetailError {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_NewsDetailLoading value) loading,
-    required TResult Function(_NewsDetailData value) data,
-    required TResult Function(_NewsDetailError value) error,
+    required TResult Function(_PlaylistTracksLoading value) loading,
+    required TResult Function(_PlaylistTracksData value) data,
+    required TResult Function(_PlaylistTracksError value) error,
   }) {
     return error(this);
   }
@@ -473,9 +469,9 @@ class _$NewsDetailErrorImpl implements _NewsDetailError {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_NewsDetailLoading value)? loading,
-    TResult? Function(_NewsDetailData value)? data,
-    TResult? Function(_NewsDetailError value)? error,
+    TResult? Function(_PlaylistTracksLoading value)? loading,
+    TResult? Function(_PlaylistTracksData value)? data,
+    TResult? Function(_PlaylistTracksError value)? error,
   }) {
     return error?.call(this);
   }
@@ -483,9 +479,9 @@ class _$NewsDetailErrorImpl implements _NewsDetailError {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_NewsDetailLoading value)? loading,
-    TResult Function(_NewsDetailData value)? data,
-    TResult Function(_NewsDetailError value)? error,
+    TResult Function(_PlaylistTracksLoading value)? loading,
+    TResult Function(_PlaylistTracksData value)? data,
+    TResult Function(_PlaylistTracksError value)? error,
     required TResult orElse(),
   }) {
     if (error != null) {
@@ -495,15 +491,15 @@ class _$NewsDetailErrorImpl implements _NewsDetailError {
   }
 }
 
-abstract class _NewsDetailError implements NewsDetailState {
-  const factory _NewsDetailError({required final String message}) =
-      _$NewsDetailErrorImpl;
+abstract class _PlaylistTracksError implements PlaylistTracksState {
+  const factory _PlaylistTracksError({required final String message}) =
+      _$PlaylistTracksErrorImpl;
 
   String get message;
 
-  /// Create a copy of NewsDetailState
+  /// Create a copy of PlaylistTracksState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$NewsDetailErrorImplCopyWith<_$NewsDetailErrorImpl> get copyWith =>
+  _$$PlaylistTracksErrorImplCopyWith<_$PlaylistTracksErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

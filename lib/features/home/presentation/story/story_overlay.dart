@@ -30,17 +30,17 @@ class StoryOverlay extends StatelessWidget {
               imageUrl: story.imageUrl,
               fit: BoxFit.cover,
               placeholder: (context, url) => Container(
-                color: DSColors.grey20,
+                color: DSColors.gray20,
                 child: const Center(
                   child: CircularProgressIndicator(),
                 ),
               ),
               errorWidget: (context, url, error) => Container(
-                color: DSColors.grey20,
+                color: DSColors.gray20,
                 child: Icon(
                   Icons.broken_image,
                   size: 64,
-                  color: DSColors.grey50,
+                  color: DSColors.gray50,
                 ),
               ),
             ),
@@ -123,6 +123,30 @@ class StoryOverlay extends StatelessWidget {
                           onTap: () =>
                               onAction(story.ctaTargetType, story.ctaTargetId),
                           child: Container(
+                        //   width: double.infinity,
+                        //   height: 56,
+                        //   decoration: BoxDecoration(
+                        //     color: DSColors.lime,
+                        //     borderRadius: BorderRadius.circular(DSRadius.xl),
+                        //   ),
+                        //   child: Row(
+                        //     mainAxisAlignment: MainAxisAlignment.center,
+                        //     children: [
+                        //       Icon(
+                        //         Icons.campaign,
+                        //         size: 20,
+                        //         color: DSColors.black,
+                        //       ),
+                        //       const SizedBox(width: 8),
+                        //       Text(
+                        //         story.ctaLabel,
+                        //         style: context.subtitleLBold?.copyWith(
+                        //           color: DSColors.black,
+                        //         ),
+                        //       ),
+                        //     ],
+                        //   ),
+                        // ),
                             width: double.infinity,
                             height: 56,
                             decoration: BoxDecoration(

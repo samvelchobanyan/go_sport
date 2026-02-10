@@ -11,8 +11,7 @@ class EpisodesListScreen extends ConsumerStatefulWidget {
   const EpisodesListScreen({super.key});
 
   @override
-  ConsumerState<EpisodesListScreen> createState() =>
-      _EpisodesListScreenState();
+  ConsumerState<EpisodesListScreen> createState() => _EpisodesListScreenState();
 }
 
 class _EpisodesListScreenState extends ConsumerState<EpisodesListScreen> {
@@ -134,7 +133,7 @@ class _EpisodesListScreenState extends ConsumerState<EpisodesListScreen> {
                         Text(
                           message,
                           style: context.textL?.copyWith(
-                            color: DSColors.grey60,
+                            color: DSColors.gray60,
                           ),
                         ),
                         const SizedBox(height: 16),
@@ -145,7 +144,7 @@ class _EpisodesListScreenState extends ConsumerState<EpisodesListScreen> {
                       ],
                     ),
                   ),
-                )
+                ),
               ],
             ),
           ),

@@ -72,7 +72,7 @@ class _FavoriteItemRowState extends State<FavoriteItemRow> {
                     Text(
                       widget.subtitle!,
                       style: context.subtitleLSemi?.copyWith(
-                        color: DSColors.grey60,
+                        color: DSColors.gray60,
                       ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,

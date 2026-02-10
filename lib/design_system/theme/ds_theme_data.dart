@@ -27,7 +27,7 @@ class DSThemeData {
         onSurface: DSColors.black,
 
         // Dividers / strokes
-        outlineVariant: DSColors.grey20,
+        outlineVariant: DSColors.gray20,
 
         // Errors
         error: DSColors.errorColor,
@@ -97,16 +97,25 @@ class DSThemeData {
             DSTypography.bodyL, // Заголовок в AppBar обычно 17px SemiBold
       ),
 
-      // Настройка нижнего меню (визуально как на макете)
-      bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+      // Настройка нижнего меню (Material 3 NavigationBar)
+      navigationBarTheme: NavigationBarThemeData(
         backgroundColor: DSColors.white,
-        selectedItemColor: DSColors.black,
-        unselectedItemColor: DSColors.grey50,
-        type: BottomNavigationBarType.fixed,
-        showSelectedLabels: true,
-        showUnselectedLabels: true,
-        selectedLabelStyle: DSTypography.navLabel,
-        unselectedLabelStyle: DSTypography.navLabel,
+        indicatorColor: DSColors.transparent,
+        elevation: 0,
+        height: 69,
+        labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
+        labelTextStyle: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
+            return DSTypography.navLabel.copyWith(color: DSColors.black);
+          }
+          return DSTypography.navLabel.copyWith(color: DSColors.gray50);
+        }),
+        iconTheme: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
+            return const IconThemeData(color: DSColors.black, size: 25);
+          }
+          return const IconThemeData(color: DSColors.gray50, size: 25);
+        }),
       ),
     );
   }

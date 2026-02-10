@@ -21,7 +21,7 @@ mixin _$Playlist {
   String get title => throw _privateConstructorUsedError;
   String get imageUrl => throw _privateConstructorUsedError;
   int get trackCount => throw _privateConstructorUsedError;
-  List<String> get trackIds => throw _privateConstructorUsedError;
+  bool get isLiked => throw _privateConstructorUsedError;
 
   /// Create a copy of Playlist
   /// with the given fields replaced by the non-null parameter values.
@@ -40,7 +40,7 @@ abstract class $PlaylistCopyWith<$Res> {
     String title,
     String imageUrl,
     int trackCount,
-    List<String> trackIds,
+    bool isLiked,
   });
 }
 
@@ -63,7 +63,7 @@ class _$PlaylistCopyWithImpl<$Res, $Val extends Playlist>
     Object? title = null,
     Object? imageUrl = null,
     Object? trackCount = null,
-    Object? trackIds = null,
+    Object? isLiked = null,
   }) {
     return _then(
       _value.copyWith(
@@ -83,10 +83,10 @@ class _$PlaylistCopyWithImpl<$Res, $Val extends Playlist>
                 ? _value.trackCount
                 : trackCount // ignore: cast_nullable_to_non_nullable
                       as int,
-            trackIds: null == trackIds
-                ? _value.trackIds
-                : trackIds // ignore: cast_nullable_to_non_nullable
-                      as List<String>,
+            isLiked: null == isLiked
+                ? _value.isLiked
+                : isLiked // ignore: cast_nullable_to_non_nullable
+                      as bool,
           )
           as $Val,
     );
@@ -107,7 +107,7 @@ abstract class _$$PlaylistImplCopyWith<$Res>
     String title,
     String imageUrl,
     int trackCount,
-    List<String> trackIds,
+    bool isLiked,
   });
 }
 
@@ -129,7 +129,7 @@ class __$$PlaylistImplCopyWithImpl<$Res>
     Object? title = null,
     Object? imageUrl = null,
     Object? trackCount = null,
-    Object? trackIds = null,
+    Object? isLiked = null,
   }) {
     return _then(
       _$PlaylistImpl(
@@ -149,10 +149,10 @@ class __$$PlaylistImplCopyWithImpl<$Res>
             ? _value.trackCount
             : trackCount // ignore: cast_nullable_to_non_nullable
                   as int,
-        trackIds: null == trackIds
-            ? _value._trackIds
-            : trackIds // ignore: cast_nullable_to_non_nullable
-                  as List<String>,
+        isLiked: null == isLiked
+            ? _value.isLiked
+            : isLiked // ignore: cast_nullable_to_non_nullable
+                  as bool,
       ),
     );
   }
@@ -166,8 +166,8 @@ class _$PlaylistImpl implements _Playlist {
     required this.title,
     required this.imageUrl,
     required this.trackCount,
-    final List<String> trackIds = const [],
-  }) : _trackIds = trackIds;
+    this.isLiked = false,
+  });
 
   @override
   final String id;
@@ -177,18 +177,13 @@ class _$PlaylistImpl implements _Playlist {
   final String imageUrl;
   @override
   final int trackCount;
-  final List<String> _trackIds;
   @override
   @JsonKey()
-  List<String> get trackIds {
-    if (_trackIds is EqualUnmodifiableListView) return _trackIds;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_trackIds);
-  }
+  final bool isLiked;
 
   @override
   String toString() {
-    return 'Playlist(id: $id, title: $title, imageUrl: $imageUrl, trackCount: $trackCount, trackIds: $trackIds)';
+    return 'Playlist(id: $id, title: $title, imageUrl: $imageUrl, trackCount: $trackCount, isLiked: $isLiked)';
   }
 
   @override
@@ -202,18 +197,12 @@ class _$PlaylistImpl implements _Playlist {
                 other.imageUrl == imageUrl) &&
             (identical(other.trackCount, trackCount) ||
                 other.trackCount == trackCount) &&
-            const DeepCollectionEquality().equals(other._trackIds, _trackIds));
+            (identical(other.isLiked, isLiked) || other.isLiked == isLiked));
   }
 
   @override
-  int get hashCode => Object.hash(
-    runtimeType,
-    id,
-    title,
-    imageUrl,
-    trackCount,
-    const DeepCollectionEquality().hash(_trackIds),
-  );
+  int get hashCode =>
+      Object.hash(runtimeType, id, title, imageUrl, trackCount, isLiked);
 
   /// Create a copy of Playlist
   /// with the given fields replaced by the non-null parameter values.
@@ -230,7 +219,7 @@ abstract class _Playlist implements Playlist {
     required final String title,
     required final String imageUrl,
     required final int trackCount,
-    final List<String> trackIds,
+    final bool isLiked,
   }) = _$PlaylistImpl;
 
   @override
@@ -242,7 +231,7 @@ abstract class _Playlist implements Playlist {
   @override
   int get trackCount;
   @override
-  List<String> get trackIds;
+  bool get isLiked;
 
   /// Create a copy of Playlist
   /// with the given fields replaced by the non-null parameter values.

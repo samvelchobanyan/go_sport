@@ -5,6 +5,7 @@ import 'media_card_shell.dart';
 import 'count_badge.dart';
 
 class PlaylistCard extends StatelessWidget {
+  final String id;
   final String title;
   final String imageUrl;
   final int trackCount;
@@ -12,6 +13,7 @@ class PlaylistCard extends StatelessWidget {
 
   const PlaylistCard({
     super.key,
+    required this.id,
     required this.title,
     required this.imageUrl,
     required this.trackCount,
@@ -28,10 +30,13 @@ class PlaylistCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             MediaCardShell(
-              child: Image.network(
-                imageUrl,
-                fit: BoxFit.cover,
-                errorBuilder: (_, __, ___) => Container(color: DSColors.grey20),
+              child: Hero(
+                tag: 'playlist-image-$id',
+                child: Image.network(
+                  imageUrl,
+                  fit: BoxFit.cover,
+                  errorBuilder: (_, __, ___) => Container(color: DSColors.gray20),
+                ),
               ),
             ),
             const SizedBox(height: 6),
