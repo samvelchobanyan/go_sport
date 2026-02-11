@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'widgets/player_top_bar.dart';
+import 'widgets/player_control_panel.dart';
 import 'package:flutter/services.dart';
 
 class FullPlayerScreen extends ConsumerWidget {
@@ -50,7 +51,7 @@ class FullPlayerScreen extends ConsumerWidget {
                   const Expanded(
                     child: SizedBox(), // TODO: PlayerArtworkCarousel
                   ),
-                  // TODO: PlayerControlPanel (with SeekBar inside)
+                  const PlayerControlPanel()
                 ],
               ),
             ),
