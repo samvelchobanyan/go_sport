@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'widgets/player_top_bar.dart';
+import 'widgets/animated_gradient.dart';
 import 'widgets/player_control_panel.dart';
-import 'package:flutter/services.dart';
 
 class FullPlayerScreen extends ConsumerWidget {
   const FullPlayerScreen({super.key});
@@ -15,7 +15,7 @@ class FullPlayerScreen extends ConsumerWidget {
       isScrollControlled: true,
       useRootNavigator: true,
       backgroundColor: DSColors.transparent,
-      barrierColor: DSColors.black.withOpacity(0.8),
+      barrierColor: DSColors.black.withOpacity(0.3),
       enableDrag: true,
       builder: (context) => const FullPlayerScreen(),
     );
@@ -23,40 +23,41 @@ class FullPlayerScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle.light,
-      child: Scaffold(
-        backgroundColor: DSColors.transparent,
-        body: Stack(
-          children: [
-            // Background gradient (edge-to-edge, behind status bar)
-            Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    DSColors.blue.withOpacity(0.08),
-                    DSColors.blue.withOpacity(0.15),
-                  ],
+    return Scaffold(
+      backgroundColor: DSColors.transparent,
+      body: Stack(
+        children: [
+          // Background gradient (edge-to-edge, behind status bar)
+          // Container(
+          //   decoration: BoxDecoration(
+          //     gradient: LinearGradient(
+          //       begin: Alignment.topCenter,
+          //       end: Alignment.bottomCenter,
+          //       colors: [
+          //         const Color(0xFFF3F4FF),
+          //         const Color(0xFFE8EAFF),
+          //       ],
+          //     ),
+          //   ),
+          // ),
+          const AnimatedGradientBlobs(),
+
+          // Content (respects safe area)
+          SafeArea(
+            child: Column(
+              children: [
+                const PlayerTopBar(),
+                const Expanded(
+                  child: SizedBox(), // TODO: PlayerArtworkCarousel
                 ),
-              ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.42,
+                  child: const PlayerControlPanel(),
+                ),
+              ],
             ),
-      
-            // Content (respects safe area)
-            SafeArea(
-              child: Column(
-                children: [
-                  const PlayerTopBar(),
-                  const Expanded(
-                    child: SizedBox(), // TODO: PlayerArtworkCarousel
-                  ),
-                  const PlayerControlPanel()
-                ],
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
