@@ -26,7 +26,7 @@ class PlayerControlPanel extends ConsumerWidget {
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(
-          horizontal: DSSpacing.l,
+          horizontal: 48,
           vertical: DSSpacing.m,
         ),
         child: Column(
@@ -35,18 +35,20 @@ class PlayerControlPanel extends ConsumerWidget {
             // Track info row
             _buildTrackInfo(context, track),
 
-            const SizedBox(height: DSSpacing.m),
+            const SizedBox(height: 25),
 
             // TODO: PlayerSeekBar
-            const SizedBox(height: DSSpacing.xl),
+            const SizedBox(height: 40),
 
             // Playback controls
             _buildControls(context, ref, info.isPlaying, info.status),
 
-            const SizedBox(height: DSSpacing.m),
+            const Spacer(),
 
             // Shuffle & Repeat
             _buildBottomActions(context),
+
+            const SizedBox(height: 16),
 
             // Bottom safe area padding
             SizedBox(height: MediaQuery.of(context).padding.bottom),
@@ -67,8 +69,8 @@ class PlayerControlPanel extends ConsumerWidget {
         ClipRRect(
           borderRadius: BorderRadius.circular(DSRadius.xs),
           child: SizedBox(
-            width: 48,
-            height: 48,
+            width: 36,
+            height: 36,
             child: imageUrl != null
                 ? Image.network(imageUrl, fit: BoxFit.cover)
                 : Container(
@@ -78,7 +80,7 @@ class PlayerControlPanel extends ConsumerWidget {
           ),
         ),
 
-        const SizedBox(width: DSSpacing.m),
+        const SizedBox(width: 8),
 
         // Title + Artist
         Expanded(
@@ -104,17 +106,27 @@ class PlayerControlPanel extends ConsumerWidget {
           ),
         ),
 
-        const SizedBox(width: DSSpacing.m),
+        const SizedBox(width: 8),
 
         // Like button
         GestureDetector(
           onTap: () {
             // TODO: wire like action
           },
-          child: const DSHeartIcon(
-            color: DSColors.orange,
-            size: 32,
-            isFilled: false,
+          child: Container(
+            width: 48,
+            height: 48,
+            decoration: const BoxDecoration(
+              color: DSColors.white,
+              shape: BoxShape.circle,
+            ),
+            child: const Center(
+              child: DSHeartIcon(
+                color: DSColors.orange,
+                size: 38,
+                isFilled: false,
+              ),
+            ),
           ),
         ),
       ],
@@ -130,7 +142,7 @@ class PlayerControlPanel extends ConsumerWidget {
     final isLoading = status == PlayerStatus.loading;
 
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         // Previous
         GestureDetector(
@@ -145,8 +157,6 @@ class PlayerControlPanel extends ConsumerWidget {
             ),
           ),
         ),
-
-        const SizedBox(width: DSSpacing.xl),
 
         // Play / Pause (large circular button)
         GestureDetector(
@@ -182,8 +192,6 @@ class PlayerControlPanel extends ConsumerWidget {
             ),
           ),
         ),
-
-        const SizedBox(width: DSSpacing.xl),
 
         // Next
         GestureDetector(

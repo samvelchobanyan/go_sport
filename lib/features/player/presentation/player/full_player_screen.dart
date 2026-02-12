@@ -4,6 +4,7 @@ import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'widgets/player_top_bar.dart';
 import 'widgets/animated_gradient.dart';
 import 'widgets/player_control_panel.dart';
+import 'widgets/player_fluid_background.dart';
 
 class FullPlayerScreen extends ConsumerWidget {
   const FullPlayerScreen({super.key});
@@ -40,22 +41,39 @@ class FullPlayerScreen extends ConsumerWidget {
           //     ),
           //   ),
           // ),
-          const AnimatedGradientBlobs(),
+          // const AnimatedGradientBlobs(),
+          PlayerFluidBackground(
+            colors: [
+              // Объект 1 (Фиолетовые тона)
+              const Color(0xFF404AC3), const Color(0xFF441BBF),
+              // Объект 2 (Сине-голубые)
+              const Color(0xFF404AC3), const Color(0xFFF15E22),
+              // Объект 3 (Розово-красные)
+              const Color(0xFFDC2828), const Color(0xFFF15E22),
+              // Объект 4 (Глубокие индиго)
+              const Color(0xFF2870DC), const Color(0xFFEBD300),
+              // Объект 5 (Маджента)
+              const Color(0xFF2870DC), const Color(0xFFDC2828),
+              // Объект 6 (Бирюза/Мята)
+              const Color(0xFFEBD300), const Color(0xFF2870DC),
+            ],
+          ),
 
           // Content (respects safe area)
-          SafeArea(
-            child: Column(
-              children: [
-                const PlayerTopBar(),
-                const Expanded(
-                  child: SizedBox(), // TODO: PlayerArtworkCarousel
-                ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.42,
-                  child: const PlayerControlPanel(),
-                ),
-              ],
-            ),
+          Column(
+            children: [
+              const SafeArea(
+                bottom: false,
+                child: PlayerTopBar(),
+              ),
+              const Expanded(
+                child: SizedBox(), // TODO: PlayerArtworkCarousel
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.48,
+                child: const PlayerControlPanel(),
+              ),
+            ],
           ),
         ],
       ),

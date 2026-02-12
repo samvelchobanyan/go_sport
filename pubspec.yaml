@@ -42,6 +42,9 @@ flutter:
     - assets/icons/
     - assets/images/
 
+  shaders:
+    - lib/features/player/presentation/player/shaders/fluid_blur.frag  
+
   fonts:
     - family: Montserrat  # Используем для основного текста
       fonts:
