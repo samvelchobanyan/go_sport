@@ -58,7 +58,8 @@ class FullPlayerScreen extends ConsumerWidget {
           //     const Color(0xFFEBD300), const Color(0xFF2870DC),
           //   ],
           // ),
-          const PlayerFluidBackground(scale: 1.7, opacity: 0.9),
+          Container(color: Colors.white),
+          const PlayerFluidBackground(scale: 1.7, opacity: 0.65),
 
           // Content (respects safe area)
           SafeArea(

@@ -105,5 +105,5 @@ void main() {
 
   vec3 finalColor = tintA * tintB;
 
-  fragColor = vec4(finalColor, 1.0);
+  fragColor = vec4(finalColor, uOpacity);
 }
