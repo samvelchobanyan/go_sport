@@ -41,9 +41,11 @@ flutter:
   assets:
     - assets/icons/
     - assets/images/
+    - assets/blobs/sdf/
 
   shaders:
     - lib/features/player/presentation/player/shaders/fluid_blur.frag  
+    - lib/features/player/presentation/player/shaders/blob.frag  
 
   fonts:
     - family: Montserrat  # Используем для основного текста

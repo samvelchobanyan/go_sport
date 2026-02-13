@@ -3,53 +3,58 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
 class PlayerFluidBackground extends StatefulWidget {
-  final List<Color> colors;
-
   const PlayerFluidBackground({
     super.key,
-    required this.colors,
-  }) : assert(colors.length == 12, 'Нужно 12 цветов');
+    this.secondsPerStep = 2.6,
+    this.scale = 1.45,
+    this.opacity = 0.5, // 50% прозрачность
+  });
+
+  final double secondsPerStep;
+  final double scale;
+  final double opacity;
 
   @override
   State<PlayerFluidBackground> createState() => _PlayerFluidBackgroundState();
 }
 
-class _PlayerFluidBackgroundState extends State<PlayerFluidBackground> with SingleTickerProviderStateMixin {
-  ui.FragmentShader? _shader;
-  late Ticker _ticker;
-  double _elapsed = 0;
+class _PlayerFluidBackgroundState extends State<PlayerFluidBackground>
+    with SingleTickerProviderStateMixin {
+  ui.FragmentProgram? _program;
+  late final Ticker _ticker;
+
+  Duration _last = Duration.zero;
+  double _progress = 0.0; // continuous 0..6
 
   @override
   void initState() {
     super.initState();
-    _loadShader();
-    
-    // Инициализация тикера
+    _init();
+
     _ticker = createTicker((elapsed) {
-      if (mounted) {
-        setState(() {
-            double customSpeed = 1;
-          _elapsed = (elapsed.inMilliseconds / 1000.0) * customSpeed;
-        });
+      if (_last == Duration.zero) {
+        _last = elapsed;
+        return;
       }
-    });
-    
-    _ticker.start();
-    // debugPrint('[FLUID_DEBUG] Ticker started');
+
+      final dt = elapsed - _last;
+      _last = elapsed;
+
+      final add = dt.inMicroseconds / 1e6 / widget.secondsPerStep;
+
+      setState(() {
+        _progress = (_progress + add) % 6.0;
+      });
+    })..start();
   }
 
-  Future<void> _loadShader() async {
-    try {
-      final program = await ui.FragmentProgram.fromAsset(
-        'lib/features/player/presentation/player/shaders/fluid_blur.frag',
-      );
-      setState(() {
-        _shader = program.fragmentShader();
-      });
-      // debugPrint('[FLUID_DEBUG] Shader loaded successfully');
-    } catch (e) {
-      debugPrint('[FLUID_DEBUG] Error loading shader: $e');
-    }
+  Future<void> _init() async {
+    final program = await ui.FragmentProgram.fromAsset(
+      'lib/features/player/presentation/player/shaders/blob.frag',
+    );
+
+    if (!mounted) return;
+    setState(() => _program = program);
   }
 
   @override
@@ -60,56 +65,54 @@ class _PlayerFluidBackgroundState extends State<PlayerFluidBackground> with Sing
 
   @override
   Widget build(BuildContext context) {
-    if (_shader == null) {
-      return Container(color: Colors.black);
-    }
+    final program = _program;
+    if (program == null) return const SizedBox.expand();
 
     return CustomPaint(
-      painter: _FluidShaderPainter(
-        shader: _shader!,
-        time: _elapsed,
-        colors: widget.colors,
+      painter: _ProcBlobPainter(
+        program: program,
+        progress: _progress,
+        scale: widget.scale,
+        opacity: widget.opacity.clamp(0.0, 1.0),
       ),
       child: const SizedBox.expand(),
     );
   }
 }
 
-class _FluidShaderPainter extends CustomPainter {
-  final ui.FragmentShader shader;
-  final double time;
-  final List<Color> colors;
-
-  _FluidShaderPainter({
-    required this.shader,
-    required this.time,
-    required this.colors,
+class _ProcBlobPainter extends CustomPainter {
+  _ProcBlobPainter({
+    required this.program,
+    required this.progress,
+    required this.scale,
+    required this.opacity,
   });
+
+  final ui.FragmentProgram program;
+  final double progress;
+  final double scale;
+  final double opacity;
 
   @override
   void paint(Canvas canvas, Size size) {
-    // Этот лог будет срабатывать каждый кадр. 
-    // Если цифры бегут — Flutter отрисовывает анимацию.
-    // debugPrint('[FLUID_DEBUG] Painting frame at time: ${time.toStringAsFixed(3)}');
+    final shader = program.fragmentShader();
 
+    // uniforms order:
+    // uResolution(vec2), uProgress(float), uScale(float), uOpacity(float)
     shader.setFloat(0, size.width);
     shader.setFloat(1, size.height);
-    shader.setFloat(2, time);
+    shader.setFloat(2, progress);
+    shader.setFloat(3, scale);
+    shader.setFloat(4, opacity);
 
-    for (int i = 0; i < 12; i++) {
-      final int offset = 3 + (i * 4);
-      shader.setFloat(offset, colors[i].red / 255.0);
-      shader.setFloat(offset + 1, colors[i].green / 255.0);
-      shader.setFloat(offset + 2, colors[i].blue / 255.0);
-      shader.setFloat(offset + 3, 1.0);
-    }
-
-    canvas.drawRect(Offset.zero & size, Paint()..shader = shader);
+    final paint = Paint()..shader = shader;
+    canvas.drawRect(Offset.zero & size, paint);
   }
 
   @override
-  bool shouldRepaint(covariant _FluidShaderPainter oldDelegate) {
-    // Всегда true для дебага, чтобы исключить блокировку перерисовки
-    return true; 
+  bool shouldRepaint(covariant _ProcBlobPainter oldDelegate) {
+    return oldDelegate.progress != progress ||
+        oldDelegate.scale != scale ||
+        oldDelegate.opacity != opacity;
   }
 }

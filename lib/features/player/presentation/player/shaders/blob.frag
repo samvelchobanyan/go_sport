@@ -5,6 +5,7 @@ precision highp float;
 uniform vec2 uResolution;
 uniform float uProgress; // continuous 0..6 looping
 uniform float uScale;    // 1.0 normal, 1.3..1.6 bigger
+uniform float uOpacity;  // 0.0 - 1.0
 
 out vec4 fragColor;
 
