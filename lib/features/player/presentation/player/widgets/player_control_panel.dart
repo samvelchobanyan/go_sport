@@ -69,8 +69,8 @@ class PlayerControlPanel extends ConsumerWidget {
         ClipRRect(
           borderRadius: BorderRadius.circular(DSRadius.xs),
           child: SizedBox(
-            width: 36,
-            height: 36,
+            width: 45,
+            height: 45,
             child: imageUrl != null
                 ? Image.network(imageUrl, fit: BoxFit.cover)
                 : Container(

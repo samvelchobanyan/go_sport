@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'widgets/player_top_bar.dart';
-import 'widgets/animated_gradient.dart';
+import 'widgets/player_artwork_carousel.dart';
 import 'widgets/player_control_panel.dart';
 import 'widgets/player_fluid_background.dart';
 
@@ -67,7 +67,9 @@ class FullPlayerScreen extends ConsumerWidget {
                 child: PlayerTopBar(),
               ),
               const Expanded(
-                child: SizedBox(), // TODO: PlayerArtworkCarousel
+                child: Center(
+                  child: PlayerArtworkCarousel(),
+                ),
               ),
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.48,
