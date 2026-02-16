@@ -10,6 +10,23 @@ final playerProgressProvider = Provider<double>((ref) {
   return ref.watch(playerStateProvider.select((s) => s.progress));
 });
 
+/// SeekBar data: position, buffered, duration + seek permission
+/// Updates ~5 times/sec — only SeekBar should watch this
+final playerSeekBarProvider = Provider<({
+  Duration position,
+  Duration bufferedPosition,
+  Duration duration,
+  bool canSeek,
+})>((ref) {
+  return ref.watch(playerStateProvider.select((s) => (
+    position: s.position,
+    bufferedPosition: s.bufferedPosition,
+    duration: s.effectiveDuration,
+    canSeek: s.effectiveDuration > Duration.zero &&
+             s.status != PlayerStatus.loading,
+  )));
+});
+
 /// All player info except position-related fields
 /// Updates only on: track change, play/pause, mode switch, radio metadata
 final playerInfoProvider = Provider<({

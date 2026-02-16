@@ -93,15 +93,24 @@ extension PlayerStateX on PlayerState {
   /// Has previous track in queue
   bool get hasPrevious => currentIndex > 0;
 
+  /// Actual duration: prefer player-reported duration, fallback to track metadata
+  Duration get effectiveDuration =>
+      totalDuration > Duration.zero
+          ? totalDuration
+          : (currentTrack?.duration ?? Duration.zero);
+
   /// Progress 0.0 - 1.0
   double get progress {
-    // Prefer actual player duration over track metadata
-    final durationMs = totalDuration.inMilliseconds > 0 
-        ? totalDuration.inMilliseconds 
-        : (currentTrack?.duration.inMilliseconds ?? 0);
-        
+    final durationMs = effectiveDuration.inMilliseconds;
     if (durationMs == 0) return 0;
     return position.inMilliseconds / durationMs;
+  }
+
+  /// Buffered progress 0.0 - 1.0
+  double get bufferedProgress {
+    final durationMs = effectiveDuration.inMilliseconds;
+    if (durationMs == 0) return 0;
+    return bufferedPosition.inMilliseconds / durationMs;
   }
 
   /// Is currently playing
