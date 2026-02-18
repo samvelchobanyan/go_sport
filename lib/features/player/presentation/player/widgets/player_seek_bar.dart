@@ -48,19 +48,19 @@ class _PlayerSeekBarState extends ConsumerState<PlayerSeekBar> {
       children: [
         SliderTheme(
           data: SliderThemeData(
-            trackHeight: 3.0,
+            trackHeight: 2.0,
             activeTrackColor: DSColors.blue,
-            inactiveTrackColor: DSColors.white.withValues(alpha: 0.3),
-            secondaryActiveTrackColor: DSColors.white.withValues(alpha: 0.5),
+            inactiveTrackColor: DSColors.blue.withValues(alpha: 0.2),
+            secondaryActiveTrackColor: DSColors.blue.withValues(alpha: 0.5),
             thumbShape: const _RoundedRectThumbShape(
-              width: 12.0,
-              height: 20.0,
-              radius: 4.0,
+              width: 6.0,
+              height: 14.0,
+              radius: 3.0,
             ),
             thumbColor: DSColors.blue,
             overlayShape: const RoundSliderOverlayShape(overlayRadius: 20.0),
             overlayColor: DSColors.blue.withValues(alpha: 0.12),
-            trackShape: const RoundedRectSliderTrackShape(),
+            trackShape: const _FullWidthTrackShape(),
           ),
           child: Slider(
             value: _dragValue,
@@ -85,25 +85,23 @@ class _PlayerSeekBarState extends ConsumerState<PlayerSeekBar> {
                 : null,
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: DSSpacing.m),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                _formatDuration(
-                  Duration(
-                    milliseconds: (_dragValue * durationMs).round(),
-                  ),
+        const SizedBox(height: 8),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              _formatDuration(
+                Duration(
+                  milliseconds: (_dragValue * durationMs).round(),
                 ),
-                style: context.textL?.copyWith(color: DSColors.white),
               ),
-              Text(
-                _formatDuration(seekBar.duration),
-                style: context.textL?.copyWith(color: DSColors.white),
-              ),
-            ],
-          ),
+              style: context.textL?.copyWith(color: DSColors.black),
+            ),
+            Text(
+              _formatDuration(seekBar.duration),
+              style: context.textL?.copyWith(color: DSColors.black),
+            ),
+          ],
         ),
       ],
     );
@@ -118,6 +116,27 @@ class _PlayerSeekBarState extends ConsumerState<PlayerSeekBar> {
       return '$hours:$minutes:$seconds';
     }
     return '$minutes:$seconds';
+  }
+}
+
+// === Custom Track Shape (full width, no overlay padding) ===
+
+class _FullWidthTrackShape extends RoundedRectSliderTrackShape {
+  const _FullWidthTrackShape();
+
+  @override
+  Rect getPreferredRect({
+    required RenderBox parentBox,
+    Offset offset = Offset.zero,
+    required SliderThemeData sliderTheme,
+    bool isEnabled = false,
+    bool isDiscrete = false,
+  }) {
+    final trackHeight = sliderTheme.trackHeight ?? 2.0;
+    final trackLeft = offset.dx;
+    final trackTop = offset.dy + (parentBox.size.height - trackHeight) / 2;
+    final trackWidth = parentBox.size.width;
+    return Rect.fromLTWH(trackLeft, trackTop, trackWidth, trackHeight);
   }
 }
 
@@ -169,9 +188,9 @@ class _RoundedRectThumbShape extends SliderComponentShape {
 
     // Border
     final borderPaint = Paint()
-      ..color = DSColors.white.withValues(alpha: 0.6)
+      ..color = DSColors.white
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 1.5;
+      ..strokeWidth = 1.0;
     canvas.drawRRect(rect, borderPaint);
   }
 }

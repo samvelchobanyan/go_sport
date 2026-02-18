@@ -9,6 +9,8 @@ import 'package:go_sport/design_system/components/icons/ds_heart_icon.dart';
 import 'package:go_sport/domain/state/player_state.dart';
 import 'package:go_sport/domain/state/player_state_selectors.dart';
 
+import 'player_seek_bar.dart';
+
 class PlayerControlPanel extends ConsumerWidget {
   const PlayerControlPanel({super.key});
 
@@ -37,7 +39,7 @@ class PlayerControlPanel extends ConsumerWidget {
 
             const SizedBox(height: 25),
 
-            // TODO: PlayerSeekBar
+            const PlayerSeekBar(),
             const SizedBox(height: 40),
 
             // Playback controls
@@ -46,7 +48,12 @@ class PlayerControlPanel extends ConsumerWidget {
             const Spacer(),
 
             // Shuffle & Repeat
-            _buildBottomActions(context),
+            _buildBottomActions(
+              context,
+              ref,
+              shuffleEnabled: info.shuffleEnabled,
+              repeatMode: info.repeatMode,
+            ),
 
             const SizedBox(height: 16),
 
@@ -210,38 +217,71 @@ class PlayerControlPanel extends ConsumerWidget {
     );
   }
 
-  Widget _buildBottomActions(BuildContext context) {
+  Widget _buildBottomActions(
+    BuildContext context,
+    WidgetRef ref, {
+    required bool shuffleEnabled,
+    required RepeatMode repeatMode,
+  }) {
+    final repeatActive = repeatMode != RepeatMode.off;
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         // Shuffle
         GestureDetector(
-          onTap: () {
-            // TODO: wire shuffle action
-          },
-          child: SvgPicture.asset(
-            'assets/icons/shuffle.svg',
-            width: 24,
-            height: 24,
-            colorFilter: const ColorFilter.mode(
-              DSColors.blue,
-              BlendMode.srcIn,
+          onTap: () =>
+              ref.read(playerStateProvider.notifier).toggleShuffle(),
+          child: Opacity(
+            opacity: shuffleEnabled ? 1.0 : 0.4,
+            child: SvgPicture.asset(
+              'assets/icons/shuffle.svg',
+              width: 24,
+              height: 24,
+              colorFilter: const ColorFilter.mode(
+                DSColors.blue,
+                BlendMode.srcIn,
+              ),
             ),
           ),
         ),
 
         // Repeat
         GestureDetector(
-          onTap: () {
-            // TODO: wire repeat action
-          },
-          child: SvgPicture.asset(
-            'assets/icons/repeat.svg',
-            width: 24,
-            height: 24,
-            colorFilter: const ColorFilter.mode(
-              DSColors.blue,
-              BlendMode.srcIn,
+          onTap: () =>
+              ref.read(playerStateProvider.notifier).cycleRepeatMode(),
+          child: Opacity(
+            opacity: repeatActive ? 1.0 : 0.4,
+            child: Stack(
+              clipBehavior: Clip.none,
+              children: [
+                SvgPicture.asset(
+                  'assets/icons/repeat.svg',
+                  width: 24,
+                  height: 24,
+                  colorFilter: const ColorFilter.mode(
+                    DSColors.blue,
+                    BlendMode.srcIn,
+                  ),
+                ),
+                if (repeatMode == RepeatMode.one)
+                  Positioned(
+                    right: -1,
+                    bottom: -1,
+                    child: Container(
+                      width: 6,
+                      height: 6,
+                      decoration: BoxDecoration(
+                        color: DSColors.blue,
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: DSColors.white,
+                          width: 1,
+                        ),
+                      ),
+                    ),
+                  ),
+              ],
             ),
           ),
         ),

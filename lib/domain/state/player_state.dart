@@ -4,6 +4,8 @@ import 'package:audio_service/audio_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import 'package:just_audio/just_audio.dart';
+
 import '../entities/track.dart';
 import '../../core/audio/app_audio_handler.dart';
 import '../../core/di/audio_providers.dart';
@@ -24,6 +26,12 @@ enum PlayerStatus {
 enum PlaybackMode {
   music,
   radio,
+}
+
+enum RepeatMode {
+  off,
+  all,
+  one,
 }
 
 // === Queue Source ===
@@ -67,6 +75,10 @@ class PlayerState with _$PlayerState {
     @Default(Duration.zero) Duration position,
     @Default(Duration.zero) Duration bufferedPosition,
     @Default(Duration.zero) Duration totalDuration,
+
+    // Shuffle & Repeat
+    @Default(false) bool shuffleEnabled,
+    @Default(RepeatMode.off) RepeatMode repeatMode,
 
     // Radio
     String? radioTitle,
@@ -244,6 +256,22 @@ class PlayerNotifier extends Notifier<PlayerState> {
     }
 
     state = state.copyWith(status: newStatus);
+
+    // Sync shuffle mode from audio handler
+    final shuffleEnabled = playbackState.shuffleMode == AudioServiceShuffleMode.all;
+    if (state.shuffleEnabled != shuffleEnabled) {
+      state = state.copyWith(shuffleEnabled: shuffleEnabled);
+    }
+
+    // Sync repeat mode from audio handler
+    final repeatMode = const {
+      AudioServiceRepeatMode.none: RepeatMode.off,
+      AudioServiceRepeatMode.all: RepeatMode.all,
+      AudioServiceRepeatMode.one: RepeatMode.one,
+    }[playbackState.repeatMode] ?? RepeatMode.off;
+    if (state.repeatMode != repeatMode) {
+      state = state.copyWith(repeatMode: repeatMode);
+    }
   }
 
   // === Public methods ===
@@ -322,6 +350,49 @@ class PlayerNotifier extends Notifier<PlayerState> {
   /// Skip to specific track index
   Future<void> skipTo(int index) async {
     await _audioHandler.skipToQueueItem(index);
+  }
+
+  // === Shuffle & Repeat ===
+
+  /// Toggle shuffle mode
+  Future<void> toggleShuffle() async {
+    final previous = state.shuffleEnabled;
+    final next = !previous;
+
+    // Optimistic UI update
+    state = state.copyWith(shuffleEnabled: next);
+
+    try {
+      await _audioHandler.setShuffleEnabled(next);
+    } catch (e) {
+      // Rollback on failure; playbackState sync will correct as well
+      state = state.copyWith(shuffleEnabled: previous);
+    }
+  }
+
+  /// Cycle repeat mode: off → all → one → off
+  Future<void> cycleRepeatMode() async {
+    final previous = state.repeatMode;
+    final next = switch (previous) {
+      RepeatMode.off => RepeatMode.all,
+      RepeatMode.all => RepeatMode.one,
+      RepeatMode.one => RepeatMode.off,
+    };
+    final loopMode = switch (next) {
+      RepeatMode.off => LoopMode.off,
+      RepeatMode.all => LoopMode.all,
+      RepeatMode.one => LoopMode.one,
+    };
+
+    // Optimistic UI update
+    state = state.copyWith(repeatMode: next);
+
+    try {
+      await _audioHandler.setLoopMode(loopMode);
+    } catch (e) {
+      // Rollback on failure; playbackState sync will correct as well
+      state = state.copyWith(repeatMode: previous);
+    }
   }
 
   // === Radio ===

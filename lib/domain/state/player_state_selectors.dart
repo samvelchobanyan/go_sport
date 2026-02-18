@@ -38,6 +38,8 @@ final playerInfoProvider = Provider<({
   String? radioTitle,
   String? radioImageUrl,
   String? radioNowPlaying,
+  bool shuffleEnabled,
+  RepeatMode repeatMode,
 })>((ref) {
   return ref.watch(playerStateProvider.select((s) => (
     track: s.currentTrack,
@@ -48,5 +50,7 @@ final playerInfoProvider = Provider<({
     radioTitle: s.radioTitle,
     radioImageUrl: s.radioImageUrl,
     radioNowPlaying: s.radioNowPlaying,
+    shuffleEnabled: s.shuffleEnabled,
+    repeatMode: s.repeatMode,
   )));
 });

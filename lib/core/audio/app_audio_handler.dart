@@ -46,6 +46,14 @@ class AppAudioHandler extends BaseAudioHandler with QueueHandler, SeekHandler {
         bufferedPosition: _player.bufferedPosition,
         speed: _player.speed,
         queueIndex: event.currentIndex,
+        shuffleMode: _player.shuffleModeEnabled
+            ? AudioServiceShuffleMode.all
+            : AudioServiceShuffleMode.none,
+        repeatMode: const {
+          LoopMode.off: AudioServiceRepeatMode.none,
+          LoopMode.all: AudioServiceRepeatMode.all,
+          LoopMode.one: AudioServiceRepeatMode.one,
+        }[_player.loopMode]!,
       ));
     });
 
@@ -176,6 +184,19 @@ class AppAudioHandler extends BaseAudioHandler with QueueHandler, SeekHandler {
     // 3. Load and play the stream
     await _player.setAudioSource(AudioSource.uri(Uri.parse(url)));
     await _player.play();
+  }
+
+  // === Shuffle & Repeat ===
+
+  /// Enable or disable shuffle mode.
+  Future<void> setShuffleEnabled(bool enabled) async {
+    await _player.setShuffleModeEnabled(enabled);
+    if (enabled) await _player.shuffle();
+  }
+
+  /// Set loop/repeat mode.
+  Future<void> setLoopMode(LoopMode mode) async {
+    await _player.setLoopMode(mode);
   }
 
   /// ICY metadata stream for live radio (current song info)

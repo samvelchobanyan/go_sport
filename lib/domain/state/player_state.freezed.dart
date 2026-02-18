@@ -687,7 +687,10 @@ mixin _$PlayerState {
   PlayerStatus get status => throw _privateConstructorUsedError;
   Duration get position => throw _privateConstructorUsedError;
   Duration get bufferedPosition => throw _privateConstructorUsedError;
-  Duration get totalDuration => throw _privateConstructorUsedError; // Radio
+  Duration get totalDuration =>
+      throw _privateConstructorUsedError; // Shuffle & Repeat
+  bool get shuffleEnabled => throw _privateConstructorUsedError;
+  RepeatMode get repeatMode => throw _privateConstructorUsedError; // Radio
   String? get radioTitle => throw _privateConstructorUsedError;
   String? get radioStreamUrl => throw _privateConstructorUsedError;
   String? get radioImageUrl => throw _privateConstructorUsedError;
@@ -719,6 +722,8 @@ abstract class $PlayerStateCopyWith<$Res> {
     Duration position,
     Duration bufferedPosition,
     Duration totalDuration,
+    bool shuffleEnabled,
+    RepeatMode repeatMode,
     String? radioTitle,
     String? radioStreamUrl,
     String? radioImageUrl,
@@ -752,6 +757,8 @@ class _$PlayerStateCopyWithImpl<$Res, $Val extends PlayerState>
     Object? position = null,
     Object? bufferedPosition = null,
     Object? totalDuration = null,
+    Object? shuffleEnabled = null,
+    Object? repeatMode = null,
     Object? radioTitle = freezed,
     Object? radioStreamUrl = freezed,
     Object? radioImageUrl = freezed,
@@ -792,6 +799,14 @@ class _$PlayerStateCopyWithImpl<$Res, $Val extends PlayerState>
                 ? _value.totalDuration
                 : totalDuration // ignore: cast_nullable_to_non_nullable
                       as Duration,
+            shuffleEnabled: null == shuffleEnabled
+                ? _value.shuffleEnabled
+                : shuffleEnabled // ignore: cast_nullable_to_non_nullable
+                      as bool,
+            repeatMode: null == repeatMode
+                ? _value.repeatMode
+                : repeatMode // ignore: cast_nullable_to_non_nullable
+                      as RepeatMode,
             radioTitle: freezed == radioTitle
                 ? _value.radioTitle
                 : radioTitle // ignore: cast_nullable_to_non_nullable
@@ -850,6 +865,8 @@ abstract class _$$PlayerStateImplCopyWith<$Res>
     Duration position,
     Duration bufferedPosition,
     Duration totalDuration,
+    bool shuffleEnabled,
+    RepeatMode repeatMode,
     String? radioTitle,
     String? radioStreamUrl,
     String? radioImageUrl,
@@ -883,6 +900,8 @@ class __$$PlayerStateImplCopyWithImpl<$Res>
     Object? position = null,
     Object? bufferedPosition = null,
     Object? totalDuration = null,
+    Object? shuffleEnabled = null,
+    Object? repeatMode = null,
     Object? radioTitle = freezed,
     Object? radioStreamUrl = freezed,
     Object? radioImageUrl = freezed,
@@ -923,6 +942,14 @@ class __$$PlayerStateImplCopyWithImpl<$Res>
             ? _value.totalDuration
             : totalDuration // ignore: cast_nullable_to_non_nullable
                   as Duration,
+        shuffleEnabled: null == shuffleEnabled
+            ? _value.shuffleEnabled
+            : shuffleEnabled // ignore: cast_nullable_to_non_nullable
+                  as bool,
+        repeatMode: null == repeatMode
+            ? _value.repeatMode
+            : repeatMode // ignore: cast_nullable_to_non_nullable
+                  as RepeatMode,
         radioTitle: freezed == radioTitle
             ? _value.radioTitle
             : radioTitle // ignore: cast_nullable_to_non_nullable
@@ -960,6 +987,8 @@ class _$PlayerStateImpl implements _PlayerState {
     this.position = Duration.zero,
     this.bufferedPosition = Duration.zero,
     this.totalDuration = Duration.zero,
+    this.shuffleEnabled = false,
+    this.repeatMode = RepeatMode.off,
     this.radioTitle,
     this.radioStreamUrl,
     this.radioImageUrl,
@@ -1000,6 +1029,13 @@ class _$PlayerStateImpl implements _PlayerState {
   @override
   @JsonKey()
   final Duration totalDuration;
+  // Shuffle & Repeat
+  @override
+  @JsonKey()
+  final bool shuffleEnabled;
+  @override
+  @JsonKey()
+  final RepeatMode repeatMode;
   // Radio
   @override
   final String? radioTitle;
@@ -1016,7 +1052,7 @@ class _$PlayerStateImpl implements _PlayerState {
 
   @override
   String toString() {
-    return 'PlayerState(mode: $mode, tracks: $tracks, currentIndex: $currentIndex, source: $source, status: $status, position: $position, bufferedPosition: $bufferedPosition, totalDuration: $totalDuration, radioTitle: $radioTitle, radioStreamUrl: $radioStreamUrl, radioImageUrl: $radioImageUrl, radioNowPlaying: $radioNowPlaying, errorMessage: $errorMessage)';
+    return 'PlayerState(mode: $mode, tracks: $tracks, currentIndex: $currentIndex, source: $source, status: $status, position: $position, bufferedPosition: $bufferedPosition, totalDuration: $totalDuration, shuffleEnabled: $shuffleEnabled, repeatMode: $repeatMode, radioTitle: $radioTitle, radioStreamUrl: $radioStreamUrl, radioImageUrl: $radioImageUrl, radioNowPlaying: $radioNowPlaying, errorMessage: $errorMessage)';
   }
 
   @override
@@ -1036,6 +1072,10 @@ class _$PlayerStateImpl implements _PlayerState {
                 other.bufferedPosition == bufferedPosition) &&
             (identical(other.totalDuration, totalDuration) ||
                 other.totalDuration == totalDuration) &&
+            (identical(other.shuffleEnabled, shuffleEnabled) ||
+                other.shuffleEnabled == shuffleEnabled) &&
+            (identical(other.repeatMode, repeatMode) ||
+                other.repeatMode == repeatMode) &&
             (identical(other.radioTitle, radioTitle) ||
                 other.radioTitle == radioTitle) &&
             (identical(other.radioStreamUrl, radioStreamUrl) ||
@@ -1059,6 +1099,8 @@ class _$PlayerStateImpl implements _PlayerState {
     position,
     bufferedPosition,
     totalDuration,
+    shuffleEnabled,
+    repeatMode,
     radioTitle,
     radioStreamUrl,
     radioImageUrl,
@@ -1085,6 +1127,8 @@ abstract class _PlayerState implements PlayerState {
     final Duration position,
     final Duration bufferedPosition,
     final Duration totalDuration,
+    final bool shuffleEnabled,
+    final RepeatMode repeatMode,
     final String? radioTitle,
     final String? radioStreamUrl,
     final String? radioImageUrl,
@@ -1108,7 +1152,11 @@ abstract class _PlayerState implements PlayerState {
   @override
   Duration get bufferedPosition;
   @override
-  Duration get totalDuration; // Radio
+  Duration get totalDuration; // Shuffle & Repeat
+  @override
+  bool get shuffleEnabled;
+  @override
+  RepeatMode get repeatMode; // Radio
   @override
   String? get radioTitle;
   @override
