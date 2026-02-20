@@ -690,7 +690,8 @@ mixin _$PlayerState {
   Duration get totalDuration =>
       throw _privateConstructorUsedError; // Shuffle & Repeat
   bool get shuffleEnabled => throw _privateConstructorUsedError;
-  RepeatMode get repeatMode => throw _privateConstructorUsedError; // Radio
+  RepeatMode get repeatMode => throw _privateConstructorUsedError;
+  List<int>? get shuffleIndices => throw _privateConstructorUsedError; // Radio
   String? get radioTitle => throw _privateConstructorUsedError;
   String? get radioStreamUrl => throw _privateConstructorUsedError;
   String? get radioImageUrl => throw _privateConstructorUsedError;
@@ -724,6 +725,7 @@ abstract class $PlayerStateCopyWith<$Res> {
     Duration totalDuration,
     bool shuffleEnabled,
     RepeatMode repeatMode,
+    List<int>? shuffleIndices,
     String? radioTitle,
     String? radioStreamUrl,
     String? radioImageUrl,
@@ -759,6 +761,7 @@ class _$PlayerStateCopyWithImpl<$Res, $Val extends PlayerState>
     Object? totalDuration = null,
     Object? shuffleEnabled = null,
     Object? repeatMode = null,
+    Object? shuffleIndices = freezed,
     Object? radioTitle = freezed,
     Object? radioStreamUrl = freezed,
     Object? radioImageUrl = freezed,
@@ -807,6 +810,10 @@ class _$PlayerStateCopyWithImpl<$Res, $Val extends PlayerState>
                 ? _value.repeatMode
                 : repeatMode // ignore: cast_nullable_to_non_nullable
                       as RepeatMode,
+            shuffleIndices: freezed == shuffleIndices
+                ? _value.shuffleIndices
+                : shuffleIndices // ignore: cast_nullable_to_non_nullable
+                      as List<int>?,
             radioTitle: freezed == radioTitle
                 ? _value.radioTitle
                 : radioTitle // ignore: cast_nullable_to_non_nullable
@@ -867,6 +874,7 @@ abstract class _$$PlayerStateImplCopyWith<$Res>
     Duration totalDuration,
     bool shuffleEnabled,
     RepeatMode repeatMode,
+    List<int>? shuffleIndices,
     String? radioTitle,
     String? radioStreamUrl,
     String? radioImageUrl,
@@ -902,6 +910,7 @@ class __$$PlayerStateImplCopyWithImpl<$Res>
     Object? totalDuration = null,
     Object? shuffleEnabled = null,
     Object? repeatMode = null,
+    Object? shuffleIndices = freezed,
     Object? radioTitle = freezed,
     Object? radioStreamUrl = freezed,
     Object? radioImageUrl = freezed,
@@ -950,6 +959,10 @@ class __$$PlayerStateImplCopyWithImpl<$Res>
             ? _value.repeatMode
             : repeatMode // ignore: cast_nullable_to_non_nullable
                   as RepeatMode,
+        shuffleIndices: freezed == shuffleIndices
+            ? _value._shuffleIndices
+            : shuffleIndices // ignore: cast_nullable_to_non_nullable
+                  as List<int>?,
         radioTitle: freezed == radioTitle
             ? _value.radioTitle
             : radioTitle // ignore: cast_nullable_to_non_nullable
@@ -989,12 +1002,14 @@ class _$PlayerStateImpl implements _PlayerState {
     this.totalDuration = Duration.zero,
     this.shuffleEnabled = false,
     this.repeatMode = RepeatMode.off,
+    final List<int>? shuffleIndices,
     this.radioTitle,
     this.radioStreamUrl,
     this.radioImageUrl,
     this.radioNowPlaying,
     this.errorMessage,
-  }) : _tracks = tracks;
+  }) : _tracks = tracks,
+       _shuffleIndices = shuffleIndices;
 
   // Playback mode
   @override
@@ -1036,6 +1051,16 @@ class _$PlayerStateImpl implements _PlayerState {
   @override
   @JsonKey()
   final RepeatMode repeatMode;
+  final List<int>? _shuffleIndices;
+  @override
+  List<int>? get shuffleIndices {
+    final value = _shuffleIndices;
+    if (value == null) return null;
+    if (_shuffleIndices is EqualUnmodifiableListView) return _shuffleIndices;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
   // Radio
   @override
   final String? radioTitle;
@@ -1052,7 +1077,7 @@ class _$PlayerStateImpl implements _PlayerState {
 
   @override
   String toString() {
-    return 'PlayerState(mode: $mode, tracks: $tracks, currentIndex: $currentIndex, source: $source, status: $status, position: $position, bufferedPosition: $bufferedPosition, totalDuration: $totalDuration, shuffleEnabled: $shuffleEnabled, repeatMode: $repeatMode, radioTitle: $radioTitle, radioStreamUrl: $radioStreamUrl, radioImageUrl: $radioImageUrl, radioNowPlaying: $radioNowPlaying, errorMessage: $errorMessage)';
+    return 'PlayerState(mode: $mode, tracks: $tracks, currentIndex: $currentIndex, source: $source, status: $status, position: $position, bufferedPosition: $bufferedPosition, totalDuration: $totalDuration, shuffleEnabled: $shuffleEnabled, repeatMode: $repeatMode, shuffleIndices: $shuffleIndices, radioTitle: $radioTitle, radioStreamUrl: $radioStreamUrl, radioImageUrl: $radioImageUrl, radioNowPlaying: $radioNowPlaying, errorMessage: $errorMessage)';
   }
 
   @override
@@ -1076,6 +1101,10 @@ class _$PlayerStateImpl implements _PlayerState {
                 other.shuffleEnabled == shuffleEnabled) &&
             (identical(other.repeatMode, repeatMode) ||
                 other.repeatMode == repeatMode) &&
+            const DeepCollectionEquality().equals(
+              other._shuffleIndices,
+              _shuffleIndices,
+            ) &&
             (identical(other.radioTitle, radioTitle) ||
                 other.radioTitle == radioTitle) &&
             (identical(other.radioStreamUrl, radioStreamUrl) ||
@@ -1101,6 +1130,7 @@ class _$PlayerStateImpl implements _PlayerState {
     totalDuration,
     shuffleEnabled,
     repeatMode,
+    const DeepCollectionEquality().hash(_shuffleIndices),
     radioTitle,
     radioStreamUrl,
     radioImageUrl,
@@ -1129,6 +1159,7 @@ abstract class _PlayerState implements PlayerState {
     final Duration totalDuration,
     final bool shuffleEnabled,
     final RepeatMode repeatMode,
+    final List<int>? shuffleIndices,
     final String? radioTitle,
     final String? radioStreamUrl,
     final String? radioImageUrl,
@@ -1156,7 +1187,9 @@ abstract class _PlayerState implements PlayerState {
   @override
   bool get shuffleEnabled;
   @override
-  RepeatMode get repeatMode; // Radio
+  RepeatMode get repeatMode;
+  @override
+  List<int>? get shuffleIndices; // Radio
   @override
   String? get radioTitle;
   @override

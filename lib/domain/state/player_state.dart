@@ -79,6 +79,7 @@ class PlayerState with _$PlayerState {
     // Shuffle & Repeat
     @Default(false) bool shuffleEnabled,
     @Default(RepeatMode.off) RepeatMode repeatMode,
+    List<int>? shuffleIndices,
 
     // Radio
     String? radioTitle,
@@ -104,6 +105,32 @@ extension PlayerStateX on PlayerState {
 
   /// Has previous track in queue
   bool get hasPrevious => currentIndex > 0;
+
+  /// Next track considering shuffle order
+  Track? get nextTrack {
+    if (shuffleEnabled && shuffleIndices != null) {
+      final pos = shuffleIndices!.indexOf(currentIndex);
+      if (pos != -1 && pos < shuffleIndices!.length - 1) {
+        final idx = shuffleIndices![pos + 1];
+        return idx < tracks.length ? tracks[idx] : null;
+      }
+      return null;
+    }
+    return hasNext ? tracks[currentIndex + 1] : null;
+  }
+
+  /// Previous track considering shuffle order
+  Track? get prevTrack {
+    if (shuffleEnabled && shuffleIndices != null) {
+      final pos = shuffleIndices!.indexOf(currentIndex);
+      if (pos > 0) {
+        final idx = shuffleIndices![pos - 1];
+        return idx < tracks.length ? tracks[idx] : null;
+      }
+      return null;
+    }
+    return hasPrevious ? tracks[currentIndex - 1] : null;
+  }
 
   /// Actual duration: prefer player-reported duration, fallback to track metadata
   Duration get effectiveDuration =>
@@ -364,9 +391,12 @@ class PlayerNotifier extends Notifier<PlayerState> {
 
     try {
       await _audioHandler.setShuffleEnabled(next);
+      state = state.copyWith(
+        shuffleIndices: next ? _audioHandler.shuffleIndices : null,
+      );
     } catch (e) {
       // Rollback on failure; playbackState sync will correct as well
-      state = state.copyWith(shuffleEnabled: previous);
+      state = state.copyWith(shuffleEnabled: previous, shuffleIndices: null);
     }
   }
 

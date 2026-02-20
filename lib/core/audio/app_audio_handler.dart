@@ -199,6 +199,9 @@ class AppAudioHandler extends BaseAudioHandler with QueueHandler, SeekHandler {
     await _player.setLoopMode(mode);
   }
 
+  /// Shuffle indices — playback order when shuffle is ON.
+  List<int>? get shuffleIndices => _player.shuffleIndices;
+
   /// ICY metadata stream for live radio (current song info)
   Stream<IcyMetadata?> get icyMetadataStream => _player.icyMetadataStream;
 
