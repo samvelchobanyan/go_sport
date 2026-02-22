@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -161,7 +162,7 @@ class _MiniPlayerWidgetState extends ConsumerState<MiniPlayerWidget>
                   borderRadius: BorderRadius.circular(4.25),
                   image: imageUrl != null
                       ? DecorationImage(
-                          image: NetworkImage(imageUrl),
+                          image: CachedNetworkImageProvider(imageUrl),
                           fit: BoxFit.cover,
                         )
                       : null,
@@ -315,7 +316,7 @@ class _MiniPlayerWidgetState extends ConsumerState<MiniPlayerWidget>
               color: DSColors.white,
               borderRadius: BorderRadius.circular(4.25),
               image: DecorationImage(
-                image: NetworkImage(radioImageUrl),
+                image: CachedNetworkImageProvider(radioImageUrl),
                 fit: BoxFit.cover,
               ),
             ),
