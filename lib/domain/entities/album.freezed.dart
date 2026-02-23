@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'artist.dart';
+part of 'album.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -16,52 +16,55 @@ final _privateConstructorUsedError = UnsupportedError(
 );
 
 /// @nodoc
-mixin _$Artist {
+mixin _$Album {
   String get id => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
-  String? get albumName => throw _privateConstructorUsedError;
   String get imageUrl => throw _privateConstructorUsedError;
+  String get artist => throw _privateConstructorUsedError;
+  int get trackCount => throw _privateConstructorUsedError;
   bool get isLiked => throw _privateConstructorUsedError;
 
-  /// Create a copy of Artist
+  /// Create a copy of Album
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $ArtistCopyWith<Artist> get copyWith => throw _privateConstructorUsedError;
+  $AlbumCopyWith<Album> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $ArtistCopyWith<$Res> {
-  factory $ArtistCopyWith(Artist value, $Res Function(Artist) then) =
-      _$ArtistCopyWithImpl<$Res, Artist>;
+abstract class $AlbumCopyWith<$Res> {
+  factory $AlbumCopyWith(Album value, $Res Function(Album) then) =
+      _$AlbumCopyWithImpl<$Res, Album>;
   @useResult
   $Res call({
     String id,
     String title,
-    String? albumName,
     String imageUrl,
+    String artist,
+    int trackCount,
     bool isLiked,
   });
 }
 
 /// @nodoc
-class _$ArtistCopyWithImpl<$Res, $Val extends Artist>
-    implements $ArtistCopyWith<$Res> {
-  _$ArtistCopyWithImpl(this._value, this._then);
+class _$AlbumCopyWithImpl<$Res, $Val extends Album>
+    implements $AlbumCopyWith<$Res> {
+  _$AlbumCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of Artist
+  /// Create a copy of Album
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? id = null,
     Object? title = null,
-    Object? albumName = freezed,
     Object? imageUrl = null,
+    Object? artist = null,
+    Object? trackCount = null,
     Object? isLiked = null,
   }) {
     return _then(
@@ -74,14 +77,18 @@ class _$ArtistCopyWithImpl<$Res, $Val extends Artist>
                 ? _value.title
                 : title // ignore: cast_nullable_to_non_nullable
                       as String,
-            albumName: freezed == albumName
-                ? _value.albumName
-                : albumName // ignore: cast_nullable_to_non_nullable
-                      as String?,
             imageUrl: null == imageUrl
                 ? _value.imageUrl
                 : imageUrl // ignore: cast_nullable_to_non_nullable
                       as String,
+            artist: null == artist
+                ? _value.artist
+                : artist // ignore: cast_nullable_to_non_nullable
+                      as String,
+            trackCount: null == trackCount
+                ? _value.trackCount
+                : trackCount // ignore: cast_nullable_to_non_nullable
+                      as int,
             isLiked: null == isLiked
                 ? _value.isLiked
                 : isLiked // ignore: cast_nullable_to_non_nullable
@@ -93,44 +100,46 @@ class _$ArtistCopyWithImpl<$Res, $Val extends Artist>
 }
 
 /// @nodoc
-abstract class _$$ArtistImplCopyWith<$Res> implements $ArtistCopyWith<$Res> {
-  factory _$$ArtistImplCopyWith(
-    _$ArtistImpl value,
-    $Res Function(_$ArtistImpl) then,
-  ) = __$$ArtistImplCopyWithImpl<$Res>;
+abstract class _$$AlbumImplCopyWith<$Res> implements $AlbumCopyWith<$Res> {
+  factory _$$AlbumImplCopyWith(
+    _$AlbumImpl value,
+    $Res Function(_$AlbumImpl) then,
+  ) = __$$AlbumImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({
     String id,
     String title,
-    String? albumName,
     String imageUrl,
+    String artist,
+    int trackCount,
     bool isLiked,
   });
 }
 
 /// @nodoc
-class __$$ArtistImplCopyWithImpl<$Res>
-    extends _$ArtistCopyWithImpl<$Res, _$ArtistImpl>
-    implements _$$ArtistImplCopyWith<$Res> {
-  __$$ArtistImplCopyWithImpl(
-    _$ArtistImpl _value,
-    $Res Function(_$ArtistImpl) _then,
+class __$$AlbumImplCopyWithImpl<$Res>
+    extends _$AlbumCopyWithImpl<$Res, _$AlbumImpl>
+    implements _$$AlbumImplCopyWith<$Res> {
+  __$$AlbumImplCopyWithImpl(
+    _$AlbumImpl _value,
+    $Res Function(_$AlbumImpl) _then,
   ) : super(_value, _then);
 
-  /// Create a copy of Artist
+  /// Create a copy of Album
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? id = null,
     Object? title = null,
-    Object? albumName = freezed,
     Object? imageUrl = null,
+    Object? artist = null,
+    Object? trackCount = null,
     Object? isLiked = null,
   }) {
     return _then(
-      _$ArtistImpl(
+      _$AlbumImpl(
         id: null == id
             ? _value.id
             : id // ignore: cast_nullable_to_non_nullable
@@ -139,14 +148,18 @@ class __$$ArtistImplCopyWithImpl<$Res>
             ? _value.title
             : title // ignore: cast_nullable_to_non_nullable
                   as String,
-        albumName: freezed == albumName
-            ? _value.albumName
-            : albumName // ignore: cast_nullable_to_non_nullable
-                  as String?,
         imageUrl: null == imageUrl
             ? _value.imageUrl
             : imageUrl // ignore: cast_nullable_to_non_nullable
                   as String,
+        artist: null == artist
+            ? _value.artist
+            : artist // ignore: cast_nullable_to_non_nullable
+                  as String,
+        trackCount: null == trackCount
+            ? _value.trackCount
+            : trackCount // ignore: cast_nullable_to_non_nullable
+                  as int,
         isLiked: null == isLiked
             ? _value.isLiked
             : isLiked // ignore: cast_nullable_to_non_nullable
@@ -158,12 +171,13 @@ class __$$ArtistImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$ArtistImpl implements _Artist {
-  const _$ArtistImpl({
+class _$AlbumImpl implements _Album {
+  const _$AlbumImpl({
     required this.id,
     required this.title,
-    this.albumName,
     required this.imageUrl,
+    required this.artist,
+    required this.trackCount,
     this.isLiked = false,
   });
 
@@ -172,69 +186,82 @@ class _$ArtistImpl implements _Artist {
   @override
   final String title;
   @override
-  final String? albumName;
-  @override
   final String imageUrl;
+  @override
+  final String artist;
+  @override
+  final int trackCount;
   @override
   @JsonKey()
   final bool isLiked;
 
   @override
   String toString() {
-    return 'Artist(id: $id, title: $title, albumName: $albumName, imageUrl: $imageUrl, isLiked: $isLiked)';
+    return 'Album(id: $id, title: $title, imageUrl: $imageUrl, artist: $artist, trackCount: $trackCount, isLiked: $isLiked)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$ArtistImpl &&
+            other is _$AlbumImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.title, title) || other.title == title) &&
-            (identical(other.albumName, albumName) ||
-                other.albumName == albumName) &&
             (identical(other.imageUrl, imageUrl) ||
                 other.imageUrl == imageUrl) &&
+            (identical(other.artist, artist) || other.artist == artist) &&
+            (identical(other.trackCount, trackCount) ||
+                other.trackCount == trackCount) &&
             (identical(other.isLiked, isLiked) || other.isLiked == isLiked));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, id, title, albumName, imageUrl, isLiked);
+  int get hashCode => Object.hash(
+    runtimeType,
+    id,
+    title,
+    imageUrl,
+    artist,
+    trackCount,
+    isLiked,
+  );
 
-  /// Create a copy of Artist
+  /// Create a copy of Album
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$ArtistImplCopyWith<_$ArtistImpl> get copyWith =>
-      __$$ArtistImplCopyWithImpl<_$ArtistImpl>(this, _$identity);
+  _$$AlbumImplCopyWith<_$AlbumImpl> get copyWith =>
+      __$$AlbumImplCopyWithImpl<_$AlbumImpl>(this, _$identity);
 }
 
-abstract class _Artist implements Artist {
-  const factory _Artist({
+abstract class _Album implements Album {
+  const factory _Album({
     required final String id,
     required final String title,
-    final String? albumName,
     required final String imageUrl,
+    required final String artist,
+    required final int trackCount,
     final bool isLiked,
-  }) = _$ArtistImpl;
+  }) = _$AlbumImpl;
 
   @override
   String get id;
   @override
   String get title;
   @override
-  String? get albumName;
-  @override
   String get imageUrl;
+  @override
+  String get artist;
+  @override
+  int get trackCount;
   @override
   bool get isLiked;
 
-  /// Create a copy of Artist
+  /// Create a copy of Album
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$ArtistImplCopyWith<_$ArtistImpl> get copyWith =>
+  _$$AlbumImplCopyWith<_$AlbumImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

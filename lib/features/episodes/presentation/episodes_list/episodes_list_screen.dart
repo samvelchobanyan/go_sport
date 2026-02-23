@@ -33,123 +33,120 @@ class _EpisodesListScreenState extends ConsumerState<EpisodesListScreen> {
   void _onScroll() {
     if (_scrollController.position.pixels >=
         _scrollController.position.maxScrollExtent * 0.8) {
-      ref.read(episodesListControllerProvider.notifier).loadMore();
+      ref.read(episodesListStateProvider.notifier).loadMore();
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final state = ref.watch(episodesListControllerProvider);
+    final state = ref.watch(episodesListStateProvider);
+    final episodes = state.episodes;
+    final isLoading = state.isLoading && episodes.isEmpty;
+    final hasError = state.error != null;
+    final errorMessage = state.error;
 
     return Scaffold(
-      body: Stack(
-        children: [
-          // 🔹 Background image (visible behind rounded list)
-          Positioned(
-            top: 0,
-            left: 0,
-            right: 0,
-            height: 240,
-            child: Image.asset(
-              'assets/images/mine_cover.png',
-              fit: BoxFit.cover,
-            ),
-          ),
-
-          // 🔹 Foreground content
-          state.when(
-            loading: () => CustomScrollView(
-              controller: _scrollController,
-              slivers: [
-                MyCategoriesTop(
-                  iconPath: 'assets/icons/dynamic_bg.svg',
-                  title: 'New Episodes',
-                  subtitle: 'episodes',
-                  itemCount: 0,
-                  onTapIcon: _playAll,
-                ),
-                const SliverFillRemaining(
-                  hasScrollBody: false,
-                  child: Center(child: CircularProgressIndicator()),
-                ),
-              ],
-            ),
-            data: (episodes, hasMore, isLoadingMore) => CustomScrollView(
-              controller: _scrollController,
-              slivers: [
-                MyCategoriesTop(
-                  iconPath: 'assets/icons/dynamic_bg.svg',
-                  title: 'New Episodes',
-                  subtitle: 'episodes',
-                  itemCount: episodes.length,
-                  onTapIcon: _playAll,
-                ),
-
-                // 🔹 Episodes list
-                if (episodes.isEmpty)
-                  SliverFillRemaining(
-                    hasScrollBody: false,
-                    child: Center(
-                      child: Text(
-                        'No episodes yet',
-                        style: context.subtitleLBold,
-                      ),
+      body: isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : (hasError && episodes.isEmpty)
+          ? Center(
+              child: Padding(
+                padding: const EdgeInsets.all(24.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(
+                      Icons.error_outline,
+                      color: DSColors.errorColor,
+                      size: 48,
                     ),
-                  )
-                else
-                  ..._buildEpisodesSliver(episodes),
-
-                // 🔹 Loading indicator at the bottom
-                if (isLoadingMore)
-                  const SliverToBoxAdapter(
-                    child: Padding(
-                      padding: EdgeInsets.all(16),
-                      child: Center(child: CircularProgressIndicator()),
+                    const SizedBox(height: 16),
+                    Text(
+                      errorMessage ?? 'Error loading data',
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 24),
+                    ElevatedButton(
+                      onPressed: () => ref
+                          .read(episodesListStateProvider.notifier)
+                          .refresh(),
+                      child: const Text('Повторить запрос'),
+                    ),
+                  ],
+                ),
+              ),
+            )
+          : (episodes.isEmpty)
+          ? Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text('No episodes yet', style: context.subtitleLBold),
+                  const SizedBox(height: 16),
+                  TextButton(
+                    onPressed: () =>
+                        ref.read(episodesListStateProvider.notifier).refresh(),
+                    child: const Text('Обновить'),
+                  ),
+                ],
+              ),
+            )
+          : RefreshIndicator(
+              onRefresh: () =>
+                  ref.read(episodesListStateProvider.notifier).refresh(),
+              child: Stack(
+                children: [
+                  // 🔹 Background image (visible behind rounded list)
+                  Positioned(
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    height: 240,
+                    child: Image.asset(
+                      'assets/images/mine_cover.png',
+                      fit: BoxFit.cover,
                     ),
                   ),
-              ],
-            ),
-            error: (message) => CustomScrollView(
-              controller: _scrollController,
-              slivers: [
-                MyCategoriesTop(
-                  iconPath: 'assets/icons/dynamic_bg.svg',
-                  title: 'New Episodes',
-                  subtitle: 'episodes',
-                  itemCount: 0,
-                  onTapIcon: _playAll,
-                ),
-                SliverFillRemaining(
-                  hasScrollBody: false,
-                  child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Error loading episodes',
-                          style: context.subtitleLSemi,
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          message,
-                          style: context.textL?.copyWith(
-                            color: DSColors.gray60,
+
+                  // 🔹 Foreground content
+                  CustomScrollView(
+                    controller: _scrollController,
+                    slivers: [
+                      MyCategoriesTop(
+                        iconPath: 'assets/icons/dynamic_bg.svg',
+                        title: 'New Episodes',
+                        subtitle: 'episodes',
+                        itemCount: episodes.length,
+                        onTapIcon: _playAll,
+                      ),
+
+                      // 🔹 Episodes list
+                      if (episodes.isEmpty)
+                        SliverFillRemaining(
+                          hasScrollBody: false,
+                          child: Center(
+                            child: Text(
+                              'No episodes yet',
+                              style: context.subtitleLBold,
+                            ),
+                          ),
+                        )
+                      else
+                        ..._buildEpisodesSliver(episodes),
+
+                      // 🔹 Loading indicator at the bottom
+                      if (state.isLoadingMore)
+                        const SliverToBoxAdapter(
+                          child: Padding(
+                            padding: EdgeInsets.all(16),
+                            child: Center(child: CircularProgressIndicator()),
                           ),
                         ),
-                        const SizedBox(height: 16),
-                        ElevatedButton(
-                          onPressed: () => setState(() {}),
-                          child: const Text('Retry'),
-                        ),
-                      ],
-                    ),
+                    ],
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        ],
-      ),
     );
   }
 

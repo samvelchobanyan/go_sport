@@ -13,11 +13,11 @@ void showItemOptionsBottomSheet({
   showModalBottomSheet(
     context: context,
     isScrollControlled: true,
-    backgroundColor: Colors.transparent,
+    backgroundColor: DSColors.transparent,
     builder: (context) => Container(
       height: MediaQuery.of(context).size.height * 0.35,
       decoration: const BoxDecoration(
-        color: Colors.white,
+        color: DSColors.white,
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(20),
           topRight: Radius.circular(20),
@@ -43,7 +43,7 @@ void showItemOptionsBottomSheet({
                         width: 60,
                         height: 60,
                         decoration: BoxDecoration(
-                          color: Colors.grey[300],
+                          color: DSColors.white,
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: const Icon(Icons.image_not_supported),

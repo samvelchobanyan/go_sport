@@ -5,11 +5,12 @@ import 'package:go_router/go_router.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
-import 'package:go_sport/core/di/repository_providers.dart';
 import 'package:go_sport/domain/state/featured_playlists_state.dart';
-// import 'package:go_sport/features/home/presentation/home/home_controller.dart';
+import 'package:go_sport/domain/state/albums_state.dart';
+import 'package:go_sport/domain/state/featured_artists_state.dart';
 import 'package:go_sport/features/music/presentation/widgets/music_quick_action_card.dart';
 import 'package:go_sport/features/music/presentation/widgets/artist_card.dart';
+import 'package:go_sport/features/music/presentation/widgets/album_card.dart';
 import 'package:go_sport/features/shared_widgets/playlist_card.dart';
 
 import '../../../shared_widgets/user_avatar_button.dart';
@@ -23,36 +24,40 @@ class MusicScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final playlistsState = ref.watch(featuredPlaylistsStateProvider);
     final playlists = playlistsState.playlistsList;
+    final albumsState = ref.watch(albumsStateProvider);
+    final albums = albumsState.albumsList;
+    final artistsState = ref.watch(featuredArtistsStateProvider);
+    final artists = artistsState.artistsList;
 
     // Quick action cards data
     final cards = [
       {
-        'icon': SvgPicture.asset('assets/icons/heart.svg'),
+        'icon': SvgPicture.asset('assets/icons/heart_bg.svg'),
         'title': 'My Favorites',
         'subtitle': '30 tracks',
       },
       {
-        'icon': SvgPicture.asset('assets/icons/playlists.svg'),
+        'icon': SvgPicture.asset('assets/icons/playlists_bg.svg'),
         'title': 'My Playlist',
         'subtitle': '14 playlists',
       },
       {
-        'icon': SvgPicture.asset('assets/icons/nota.svg'),
+        'icon': SvgPicture.asset('assets/icons/nota_bg.svg'),
         'title': 'My Albums',
         'subtitle': '21 albums',
       },
       {
-        'icon': SvgPicture.asset('assets/icons/artist.svg'),
+        'icon': SvgPicture.asset('assets/icons/artist_bg.svg'),
         'title': 'My Artists',
         'subtitle': '16 artists',
       },
       {
-        'icon': SvgPicture.asset('assets/icons/dynamic_bg.svg'),
+        'icon': SvgPicture.asset('assets/icons/episodes_bg.svg'),
         'title': 'New Episodes',
         'subtitle': '6 episodes',
       },
       {
-        'icon': SvgPicture.asset('assets/icons/dynamic.svg'),
+        'icon': SvgPicture.asset('assets/icons/programs_bg.svg'),
         'title': 'My Programs',
         'subtitle': '14 programs',
       },
@@ -99,13 +104,13 @@ class MusicScreen extends ConsumerWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text('Контента пока нет'),
+                  const Text('No content yet'),
                   const SizedBox(height: 16),
                   TextButton(
                     onPressed: () => ref
                         .read(featuredPlaylistsStateProvider.notifier)
                         .refresh(),
-                    child: const Text('Обновить'),
+                    child: const Text('Refresh'),
                   ),
                 ],
               ),
@@ -281,29 +286,29 @@ class MusicScreen extends ConsumerWidget {
                               ),
 
                               // albums list
-                              if (playlists.isNotEmpty)
+                              if (albums.isNotEmpty)
                                 SizedBox(
-                                  height: 210,
+                                  height: 260,
                                   child: ListView.builder(
                                     scrollDirection: Axis.horizontal,
                                     padding: const EdgeInsets.symmetric(
                                       horizontal: 16,
                                     ),
-                                    itemCount: playlists.length,
+                                    itemCount: albums.length,
                                     itemBuilder: (context, index) {
                                       return Padding(
                                         padding: const EdgeInsets.only(
                                           right: 12,
                                         ),
-                                        child: PlaylistCard(
-                                          id: playlists[index].id,
-                                          title: playlists[index].title,
-                                          imageUrl: playlists[index].imageUrl,
-                                          trackCount:
-                                              playlists[index].trackCount,
+                                        child: AlbumCard(
+                                          id: albums[index].id,
+                                          title: albums[index].title,
+                                          artist: albums[index].artist,
+                                          imageUrl: albums[index].imageUrl,
+                                          trackCount: albums[index].trackCount,
                                           onTap: () {
                                             print(
-                                              'Album  tapped: ${playlists[index].id}',
+                                              'Album tapped: ${albums[index].id}',
                                             );
                                           },
                                         ),
@@ -332,59 +337,45 @@ class MusicScreen extends ConsumerWidget {
                                 ),
                               ),
 
-                              // artists list
-                              FutureBuilder(
-                                future: ref
-                                    .read(artistRepositoryProvider)
-                                    .getFeaturedArtists(),
-                                builder: (context, snapshot) {
-                                  if (snapshot.connectionState ==
-                                      ConnectionState.waiting) {
-                                    return SizedBox(
-                                      height: 170,
-                                      child: Center(
-                                        child: CircularProgressIndicator(
-                                          color: DSColors.blue,
-                                        ),
-                                      ),
-                                    );
-                                  }
-
-                                  if (snapshot.hasError ||
-                                      !snapshot.hasData ||
-                                      snapshot.data!.isEmpty) {
-                                    return const SizedBox.shrink();
-                                  }
-
-                                  final artists = snapshot.data!;
-                                  return SizedBox(
-                                    height: 170,
-                                    child: ListView.builder(
-                                      scrollDirection: Axis.horizontal,
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 16,
-                                      ),
-                                      itemCount: artists.length,
-                                      itemBuilder: (context, index) {
-                                        return Padding(
-                                          padding: const EdgeInsets.only(
-                                            right: 16,
-                                          ),
-                                          child: ArtistCard(
-                                            name: artists[index].title,
-                                            imageUrl: artists[index].imageUrl,
-                                            onTap: () {
-                                              print(
-                                                'Artist tapped: ${artists[index].id}',
-                                              );
-                                            },
-                                          ),
-                                        );
-                                      },
+                              // artists list (state-driven)
+                              if (artistsState.isLoading)
+                                SizedBox(
+                                  height: 170,
+                                  child: Center(
+                                    child: CircularProgressIndicator(
+                                      color: DSColors.blue,
                                     ),
-                                  );
-                                },
-                              ),
+                                  ),
+                                )
+                              else if (artists.isEmpty)
+                                const SizedBox.shrink()
+                              else
+                                SizedBox(
+                                  height: 170,
+                                  child: ListView.builder(
+                                    scrollDirection: Axis.horizontal,
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 16,
+                                    ),
+                                    itemCount: artists.length,
+                                    itemBuilder: (context, index) {
+                                      return Padding(
+                                        padding: const EdgeInsets.only(
+                                          right: 16,
+                                        ),
+                                        child: ArtistCard(
+                                          name: artists[index].title,
+                                          imageUrl: artists[index].imageUrl,
+                                          onTap: () {
+                                            print(
+                                              'Artist tapped: ${artists[index].id}',
+                                            );
+                                          },
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ),
                             ],
                           ),
                         ),
@@ -394,45 +385,6 @@ class MusicScreen extends ConsumerWidget {
                 ],
               ),
             ),
-      //   empty: () => Center(
-      //     child: Column(
-      //       mainAxisAlignment: MainAxisAlignment.center,
-      //       children: [
-      //         const Text('Контента пока нет'),
-      //         const SizedBox(height: 16),
-      //         TextButton(
-      //           onPressed: () =>
-      //               ref.read(featuredPlaylistsStateProvider.notifier).refresh(),
-      //           child: const Text('Обновить'),
-      //         ),
-      //       ],
-      //     ),
-      //   ),
-
-      //   error: (message) => Center(
-      //     child: Padding(
-      //       padding: const EdgeInsets.all(24.0),
-      //       child: Column(
-      //         mainAxisAlignment: MainAxisAlignment.center,
-      //         children: [
-      //           const Icon(
-      //             Icons.error_outline,
-      //             color: DSColors.errorColor,
-      //             size: 48,
-      //           ),
-      //           const SizedBox(height: 16),
-      //           Text(message, textAlign: TextAlign.center),
-      //           const SizedBox(height: 24),
-      //           ElevatedButton(
-      //             onPressed: () =>
-      //                 ref.read(featuredPlaylistsStateProvider.notifier).refresh(),
-      //             child: const Text('Повторить запрос'),
-      //           ),
-      //         ],
-      //       ),
-      //     ),
-      //   ),
-      // ),
     );
   }
 }

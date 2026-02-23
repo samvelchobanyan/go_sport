@@ -24,20 +24,12 @@ class MusicQuickActionCard extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
-          color: const Color.fromARGB(185, 255, 255, 255),
-          borderRadius: BorderRadius.circular(DSRadius.l),
+          color: DSColors.white.withOpacity(0.8),
+          borderRadius: BorderRadius.circular(DSRadius.s),
         ),
         child: Row(
           children: [
-            Container(
-              width: 36,
-              height: 22,
-              decoration: BoxDecoration(
-                color: Color.fromRGBO(64, 74, 195, 0.05),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: icon,
-            ),
+            icon,
             const SizedBox(width: 12),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,

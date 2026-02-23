@@ -46,7 +46,7 @@ class _FavoriteItemRowState extends State<FavoriteItemRow> {
                     width: 50,
                     height: 50,
                     decoration: BoxDecoration(
-                      color: Colors.grey[300],
+                      color: DSColors.white,
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: const Icon(Icons.image_not_supported),

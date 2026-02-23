@@ -33,7 +33,7 @@ class ArtistCard extends StatelessWidget {
                   height: 120,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: Colors.grey[300],
+                    // color: Colors.grey[300],
                   ),
                   child: const Icon(Icons.person),
                 );
