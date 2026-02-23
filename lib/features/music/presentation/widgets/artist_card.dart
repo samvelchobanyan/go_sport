@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
-import 'package:go_sport/design_system/foundations/ds_radius.dart';
 
 class ArtistCard extends StatelessWidget {
   final String name;

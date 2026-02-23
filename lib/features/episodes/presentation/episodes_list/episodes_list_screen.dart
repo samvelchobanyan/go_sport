@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/domain/state/episodes_state.dart';
 import 'package:go_sport/features/shared_widgets/dotted_divider.dart';
-import 'package:go_sport/features/favorites/presentation/widgets/favorite_item_row.dart';
+import 'package:go_sport/features/shared_widgets/episode_item_row.dart';
 import 'package:go_sport/features/shared_widgets/my_categories_top.dart';
-import 'episodes_controller.dart';
 
 class EpisodesListScreen extends ConsumerStatefulWidget {
   const EpisodesListScreen({super.key});
@@ -33,14 +33,14 @@ class _EpisodesListScreenState extends ConsumerState<EpisodesListScreen> {
   void _onScroll() {
     if (_scrollController.position.pixels >=
         _scrollController.position.maxScrollExtent * 0.8) {
-      ref.read(episodesListStateProvider.notifier).loadMore();
+      ref.read(episodesStateProvider.notifier).loadMore();
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final state = ref.watch(episodesListStateProvider);
-    final episodes = state.episodes;
+    final state = ref.watch(episodesStateProvider);
+    final episodes = state.episodesList;
     final isLoading = state.isLoading && episodes.isEmpty;
     final hasError = state.error != null;
     final errorMessage = state.error;
@@ -67,9 +67,8 @@ class _EpisodesListScreenState extends ConsumerState<EpisodesListScreen> {
                     ),
                     const SizedBox(height: 24),
                     ElevatedButton(
-                      onPressed: () => ref
-                          .read(episodesListStateProvider.notifier)
-                          .refresh(),
+                      onPressed: () =>
+                          ref.read(episodesStateProvider.notifier).refresh(),
                       child: const Text('Повторить запрос'),
                     ),
                   ],
@@ -85,7 +84,7 @@ class _EpisodesListScreenState extends ConsumerState<EpisodesListScreen> {
                   const SizedBox(height: 16),
                   TextButton(
                     onPressed: () =>
-                        ref.read(episodesListStateProvider.notifier).refresh(),
+                        ref.read(episodesStateProvider.notifier).refresh(),
                     child: const Text('Обновить'),
                   ),
                 ],
@@ -93,7 +92,7 @@ class _EpisodesListScreenState extends ConsumerState<EpisodesListScreen> {
             )
           : RefreshIndicator(
               onRefresh: () =>
-                  ref.read(episodesListStateProvider.notifier).refresh(),
+                  ref.read(episodesStateProvider.notifier).refresh(),
               child: Stack(
                 children: [
                   // 🔹 Background image (visible behind rounded list)
@@ -170,10 +169,11 @@ class _EpisodesListScreenState extends ConsumerState<EpisodesListScreen> {
       }
       final episode = episodes[i];
       children.add(
-        FavoriteItemRow(
+        EpisodeItemRow(
           imageUrl: episode.imageUrl ?? '',
           title: episode.title,
-          subtitle: episode.subtitle,
+          releaseDate: episode.releaseDate,
+          duration: episode.duration,
           onTap: () => debugPrint('Episode tapped: ${episode.id}'),
           onIconTap: () => debugPrint('Episode icon tapped for: ${episode.id}'),
         ),

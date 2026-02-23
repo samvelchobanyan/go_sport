@@ -93,7 +93,7 @@ class MusicScreen extends ConsumerWidget {
                       onPressed: () => ref
                           .read(featuredPlaylistsStateProvider.notifier)
                           .refresh(),
-                      child: const Text('Повторить запрос'),
+                      child: const Text('Retry'),
                     ),
                   ],
                 ),

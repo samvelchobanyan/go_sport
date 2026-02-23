@@ -1,48 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:go_router/go_router.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
-import 'package:go_sport/core/di/repository_providers.dart';
+import 'package:go_sport/domain/state/favorites_state.dart';
 import 'package:go_sport/features/shared_widgets/dotted_divider.dart';
-import 'package:go_sport/features/favorites/presentation/widgets/favorite_item_row.dart';
+import 'package:go_sport/features/shared_widgets/favorite_item_row.dart';
 import 'package:go_sport/features/shared_widgets/my_categories_top.dart';
-import 'favorites_list_controller.dart';
 
-class FavoritesListScreen extends ConsumerStatefulWidget {
+class FavoritesListScreen extends ConsumerWidget {
   const FavoritesListScreen({super.key});
 
   @override
-  ConsumerState<FavoritesListScreen> createState() =>
-      _FavoritesListScreenState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final ScrollController scrollController = ScrollController();
+    final state = ref.watch(favoritesStateProvider);
 
-class _FavoritesListScreenState extends ConsumerState<FavoritesListScreen> {
-  final ScrollController _scrollController = ScrollController();
+    scrollController.addListener(() {
+      if (scrollController.position.pixels >=
+          scrollController.position.maxScrollExtent * 0.8) {
+        ref.read(favoritesStateProvider.notifier).loadMore();
+      }
+    });
 
-  @override
-  void initState() {
-    super.initState();
-    _scrollController.addListener(_onScroll);
-  }
-
-  @override
-  void dispose() {
-    _scrollController.removeListener(_onScroll);
-    _scrollController.dispose();
-    super.dispose();
-  }
-
-  void _onScroll() {
-    if (_scrollController.position.pixels >=
-        _scrollController.position.maxScrollExtent * 0.8) {
-      ref.read(favoritesListControllerProvider.notifier).loadMore();
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
         children: [
@@ -59,76 +38,126 @@ class _FavoritesListScreenState extends ConsumerState<FavoritesListScreen> {
           ),
 
           // 🔹 Foreground content
-          FutureBuilder(
-            future: ref.read(songRepositoryProvider).getFeaturedSongs(),
-            builder: (context, snapshot) {
-              final songCount = snapshot.hasData ? snapshot.data!.length : 0;
-              return CustomScrollView(
-                controller: _scrollController,
-                slivers: [
-                  MyCategoriesTop(
-                    iconPath: 'assets/icons/heart_bg.svg',
-                    title: 'My Favorites',
-                    subtitle: 'tracks',
-                    itemCount: songCount,
-                    onTapIcon: _playAll,
-                  ),
-
-                  // 🔹 Songs list
-                  if (snapshot.connectionState == ConnectionState.waiting)
-                    const SliverFillRemaining(
-                      hasScrollBody: false,
-                      child: Center(child: CircularProgressIndicator()),
-                    )
-                  else if (snapshot.hasError)
-                    SliverFillRemaining(
-                      hasScrollBody: false,
-                      child: Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              'Error loading favorites',
-                              style: context.subtitleLSemi,
-                            ),
-                            const SizedBox(height: 8),
-                            Text(
-                              snapshot.error.toString(),
-                              style: context.textL?.copyWith(
-                                color: DSColors.gray60,
-                              ),
-                            ),
-                            const SizedBox(height: 16),
-                            ElevatedButton(
-                              onPressed: () => setState(() {}),
-                              child: const Text('Retry'),
-                            ),
-                          ],
-                        ),
-                      ),
-                    )
-                  else if (!snapshot.hasData || snapshot.data!.isEmpty)
-                    SliverFillRemaining(
-                      hasScrollBody: false,
-                      child: Center(
-                        child: Text(
-                          'No favorites yet',
-                          style: context.subtitleLBold,
-                        ),
-                      ),
-                    )
-                  else
-                    ..._buildSongsSliver(snapshot.data!),
-                ],
-              );
-            },
-          ),
+          _buildBody(context, ref, state, scrollController),
         ],
       ),
     );
   }
 
-  void _playAll() {
+  Widget _buildBody(
+    BuildContext context,
+    WidgetRef ref,
+    FavoritesState state,
+    ScrollController scrollController,
+  ) {
+    // Initial loading
+    if (state.isLoading && state.favoritesList.isEmpty) {
+      return CustomScrollView(
+        controller: scrollController,
+        slivers: [
+          MyCategoriesTop(
+            iconPath: 'assets/icons/heart_bg.svg',
+            title: 'My Favorites',
+            subtitle: 'tracks',
+            itemCount: 0,
+            onTapIcon: () => _playAll(context),
+          ),
+          const SliverFillRemaining(
+            hasScrollBody: false,
+            child: Center(child: CircularProgressIndicator()),
+          ),
+        ],
+      );
+    }
+
+    // Error with no data
+    if (state.error != null && state.favoritesList.isEmpty) {
+      return CustomScrollView(
+        controller: scrollController,
+        slivers: [
+          MyCategoriesTop(
+            iconPath: 'assets/icons/heart_bg.svg',
+            title: 'My Favorites',
+            subtitle: 'tracks',
+            itemCount: 0,
+            onTapIcon: () => _playAll(context),
+          ),
+          SliverFillRemaining(
+            hasScrollBody: false,
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text('Error loading favorites', style: context.subtitleLSemi),
+                  const SizedBox(height: 8),
+                  Text(
+                    state.error!,
+                    style: context.textL?.copyWith(color: DSColors.gray60),
+                  ),
+                  const SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed: () =>
+                        ref.read(favoritesStateProvider.notifier).refresh(),
+                    child: const Text('Retry'),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      );
+    }
+
+    final favorites = state.favoritesList;
+
+    if (favorites.isEmpty) {
+      return CustomScrollView(
+        controller: scrollController,
+        slivers: [
+          MyCategoriesTop(
+            iconPath: 'assets/icons/heart_bg.svg',
+            title: 'My Favorites',
+            subtitle: 'tracks',
+            itemCount: 0,
+            onTapIcon: () => _playAll(context),
+          ),
+          SliverFillRemaining(
+            hasScrollBody: false,
+            child: Center(
+              child: Text('No favorites yet', style: context.subtitleLBold),
+            ),
+          ),
+        ],
+      );
+    }
+
+    return CustomScrollView(
+      controller: scrollController,
+      slivers: [
+        MyCategoriesTop(
+          iconPath: 'assets/icons/heart_bg.svg',
+          title: 'My Favorites',
+          subtitle: 'tracks',
+          itemCount: favorites.length,
+          onTapIcon: () => _playAll(context),
+        ),
+
+        // 🔹 Songs list
+        ..._buildSongsSliver(favorites),
+
+        // 🔹 Loading indicator at the bottom
+        if (state.isLoadingMore)
+          const SliverToBoxAdapter(
+            child: Padding(
+              padding: EdgeInsets.all(16),
+              child: Center(child: CircularProgressIndicator()),
+            ),
+          ),
+      ],
+    );
+  }
+
+  void _playAll(BuildContext context) {
     // TODO: Implement play-all favorites behavior
     debugPrint('Play all favorites pressed');
   }
@@ -151,7 +180,7 @@ class _FavoritesListScreenState extends ConsumerState<FavoritesListScreen> {
         FavoriteItemRow(
           imageUrl: song.imageUrl ?? '',
           title: song.title,
-          subtitle: song.artist,
+          subtitle: song.artist ?? '',
           onTap: () => debugPrint('Song tapped: ${song.id}'),
           onIconTap: () => debugPrint('Favorite icon tapped for: ${song.id}'),
         ),

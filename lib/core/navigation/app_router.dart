@@ -10,6 +10,7 @@ import 'package:go_sport/features/news/presentation/news_list/news_list_screen.d
 import 'package:go_sport/features/news/presentation/news_detail/news_detail_screen.dart';
 import 'package:go_sport/features/favorites/presentation/favorites_list/favorites_list_screen.dart';
 import 'package:go_sport/features/episodes/presentation/episodes_list/episodes_list_screen.dart';
+import 'package:go_sport/features/programs/presentation/programs_screen.dart';
 import 'package:go_sport/features/playlists/presentation/playlist/playlist_screen.dart';
 
 final GoRouter appRouter = GoRouter(
@@ -117,12 +118,7 @@ final GoRouter appRouter = GoRouter(
                 // My Programs route
                 GoRoute(
                   path: 'myprograms',
-                  builder: (context, state) {
-                    // TODO: Create MyProgramsScreen
-                    return const Scaffold(
-                      body: Center(child: Text('My Programs')),
-                    );
-                  },
+                  builder: (context, state) => const ProgramsScreen(),
                 ),
               ],
             ),
