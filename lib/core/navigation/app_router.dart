@@ -8,6 +8,7 @@ import 'package:go_sport/features/radio/presentation/radio/radio_screen.dart';
 import 'package:go_sport/features/news/presentation/news_list/news_list_screen.dart';
 import 'package:go_sport/features/news/presentation/news_detail/news_detail_screen.dart';
 import 'package:go_sport/features/favorites/presentation/favorites_list/favorites_list_screen.dart';
+import 'package:go_sport/features/episodes/presentation/episodes_list/episodes_list_screen.dart';
 
 final GoRouter appRouter = GoRouter(
   initialLocation: AppRoutes.home,
@@ -86,11 +87,7 @@ final GoRouter appRouter = GoRouter(
                 // Episodes route
                 GoRoute(
                   path: 'episodes',
-                  builder: (context, state) {
-                    return const Scaffold(
-                      body: Center(child: Text('Episodes Screen')),
-                    );
-                  },
+                  builder: (context, state) => const EpisodesListScreen(),
                 ),
 
                 // My Programs route
