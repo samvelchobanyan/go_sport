@@ -40,134 +40,112 @@ class _EpisodesListScreenState extends ConsumerState<EpisodesListScreen> {
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(episodesStateProvider);
+    final episodes = state.episodesList;
+    final isLoading = state.isLoading && episodes.isEmpty;
+    final hasError = state.error != null;
+    final errorMessage = state.error;
 
     return Scaffold(
-      body: Stack(
-        children: [
-          // 🔹 Background image (visible behind rounded list)
-          Positioned(
-            top: 0,
-            left: 0,
-            right: 0,
-            height: 240,
-            child: Image.asset(
-              'assets/images/mine_cover.png',
-              fit: BoxFit.cover,
-            ),
-          ),
-
-          // 🔹 Foreground content
-          _buildBody(context, ref, state),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildBody(BuildContext context, WidgetRef ref, EpisodesState state) {
-    // Initial loading
-    if (state.isLoading && state.episodesList.isEmpty) {
-      return CustomScrollView(
-        controller: _scrollController,
-        slivers: [
-          MyCategoriesTop(
-            iconPath: 'assets/icons/dynamic_bg.svg',
-            title: 'New Episodes',
-            subtitle: 'episodes',
-            itemCount: 0,
-            onTapIcon: _playAll,
-          ),
-          const SliverFillRemaining(
-            hasScrollBody: false,
-            child: Center(child: CircularProgressIndicator()),
-          ),
-        ],
-      );
-    }
-
-    // Error with no data
-    if (state.error != null && state.episodesList.isEmpty) {
-      return CustomScrollView(
-        controller: _scrollController,
-        slivers: [
-          MyCategoriesTop(
-            iconPath: 'assets/icons/dynamic_bg.svg',
-            title: 'New Episodes',
-            subtitle: 'episodes',
-            itemCount: 0,
-            onTapIcon: _playAll,
-          ),
-          SliverFillRemaining(
-            hasScrollBody: false,
-            child: Center(
+      body: isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : (hasError && episodes.isEmpty)
+          ? Center(
+              child: Padding(
+                padding: const EdgeInsets.all(24.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(
+                      Icons.error_outline,
+                      color: DSColors.errorColor,
+                      size: 48,
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      errorMessage ?? 'Error loading data',
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 24),
+                    ElevatedButton(
+                      onPressed: () =>
+                          ref.read(episodesStateProvider.notifier).refresh(),
+                      child: const Text('Повторить запрос'),
+                    ),
+                  ],
+                ),
+              ),
+            )
+          : (episodes.isEmpty)
+          ? Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('Error loading episodes', style: context.subtitleLSemi),
-                  const SizedBox(height: 8),
-                  Text(
-                    state.error!,
-                    style: context.textL?.copyWith(color: DSColors.gray60),
-                  ),
+                  Text('No episodes yet', style: context.subtitleLBold),
                   const SizedBox(height: 16),
-                  ElevatedButton(
+                  TextButton(
                     onPressed: () =>
                         ref.read(episodesStateProvider.notifier).refresh(),
-                    child: const Text('Retry'),
+                    child: const Text('Обновить'),
+                  ),
+                ],
+              ),
+            )
+          : RefreshIndicator(
+              onRefresh: () =>
+                  ref.read(episodesStateProvider.notifier).refresh(),
+              child: Stack(
+                children: [
+                  // 🔹 Background image (visible behind rounded list)
+                  Positioned(
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    height: 240,
+                    child: Image.asset(
+                      'assets/images/mine_cover.png',
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+
+                  // 🔹 Foreground content
+                  CustomScrollView(
+                    controller: _scrollController,
+                    slivers: [
+                      MyCategoriesTop(
+                        iconPath: 'assets/icons/dynamic_bg.svg',
+                        title: 'New Episodes',
+                        subtitle: 'episodes',
+                        itemCount: episodes.length,
+                        onTapIcon: _playAll,
+                      ),
+
+                      // 🔹 Episodes list
+                      if (episodes.isEmpty)
+                        SliverFillRemaining(
+                          hasScrollBody: false,
+                          child: Center(
+                            child: Text(
+                              'No episodes yet',
+                              style: context.subtitleLBold,
+                            ),
+                          ),
+                        )
+                      else
+                        ..._buildEpisodesSliver(episodes),
+
+                      // 🔹 Loading indicator at the bottom
+                      if (state.isLoadingMore)
+                        const SliverToBoxAdapter(
+                          child: Padding(
+                            padding: EdgeInsets.all(16),
+                            child: Center(child: CircularProgressIndicator()),
+                          ),
+                        ),
+                    ],
                   ),
                 ],
               ),
             ),
-          ),
-        ],
-      );
-    }
-
-    final episodes = state.episodesList;
-
-    if (episodes.isEmpty) {
-      return CustomScrollView(
-        controller: _scrollController,
-        slivers: [
-          MyCategoriesTop(
-            iconPath: 'assets/icons/dynamic_bg.svg',
-            title: 'New Episodes',
-            subtitle: 'episodes',
-            itemCount: 0,
-            onTapIcon: _playAll,
-          ),
-          SliverFillRemaining(
-            hasScrollBody: false,
-            child: Center(
-              child: Text('No episodes yet', style: context.subtitleLBold),
-            ),
-          ),
-        ],
-      );
-    }
-
-    return CustomScrollView(
-      controller: _scrollController,
-      slivers: [
-        MyCategoriesTop(
-          iconPath: 'assets/icons/dynamic_bg.svg',
-          title: 'New Episodes',
-          subtitle: 'episodes',
-          itemCount: episodes.length,
-          onTapIcon: _playAll,
-        ),
-
-        // 🔹 Episodes list
-        ..._buildEpisodesSliver(episodes),
-
-        // 🔹 Loading indicator at the bottom
-        if (state.isLoadingMore)
-          const SliverToBoxAdapter(
-            child: Padding(
-              padding: EdgeInsets.all(16),
-              child: Center(child: CircularProgressIndicator()),
-            ),
-          ),
-      ],
     );
   }
 

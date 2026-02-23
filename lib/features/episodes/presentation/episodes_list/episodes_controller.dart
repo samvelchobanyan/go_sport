@@ -5,64 +5,62 @@ import 'package:go_sport/domain/entities/episode.dart';
 part 'episodes_controller.freezed.dart';
 
 @freezed
-sealed class EpisodesListState with _$EpisodesListState {
-  const factory EpisodesListState.loading() = _EpisodesListLoading;
-
-  const factory EpisodesListState.data({
-    required List<Episode> episodes,
-    required bool hasMore,
-    required bool isLoadingMore,
-  }) = _EpisodesListData;
-
-  const factory EpisodesListState.error({required String message}) =
-      _EpisodesListError;
+class EpisodesListState with _$EpisodesListState {
+  const factory EpisodesListState({
+    @Default([]) List<Episode> episodes,
+    @Default(false) bool isLoading,
+    @Default(false) bool isLoadingMore,
+    @Default(false) bool hasMore,
+    String? error,
+  }) = _EpisodesListState;
 }
 
-class EpisodesListController extends AutoDisposeNotifier<EpisodesListState> {
+class EpisodesListNotifier extends AutoDisposeNotifier<EpisodesListState> {
   static const int _pageSize = 20;
   List<Episode> _allEpisodes = [];
 
   @override
   EpisodesListState build() {
     Future.microtask(() => loadInitial());
-    return const EpisodesListState.loading();
+    return const EpisodesListState();
   }
 
   Future<void> loadInitial() async {
-    state = const EpisodesListState.loading();
+    state = state.copyWith(isLoading: true, error: null, episodes: []);
     _allEpisodes = [];
 
     try {
-      // Mock data - replace with actual repository call when available
       _allEpisodes = _getMockEpisodes();
-      state = EpisodesListState.data(
+      state = state.copyWith(
         episodes: _allEpisodes,
         hasMore: _allEpisodes.length >= _pageSize,
-        isLoadingMore: false,
+        isLoading: false,
       );
     } catch (e) {
-      state = EpisodesListState.error(message: e.toString());
+      state = state.copyWith(isLoading: false, error: e.toString());
     }
   }
 
-  Future<void> loadMore() async {
-    final currentState = state;
-    if (currentState is! _EpisodesListData) return;
-    if (!currentState.hasMore || currentState.isLoadingMore) return;
+  Future<void> refresh() async {
+    _allEpisodes = [];
+    await loadInitial();
+  }
 
-    state = currentState.copyWith(isLoadingMore: true);
+  Future<void> loadMore() async {
+    if (!state.hasMore || state.isLoadingMore) return;
+
+    state = state.copyWith(isLoadingMore: true);
 
     try {
       final newEpisodes = _getMockEpisodes();
       _allEpisodes = [..._allEpisodes, ...newEpisodes];
-      state = EpisodesListState.data(
+      state = state.copyWith(
         episodes: _allEpisodes,
         hasMore: newEpisodes.length >= _pageSize,
         isLoadingMore: false,
       );
     } catch (e) {
-      final currentStateData = currentState;
-      state = currentStateData.copyWith(isLoadingMore: false);
+      state = state.copyWith(isLoadingMore: false);
     }
   }
 
@@ -132,7 +130,7 @@ class EpisodesListController extends AutoDisposeNotifier<EpisodesListState> {
   }
 }
 
-final episodesListControllerProvider =
-    NotifierProvider.autoDispose<EpisodesListController, EpisodesListState>(
-      EpisodesListController.new,
+final episodesListStateProvider =
+    NotifierProvider.autoDispose<EpisodesListNotifier, EpisodesListState>(
+      EpisodesListNotifier.new,
     );

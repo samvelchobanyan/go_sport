@@ -1,14 +1,15 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'artist.freezed.dart';
+part 'album.freezed.dart';
 
 @freezed
-class Artist with _$Artist {
-  const factory Artist({
+class Album with _$Album {
+  const factory Album({
     required String id,
     required String title,
-    String? albumName,
     required String imageUrl,
+    required String artist,
+    required int trackCount,
     @Default(false) bool isLiked,
-  }) = _Artist;
+  }) = _Album;
 }

@@ -22,7 +22,7 @@ mixin _$Song {
   String? get artist => throw _privateConstructorUsedError;
   String? get albumName => throw _privateConstructorUsedError;
   String? get imageUrl => throw _privateConstructorUsedError;
-  bool get liked => throw _privateConstructorUsedError;
+  bool get isLiked => throw _privateConstructorUsedError;
   Duration? get duration => throw _privateConstructorUsedError;
 
   /// Create a copy of Song
@@ -42,7 +42,7 @@ abstract class $SongCopyWith<$Res> {
     String? artist,
     String? albumName,
     String? imageUrl,
-    bool liked,
+    bool isLiked,
     Duration? duration,
   });
 }
@@ -67,7 +67,7 @@ class _$SongCopyWithImpl<$Res, $Val extends Song>
     Object? artist = freezed,
     Object? albumName = freezed,
     Object? imageUrl = freezed,
-    Object? liked = null,
+    Object? isLiked = null,
     Object? duration = freezed,
   }) {
     return _then(
@@ -92,9 +92,9 @@ class _$SongCopyWithImpl<$Res, $Val extends Song>
                 ? _value.imageUrl
                 : imageUrl // ignore: cast_nullable_to_non_nullable
                       as String?,
-            liked: null == liked
-                ? _value.liked
-                : liked // ignore: cast_nullable_to_non_nullable
+            isLiked: null == isLiked
+                ? _value.isLiked
+                : isLiked // ignore: cast_nullable_to_non_nullable
                       as bool,
             duration: freezed == duration
                 ? _value.duration
@@ -120,7 +120,7 @@ abstract class _$$SongImplCopyWith<$Res> implements $SongCopyWith<$Res> {
     String? artist,
     String? albumName,
     String? imageUrl,
-    bool liked,
+    bool isLiked,
     Duration? duration,
   });
 }
@@ -142,7 +142,7 @@ class __$$SongImplCopyWithImpl<$Res>
     Object? artist = freezed,
     Object? albumName = freezed,
     Object? imageUrl = freezed,
-    Object? liked = null,
+    Object? isLiked = null,
     Object? duration = freezed,
   }) {
     return _then(
@@ -167,9 +167,9 @@ class __$$SongImplCopyWithImpl<$Res>
             ? _value.imageUrl
             : imageUrl // ignore: cast_nullable_to_non_nullable
                   as String?,
-        liked: null == liked
-            ? _value.liked
-            : liked // ignore: cast_nullable_to_non_nullable
+        isLiked: null == isLiked
+            ? _value.isLiked
+            : isLiked // ignore: cast_nullable_to_non_nullable
                   as bool,
         duration: freezed == duration
             ? _value.duration
@@ -189,7 +189,7 @@ class _$SongImpl implements _Song {
     this.artist,
     this.albumName,
     this.imageUrl,
-    required this.liked,
+    this.isLiked = false,
     this.duration,
   });
 
@@ -204,13 +204,14 @@ class _$SongImpl implements _Song {
   @override
   final String? imageUrl;
   @override
-  final bool liked;
+  @JsonKey()
+  final bool isLiked;
   @override
   final Duration? duration;
 
   @override
   String toString() {
-    return 'Song(id: $id, title: $title, artist: $artist, albumName: $albumName, imageUrl: $imageUrl, liked: $liked, duration: $duration)';
+    return 'Song(id: $id, title: $title, artist: $artist, albumName: $albumName, imageUrl: $imageUrl, isLiked: $isLiked, duration: $duration)';
   }
 
   @override
@@ -225,7 +226,7 @@ class _$SongImpl implements _Song {
                 other.albumName == albumName) &&
             (identical(other.imageUrl, imageUrl) ||
                 other.imageUrl == imageUrl) &&
-            (identical(other.liked, liked) || other.liked == liked) &&
+            (identical(other.isLiked, isLiked) || other.isLiked == isLiked) &&
             (identical(other.duration, duration) ||
                 other.duration == duration));
   }
@@ -238,7 +239,7 @@ class _$SongImpl implements _Song {
     artist,
     albumName,
     imageUrl,
-    liked,
+    isLiked,
     duration,
   );
 
@@ -258,7 +259,7 @@ abstract class _Song implements Song {
     final String? artist,
     final String? albumName,
     final String? imageUrl,
-    required final bool liked,
+    final bool isLiked,
     final Duration? duration,
   }) = _$SongImpl;
 
@@ -273,7 +274,7 @@ abstract class _Song implements Song {
   @override
   String? get imageUrl;
   @override
-  bool get liked;
+  bool get isLiked;
   @override
   Duration? get duration;
 

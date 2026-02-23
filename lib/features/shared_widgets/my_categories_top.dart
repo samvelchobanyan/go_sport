@@ -24,7 +24,7 @@ class MyCategoriesTop extends StatelessWidget {
   Widget build(BuildContext context) {
     return SliverAppBar(
       expandedHeight: 132,
-      backgroundColor: Colors.transparent,
+      backgroundColor: DSColors.transparent,
       elevation: 0,
       pinned: false,
       floating: false,

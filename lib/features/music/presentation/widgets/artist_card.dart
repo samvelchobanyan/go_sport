@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
-import 'package:go_sport/design_system/foundations/ds_radius.dart';
 
 class ArtistCard extends StatelessWidget {
   final String name;
@@ -33,7 +32,7 @@ class ArtistCard extends StatelessWidget {
                   height: 120,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: Colors.grey[300],
+                    // color: Colors.grey[300],
                   ),
                   child: const Icon(Icons.person),
                 );

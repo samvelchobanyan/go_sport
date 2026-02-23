@@ -72,7 +72,7 @@ class FavoritesNotifier extends Notifier<FavoritesState> {
     if (song == null) return;
 
     // Optimistic update
-    final updatedSong = song.copyWith(liked: !song.liked);
+    final updatedSong = song.copyWith(isLiked: !song.isLiked);
     state = state.copyWith(favorites: {...state.favorites, id: updatedSong});
 
     try {

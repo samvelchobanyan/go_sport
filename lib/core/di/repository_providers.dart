@@ -5,11 +5,13 @@ import '../../data/repositories/playlist_repository_mock.dart';
 import '../../data/repositories/story_repository_mock.dart';
 import '../../data/repositories/artist_repository_mock.dart';
 import '../../data/repositories/song_repository_mock.dart';
+import '../../data/repositories/album_repository_mock.dart';
 import '../../domain/repositories/news_repository.dart';
 import '../../domain/repositories/playlist_repository.dart';
 import '../../domain/repositories/story_repository.dart';
 import '../../domain/repositories/artist_repository.dart';
 import '../../domain/repositories/song_repository.dart';
+import '../../domain/repositories/album_repository.dart';
 
 final storyRepositoryProvider = Provider<StoryRepository>((ref) {
   return StoryRepositoryMock();
@@ -29,4 +31,8 @@ final artistRepositoryProvider = Provider<ArtistRepository>((ref) {
 
 final songRepositoryProvider = Provider<SongRepository>((ref) {
   return SongRepositoryMock();
+});
+
+final albumRepositoryProvider = Provider<AlbumRepository>((ref) {
+  return AlbumRepositoryMock();
 });

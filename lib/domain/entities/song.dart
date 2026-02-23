@@ -10,7 +10,7 @@ class Song with _$Song {
     String? artist,
     String? albumName,
     String? imageUrl,
-    required bool liked,
+    @Default(false) bool isLiked,
     Duration? duration,
   }) = _Song;
 }
