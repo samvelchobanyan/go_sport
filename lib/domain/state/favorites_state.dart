@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../entities/song.dart';
-import '../repositories/song_repository.dart';
+import '../entities/track.dart';
+import '../repositories/playlist_repository.dart';
 import '../../core/di/repository_providers.dart';
 
 part 'favorites_state.freezed.dart';
@@ -10,7 +10,7 @@ part 'favorites_state.freezed.dart';
 @freezed
 class FavoritesState with _$FavoritesState {
   const factory FavoritesState({
-    @Default({}) Map<String, Song> favorites,
+    @Default({}) Map<String, Track> favorites,
     @Default(false) bool isLoading,
     @Default(false) bool isLoadingMore,
     String? error,
@@ -18,17 +18,17 @@ class FavoritesState with _$FavoritesState {
 }
 
 extension FavoritesStateX on FavoritesState {
-  List<Song> get favoritesList => favorites.values.toList();
+  List<Track> get favoritesList => favorites.values.toList();
 
-  Song? getFavorite(String id) => favorites[id];
+  Track? getFavorite(String id) => favorites[id];
 }
 
 class FavoritesNotifier extends Notifier<FavoritesState> {
-  late final SongRepository _repository;
+  late final PlaylistRepository _repository;
 
   @override
   FavoritesState build() {
-    _repository = ref.watch(songRepositoryProvider);
+    _repository = ref.watch(playlistRepositoryProvider);
     Future.microtask(() => loadFavorites());
     return const FavoritesState();
   }
@@ -37,8 +37,10 @@ class FavoritesNotifier extends Notifier<FavoritesState> {
     state = state.copyWith(isLoading: true, error: null);
 
     try {
-      final songs = await _repository.getFeaturedSongs();
-      final favoritesMap = {for (final song in songs) song.id: song};
+      final tracks = await _repository.getFavoritesPlaylist();
+      final favoritesMap = <String, Track>{
+        for (final track in tracks) track.id: track,
+      };
       state = state.copyWith(favorites: favoritesMap, isLoading: false);
     } catch (e) {
       state = state.copyWith(isLoading: false, error: e.toString());
@@ -51,10 +53,10 @@ class FavoritesNotifier extends Notifier<FavoritesState> {
     state = state.copyWith(isLoadingMore: true);
 
     try {
-      final newSongs = await _repository.getFeaturedSongs();
-      final favoritesMap = {
+      final newTracks = await _repository.getFavoritesPlaylist();
+      final favoritesMap = <String, Track>{
         ...state.favorites,
-        for (final song in newSongs) song.id: song,
+        for (final track in newTracks) track.id: track,
       };
       state = state.copyWith(favorites: favoritesMap, isLoadingMore: false);
     } catch (e) {
@@ -68,12 +70,12 @@ class FavoritesNotifier extends Notifier<FavoritesState> {
   }
 
   Future<void> toggleFavorite(String id) async {
-    final song = state.favorites[id];
-    if (song == null) return;
+    final track = state.favorites[id];
+    if (track == null) return;
 
     // Optimistic update
-    final updatedSong = song.copyWith(isLiked: !song.isLiked);
-    state = state.copyWith(favorites: {...state.favorites, id: updatedSong});
+    final updatedTrack = track.copyWith(isLiked: !track.isLiked);
+    state = state.copyWith(favorites: {...state.favorites, id: updatedTrack});
 
     try {
       // Would call repository to toggle on backend
@@ -81,7 +83,7 @@ class FavoritesNotifier extends Notifier<FavoritesState> {
     } catch (e) {
       // Rollback on error
       state = state.copyWith(
-        favorites: {...state.favorites, id: song},
+        favorites: {...state.favorites, id: track},
         error: e.toString(),
       );
     }

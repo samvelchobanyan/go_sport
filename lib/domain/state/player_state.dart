@@ -12,14 +12,7 @@ part 'player_state.freezed.dart';
 
 // === Enums ===
 
-enum PlayerStatus {
-  idle,
-  loading,
-  playing,
-  paused,
-  completed,
-  error,
-}
+enum PlayerStatus { idle, loading, playing, paused, completed, error }
 
 // === Queue Source ===
 
@@ -48,6 +41,12 @@ sealed class QueueSource with _$QueueSource {
     required String streamUrl,
     required String imageUrl,
   }) = QueueSourceRadio;
+
+  const factory QueueSource.favorites({
+    required String id,
+    required String title,
+    required String imageUrl,
+  }) = QueueSourceFavorites;
 }
 
 // === State ===
@@ -70,8 +69,7 @@ class PlayerState with _$PlayerState {
     @Default(Duration.zero) Duration totalDuration,
 
     // Radio
-    String? radioNowPlaying,  // "Artist - Song Name" from ICY metadata
-
+    String? radioNowPlaying, // "Artist - Song Name" from ICY metadata
     // Error
     String? errorMessage,
   }) = _PlayerState;
@@ -94,10 +92,10 @@ extension PlayerStateX on PlayerState {
   /// Progress 0.0 - 1.0
   double get progress {
     // Prefer actual player duration over track metadata
-    final durationMs = totalDuration.inMilliseconds > 0 
-        ? totalDuration.inMilliseconds 
+    final durationMs = totalDuration.inMilliseconds > 0
+        ? totalDuration.inMilliseconds
         : (currentTrack?.duration.inMilliseconds ?? 0);
-        
+
     if (durationMs == 0) return 0;
     return position.inMilliseconds / durationMs;
   }
@@ -124,6 +122,7 @@ extension PlayerStateX on PlayerState {
       playlist: (_, __, imageUrl) => imageUrl,
       program: (_, __, imageUrl) => imageUrl,
       radio: (_, __, imageUrl) => imageUrl,
+      favorites: (_, __, imageUrl) => imageUrl,
     );
   }
 }
@@ -162,7 +161,7 @@ class PlayerNotifier extends Notifier<PlayerState> {
         state = state.copyWith(bufferedPosition: buffered);
       }),
     );
-    
+
     // Total Duration updates (Direct stream from AppAudioHandler)
     // Fixes VBR/Stream duration issues
     _subscriptions.add(
@@ -253,7 +252,7 @@ class PlayerNotifier extends Notifier<PlayerState> {
       currentIndex: startIndex,
       status: PlayerStatus.loading,
       position: Duration.zero,
-      radioNowPlaying: null,  // Clear radio metadata
+      radioNowPlaying: null, // Clear radio metadata
       errorMessage: null,
     );
 
@@ -318,14 +317,15 @@ class PlayerNotifier extends Notifier<PlayerState> {
   /// Radio stream constants
   static const _radioStreamUrl = 'https://ice1.somafm.com/groovesalad-128-mp3';
   static const _radioTitle = 'Go Sport Radio';
-  static const _radioImageUrl = 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=300&q=80';
+  static const _radioImageUrl =
+      'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=300&q=80';
 
   /// Start playing radio stream
   Future<void> playRadio() async {
     // 1. Save current music source for resume later (if not already radio)
     final currentSource = state.source;
-    final savedSource = (currentSource is! QueueSourceRadio) 
-        ? currentSource 
+    final savedSource = (currentSource is! QueueSourceRadio)
+        ? currentSource
         : state.savedMusicSource;
 
     // 2. Update UI state (keep tracks for resume later)
@@ -369,7 +369,7 @@ class PlayerNotifier extends Notifier<PlayerState> {
       source: savedSource,
       savedMusicSource: null,
       status: PlayerStatus.loading,
-      radioNowPlaying: null,  // Clear radio metadata
+      radioNowPlaying: null, // Clear radio metadata
     );
 
     try {

@@ -26,8 +26,7 @@ mixin _$Program {
   /// Create a copy of Program
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $ProgramCopyWith<Program> get copyWith =>
-      throw _privateConstructorUsedError;
+  $ProgramCopyWith<Program> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -94,8 +93,7 @@ class _$ProgramCopyWithImpl<$Res, $Val extends Program>
 }
 
 /// @nodoc
-abstract class _$$ProgramImplCopyWith<$Res>
-    implements $ProgramCopyWith<$Res> {
+abstract class _$$ProgramImplCopyWith<$Res> implements $ProgramCopyWith<$Res> {
   factory _$$ProgramImplCopyWith(
     _$ProgramImpl value,
     $Res Function(_$ProgramImpl) then,
