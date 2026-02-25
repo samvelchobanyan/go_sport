@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -79,7 +80,14 @@ class PlayerControlPanel extends ConsumerWidget {
             width: 45,
             height: 45,
             child: imageUrl != null
-                ? Image.network(imageUrl, fit: BoxFit.cover)
+                ? CachedNetworkImage(
+                    imageUrl: imageUrl,
+                    fit: BoxFit.cover,
+                    errorWidget: (_, __, ___) => Container(
+                      color: DSColors.gray20,
+                      child: const Icon(Icons.music_note, color: DSColors.gray50),
+                    ),
+                  )
                 : Container(
                     color: DSColors.gray20,
                     child: const Icon(Icons.music_note, color: DSColors.gray50),
