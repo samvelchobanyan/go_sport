@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -48,7 +49,7 @@ class RadioScreen extends ConsumerWidget {
                   ),
                 ],
                 image: DecorationImage(
-                  image: NetworkImage(radioImageUrl),
+                  image: CachedNetworkImageProvider(radioImageUrl),
                   fit: BoxFit.cover,
                 ),
               ),

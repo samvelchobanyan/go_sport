@@ -118,7 +118,7 @@ class PlaylistRepositoryMock implements PlaylistRepository {
       id: 'arm9',
       title: 'Mountain Roads',
       artistName: 'Armenian Rock Band',
-      imageUrl: 'https://images.unsplash.com/photo-1415886655026-93fb65a1b5fb?auto=format&fit=crop&w=800&q=80',
+      imageUrl: 'https://images.unsplash.com/photo-1498036882173-b41c28a8ba34?auto=format&fit=crop&w=800&q=80',
       duration: const Duration(minutes: 3, seconds: 37),
       audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3',
     ),

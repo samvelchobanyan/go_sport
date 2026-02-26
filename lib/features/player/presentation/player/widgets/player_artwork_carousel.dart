@@ -15,9 +15,6 @@ class PlayerArtworkCarousel extends ConsumerStatefulWidget {
 
 class _PlayerArtworkCarouselState extends ConsumerState<PlayerArtworkCarousel> {
   PageController? _pageController;
-  int _currentPage = 0;
-  bool _isUserSwiping = false;
-
   static const double _horizontalPadding = 48.0;
   static const double _gap = 32.0;
   static const double _centerHeight = 264.0;
@@ -31,103 +28,76 @@ class _PlayerArtworkCarouselState extends ConsumerState<PlayerArtworkCarousel> {
 
   double _calculateViewportFraction(double screenWidth) {
     final cardWidth = screenWidth - _horizontalPadding * 2;
-    final pageWidth = cardWidth + _gap;
-    return pageWidth / screenWidth;
+    return (cardWidth + _gap) / screenWidth;
   }
 
-  void _initPageController(double screenWidth, int initialIndex) {
-    final viewportFraction = _calculateViewportFraction(screenWidth);
-    _pageController?.dispose();
-    _pageController = PageController(
-      initialPage: initialIndex,
-      viewportFraction: viewportFraction,
-    );
-    _currentPage = initialIndex;
-  }
+  void _onScrollEnd() {
+    final page = _pageController?.page?.round();
+    if (page == null || page == 1) return;
 
-  void _onPageChanged(int index) {
-    if (_currentPage == index) return;
-    _currentPage = index;
-
-    if (_isUserSwiping) {
-      // User swiped - trigger track change
-      ref.read(playerStateProvider.notifier).skipTo(index);
+    if (page == 2) {
+      ref.read(playerStateProvider.notifier).next();
+    } else if (page == 0) {
+      ref.read(playerStateProvider.notifier).previous();
     }
-  }
 
-  void _syncToStateIndex(int stateIndex) {
-    if (_pageController == null || !_pageController!.hasClients) return;
-    if (_currentPage == stateIndex) return;
-    if (_isUserSwiping) return;
-
-    _currentPage = stateIndex;
-    _pageController!.animateToPage(
-      stateIndex,
-      duration: const Duration(milliseconds: 300),
-      curve: Curves.easeInOut,
-    );
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted && (_pageController?.hasClients ?? false)) {
+        _pageController!.jumpToPage(1);
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    final tracks =
-        ref.watch(playerStateProvider.select((s) => s.tracks));
-    final currentIndex =
-        ref.watch(playerStateProvider.select((s) => s.currentIndex));
+    final currentTrack =
+        ref.watch(playerStateProvider.select((s) => s.currentTrack));
+    final prevTrack =
+        ref.watch(playerStateProvider.select((s) => s.prevTrack));
+    final nextTrack =
+        ref.watch(playerStateProvider.select((s) => s.nextTrack));
 
-    // Empty queue
-    if (tracks.isEmpty) {
-      return const SizedBox();
-    }
+    if (currentTrack == null) return const SizedBox();
 
     final screenWidth = MediaQuery.of(context).size.width;
-
-    // Initialize or sync page controller
-    if (_pageController == null) {
-      _initPageController(screenWidth, currentIndex);
-    } else {
-      // Sync carousel to state (e.g., when next/prev buttons pressed)
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        _syncToStateIndex(currentIndex);
-      });
-    }
-
     final cardWidth = screenWidth - _horizontalPadding * 2;
+
+    _pageController ??= PageController(
+      initialPage: 1,
+      viewportFraction: _calculateViewportFraction(screenWidth),
+    );
 
     return SizedBox(
       height: _centerHeight,
-      child: NotificationListener<ScrollNotification>(
-        onNotification: (notification) {
-          if (notification is ScrollStartNotification) {
-            if (notification.dragDetails != null) {
-              _isUserSwiping = true;
-            }
-          } else if (notification is ScrollEndNotification) {
-            _isUserSwiping = false;
-          }
+      child: NotificationListener<ScrollEndNotification>(
+        onNotification: (_) {
+          _onScrollEnd();
           return false;
         },
         child: PageView.builder(
           controller: _pageController,
-          itemCount: tracks.length,
-          onPageChanged: _onPageChanged,
+          itemCount: 3,
+          physics: const PageScrollPhysics(),
           itemBuilder: (context, index) {
+            final track = switch (index) {
+              0 => prevTrack,
+              1 => currentTrack,
+              2 => nextTrack,
+              _ => null,
+            };
+
             return AnimatedBuilder(
               animation: _pageController!,
               builder: (context, child) {
                 double pageOffset = 0;
                 if (_pageController!.position.hasContentDimensions) {
-                  pageOffset = (_pageController!.page ?? _currentPage.toDouble()) - index;
+                  pageOffset = (_pageController!.page ?? 1.0) - index;
                 }
 
-                // Calculate scale based on distance from center
-                // Center card: scale = 1.0 (height = 264)
-                // Side cards: scale = 204/264 ≈ 0.773
                 final distance = pageOffset.abs().clamp(0.0, 1.0);
-                final heightScale = 1.0 - (distance * (1.0 - _sideHeight / _centerHeight));
+                final heightScale =
+                    1.0 - (distance * (1.0 - _sideHeight / _centerHeight));
                 final currentHeight = _centerHeight * heightScale;
-                
-                // Shadow opacity: only visible on center card
                 final shadowOpacity = (1.0 - distance).clamp(0.0, 1.0);
 
                 return Center(
@@ -135,8 +105,8 @@ class _PlayerArtworkCarouselState extends ConsumerState<PlayerArtworkCarousel> {
                     width: cardWidth,
                     height: currentHeight,
                     child: _ArtworkCard(
-                      imageUrl: tracks[index].imageUrl,
-                      shadowOpacity: shadowOpacity,
+                      imageUrl: track?.imageUrl,
+                      shadowOpacity: track != null ? shadowOpacity : 0,
                     ),
                   ),
                 );
@@ -155,7 +125,7 @@ class _ArtworkCard extends StatelessWidget {
     required this.shadowOpacity,
   });
 
-  final String imageUrl;
+  final String? imageUrl;
   final double shadowOpacity;
 
   @override
@@ -166,7 +136,7 @@ class _ArtworkCard extends StatelessWidget {
         boxShadow: shadowOpacity > 0
             ? [
                 BoxShadow(
-                  color: DSColors.gray50.withOpacity(0.25 * shadowOpacity),
+                  color: DSColors.gray50.withValues(alpha: 0.25 * shadowOpacity),
                   blurRadius: 12,
                   offset: const Offset(0, 6),
                   spreadRadius: -2,
@@ -176,23 +146,25 @@ class _ArtworkCard extends StatelessWidget {
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(DSRadius.m),
-        child: CachedNetworkImage(
-          imageUrl: imageUrl,
-          fit: BoxFit.cover,
-          memCacheWidth: 300,
-          memCacheHeight: 300,
-          placeholder: (context, url) => Container(
-            color: DSColors.gray20,
-          ),
-          errorWidget: (context, url, error) => Container(
-            color: DSColors.gray20,
-            child: const Icon(
-              Icons.music_note,
-              size: 48,
-              color: DSColors.gray50,
-            ),
-          ),
-        ),
+        child: imageUrl != null
+            ? CachedNetworkImage(
+                imageUrl: imageUrl!,
+                fit: BoxFit.cover,
+                memCacheWidth: 300,
+                memCacheHeight: 300,
+                placeholder: (context, url) => Container(
+                  color: DSColors.gray20,
+                ),
+                errorWidget: (context, url, error) => Container(
+                  color: DSColors.gray20,
+                  child: const Icon(
+                    Icons.music_note,
+                    size: 48,
+                    color: DSColors.gray50,
+                  ),
+                ),
+              )
+            : Container(color: DSColors.gray20),
       ),
     );
   }

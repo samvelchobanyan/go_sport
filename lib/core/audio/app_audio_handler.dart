@@ -60,7 +60,8 @@ class AppAudioHandler extends BaseAudioHandler with QueueHandler, SeekHandler {
     // 2. Broadcast current track changes to the system
     _player.currentIndexStream.listen((index) {
       if (index != null && queue.value.isNotEmpty && index < queue.value.length) {
-        mediaItem.add(queue.value[index]);
+        final item = queue.value[index];
+        mediaItem.add(item);
       }
     });
 
@@ -92,7 +93,7 @@ class AppAudioHandler extends BaseAudioHandler with QueueHandler, SeekHandler {
   Future<void> setQueue(List<Track> tracks, {int initialIndex = 0}) async {
     if (tracks.isEmpty) return;
 
-    // 1. Create MediaItems for the system (Metadata)
+    // 1. Create MediaItems
     final mediaItems = tracks.map((track) {
       return MediaItem(
         id: track.id,
@@ -101,7 +102,7 @@ class AppAudioHandler extends BaseAudioHandler with QueueHandler, SeekHandler {
         artist: track.artistName,
         duration: track.duration,
         artUri: Uri.parse(track.imageUrl),
-        extras: {'audioUrl': track.audioUrl}, // Backup URL if needed
+        extras: {'audioUrl': track.audioUrl, 'imageUrl': track.imageUrl},
       );
     }).toList();
 
@@ -126,7 +127,7 @@ class AppAudioHandler extends BaseAudioHandler with QueueHandler, SeekHandler {
       ConcatenatingAudioSource(children: audioSources),
       initialIndex: initialIndex,
     );
-    
+
     await _player.play();
   }
 
@@ -198,6 +199,9 @@ class AppAudioHandler extends BaseAudioHandler with QueueHandler, SeekHandler {
   Future<void> setLoopMode(LoopMode mode) async {
     await _player.setLoopMode(mode);
   }
+
+  /// Shuffle indices — playback order when shuffle is ON.
+  List<int>? get shuffleIndices => _player.shuffleIndices;
 
   /// ICY metadata stream for live radio (current song info)
   Stream<IcyMetadata?> get icyMetadataStream => _player.icyMetadataStream;
