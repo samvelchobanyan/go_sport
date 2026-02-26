@@ -30,6 +30,8 @@ class MiniPlayerWidget extends ConsumerStatefulWidget {
 class _MiniPlayerWidgetState extends ConsumerState<MiniPlayerWidget>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
+  late final PageController _pageController; 
+
   bool _isMusicMode = true; // UI mode: which panel is expanded
   bool _isLiked = false;
 
@@ -40,6 +42,7 @@ class _MiniPlayerWidgetState extends ConsumerState<MiniPlayerWidget>
       duration: _kAnimationDuration,
       vsync: this,
     );
+    _pageController = PageController(initialPage: 1); 
   }
 
   /// Toggle between music and radio UI panels (does NOT affect playback)
@@ -57,6 +60,7 @@ class _MiniPlayerWidgetState extends ConsumerState<MiniPlayerWidget>
   @override
   void dispose() {
     _animationController.dispose();
+    _pageController.dispose();
     super.dispose();
   }
 
@@ -117,7 +121,7 @@ class _MiniPlayerWidgetState extends ConsumerState<MiniPlayerWidget>
           borderRadius: BorderRadius.circular(DSRadius.s),
         ),
         child: isActive
-            ? (isMusicPanel ? _buildMusicContent() : _buildRadioContent())
+            ? (isMusicPanel ? _buildSwipableMusicContent() : _buildRadioContent())
             : Center(
                 child: isMusicPanel
                     ? const DSBitIcon(
@@ -292,6 +296,198 @@ class _MiniPlayerWidgetState extends ConsumerState<MiniPlayerWidget>
         ),
       ],
     );
+  }
+
+  Widget _buildSwipableMusicContent(){
+
+    final info = ref.watch(playerInfoProvider);
+    final track = info.track;
+    final isRadioMode = info.isRadioMode;
+    final isMusicPlaying = !isRadioMode && info.isPlaying;
+    final isMusicLoading = !isRadioMode && info.status == PlayerStatus.loading;
+    final imageUrl = info.displayImageUrl;
+
+    final trackTitle = track?.title ?? 'No track';
+    final artistName = track?.artistName ?? '';
+
+    final swipeData = ref.watch(
+      playerStateProvider.select((s) =>(
+        currentTrack: s.currentTrack,
+        prevTrack: s.prevTrack,
+        nextTrack: s.nextTrack,
+    )));
+
+    return Stack(
+      children: [
+        NotificationListener<ScrollEndNotification>(
+          onNotification: (_) {
+            final page = _pageController?.page?.round();
+            if (page == null || page == 1) return false;
+
+            if(page == 2) {
+              ref.read(playerStateProvider.notifier).next();
+            } else if (page == 0) {
+              ref.read(playerStateProvider.notifier).previous();
+            }
+
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              if (mounted && (_pageController?.hasClients ?? false)) {
+                _pageController!.jumpToPage(1);
+              }
+            });
+
+            return false;
+          },
+          child: PageView.builder(
+              controller: _pageController,
+              itemCount: 3,
+              itemBuilder: (contect, index){
+                return Padding(
+                  padding: const EdgeInsets.only(left: 7, right: 6),
+                  child: Row(
+              children: [
+                // Album cover
+                Container(
+                  width: 44,
+                  height: 44,
+                  decoration: BoxDecoration(
+                    color: DSColors.white,
+                    borderRadius: BorderRadius.circular(4.25),
+                    image: imageUrl != null
+                        ? DecorationImage(
+                            image: CachedNetworkImageProvider(imageUrl),
+                            fit: BoxFit.cover,
+                          )
+                        : null,
+                  ),
+                  child: imageUrl == null
+                      ? const Icon(Icons.music_note, color: DSColors.gray40)
+                      : null,
+                ),
+                const SizedBox(width: 7),
+                // Text block
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 7),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          trackTitle,
+                          style: context.subtitleM?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: DSColors.black,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        if (artistName.isNotEmpty) ...[
+                          const SizedBox(height: 2),
+                          Text(
+                            artistName,
+                            style: context.textL?.copyWith(
+                              color: DSColors.gray70,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ],
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                // Like icon
+                GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      _isLiked = !_isLiked;
+                    });
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 7),
+                    child: DSHeartIcon(
+                      color: DSColors.blue,
+                      size: 32,
+                      isFilled: _isLiked,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                // Play/Pause icon
+                GestureDetector(
+                  onTap: () {
+                    if (isRadioMode) {
+                      ref.read(playerStateProvider.notifier).resumeMusic();
+                    } else {
+                      ref.read(playerStateProvider.notifier).togglePlayPause();
+                    }
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    child: AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 200),
+                      transitionBuilder: (child, animation) {
+                        return FadeTransition(
+                          opacity: animation,
+                          child: child,
+                        );
+                      },
+                      child: isMusicLoading
+                          ? SizedBox(
+                              key: const ValueKey('music-loading'),
+                              width: 32,
+                              height: 32,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8),
+                                child: CircularProgressIndicator(
+                                  color: DSColors.blue,
+                                  strokeWidth: 2,
+                                ),
+                              ),
+                            )
+                          : SizedBox(
+                              width: 32,
+                              height: 32,
+                              child: SvgPicture.asset(
+                                isMusicPlaying
+                                    ? 'assets/icons/pause.svg'
+                                    : 'assets/icons/play.svg',
+                                key: ValueKey(isMusicPlaying),
+                                colorFilter: const ColorFilter.mode(
+                                  DSColors.blue,
+                                  BlendMode.srcIn,
+                                ),
+                              ),
+                            ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+                );
+              },
+          ),
+        ),
+        Positioned(
+          bottom: 0,
+          left: _kProgressBarInset,
+          right: _kProgressBarInset,
+          child: Consumer(builder: (context, ref, _) {
+            final progress = ref.watch(playerProgressProvider);
+            return LinearProgressIndicator(
+              value: progress,
+              minHeight: _kProgressBarHeight,
+              backgroundColor: DSColors.lime,
+              valueColor: const AlwaysStoppedAnimation(DSColors.blue),
+            );
+          }),
+        ),
+      ]
+        
+    );
+
   }
 
   Widget _buildRadioContent() {
