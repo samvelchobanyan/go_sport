@@ -294,6 +294,39 @@ class _MiniPlayerWidgetState extends ConsumerState<MiniPlayerWidget>
     );
   }
 
+  final PageController _controller = PageController();
+  Widget __BuildSlidableMusicContent() {
+    // This is an alternative version of the music panel content that supports horizontal dragging to switch modes.
+    // For simplicity, it's not currently used in the main build method, but it can be swapped in if you want to test the drag behavior.
+
+     final info = ref.watch(playerInfoProvider);
+    final track = info.track;
+    final isRadioMode = info.isRadioMode;
+    final isMusicPlaying = !isRadioMode && info.isPlaying;
+    final isMusicLoading = !isRadioMode && info.status == PlayerStatus.loading;
+    final imageUrl = info.displayImageUrl;
+
+    final trackTitle = track?.title ?? 'No track';
+    final artistName = track?.artistName ?? '';
+
+    return PageView(
+      controller: _controller,
+      physics: const PageScrollPhysics(),
+      children: [
+        // Music content (same as before)
+        Container(
+          color: DSColors.lime, // Just for visual debugging
+          child: Center(child: Text('Music Panel')),
+        ),
+        // Radio content (same as before)
+        Container(
+          color: DSColors.blue, // Just for visual debugging
+          child: Center(child: Text('Radio Panel')),
+        ),
+      ],
+    );
+  }
+
   Widget _buildRadioContent() {
     final info = ref.watch(playerInfoProvider);
     final isRadioMode = info.isRadioMode;
