@@ -8,7 +8,7 @@ class EpisodeItemRow extends StatefulWidget {
   final String imageUrl;
   final String title;
   final DateTime? releaseDate;
-  final int? duration;
+  final Duration? duration;
   final VoidCallback onTap;
   final VoidCallback onIconTap;
 
@@ -45,13 +45,14 @@ class _EpisodeItemRowState extends State<EpisodeItemRow> {
     }
   }
 
-  String _formatDuration(int? minutes) {
-    if (minutes == null) return '';
-    if (minutes < 60) {
-      return '${minutes}m';
+  String _formatDuration(Duration? duration) {
+    if (duration == null) return '';
+    final totalMinutes = duration.inMinutes;
+    if (totalMinutes < 60) {
+      return '${totalMinutes}m';
     } else {
-      final hours = minutes ~/ 60;
-      final mins = minutes % 60;
+      final hours = totalMinutes ~/ 60;
+      final mins = totalMinutes % 60;
       return '${hours}h ${mins}m';
     }
   }

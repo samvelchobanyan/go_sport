@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:go_sport/domain/entities/track.dart';
 
-import '../entities/episode.dart';
 import '../../data/repositories/episodes_repository_mock.dart';
 
 part 'episodes_state.freezed.dart';
@@ -9,7 +9,7 @@ part 'episodes_state.freezed.dart';
 @freezed
 class EpisodesState with _$EpisodesState {
   const factory EpisodesState({
-    @Default({}) Map<String, Episode> episodes,
+    @Default({}) Map<String, Track> episodes,
     @Default(false) bool isLoading,
     @Default(false) bool isLoadingMore,
     String? error,
@@ -17,9 +17,9 @@ class EpisodesState with _$EpisodesState {
 }
 
 extension EpisodesStateX on EpisodesState {
-  List<Episode> get episodesList => episodes.values.toList();
+  List<Track> get episodesList => episodes.values.toList();
 
-  Episode? getEpisode(String id) => episodes[id];
+  Track? getEpisode(String id) => episodes[id];
 }
 
 class EpisodesNotifier extends Notifier<EpisodesState> {
