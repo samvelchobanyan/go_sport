@@ -1,9 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../entities/track.dart';
-import '../repositories/playlist_repository.dart';
-import '../../core/di/repository_providers.dart';
+import '../../../../domain/entities/track.dart';
+import '../../../../domain/repositories/playlist_repository.dart';
+import '../../../../core/di/repository_providers.dart';
 
 part 'favorites_state.freezed.dart';
 

@@ -6,8 +6,8 @@ import 'package:go_sport/design_system/ds_extensions.dart';
 
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/domain/state/featured_playlists_state.dart';
-import 'package:go_sport/domain/state/albums_state.dart';
-import 'package:go_sport/domain/state/featured_artists_state.dart';
+import 'package:go_sport/features/music/presentation/albums_state.dart';
+import 'package:go_sport/features/music/presentation/featured_artists_state.dart';
 import 'package:go_sport/features/music/presentation/widgets/music_quick_action_card.dart';
 import 'package:go_sport/features/music/presentation/widgets/artist_card.dart';
 import 'package:go_sport/features/music/presentation/widgets/album_card.dart';

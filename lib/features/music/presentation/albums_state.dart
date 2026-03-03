@@ -1,9 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../entities/album.dart';
-import '../repositories/album_repository.dart';
-import '../../core/di/repository_providers.dart';
+import '../../../domain/entities/album.dart';
+import '../../../domain/repositories/album_repository.dart';
+import '../../../core/di/repository_providers.dart';
 
 part 'albums_state.freezed.dart';
 

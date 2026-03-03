@@ -1,9 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../entities/artist.dart';
-import '../repositories/artist_repository.dart';
-import '../../core/di/repository_providers.dart';
+import '../../../domain/entities/artist.dart';
+import '../../../domain/repositories/artist_repository.dart';
+import '../../../core/di/repository_providers.dart';
 
 part 'featured_artists_state.freezed.dart';
 
