@@ -1,73 +1,81 @@
-import '../../domain/repositories/song_repository.dart';
-import '../../domain/entities/song.dart';
+import 'package:go_sport/domain/repositories/track_repository.dart';
 
-class SongRepositoryMock implements SongRepository {
-  final List<Song> _mockData = [
-    Song(
+import '../../domain/entities/track.dart';
+
+class TrackRepositoryMock implements TrackRepository {
+  final List<Track> _mockData = [
+    Track(
       id: '1',
       title: 'Blinding Lights',
-      artist: 'The Weeknd',
-      albumName: 'After Hours',
+      artistName: 'The Weeknd',
       imageUrl:
           'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=800&q=80',
-      isLiked: true,
       duration: const Duration(minutes: 3, seconds: 20),
+      audioUrl: '',
+      isLiked: true,
     ),
-    Song(
+    Track(
       id: '2',
       title: 'Levitating',
-      artist: 'Dua Lipa',
-      albumName: 'Future Nostalgia',
+      artistName: 'Dua Lipa',
       imageUrl:
           'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=800&q=80',
-      isLiked: false,
       duration: const Duration(minutes: 3, seconds: 23),
+      audioUrl: '',
+      isLiked: false,
     ),
-    Song(
+    Track(
       id: '3',
       title: 'Therefore I Am',
-      artist: 'Billie Eilish',
-      albumName: 'Happier Than Ever',
+      artistName: 'Billie Eilish',
       imageUrl:
           'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=800&q=80',
-      isLiked: true,
       duration: const Duration(minutes: 2, seconds: 58),
+      audioUrl: '',
+      isLiked: true,
     ),
-    Song(
+    Track(
       id: '4',
       title: 'Circles',
-      artist: 'Post Malone',
-      albumName: 'Hollywood\'s Bleeding',
+      artistName: 'Post Malone',
       imageUrl:
           'https://images.unsplash.com/photo-1511379938547-c1f69b13d835?auto=format&fit=crop&w=800&q=80',
-      isLiked: false,
       duration: const Duration(minutes: 3, seconds: 34),
+      audioUrl: '',
+      isLiked: false,
     ),
-    Song(
+    Track(
       id: '5',
       title: 'thank u, next',
-      artist: 'Ariana Grande',
-      albumName: 'thank u, next',
+      artistName: 'Ariana Grande',
       imageUrl:
           'https://images.unsplash.com/photo-1459749411175-04bf5292ceea?auto=format&fit=crop&w=800&q=80',
-      isLiked: true,
       duration: const Duration(minutes: 3, seconds: 31),
+      audioUrl: '',
+      isLiked: true,
     ),
-    Song(
+    Track(
       id: '6',
       title: 'Anti-Hero',
-      artist: 'Taylor Swift',
-      albumName: 'Midnights',
+      artistName: 'Taylor Swift',
       imageUrl:
           'https://images.unsplash.com/photo-1506157786151-b8491531f063?auto=format&fit=crop&w=800&q=80',
-      isLiked: false,
       duration: const Duration(minutes: 3, seconds: 21),
+      audioUrl: '',
+      isLiked: false,
     ),
   ];
 
   @override
-  Future<List<Song>> getFeaturedSongs() async {
+  Future<List<Track>> getAllTracks() async {
     await Future.delayed(const Duration(milliseconds: 500));
     return _mockData;
+  }
+
+  @override
+  Future<List<Track>> getFeaturedTracks() async {
+    final all = await getAllTracks();
+    await Future.delayed(const Duration(milliseconds: 100));
+    return all.where((t) => t.isLiked).toList();
   }
 }

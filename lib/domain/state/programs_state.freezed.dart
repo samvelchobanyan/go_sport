@@ -31,10 +31,17 @@ mixin _$ProgramsState {
 
 /// @nodoc
 abstract class $ProgramsStateCopyWith<$Res> {
-  factory $ProgramsStateCopyWith(ProgramsState value, $Res Function(ProgramsState) then) =
-      _$ProgramsStateCopyWithImpl<$Res, ProgramsState>;
+  factory $ProgramsStateCopyWith(
+    ProgramsState value,
+    $Res Function(ProgramsState) then,
+  ) = _$ProgramsStateCopyWithImpl<$Res, ProgramsState>;
   @useResult
-  $Res call({Map<String, Program> programs, bool isLoading, bool isLoadingMore, String? error});
+  $Res call({
+    Map<String, Program> programs,
+    bool isLoading,
+    bool isLoadingMore,
+    String? error,
+  });
 }
 
 /// @nodoc
@@ -90,7 +97,12 @@ abstract class _$$ProgramsStateImplCopyWith<$Res>
   ) = __$$ProgramsStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({Map<String, Program> programs, bool isLoading, bool isLoadingMore, String? error});
+  $Res call({
+    Map<String, Program> programs,
+    bool isLoading,
+    bool isLoadingMore,
+    String? error,
+  });
 }
 
 /// @nodoc

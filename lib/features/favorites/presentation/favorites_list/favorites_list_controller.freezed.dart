@@ -20,34 +20,19 @@ mixin _$FavoritesListState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(
-      List<NewsArticle> articles,
-      bool hasMore,
-      bool isLoadingMore,
-    )
-    data,
+    required TResult Function(List<Track> songs) data,
     required TResult Function(String message) error,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function(
-      List<NewsArticle> articles,
-      bool hasMore,
-      bool isLoadingMore,
-    )?
-    data,
+    TResult? Function(List<Track> songs)? data,
     TResult? Function(String message)? error,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(
-      List<NewsArticle> articles,
-      bool hasMore,
-      bool isLoadingMore,
-    )?
-    data,
+    TResult Function(List<Track> songs)? data,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) => throw _privateConstructorUsedError;
@@ -139,12 +124,7 @@ class _$FavoritesListLoadingImpl implements _FavoritesListLoading {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(
-      List<NewsArticle> articles,
-      bool hasMore,
-      bool isLoadingMore,
-    )
-    data,
+    required TResult Function(List<Track> songs) data,
     required TResult Function(String message) error,
   }) {
     return loading();
@@ -154,12 +134,7 @@ class _$FavoritesListLoadingImpl implements _FavoritesListLoading {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function(
-      List<NewsArticle> articles,
-      bool hasMore,
-      bool isLoadingMore,
-    )?
-    data,
+    TResult? Function(List<Track> songs)? data,
     TResult? Function(String message)? error,
   }) {
     return loading?.call();
@@ -169,12 +144,7 @@ class _$FavoritesListLoadingImpl implements _FavoritesListLoading {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(
-      List<NewsArticle> articles,
-      bool hasMore,
-      bool isLoadingMore,
-    )?
-    data,
+    TResult Function(List<Track> songs)? data,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -230,7 +200,7 @@ abstract class _$$FavoritesListDataImplCopyWith<$Res> {
     $Res Function(_$FavoritesListDataImpl) then,
   ) = __$$FavoritesListDataImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({List<NewsArticle> articles, bool hasMore, bool isLoadingMore});
+  $Res call({List<Track> songs});
 }
 
 /// @nodoc
@@ -246,25 +216,13 @@ class __$$FavoritesListDataImplCopyWithImpl<$Res>
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? articles = null,
-    Object? hasMore = null,
-    Object? isLoadingMore = null,
-  }) {
+  $Res call({Object? songs = null}) {
     return _then(
       _$FavoritesListDataImpl(
-        articles: null == articles
-            ? _value._articles
-            : articles // ignore: cast_nullable_to_non_nullable
-                  as List<NewsArticle>,
-        hasMore: null == hasMore
-            ? _value.hasMore
-            : hasMore // ignore: cast_nullable_to_non_nullable
-                  as bool,
-        isLoadingMore: null == isLoadingMore
-            ? _value.isLoadingMore
-            : isLoadingMore // ignore: cast_nullable_to_non_nullable
-                  as bool,
+        songs: null == songs
+            ? _value._songs
+            : songs // ignore: cast_nullable_to_non_nullable
+                  as List<Track>,
       ),
     );
   }
@@ -273,28 +231,20 @@ class __$$FavoritesListDataImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$FavoritesListDataImpl implements _FavoritesListData {
-  const _$FavoritesListDataImpl({
-    required final List<NewsArticle> articles,
-    required this.hasMore,
-    required this.isLoadingMore,
-  }) : _articles = articles;
+  const _$FavoritesListDataImpl({required final List<Track> songs})
+    : _songs = songs;
 
-  final List<NewsArticle> _articles;
+  final List<Track> _songs;
   @override
-  List<NewsArticle> get articles {
-    if (_articles is EqualUnmodifiableListView) return _articles;
+  List<Track> get songs {
+    if (_songs is EqualUnmodifiableListView) return _songs;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_articles);
+    return EqualUnmodifiableListView(_songs);
   }
 
   @override
-  final bool hasMore;
-  @override
-  final bool isLoadingMore;
-
-  @override
   String toString() {
-    return 'FavoritesListState.data(articles: $articles, hasMore: $hasMore, isLoadingMore: $isLoadingMore)';
+    return 'FavoritesListState.data(songs: $songs)';
   }
 
   @override
@@ -302,19 +252,12 @@ class _$FavoritesListDataImpl implements _FavoritesListData {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$FavoritesListDataImpl &&
-            const DeepCollectionEquality().equals(other._articles, _articles) &&
-            (identical(other.hasMore, hasMore) || other.hasMore == hasMore) &&
-            (identical(other.isLoadingMore, isLoadingMore) ||
-                other.isLoadingMore == isLoadingMore));
+            const DeepCollectionEquality().equals(other._songs, _songs));
   }
 
   @override
-  int get hashCode => Object.hash(
-    runtimeType,
-    const DeepCollectionEquality().hash(_articles),
-    hasMore,
-    isLoadingMore,
-  );
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(_songs));
 
   /// Create a copy of FavoritesListState
   /// with the given fields replaced by the non-null parameter values.
@@ -331,47 +274,32 @@ class _$FavoritesListDataImpl implements _FavoritesListData {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(
-      List<NewsArticle> articles,
-      bool hasMore,
-      bool isLoadingMore,
-    )
-    data,
+    required TResult Function(List<Track> songs) data,
     required TResult Function(String message) error,
   }) {
-    return data(articles, hasMore, isLoadingMore);
+    return data(songs);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function(
-      List<NewsArticle> articles,
-      bool hasMore,
-      bool isLoadingMore,
-    )?
-    data,
+    TResult? Function(List<Track> songs)? data,
     TResult? Function(String message)? error,
   }) {
-    return data?.call(articles, hasMore, isLoadingMore);
+    return data?.call(songs);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(
-      List<NewsArticle> articles,
-      bool hasMore,
-      bool isLoadingMore,
-    )?
-    data,
+    TResult Function(List<Track> songs)? data,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
     if (data != null) {
-      return data(articles, hasMore, isLoadingMore);
+      return data(songs);
     }
     return orElse();
   }
@@ -412,15 +340,10 @@ class _$FavoritesListDataImpl implements _FavoritesListData {
 }
 
 abstract class _FavoritesListData implements FavoritesListState {
-  const factory _FavoritesListData({
-    required final List<NewsArticle> articles,
-    required final bool hasMore,
-    required final bool isLoadingMore,
-  }) = _$FavoritesListDataImpl;
+  const factory _FavoritesListData({required final List<Track> songs}) =
+      _$FavoritesListDataImpl;
 
-  List<NewsArticle> get articles;
-  bool get hasMore;
-  bool get isLoadingMore;
+  List<Track> get songs;
 
   /// Create a copy of FavoritesListState
   /// with the given fields replaced by the non-null parameter values.
@@ -503,12 +426,7 @@ class _$FavoritesListErrorImpl implements _FavoritesListError {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(
-      List<NewsArticle> articles,
-      bool hasMore,
-      bool isLoadingMore,
-    )
-    data,
+    required TResult Function(List<Track> songs) data,
     required TResult Function(String message) error,
   }) {
     return error(message);
@@ -518,12 +436,7 @@ class _$FavoritesListErrorImpl implements _FavoritesListError {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function(
-      List<NewsArticle> articles,
-      bool hasMore,
-      bool isLoadingMore,
-    )?
-    data,
+    TResult? Function(List<Track> songs)? data,
     TResult? Function(String message)? error,
   }) {
     return error?.call(message);
@@ -533,12 +446,7 @@ class _$FavoritesListErrorImpl implements _FavoritesListError {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(
-      List<NewsArticle> articles,
-      bool hasMore,
-      bool isLoadingMore,
-    )?
-    data,
+    TResult Function(List<Track> songs)? data,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {

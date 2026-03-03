@@ -1,67 +1,67 @@
-import 'package:go_sport/domain/entities/episode.dart';
+import 'package:go_sport/domain/entities/track.dart';
 
 class EpisodesRepositoryMock {
-  static List<Episode> getMockEpisodes() {
+  static List<Track> getMockEpisodes() {
     return [
-      Episode(
+      Track(
         id: '1',
         title: 'The Future of Sports Technology',
-        subtitle: 'Podcast',
+        artistName: 'Tech Talk',
         imageUrl:
             'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=300&h=300&fit=crop',
-        description: 'Exploring the latest innovations in sports tech',
-        duration: 45,
-        releaseDate: DateTime.now().subtract(const Duration(days: 3)),
+        duration: const Duration(minutes: 45),
+        audioUrl: '',
+        releaseDate: DateTime(2026, 2, 24),
       ),
-      Episode(
+      Track(
         id: '2',
         title: 'Training Like a Champion',
-        subtitle: 'Training Series',
+        artistName: 'Fitness Weekly',
         imageUrl:
             'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=300&h=300&fit=crop',
-        description: 'Learn professional training techniques',
-        duration: 52,
-        releaseDate: DateTime.now().subtract(const Duration(days: 5)),
+        duration: const Duration(minutes: 52),
+        audioUrl: '',
+        releaseDate: DateTime(2026, 2, 22),
       ),
-      Episode(
+      Track(
         id: '3',
         title: 'Mental Resilience in Sports',
-        subtitle: 'Podcast',
+        artistName: 'Mindset Matters',
         imageUrl:
             'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=300&h=300&fit=crop',
-        description: 'Building mental toughness for competition',
-        duration: 38,
-        releaseDate: DateTime.now().subtract(const Duration(days: 7)),
+        duration: const Duration(minutes: 38),
+        audioUrl: '',
+        releaseDate: DateTime(2026, 2, 20),
       ),
-      Episode(
+      Track(
         id: '4',
         title: 'Nutrition for Athletes',
-        subtitle: 'Health Series',
+        artistName: 'Health Hub',
         imageUrl:
             'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=300&h=300&fit=crop',
-        description: 'Optimal nutrition strategies for peak performance',
-        duration: 41,
-        releaseDate: DateTime.now().subtract(const Duration(days: 10)),
+        duration: const Duration(minutes: 41),
+        audioUrl: '',
+        releaseDate: DateTime(2026, 2, 17),
       ),
-      Episode(
+      Track(
         id: '5',
         title: 'Recovery and Rest',
-        subtitle: 'Wellness',
+        artistName: 'Wellness Weekly',
         imageUrl:
             'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=300&h=300&fit=crop',
-        description: 'Why recovery is crucial for athletic performance',
-        duration: 36,
-        releaseDate: DateTime.now().subtract(const Duration(days: 12)),
+        duration: const Duration(minutes: 36),
+        audioUrl: '',
+        releaseDate: DateTime(2026, 2, 15),
       ),
-      Episode(
+      Track(
         id: '6',
         title: 'Interview with Olympic Champion',
-        subtitle: 'Interviews',
+        artistName: 'Champions Corner',
         imageUrl:
             'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=300&h=300&fit=crop',
-        description: 'Exclusive interview with Olympic gold medalist',
-        duration: 58,
-        releaseDate: DateTime.now().subtract(const Duration(days: 14)),
+        duration: const Duration(minutes: 58),
+        audioUrl: '',
+        releaseDate: DateTime(2026, 2, 13),
       ),
     ];
   }

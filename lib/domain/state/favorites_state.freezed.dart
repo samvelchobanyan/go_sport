@@ -17,7 +17,7 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$FavoritesState {
-  Map<String, Song> get favorites => throw _privateConstructorUsedError;
+  Map<String, Track> get favorites => throw _privateConstructorUsedError;
   bool get isLoading => throw _privateConstructorUsedError;
   bool get isLoadingMore => throw _privateConstructorUsedError;
   String? get error => throw _privateConstructorUsedError;
@@ -37,7 +37,7 @@ abstract class $FavoritesStateCopyWith<$Res> {
   ) = _$FavoritesStateCopyWithImpl<$Res, FavoritesState>;
   @useResult
   $Res call({
-    Map<String, Song> favorites,
+    Map<String, Track> favorites,
     bool isLoading,
     bool isLoadingMore,
     String? error,
@@ -69,7 +69,7 @@ class _$FavoritesStateCopyWithImpl<$Res, $Val extends FavoritesState>
             favorites: null == favorites
                 ? _value.favorites
                 : favorites // ignore: cast_nullable_to_non_nullable
-                      as Map<String, Song>,
+                      as Map<String, Track>,
             isLoading: null == isLoading
                 ? _value.isLoading
                 : isLoading // ignore: cast_nullable_to_non_nullable
@@ -98,7 +98,7 @@ abstract class _$$FavoritesStateImplCopyWith<$Res>
   @override
   @useResult
   $Res call({
-    Map<String, Song> favorites,
+    Map<String, Track> favorites,
     bool isLoading,
     bool isLoadingMore,
     String? error,
@@ -129,7 +129,7 @@ class __$$FavoritesStateImplCopyWithImpl<$Res>
         favorites: null == favorites
             ? _value._favorites
             : favorites // ignore: cast_nullable_to_non_nullable
-                  as Map<String, Song>,
+                  as Map<String, Track>,
         isLoading: null == isLoading
             ? _value.isLoading
             : isLoading // ignore: cast_nullable_to_non_nullable
@@ -151,16 +151,16 @@ class __$$FavoritesStateImplCopyWithImpl<$Res>
 
 class _$FavoritesStateImpl implements _FavoritesState {
   const _$FavoritesStateImpl({
-    final Map<String, Song> favorites = const {},
+    final Map<String, Track> favorites = const {},
     this.isLoading = false,
     this.isLoadingMore = false,
     this.error,
   }) : _favorites = favorites;
 
-  final Map<String, Song> _favorites;
+  final Map<String, Track> _favorites;
   @override
   @JsonKey()
-  Map<String, Song> get favorites {
+  Map<String, Track> get favorites {
     if (_favorites is EqualUnmodifiableMapView) return _favorites;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableMapView(_favorites);
@@ -219,14 +219,14 @@ class _$FavoritesStateImpl implements _FavoritesState {
 
 abstract class _FavoritesState implements FavoritesState {
   const factory _FavoritesState({
-    final Map<String, Song> favorites,
+    final Map<String, Track> favorites,
     final bool isLoading,
     final bool isLoadingMore,
     final String? error,
   }) = _$FavoritesStateImpl;
 
   @override
-  Map<String, Song> get favorites;
+  Map<String, Track> get favorites;
   @override
   bool get isLoading;
   @override

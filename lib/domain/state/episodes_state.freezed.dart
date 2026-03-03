@@ -17,7 +17,7 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$EpisodesState {
-  Map<String, Episode> get episodes => throw _privateConstructorUsedError;
+  Map<String, Track> get episodes => throw _privateConstructorUsedError;
   bool get isLoading => throw _privateConstructorUsedError;
   bool get isLoadingMore => throw _privateConstructorUsedError;
   String? get error => throw _privateConstructorUsedError;
@@ -31,10 +31,17 @@ mixin _$EpisodesState {
 
 /// @nodoc
 abstract class $EpisodesStateCopyWith<$Res> {
-  factory $EpisodesStateCopyWith(EpisodesState value, $Res Function(EpisodesState) then) =
-      _$EpisodesStateCopyWithImpl<$Res, EpisodesState>;
+  factory $EpisodesStateCopyWith(
+    EpisodesState value,
+    $Res Function(EpisodesState) then,
+  ) = _$EpisodesStateCopyWithImpl<$Res, EpisodesState>;
   @useResult
-  $Res call({Map<String, Episode> episodes, bool isLoading, bool isLoadingMore, String? error});
+  $Res call({
+    Map<String, Track> episodes,
+    bool isLoading,
+    bool isLoadingMore,
+    String? error,
+  });
 }
 
 /// @nodoc
@@ -62,7 +69,7 @@ class _$EpisodesStateCopyWithImpl<$Res, $Val extends EpisodesState>
             episodes: null == episodes
                 ? _value.episodes
                 : episodes // ignore: cast_nullable_to_non_nullable
-                      as Map<String, Episode>,
+                      as Map<String, Track>,
             isLoading: null == isLoading
                 ? _value.isLoading
                 : isLoading // ignore: cast_nullable_to_non_nullable
@@ -90,7 +97,12 @@ abstract class _$$EpisodesStateImplCopyWith<$Res>
   ) = __$$EpisodesStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({Map<String, Episode> episodes, bool isLoading, bool isLoadingMore, String? error});
+  $Res call({
+    Map<String, Track> episodes,
+    bool isLoading,
+    bool isLoadingMore,
+    String? error,
+  });
 }
 
 /// @nodoc
@@ -117,7 +129,7 @@ class __$$EpisodesStateImplCopyWithImpl<$Res>
         episodes: null == episodes
             ? _value._episodes
             : episodes // ignore: cast_nullable_to_non_nullable
-                  as Map<String, Episode>,
+                  as Map<String, Track>,
         isLoading: null == isLoading
             ? _value.isLoading
             : isLoading // ignore: cast_nullable_to_non_nullable
@@ -139,16 +151,16 @@ class __$$EpisodesStateImplCopyWithImpl<$Res>
 
 class _$EpisodesStateImpl implements _EpisodesState {
   const _$EpisodesStateImpl({
-    final Map<String, Episode> episodes = const {},
+    final Map<String, Track> episodes = const {},
     this.isLoading = false,
     this.isLoadingMore = false,
     this.error,
   }) : _episodes = episodes;
 
-  final Map<String, Episode> _episodes;
+  final Map<String, Track> _episodes;
   @override
   @JsonKey()
-  Map<String, Episode> get episodes {
+  Map<String, Track> get episodes {
     if (_episodes is EqualUnmodifiableMapView) return _episodes;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableMapView(_episodes);
@@ -201,14 +213,14 @@ class _$EpisodesStateImpl implements _EpisodesState {
 
 abstract class _EpisodesState implements EpisodesState {
   const factory _EpisodesState({
-    final Map<String, Episode> episodes,
+    final Map<String, Track> episodes,
     final bool isLoading,
     final bool isLoadingMore,
     final String? error,
   }) = _$EpisodesStateImpl;
 
   @override
-  Map<String, Episode> get episodes;
+  Map<String, Track> get episodes;
   @override
   bool get isLoading;
   @override

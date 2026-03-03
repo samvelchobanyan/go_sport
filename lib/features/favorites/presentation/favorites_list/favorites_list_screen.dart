@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/domain/entities/track.dart';
 import 'package:go_sport/domain/state/favorites_state.dart';
+import 'package:go_sport/domain/state/player_state.dart';
 import 'package:go_sport/features/shared_widgets/dotted_divider.dart';
-import 'package:go_sport/features/shared_widgets/favorite_item_row.dart';
 import 'package:go_sport/features/shared_widgets/my_categories_top.dart';
+import 'package:go_sport/features/playlists/presentation/playlist/widgets/track_tile.dart';
 
 class FavoritesListScreen extends ConsumerWidget {
   const FavoritesListScreen({super.key});
@@ -60,7 +62,7 @@ class FavoritesListScreen extends ConsumerWidget {
             title: 'My Favorites',
             subtitle: 'tracks',
             itemCount: 0,
-            onTapIcon: () => _playAll(context),
+            onTapIcon: null,
           ),
           const SliverFillRemaining(
             hasScrollBody: false,
@@ -80,7 +82,7 @@ class FavoritesListScreen extends ConsumerWidget {
             title: 'My Favorites',
             subtitle: 'tracks',
             itemCount: 0,
-            onTapIcon: () => _playAll(context),
+            onTapIcon: null,
           ),
           SliverFillRemaining(
             hasScrollBody: false,
@@ -119,7 +121,7 @@ class FavoritesListScreen extends ConsumerWidget {
             title: 'My Favorites',
             subtitle: 'tracks',
             itemCount: 0,
-            onTapIcon: () => _playAll(context),
+            onTapIcon: null,
           ),
           SliverFillRemaining(
             hasScrollBody: false,
@@ -139,11 +141,11 @@ class FavoritesListScreen extends ConsumerWidget {
           title: 'My Favorites',
           subtitle: 'tracks',
           itemCount: favorites.length,
-          onTapIcon: () => _playAll(context),
+          onTapIcon: () => _onPlayTap(ref, favorites, 'My Favorites', ''),
         ),
 
         // 🔹 Songs list
-        ..._buildSongsSliver(favorites),
+        ..._buildSongsSliver(ref, favorites),
 
         // 🔹 Loading indicator at the bottom
         if (state.isLoadingMore)
@@ -157,12 +159,65 @@ class FavoritesListScreen extends ConsumerWidget {
     );
   }
 
-  void _playAll(BuildContext context) {
-    // TODO: Implement play-all favorites behavior
-    debugPrint('Play all favorites pressed');
+  // void _playAll(WidgetRef ref, List<dynamic> favorites) {
+  //   if (favorites.isEmpty) return;
+
+  //   ref
+  //       .read(playerStateProvider.notifier)
+  //       .playQueue(favorites, source: QueueSource.favorites());
+  // }
+
+  void _onPlayTap(
+    WidgetRef ref,
+    List<Track> favorites,
+    String title,
+    String imageUrl,
+  ) {
+    if (favorites.isEmpty) return;
+    final myFavoritesId = 'favorites'; // ID for favorites playlist
+
+    ref
+        .read(playerStateProvider.notifier)
+        .playQueue(
+          favorites,
+          source: QueueSource.favorites(
+            id: myFavoritesId,
+            title: title,
+            imageUrl: imageUrl,
+          ),
+        );
+  }
+  // void _onTrackTap(WidgetRef ref, List<dynamic> favorites, int index) {
+  //   ref
+  //       .read(playerStateProvider.notifier)
+  //       .playQueue(favorites, source: QueueSource.favorites(), startIndex: index);
+  // }
+
+  void _onTrackTap(WidgetRef ref, List<Track> favorites, int index) {
+    final myFavoritesId = 'favorites'; // ID for favorites playlist
+
+    ref
+        .read(playerStateProvider.notifier)
+        .playQueue(
+          favorites,
+          source: QueueSource.favorites(
+            id: myFavoritesId,
+            title: 'My Favorites',
+            imageUrl: '',
+          ),
+          startIndex: index,
+        );
   }
 
-  List<Widget> _buildSongsSliver(List<dynamic> songs) {
+  void _onTrackMenuTap(int index) {
+    // TODO: Show track menu
+    debugPrint('Track menu tapped at index: $index');
+  }
+
+  List<Widget> _buildSongsSliver(WidgetRef ref, List<Track> songs) {
+    final playerState = ref.watch(playerStateProvider);
+    final playingTrackId = playerState.currentTrack?.id;
+
     // Build children list: separators and items
     final children = <Widget>[];
 
@@ -175,14 +230,19 @@ class FavoritesListScreen extends ConsumerWidget {
           ),
         );
       }
-      final song = songs[i];
+      final track = songs[i];
+      final trackIndex = i; // Capture index by value
+      final isCurrentTrack = track.id == playingTrackId;
+      final bool? trackPlayingState = isCurrentTrack
+          ? playerState.isPlaying && playerState.isRadioMode == false
+          : null;
+
       children.add(
-        FavoriteItemRow(
-          imageUrl: song.imageUrl ?? '',
-          title: song.title,
-          subtitle: song.artist ?? '',
-          onTap: () => debugPrint('Song tapped: ${song.id}'),
-          onIconTap: () => debugPrint('Favorite icon tapped for: ${song.id}'),
+        TrackTile(
+          track: track,
+          isPlaying: trackPlayingState,
+          onTap: () => _onTrackTap(ref, songs, trackIndex),
+          onMenuTap: () => _onTrackMenuTap(trackIndex),
         ),
       );
     }
