@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
@@ -33,22 +34,26 @@ void showItemOptionsBottomSheet({
               children: [
                 ClipRRect(
                   borderRadius: BorderRadius.circular(8),
-                  child: Image.network(
-                    imageUrl,
+                  child: CachedNetworkImage(
+                    imageUrl: imageUrl,
                     width: 60,
                     height: 60,
                     fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) {
-                      return Container(
-                        width: 60,
-                        height: 60,
-                        decoration: BoxDecoration(
-                          color: DSColors.white,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: const Icon(Icons.image_not_supported),
-                      );
-                    },
+                    placeholder: (context, url) => Container(
+                      width: 60,
+                      height: 60,
+                      color: DSColors.divider,
+                    ),
+                    errorWidget: (context, url, error) => Container(
+                      width: 60,
+                      height: 60,
+                      color: DSColors.gray20,
+                      child: const Icon(
+                        Icons.error,
+                        color: DSColors.gray50,
+                        size: 28,
+                      ),
+                    ),
                   ),
                 ),
                 const SizedBox(width: 12),

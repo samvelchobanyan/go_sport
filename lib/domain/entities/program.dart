@@ -10,5 +10,6 @@ class Program with _$Program {
     String? imageUrl,
     String? description,
     required int episodeCount,
+    required bool isLiked,
   }) = _Program;
 }

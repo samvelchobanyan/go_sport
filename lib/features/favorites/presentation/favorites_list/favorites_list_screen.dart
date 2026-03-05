@@ -3,11 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/domain/entities/track.dart';
-import 'package:go_sport/features/favorites/presentation/favorites_list/favorites_state.dart';
+import 'package:go_sport/features/favorites/presentation/favorites_list/favorites_controller.dart';
 import 'package:go_sport/domain/state/player_state.dart';
 import 'package:go_sport/features/shared_widgets/dotted_divider.dart';
 import 'package:go_sport/features/shared_widgets/my_categories_top.dart';
-import 'package:go_sport/features/playlists/presentation/playlist/widgets/track_tile.dart';
+import 'package:go_sport/features/shared_widgets/track_tile.dart';
 
 class FavoritesListScreen extends ConsumerWidget {
   const FavoritesListScreen({super.key});

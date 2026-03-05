@@ -27,12 +27,10 @@ class PlaylistHero extends StatelessWidget {
           child: Image.network(
             playlist.imageUrl,
             fit: BoxFit.cover,
-            errorBuilder: (_, __, ___) => Container(
-              color: DSColors.gray40,
-            ),
+            errorBuilder: (_, __, ___) => Container(color: DSColors.gray40),
           ),
         ),
-        
+
         // Gradient overlay
         const DecoratedBox(
           decoration: BoxDecoration(
@@ -48,7 +46,7 @@ class PlaylistHero extends StatelessWidget {
             ),
           ),
         ),
-        
+
         // Title and buttons
         Align(
           alignment: Alignment.bottomCenter,

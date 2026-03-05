@@ -58,4 +58,10 @@ class ArtistRepositoryMock implements ArtistRepository {
     await Future.delayed(const Duration(milliseconds: 500));
     return _mockData;
   }
+
+  @override
+  Future<List<Artist>> getFavoriteArtists() async {
+    await Future.delayed(const Duration(milliseconds: 500));
+    return _mockData.where((artist) => artist.isLiked).toList();
+  }
 }

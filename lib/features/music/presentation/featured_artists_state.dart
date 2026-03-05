@@ -45,6 +45,19 @@ class FeaturedArtistsNotifier
     }
   }
 
+
+Future<void> loadFavoriteArtists() async {
+    state = state.copyWith(isLoading: true, error: null);
+
+    try {
+      final artists = await _repository.getFavoriteArtists();
+      final artistsMap = {for (final a in artists) a.id: a};
+      state = state.copyWith(artists: artistsMap, isLoading: false);
+    } catch (e) {
+      state = state.copyWith(isLoading: false, error: e.toString());
+    }
+  }
+
   void toggleLike(String artistId) {
     final artist = state.artists[artistId];
     if (artist == null) return;

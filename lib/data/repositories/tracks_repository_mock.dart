@@ -72,10 +72,5 @@ class TrackRepositoryMock implements TrackRepository {
     return _mockData;
   }
 
-  @override
-  Future<List<Track>> getFeaturedTracks() async {
-    final all = await getAllTracks();
-    await Future.delayed(const Duration(milliseconds: 100));
-    return all.where((t) => t.isLiked).toList();
-  }
+
 }

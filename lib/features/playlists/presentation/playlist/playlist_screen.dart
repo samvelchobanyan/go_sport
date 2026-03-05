@@ -10,7 +10,7 @@ import 'package:go_sport/features/shared_widgets/dotted_divider.dart';
 import 'playlist_controller.dart';
 import 'widgets/playlist_hero.dart';
 import 'widgets/playlist_screen_skeleton.dart';
-import 'widgets/track_tile.dart';
+import '../../../shared_widgets/track_tile.dart';
 
 class PlaylistScreen extends ConsumerWidget {
   final String playlistId;
