@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
@@ -8,11 +9,7 @@ class NewsItem extends StatelessWidget {
   final NewsArticle article;
   final VoidCallback onTap;
 
-  const NewsItem({
-    super.key,
-    required this.article,
-    required this.onTap,
-  });
+  const NewsItem({super.key, required this.article, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -41,15 +38,25 @@ class NewsItem extends StatelessWidget {
                 borderRadius: BorderRadius.circular(DSRadius.s),
                 child: Hero(
                   tag: 'newsImage:${article.id}',
-                  child: Image.network(
-                    article.imageUrl,
+                  child: CachedNetworkImage(
+                    imageUrl: article.imageUrl,
                     width: 84,
                     height: 84,
                     fit: BoxFit.cover,
-                    errorBuilder: (_, __, ___) => Container(
-                      color: DSColors.divider,
+                    placeholder: (context, url) => Container(
                       width: 84,
                       height: 84,
+                      color: DSColors.divider,
+                    ),
+                    errorWidget: (context, url, error) => Container(
+                      width: 84,
+                      height: 84,
+                      color: DSColors.gray20,
+                      child: const Icon(
+                        Icons.error,
+                        color: DSColors.gray50,
+                        size: 28,
+                      ),
                     ),
                   ),
                 ),

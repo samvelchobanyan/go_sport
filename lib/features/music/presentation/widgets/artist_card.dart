@@ -1,5 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
+import 'package:go_sport/design_system/foundations/ds_colors.dart';
 
 class ArtistCard extends StatelessWidget {
   final String name;
@@ -21,22 +23,23 @@ class ArtistCard extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           ClipOval(
-            child: Image.network(
-              imageUrl,
+            child: CachedNetworkImage(
+              imageUrl: imageUrl,
               width: 120,
               height: 120,
               fit: BoxFit.cover,
-              errorBuilder: (context, error, stackTrace) {
-                return Container(
-                  width: 120,
-                  height: 120,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    // color: Colors.grey[300],
-                  ),
-                  child: const Icon(Icons.person),
-                );
-              },
+              placeholder: (context, url) =>
+                  Container(width: 120, height: 120, color: DSColors.divider),
+              errorWidget: (context, url, error) => Container(
+                width: 120,
+                height: 120,
+                color: DSColors.gray20,
+                child: const Icon(
+                  Icons.error,
+                  color: DSColors.gray50,
+                  size: 28,
+                ),
+              ),
             ),
           ),
           const SizedBox(height: 12),

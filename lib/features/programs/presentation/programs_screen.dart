@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_sport/core/di/repository_providers.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/domain/state/episodes_state.dart';
@@ -39,10 +40,13 @@ class _ProgramsScreenState extends ConsumerState<ProgramsScreen> {
       if (_showEpisodes) {
         ref.read(episodesStateProvider.notifier).loadMore();
       } else {
-        ref.read(programsStateProvider.notifier).loadMore();
+        // ref.read(programsStateProvider.notifier).loadMore();
+        // if will be paginated
       }
     }
   }
+
+  // change this page to work with new provider style
 
   @override
   Widget build(BuildContext context) {

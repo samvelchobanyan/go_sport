@@ -5,7 +5,7 @@ import '../../../../domain/entities/track.dart';
 import '../../../../domain/repositories/playlist_repository.dart';
 import '../../../../core/di/repository_providers.dart';
 
-part 'favorites_state.freezed.dart';
+part 'favorites_controller.freezed.dart';
 
 @freezed
 class FavoritesState with _$FavoritesState {
@@ -67,26 +67,6 @@ class FavoritesNotifier extends Notifier<FavoritesState> {
   Future<void> refresh() async {
     state = state.copyWith(favorites: {});
     await loadFavorites();
-  }
-
-  Future<void> toggleFavorite(String id) async {
-    final track = state.favorites[id];
-    if (track == null) return;
-
-    // Optimistic update
-    final updatedTrack = track.copyWith(isLiked: !track.isLiked);
-    state = state.copyWith(favorites: {...state.favorites, id: updatedTrack});
-
-    try {
-      // Would call repository to toggle on backend
-      // await _repository.toggleLike(id);
-    } catch (e) {
-      // Rollback on error
-      state = state.copyWith(
-        favorites: {...state.favorites, id: track},
-        error: e.toString(),
-      );
-    }
   }
 }
 

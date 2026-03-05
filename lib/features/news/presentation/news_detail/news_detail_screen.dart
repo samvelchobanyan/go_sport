@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -115,15 +116,25 @@ class NewsDetailScreen extends ConsumerWidget {
                 borderRadius: BorderRadius.circular(DSRadius.s),
                 child: Hero(
                   tag: 'newsImage:$articleId',
-                  child: Image.network(
-                    article.imageUrl,
+                  child: CachedNetworkImage(
+                    imageUrl: article.imageUrl,
                     width: double.infinity,
                     height: 240,
                     fit: BoxFit.cover,
-                    errorBuilder: (_, __, ___) => Container(
-                      color: DSColors.divider,
+                    placeholder: (context, url) => Container(
                       width: double.infinity,
                       height: 240,
+                      color: DSColors.divider,
+                    ),
+                    errorWidget: (context, url, error) => Container(
+                      width: double.infinity,
+                      height: 240,
+                      color: DSColors.gray20,
+                      child: const Icon(
+                        Icons.error,
+                        color: DSColors.gray50,
+                        size: 28,
+                      ),
                     ),
                   ),
                 ),

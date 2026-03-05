@@ -22,6 +22,7 @@ mixin _$Program {
   String? get imageUrl => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
   int get episodeCount => throw _privateConstructorUsedError;
+  bool get isLiked => throw _privateConstructorUsedError;
 
   /// Create a copy of Program
   /// with the given fields replaced by the non-null parameter values.
@@ -40,6 +41,7 @@ abstract class $ProgramCopyWith<$Res> {
     String? imageUrl,
     String? description,
     int episodeCount,
+    bool isLiked,
   });
 }
 
@@ -63,6 +65,7 @@ class _$ProgramCopyWithImpl<$Res, $Val extends Program>
     Object? imageUrl = freezed,
     Object? description = freezed,
     Object? episodeCount = null,
+    Object? isLiked = null,
   }) {
     return _then(
       _value.copyWith(
@@ -86,6 +89,10 @@ class _$ProgramCopyWithImpl<$Res, $Val extends Program>
                 ? _value.episodeCount
                 : episodeCount // ignore: cast_nullable_to_non_nullable
                       as int,
+            isLiked: null == isLiked
+                ? _value.isLiked
+                : isLiked // ignore: cast_nullable_to_non_nullable
+                      as bool,
           )
           as $Val,
     );
@@ -106,6 +113,7 @@ abstract class _$$ProgramImplCopyWith<$Res> implements $ProgramCopyWith<$Res> {
     String? imageUrl,
     String? description,
     int episodeCount,
+    bool isLiked,
   });
 }
 
@@ -128,6 +136,7 @@ class __$$ProgramImplCopyWithImpl<$Res>
     Object? imageUrl = freezed,
     Object? description = freezed,
     Object? episodeCount = null,
+    Object? isLiked = null,
   }) {
     return _then(
       _$ProgramImpl(
@@ -151,6 +160,10 @@ class __$$ProgramImplCopyWithImpl<$Res>
             ? _value.episodeCount
             : episodeCount // ignore: cast_nullable_to_non_nullable
                   as int,
+        isLiked: null == isLiked
+            ? _value.isLiked
+            : isLiked // ignore: cast_nullable_to_non_nullable
+                  as bool,
       ),
     );
   }
@@ -165,6 +178,7 @@ class _$ProgramImpl implements _Program {
     this.imageUrl,
     this.description,
     required this.episodeCount,
+    required this.isLiked,
   });
 
   @override
@@ -177,10 +191,12 @@ class _$ProgramImpl implements _Program {
   final String? description;
   @override
   final int episodeCount;
+  @override
+  final bool isLiked;
 
   @override
   String toString() {
-    return 'Program(id: $id, title: $title, imageUrl: $imageUrl, description: $description, episodeCount: $episodeCount)';
+    return 'Program(id: $id, title: $title, imageUrl: $imageUrl, description: $description, episodeCount: $episodeCount, isLiked: $isLiked)';
   }
 
   @override
@@ -195,12 +211,20 @@ class _$ProgramImpl implements _Program {
             (identical(other.description, description) ||
                 other.description == description) &&
             (identical(other.episodeCount, episodeCount) ||
-                other.episodeCount == episodeCount));
+                other.episodeCount == episodeCount) &&
+            (identical(other.isLiked, isLiked) || other.isLiked == isLiked));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, id, title, imageUrl, description, episodeCount);
+  int get hashCode => Object.hash(
+    runtimeType,
+    id,
+    title,
+    imageUrl,
+    description,
+    episodeCount,
+    isLiked,
+  );
 
   /// Create a copy of Program
   /// with the given fields replaced by the non-null parameter values.
@@ -218,6 +242,7 @@ abstract class _Program implements Program {
     final String? imageUrl,
     final String? description,
     required final int episodeCount,
+    required final bool isLiked,
   }) = _$ProgramImpl;
 
   @override
@@ -230,6 +255,8 @@ abstract class _Program implements Program {
   String? get description;
   @override
   int get episodeCount;
+  @override
+  bool get isLiked;
 
   /// Create a copy of Program
   /// with the given fields replaced by the non-null parameter values.

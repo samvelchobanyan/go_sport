@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
@@ -34,11 +35,19 @@ class AlbumCard extends StatelessWidget {
             MediaCardShell(
               child: Hero(
                 tag: 'playlist-image-$id',
-                child: Image.network(
-                  imageUrl,
+                child: CachedNetworkImage(
+                  imageUrl: imageUrl,
                   fit: BoxFit.cover,
-                  errorBuilder: (_, __, ___) =>
-                      Container(color: DSColors.gray20),
+                  placeholder: (context, url) =>
+                      Container(width: 84, height: 84, color: DSColors.divider),
+                  errorWidget: (context, url, error) => Container(
+                    color: DSColors.gray20,
+                    child: const Icon(
+                      Icons.error,
+                      color: DSColors.gray50,
+                      size: 28,
+                    ),
+                  ),
                 ),
               ),
             ),

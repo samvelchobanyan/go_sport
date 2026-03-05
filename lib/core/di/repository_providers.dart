@@ -1,4 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_sport/data/repositories/episodes_repository_mock.dart';
+import 'package:go_sport/data/repositories/programs_repository_mock.dart';
+import 'package:go_sport/domain/repositories/episodes_repository.dart';
+import 'package:go_sport/domain/repositories/programs_repository.dart';
 
 import '../../data/repositories/news_repository_mock.dart';
 import '../../data/repositories/playlist_repository_mock.dart';
@@ -35,4 +39,12 @@ final tracksRepositoryProvider = Provider<TrackRepository>((ref) {
 
 final albumRepositoryProvider = Provider<AlbumRepository>((ref) {
   return AlbumRepositoryMock();
+});
+
+final episodesRepositoryProvider = Provider<EpisodesRepository>((ref) {
+  return EpisodesRepositoryMock();
+});
+
+final programsRepositoryProvider = Provider<ProgramsRepository>((ref) {
+  return ProgramsRepositoryMock();
 });

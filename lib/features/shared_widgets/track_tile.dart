@@ -3,6 +3,7 @@ import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/domain/entities/track.dart';
+import 'package:go_sport/features/shared_widgets/bottom_pop_up.dart';
 import 'package:go_sport/shared/widgets/equalizer_indicator.dart';
 
 class TrackTile extends StatelessWidget {
@@ -52,16 +53,13 @@ class TrackTile extends StatelessWidget {
                   width: 48,
                   height: 48,
                   fit: BoxFit.cover,
-                  errorBuilder: (_, __, ___) => Container(
-                    width: 48,
-                    height: 48,
-                    color: DSColors.gray20,
-                  ),
+                  errorBuilder: (_, __, ___) =>
+                      Container(width: 48, height: 48, color: DSColors.gray20),
                 ),
               ),
             ),
             const SizedBox(width: 10),
-            
+
             // Track info
             Expanded(
               child: Column(
@@ -77,7 +75,9 @@ class TrackTile extends StatelessWidget {
                         child: Text(
                           track.title,
                           style: context.subtitleM?.copyWith(
-                            color: isPlaying != null ? DSColors.blue : DSColors.black,
+                            color: isPlaying != null
+                                ? DSColors.blue
+                                : DSColors.black,
                           ),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
@@ -95,18 +95,22 @@ class TrackTile extends StatelessWidget {
                 ],
               ),
             ),
-            
+
             // Menu button
             GestureDetector(
-              onTap: onMenuTap,
+              onTap: () {
+                onMenuTap();
+                showItemOptionsBottomSheet(
+                  context: context,
+                  imageUrl: track.imageUrl,
+                  title: track.title,
+                  subtitle: track.artistName,
+                );
+              },
               behavior: HitTestBehavior.opaque,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Icon(
-                  Icons.more_horiz,
-                  color: DSColors.gray60,
-                  size: 24,
-                ),
+                child: Icon(Icons.more_horiz, color: DSColors.gray60, size: 24),
               ),
             ),
           ],
