@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
-import 'package:go_sport/domain/state/episodes_state.dart';
+import 'package:go_sport/features/episodes/presentation/episodes_controller.dart';
 import 'package:go_sport/features/shared_widgets/dotted_divider.dart';
 import 'package:go_sport/features/shared_widgets/episode_item_row.dart';
 import 'package:go_sport/features/shared_widgets/my_categories_top.dart';

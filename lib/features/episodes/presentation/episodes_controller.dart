@@ -4,7 +4,7 @@ import 'package:go_sport/core/di/repository_providers.dart';
 import 'package:go_sport/domain/entities/track.dart';
 import 'package:go_sport/domain/repositories/episodes_repository.dart';
 
-part 'episodes_state.freezed.dart';
+part 'episodes_controller.freezed.dart';
 
 @freezed
 class EpisodesState with _$EpisodesState {

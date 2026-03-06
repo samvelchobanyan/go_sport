@@ -5,7 +5,7 @@ import '../../../domain/entities/artist.dart';
 import '../../../domain/repositories/artist_repository.dart';
 import '../../../core/di/repository_providers.dart';
 
-part 'featured_artists_state.freezed.dart';
+part 'featured_artists_controller.freezed.dart';
 
 @freezed
 class FeaturedArtistsState with _$FeaturedArtistsState {

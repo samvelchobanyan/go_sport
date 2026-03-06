@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:go_sport/core/di/repository_providers.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/domain/state/featured_playlists_state.dart';
-import 'package:go_sport/features/music/presentation/albums_state.dart';
-import 'package:go_sport/features/music/presentation/featured_artists_state.dart';
+import 'package:go_sport/features/music/presentation/albums_controller.dart';
+import 'package:go_sport/features/music/presentation/featured_artists_controller.dart';
+import 'package:go_sport/features/music/presentation/music/music_dashboard_controller.dart';
 import 'package:go_sport/features/music/presentation/widgets/music_quick_action_card.dart';
 import 'package:go_sport/features/music/presentation/widgets/artist_card.dart';
 import 'package:go_sport/features/music/presentation/widgets/album_card.dart';
@@ -28,38 +30,45 @@ class MusicScreen extends ConsumerWidget {
     final albums = albumsState.albumsList;
     final artistsState = ref.watch(featuredArtistsStateProvider);
     final artists = artistsState.artistsList;
+    final musicDashboardState = ref.watch(musicStateProvider);
+    final artistsCount = musicDashboardState.artistsCount;
+    final albumsCount = musicDashboardState.albumsCount;
+    final playlistsCount = musicDashboardState.playlistsCount;
+    final episodesCount = musicDashboardState.episodesCount;
+    final programsCount = musicDashboardState.programsCount;
+    final favoritesCount = musicDashboardState.favoritesCount;
 
     // Quick action cards data
     final cards = [
       {
         'icon': SvgPicture.asset('assets/icons/heart_bg.svg'),
         'title': 'My Favorites',
-        'subtitle': '30 tracks',
+        'subtitle': favoritesCount > 0 ? '$favoritesCount favorites' : 'No favorites',
       },
       {
         'icon': SvgPicture.asset('assets/icons/playlists_bg.svg'),
         'title': 'My Playlist',
-        'subtitle': '14 playlists',
+        'subtitle': playlistsCount > 0 ? '$playlistsCount playlists' : 'No playlists',
       },
       {
         'icon': SvgPicture.asset('assets/icons/nota_bg.svg'),
         'title': 'My Albums',
-        'subtitle': '21 albums',
+        'subtitle': albumsCount > 0 ? '$albumsCount albums' : 'No albums',
       },
       {
         'icon': SvgPicture.asset('assets/icons/artist_bg.svg'),
         'title': 'My Artists',
-        'subtitle': '16 artists',
+        'subtitle': artistsCount > 0 ? '$artistsCount artists' : 'No artists',
       },
       {
         'icon': SvgPicture.asset('assets/icons/episodes_bg.svg'),
         'title': 'New Episodes',
-        'subtitle': '6 episodes',
+        'subtitle': episodesCount > 0 ? '$episodesCount episodes' : 'No episodes',
       },
       {
         'icon': SvgPicture.asset('assets/icons/programs_bg.svg'),
         'title': 'My Programs',
-        'subtitle': '14 programs',
+        'subtitle': programsCount > 0 ? '$programsCount programs' : 'No programs',
       },
     ];
 
