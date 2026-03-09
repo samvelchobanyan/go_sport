@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_sport/design_system/foundations/ds_radius.dart';
 
 class MediaCardShell extends StatelessWidget {
   final Widget child;
@@ -17,7 +18,7 @@ class MediaCardShell extends StatelessWidget {
       child: Container(
         clipBehavior: Clip.antiAlias,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20), // Радиус из CardTheme
+          borderRadius: BorderRadius.circular(DSRadius.s),
         ),
         child: child,
       ),

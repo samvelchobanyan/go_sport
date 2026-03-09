@@ -225,8 +225,8 @@ class MusicScreen extends ConsumerWidget {
                           decoration: BoxDecoration(
                             color: DSColors.white,
                             borderRadius: const BorderRadius.only(
-                              topLeft: Radius.circular(20),
-                              topRight: Radius.circular(20),
+                              topLeft: Radius.circular(16),
+                              topRight: Radius.circular(16),
                             ),
                           ),
                           clipBehavior: Clip.antiAlias,

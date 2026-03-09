@@ -47,12 +47,13 @@ class MyCategoriesTop extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  SvgPicture.asset(iconPath),
-                  const SizedBox(width: 8),
+                  SvgPicture.asset(iconPath, width: 40, height: 40),
+                  const SizedBox(width: 12),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(title, style: context.h2),
+                      const SizedBox(width: 4),
                       Text('$itemCount $subtitle', style: context.textL),
                     ],
                   ),
