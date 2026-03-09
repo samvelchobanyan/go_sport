@@ -43,12 +43,16 @@ class MusicScreen extends ConsumerWidget {
       {
         'icon': SvgPicture.asset('assets/icons/heart_bg.svg'),
         'title': 'My Favorites',
-        'subtitle': favoritesCount > 0 ? '$favoritesCount favorites' : 'No favorites',
+        'subtitle': favoritesCount > 0
+            ? '$favoritesCount favorites'
+            : 'No favorites',
       },
       {
         'icon': SvgPicture.asset('assets/icons/playlists_bg.svg'),
         'title': 'My Playlist',
-        'subtitle': playlistsCount > 0 ? '$playlistsCount playlists' : 'No playlists',
+        'subtitle': playlistsCount > 0
+            ? '$playlistsCount playlists'
+            : 'No playlists',
       },
       {
         'icon': SvgPicture.asset('assets/icons/nota_bg.svg'),
@@ -63,12 +67,16 @@ class MusicScreen extends ConsumerWidget {
       {
         'icon': SvgPicture.asset('assets/icons/episodes_bg.svg'),
         'title': 'New Episodes',
-        'subtitle': episodesCount > 0 ? '$episodesCount episodes' : 'No episodes',
+        'subtitle': episodesCount > 0
+            ? '$episodesCount episodes'
+            : 'No episodes',
       },
       {
         'icon': SvgPicture.asset('assets/icons/programs_bg.svg'),
         'title': 'My Programs',
-        'subtitle': programsCount > 0 ? '$programsCount programs' : 'No programs',
+        'subtitle': programsCount > 0
+            ? '$programsCount programs'
+            : 'No programs',
       },
     ];
 
@@ -234,8 +242,8 @@ class MusicScreen extends ConsumerWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               // Section header
-                              const Padding(
-                                padding: EdgeInsets.all(16),
+                              Padding(
+                                padding: EdgeInsets.symmetric(vertical: 16),
                                 child: WaveSectionHeader(
                                   title: 'Featured playlists',
                                   showAnimation: true,
@@ -286,8 +294,8 @@ class MusicScreen extends ConsumerWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               // Section header
-                              const Padding(
-                                padding: EdgeInsets.all(16),
+                              Padding(
+                                padding: EdgeInsets.symmetric(vertical: 16),
                                 child: WaveSectionHeader(
                                   title: 'Featured albums',
                                   showAnimation: true,
@@ -339,7 +347,7 @@ class MusicScreen extends ConsumerWidget {
                             children: [
                               // Section header
                               const Padding(
-                                padding: EdgeInsets.all(16),
+                                padding: EdgeInsets.symmetric(vertical: 16),
                                 child: WaveSectionHeader(
                                   title: 'Featured artists',
                                   showAnimation: true,
