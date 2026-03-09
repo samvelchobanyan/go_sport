@@ -5,7 +5,7 @@ import '../../../domain/entities/album.dart';
 import '../../../domain/repositories/album_repository.dart';
 import '../../../core/di/repository_providers.dart';
 
-part 'albums_state.freezed.dart';
+part 'albums_controller.freezed.dart';
 
 @freezed
 class AlbumsState with _$AlbumsState {

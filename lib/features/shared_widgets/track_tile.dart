@@ -40,9 +40,10 @@ class TrackTile extends StatelessWidget {
                 borderRadius: BorderRadius.circular(DSRadius.xs),
                 boxShadow: [
                   BoxShadow(
-                    color: DSColors.black.withOpacity(0.1),
-                    blurRadius: 4,
-                    offset: const Offset(0, 2),
+                    color: DSColors.black.withOpacity(0.7),
+                    blurRadius: 6,
+                    spreadRadius: -2, // prevents shadow from appearing on sides
+                    offset: const Offset(0, 4), // pushes shadow down
                   ),
                 ],
               ),

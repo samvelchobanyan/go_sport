@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/features/shared_widgets/dotted_divider.dart';
 
 void showItemOptionsBottomSheet({
@@ -32,33 +33,37 @@ void showItemOptionsBottomSheet({
             // Album info
             Row(
               children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: CachedNetworkImage(
-                    imageUrl: imageUrl,
-                    width: 60,
-                    height: 60,
-                    fit: BoxFit.cover,
-                    placeholder: (context, url) => Container(
-                      width: 60,
-                      height: 60,
-                      color: DSColors.divider,
-                    ),
-                    errorWidget: (context, url, error) => Container(
-                      width: 60,
-                      height: 60,
-                      color: DSColors.gray20,
-                      child: const Icon(
-                        Icons.error,
-                        color: DSColors.gray50,
-                        size: 28,
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(DSRadius.xs),
+                    boxShadow: [
+                      BoxShadow(
+                        color: DSColors.black.withOpacity(0.7),
+                        blurRadius: 6,
+                        spreadRadius:
+                            -2, // prevents shadow from appearing on sides
+                        offset: const Offset(0, 4), // pushes shadow down
+                      ),
+                    ],
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(DSRadius.xs),
+                    child: Image.network(
+                      imageUrl,
+                      width: 48,
+                      height: 48,
+                      fit: BoxFit.cover,
+                      errorBuilder: (_, __, ___) => Container(
+                        width: 48,
+                        height: 48,
+                        color: DSColors.gray20,
                       ),
                     ),
                   ),
                 ),
                 const SizedBox(width: 12),
                 Expanded(
-                  child: Column(
+                  child: Column(  
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
