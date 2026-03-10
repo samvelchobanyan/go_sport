@@ -31,57 +31,44 @@ class MusicDashboardController
   MusicDashboardState build() {
     _repository = ref.watch(musicRepositoryProvider);
     Future.microtask(() => load());
-    return MusicDashboardState();
+    return const MusicDashboardState();
   }
 
   Future<void> load() async {
-    loadDashboard();
-    loadFeaturedAlbums();
-    loadFeaturedArtists();
-  }
-
-  Future<void> loadDashboard() async {
     state = state.copyWith(isLoading: true, error: null);
 
     try {
-      final favorites = await _repository.getFavoritesCount();
-      final playlists = await _repository.getPlaylistsCount();
-      final albums = await _repository.getAlbumsCount();
-      final artists = await _repository.getArtistsCount();
-      final episodes = await _repository.getEpisodesCount();
-      final programs = await _repository.getProgramsCount();
+      final (
+        favorites,
+        playlists,
+        albumsCount,
+        artistsCount,
+        episodes,
+        programs,
+        albums,
+        artists,
+      ) = await (
+        _repository.getFavoritesCount(),
+        _repository.getPlaylistsCount(),
+        _repository.getAlbumsCount(),
+        _repository.getArtistsCount(),
+        _repository.getEpisodesCount(),
+        _repository.getProgramsCount(),
+        _repository.getAlbums(),
+        _repository.getFeaturedArtists(),
+      ).wait;
 
       state = state.copyWith(
         isLoading: false,
         favoritesCount: favorites,
         playlistsCount: playlists,
-        albumsCount: albums,
-        artistsCount: artists,
+        albumsCount: albumsCount,
+        artistsCount: artistsCount,
         episodesCount: episodes,
         programsCount: programs,
+        featuredAlbums: albums,
+        featuredArtists: artists,
       );
-    } catch (e) {
-      state = state.copyWith(isLoading: false, error: e.toString());
-    }
-  }
-
-  Future<void> loadFeaturedAlbums() async {
-    state = state.copyWith(isLoading: true, error: null);
-
-    try {
-      final albums = await _repository.getAlbums();
-      state = state.copyWith(featuredAlbums: albums, isLoading: false);
-    } catch (e) {
-      state = state.copyWith(isLoading: false, error: e.toString());
-    }
-  }
-
-  Future<void> loadFeaturedArtists() async {
-    state = state.copyWith(isLoading: true, error: null);
-
-    try {
-      final artists = await _repository.getFeaturedArtists();
-      state = state.copyWith(featuredArtists: artists, isLoading: false);
     } catch (e) {
       state = state.copyWith(isLoading: false, error: e.toString());
     }

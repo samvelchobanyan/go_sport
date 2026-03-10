@@ -23,6 +23,7 @@ class MusicScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final playlistsState = ref.watch(featuredPlaylistsStateProvider);
     final playlists = playlistsState.playlistsList;
+    
     final musicDashboardState = ref.watch(musicStateProvider);
     final featuredArtists = musicDashboardState.featuredArtists;
     final featuredAlbums = musicDashboardState.featuredAlbums;
