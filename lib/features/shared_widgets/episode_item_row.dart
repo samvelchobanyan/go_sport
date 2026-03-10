@@ -19,7 +19,7 @@ class EpisodeItemRow extends StatefulWidget {
     this.releaseDate,
     this.duration,
     required this.onTap,
-    required this.onIconTap,
+    required this.onIconTap, 
     super.key,
   });
 

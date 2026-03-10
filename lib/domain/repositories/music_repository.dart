@@ -1,3 +1,6 @@
+import 'package:go_sport/domain/entities/album.dart';
+import 'package:go_sport/domain/entities/artist.dart';
+
 abstract class MusicRepository {
   Future<int> getFavoritesCount();
   Future<int> getPlaylistsCount();
@@ -5,4 +8,6 @@ abstract class MusicRepository {
   Future<int> getArtistsCount();
   Future<int> getEpisodesCount();
   Future<int> getProgramsCount();
+  Future<List<Album>> getAlbums();
+  Future<List<Artist>> getFeaturedArtists();
 }

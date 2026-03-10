@@ -47,6 +47,12 @@ sealed class QueueSource with _$QueueSource {
     required String title,
     required String imageUrl,
   }) = QueueSourceFavorites;
+
+  const factory QueueSource.episodes({
+    required String id,
+    required String title,
+    required String imageUrl,
+  }) = QueueSourceEpisodes;
 }
 
 // === State ===
@@ -123,6 +129,7 @@ extension PlayerStateX on PlayerState {
       program: (_, __, imageUrl) => imageUrl,
       radio: (_, __, imageUrl) => imageUrl,
       favorites: (_, __, imageUrl) => imageUrl,
+      episodes: (_, __, imageUrl) => imageUrl,
     );
   }
 }

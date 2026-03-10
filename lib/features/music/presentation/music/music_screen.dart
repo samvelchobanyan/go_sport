@@ -2,13 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:go_sport/core/di/repository_providers.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/domain/state/featured_playlists_state.dart';
-import 'package:go_sport/features/music/presentation/albums_controller.dart';
-import 'package:go_sport/features/music/presentation/featured_artists_controller.dart';
 import 'package:go_sport/features/music/presentation/music/music_dashboard_controller.dart';
 import 'package:go_sport/features/music/presentation/widgets/music_quick_action_card.dart';
 import 'package:go_sport/features/music/presentation/widgets/artist_card.dart';
@@ -26,11 +23,9 @@ class MusicScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final playlistsState = ref.watch(featuredPlaylistsStateProvider);
     final playlists = playlistsState.playlistsList;
-    final albumsState = ref.watch(albumsStateProvider);
-    final albums = albumsState.albumsList;
-    final artistsState = ref.watch(featuredArtistsStateProvider);
-    final artists = artistsState.artistsList;
     final musicDashboardState = ref.watch(musicStateProvider);
+    final featuredArtists = musicDashboardState.featuredArtists;
+    final featuredAlbums = musicDashboardState.featuredAlbums;
     final artistsCount = musicDashboardState.artistsCount;
     final albumsCount = musicDashboardState.albumsCount;
     final playlistsCount = musicDashboardState.playlistsCount;
@@ -237,7 +232,7 @@ class MusicScreen extends ConsumerWidget {
                       // playlist title
                       SliverToBoxAdapter(
                         child: Container(
-                          color: DSColors.white, // whole section background
+                          color: DSColors.white, 
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -303,7 +298,7 @@ class MusicScreen extends ConsumerWidget {
                               ),
 
                               // albums list
-                              if (albums.isNotEmpty)
+                              if (featuredAlbums.isNotEmpty)
                                 SizedBox(
                                   height: 260,
                                   child: ListView.builder(
@@ -311,21 +306,21 @@ class MusicScreen extends ConsumerWidget {
                                     padding: const EdgeInsets.symmetric(
                                       horizontal: 16,
                                     ),
-                                    itemCount: albums.length,
+                                    itemCount: featuredAlbums.length,
                                     itemBuilder: (context, index) {
                                       return Padding(
                                         padding: const EdgeInsets.only(
                                           right: 12,
                                         ),
                                         child: AlbumCard(
-                                          id: albums[index].id,
-                                          title: albums[index].title,
-                                          artist: albums[index].artist,
-                                          imageUrl: albums[index].imageUrl,
-                                          trackCount: albums[index].trackCount,
+                                          id: featuredAlbums[index]!.id,
+                                          title: featuredAlbums[index]!.title,
+                                          artist: featuredAlbums[index]!.artist,
+                                          imageUrl: featuredAlbums[index]!.imageUrl,
+                                          trackCount: featuredAlbums[index]!.trackCount,
                                           onTap: () {
                                             print(
-                                              'Album tapped: ${albums[index].id}',
+                                              'Album tapped: ${featuredAlbums[index]!.id}',
                                             );
                                           },
                                         ),
@@ -355,7 +350,7 @@ class MusicScreen extends ConsumerWidget {
                               ),
 
                               // artists list (state-driven)
-                              if (artistsState.isLoading)
+                              if (musicDashboardState.isLoading)
                                 SizedBox(
                                   height: 170,
                                   child: Center(
@@ -364,7 +359,7 @@ class MusicScreen extends ConsumerWidget {
                                     ),
                                   ),
                                 )
-                              else if (artists.isEmpty)
+                              else if (featuredArtists.isEmpty)
                                 const SizedBox.shrink()
                               else
                                 SizedBox(
@@ -374,18 +369,18 @@ class MusicScreen extends ConsumerWidget {
                                     padding: const EdgeInsets.symmetric(
                                       horizontal: 16,
                                     ),
-                                    itemCount: artists.length,
+                                    itemCount: featuredArtists.length,
                                     itemBuilder: (context, index) {
                                       return Padding(
                                         padding: const EdgeInsets.only(
                                           right: 16,
                                         ),
                                         child: ArtistCard(
-                                          name: artists[index].title,
-                                          imageUrl: artists[index].imageUrl,
+                                          name: featuredArtists[index]!.title,
+                                          imageUrl: featuredArtists[index]!.imageUrl,
                                           onTap: () {
                                             print(
-                                              'Artist tapped: ${artists[index].id}',
+                                              'Artist tapped: ${featuredArtists[index]!.id}',
                                             );
                                           },
                                         ),

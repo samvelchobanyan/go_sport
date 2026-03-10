@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_sport/core/di/repository_providers.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_radius.dart';
+import 'package:go_sport/domain/entities/track.dart';
+import 'package:go_sport/domain/state/player_state.dart';
 import 'package:go_sport/features/episodes/presentation/episodes_controller.dart';
 import 'package:go_sport/domain/state/programs_state.dart';
 import 'package:go_sport/features/shared_widgets/dotted_divider.dart';
-import 'package:go_sport/features/shared_widgets/episode_item_row.dart';
 import 'package:go_sport/features/shared_widgets/my_categories_top.dart';
 import 'package:go_sport/features/shared_widgets/program_item_row.dart';
+import 'package:go_sport/features/shared_widgets/track_tile.dart';
 
 class ProgramsScreen extends ConsumerStatefulWidget {
   const ProgramsScreen({super.key});
@@ -46,8 +48,6 @@ class _ProgramsScreenState extends ConsumerState<ProgramsScreen> {
     }
   }
 
-  // change this page to work with new provider style
-
   @override
   Widget build(BuildContext context) {
     final episodesState = ref.watch(episodesStateProvider);
@@ -56,7 +56,6 @@ class _ProgramsScreenState extends ConsumerState<ProgramsScreen> {
     return Scaffold(
       body: Stack(
         children: [
-          // 🔹 Background image (visible behind rounded list)
           Positioned(
             top: 0,
             left: 0,
@@ -68,28 +67,25 @@ class _ProgramsScreenState extends ConsumerState<ProgramsScreen> {
             ),
           ),
 
-          // 🔹 Foreground content
-          _buildBody(context, ref, episodesState, programsState),
+          CustomScrollView(
+            controller: _scrollController,
+            slivers: [
+              MyCategoriesTop(
+                iconPath: 'assets/icons/dynamic_bg.svg',
+                title: 'Programs',
+                subtitle: 'programs',
+                itemCount: 0,
+              ),
+
+              // 🔹 Content based on selection
+              if (_showEpisodes)
+                ..._buildEpisodesContent(context, ref, episodesState)
+              else
+                ..._buildProgramsContent(context, ref, programsState),
+            ],
+          ),
         ],
       ),
-    );
-  }
-
-  Widget _buildBody(
-    BuildContext context,
-    WidgetRef ref,
-    EpisodesState episodesState,
-    ProgramsState programsState,
-  ) {
-    return CustomScrollView(
-      controller: _scrollController,
-      slivers: [
-        // 🔹 Content based on selection
-        if (_showEpisodes)
-          ..._buildEpisodesContent(context, ref, episodesState)
-        else
-          ..._buildProgramsContent(context, ref, programsState),
-      ],
     );
   }
 
@@ -105,18 +101,14 @@ class _ProgramsScreenState extends ConsumerState<ProgramsScreen> {
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 12),
           decoration: BoxDecoration(
-            color: isActive ? DSColors.blue : DSColors.white,
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(
-              color: isActive ? DSColors.blue : DSColors.gray20,
-            ),
+            color: isActive ? DSColors.blue.withOpacity(0.1) : DSColors.white,
+            borderRadius: BorderRadius.circular(DSRadius.l),
+            border: Border.all(color: DSColors.blue.withOpacity(0.1)),
           ),
           child: Center(
             child: Text(
               label,
-              style: context.fieldLabel?.copyWith(
-                color: isActive ? DSColors.white : DSColors.black,
-              ),
+              style: context.fieldLabel?.copyWith(color: DSColors.blue),
             ),
           ),
         ),
@@ -132,13 +124,6 @@ class _ProgramsScreenState extends ConsumerState<ProgramsScreen> {
     // Initial loading
     if (state.isLoading && state.episodesList.isEmpty) {
       return [
-        MyCategoriesTop(
-          iconPath: 'assets/icons/dynamic_bg.svg',
-          title: 'Episodes',
-          subtitle: 'episodes',
-          itemCount: 0,
-          // onTapIcon: _playAll,
-        ),
         const SliverFillRemaining(
           hasScrollBody: false,
           child: Center(child: CircularProgressIndicator()),
@@ -149,13 +134,6 @@ class _ProgramsScreenState extends ConsumerState<ProgramsScreen> {
     // Error with no data
     if (state.error != null && state.episodesList.isEmpty) {
       return [
-        MyCategoriesTop(
-          iconPath: 'assets/icons/dynamic_bg.svg',
-          title: 'Episodes',
-          subtitle: 'episodes',
-          itemCount: 0,
-          // onTapIcon: _playAll,
-        ),
         SliverFillRemaining(
           hasScrollBody: false,
           child: Center(
@@ -185,13 +163,6 @@ class _ProgramsScreenState extends ConsumerState<ProgramsScreen> {
 
     if (episodes.isEmpty) {
       return [
-        MyCategoriesTop(
-          iconPath: 'assets/icons/dynamic_bg.svg',
-          title: 'Episodes',
-          subtitle: 'episodes',
-          itemCount: 0,
-          // onTapIcon: _playAll,
-        ),
         SliverFillRemaining(
           hasScrollBody: false,
           child: Center(
@@ -202,14 +173,6 @@ class _ProgramsScreenState extends ConsumerState<ProgramsScreen> {
     }
 
     return [
-      MyCategoriesTop(
-        iconPath: 'assets/icons/dynamic_bg.svg',
-        title: 'Episodes',
-        subtitle: 'episodes',
-        itemCount: episodes.length,
-        // onTapIcon: _playAll,
-      ),
-
       // 🔹 Episodes list
       ..._buildEpisodesSliver(episodes),
 
@@ -224,14 +187,26 @@ class _ProgramsScreenState extends ConsumerState<ProgramsScreen> {
     ];
   }
 
-  void _playAll() {
-    // TODO: Implement play-all episodes behavior
-    debugPrint('Play all episodes pressed');
+  void _onTrackTap(WidgetRef ref, List<Track> episodes, int index) {
+    ref
+        .read(playerStateProvider.notifier)
+        .playQueue(
+          episodes,
+          source: QueueSource.episodes(
+            id: index.toString(),
+            title: 'My Episodes',
+            imageUrl: '',
+          ),
+          startIndex: index,
+        );
   }
 
-  List<Widget> _buildEpisodesSliver(List<dynamic> episodes) {
+  List<Widget> _buildEpisodesSliver(List<Track> episodes) {
     // Build children list: separators and items
     final children = <Widget>[];
+
+    final playerState = ref.watch(playerStateProvider);
+    final playingTrackId = playerState.currentTrack?.id;
 
     // Add toggle buttons first
     children.add(
@@ -266,15 +241,21 @@ class _ProgramsScreenState extends ConsumerState<ProgramsScreen> {
           ),
         );
       }
+
       final episode = episodes[i];
+
+      final trackIndex = i; // Capture index by value
+      final isCurrentTrack = episode.id == playingTrackId;
+      final bool? trackPlayingState = isCurrentTrack
+          ? playerState.isPlaying && playerState.isRadioMode == false
+          : null;
       children.add(
-        EpisodeItemRow(
-          imageUrl: episode.imageUrl ?? '',
-          title: episode.title,
-          releaseDate: episode.releaseDate,
-          duration: episode.duration,
-          onTap: () => debugPrint('Episode tapped: ${episode.id}'),
-          onIconTap: () => debugPrint('Episode icon tapped for: ${episode.id}'),
+        TrackTile(
+          type: 'episode',
+          track: episode,
+          isPlaying: trackPlayingState,
+          onTap: () => _onTrackTap(ref, episodes, trackIndex),
+          onMenuTap: () => debugPrint('Episode icon tapped for: ${episode.id}'),
         ),
       );
     }
@@ -304,12 +285,6 @@ class _ProgramsScreenState extends ConsumerState<ProgramsScreen> {
     // Initial loading
     if (state.isLoading && state.programsList.isEmpty) {
       return [
-        MyCategoriesTop(
-          iconPath: 'assets/icons/dynamic_bg.svg',
-          title: 'Programs',
-          subtitle: 'programs',
-          itemCount: 0,
-        ),
         const SliverFillRemaining(
           hasScrollBody: false,
           child: Center(child: CircularProgressIndicator()),
@@ -320,12 +295,6 @@ class _ProgramsScreenState extends ConsumerState<ProgramsScreen> {
     // Error with no data
     if (state.error != null && state.programsList.isEmpty) {
       return [
-        MyCategoriesTop(
-          iconPath: 'assets/icons/dynamic_bg.svg',
-          title: 'Programs',
-          subtitle: 'programs',
-          itemCount: 0,
-        ),
         SliverFillRemaining(
           hasScrollBody: false,
           child: Center(
@@ -355,12 +324,6 @@ class _ProgramsScreenState extends ConsumerState<ProgramsScreen> {
 
     if (programs.isEmpty) {
       return [
-        MyCategoriesTop(
-          iconPath: 'assets/icons/dynamic_bg.svg',
-          title: 'Programs',
-          subtitle: 'programs',
-          itemCount: 0,
-        ),
         SliverFillRemaining(
           hasScrollBody: false,
           child: Center(
@@ -371,13 +334,6 @@ class _ProgramsScreenState extends ConsumerState<ProgramsScreen> {
     }
 
     return [
-      MyCategoriesTop(
-        iconPath: 'assets/icons/dynamic_bg.svg',
-        title: 'Programs',
-        subtitle: 'programs',
-        itemCount: programs.length,
-      ),
-
       // 🔹 Programs list
       ..._buildProgramsSliver(programs),
 

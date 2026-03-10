@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/features/shared_widgets/bottom_pop_up.dart';
 
 class ProgramItemRow extends StatefulWidget {
@@ -35,23 +36,36 @@ class _ProgramItemRowState extends State<ProgramItemRow> {
         child: Row(
           children: [
             // Thumbnail image
-            ClipRRect(
-              borderRadius: BorderRadius.circular(8),
-              child: CachedNetworkImage(
-                imageUrl: widget.imageUrl,
-                width: 50,
-                height: 50,
-                fit: BoxFit.cover,
-                placeholder: (context, url) =>
-                    Container(width: 50, height: 50, color: DSColors.divider),
-                errorWidget: (context, url, error) => Container(
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                boxShadow: [
+                  BoxShadow(
+                    color: DSColors.black.withOpacity(0.7),
+                    blurRadius: 6,
+                    spreadRadius: -2, // reduces shadow spread on sides
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(DSRadius.s),
+                child: CachedNetworkImage(
+                  imageUrl: widget.imageUrl,
                   width: 50,
                   height: 50,
-                  color: DSColors.gray20,
-                  child: const Icon(
-                    Icons.error,
-                    color: DSColors.gray50,
-                    size: 28,
+                  fit: BoxFit.cover,
+                  placeholder: (context, url) =>
+                      Container(width: 50, height: 50, color: DSColors.divider),
+                  errorWidget: (context, url, error) => Container(
+                    width: 50,
+                    height: 50,
+                    color: DSColors.gray20,
+                    child: const Icon(
+                      Icons.error,
+                      color: DSColors.gray50,
+                      size: 28,
+                    ),
                   ),
                 ),
               ),
@@ -73,18 +87,17 @@ class _ProgramItemRowState extends State<ProgramItemRow> {
                   // Episode count badge
                   Container(
                     padding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 6,
+                      horizontal: 6,
+                      vertical: 2,
                     ),
                     decoration: BoxDecoration(
-                      color: DSColors.blue,
-                      borderRadius: BorderRadius.circular(12),
+                      color: DSColors.blue.withOpacity(0.05),
+                      borderRadius: BorderRadius.circular(DSRadius.m),
+                      border: Border.all(color: DSColors.blue.withOpacity(0.3)),
                     ),
                     child: Text(
                       '${widget.episodeCount} episode${widget.episodeCount != 1 ? 's' : ''}',
-                      style: context.fieldLabel?.copyWith(
-                        color: DSColors.white,
-                      ),
+                      style: context.fieldLabel?.copyWith(color: DSColors.blue),
                     ),
                   ),
                 ],
@@ -95,15 +108,15 @@ class _ProgramItemRowState extends State<ProgramItemRow> {
             GestureDetector(
               onTap: () {
                 widget.onIconTap();
-                showItemOptionsBottomSheet(
-                  context: context,
-                  imageUrl: widget.imageUrl,
-                  title: widget.title,
-                  subtitle: null,
-                );
+                // showItemOptionsBottomSheet(
+                //   context: context,
+                //   imageUrl: widget.imageUrl,
+                //   title: widget.title,
+                //   subtitle: null,
+                // );
               },
               child: SvgPicture.asset(
-                'assets/icons/edition_dots.svg',
+                'assets/icons/arrow_right.svg',
                 width: 24,
                 height: 24,
               ),

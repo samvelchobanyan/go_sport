@@ -11,6 +11,7 @@ class TrackTile extends StatelessWidget {
   final VoidCallback onTap;
   final VoidCallback onMenuTap;
   final bool? isPlaying;
+  final String? type;
 
   const TrackTile({
     super.key,
@@ -18,6 +19,7 @@ class TrackTile extends StatelessWidget {
     required this.onTap,
     required this.onMenuTap,
     this.isPlaying,
+    this.type,
   });
 
   String _formatDuration(Duration duration) {
@@ -26,12 +28,30 @@ class TrackTile extends StatelessWidget {
     return '$minutes:${seconds.toString().padLeft(2, '0')}';
   }
 
+  String _formatDate(DateTime? date) {
+    if (date == null) return '';
+    final now = DateTime.now();
+    final diff = now.difference(date);
+
+    if (diff.inDays == 0) {
+      return 'Today';
+    } else if (diff.inDays == 1) {
+      return 'Yesterday';
+    } else if (diff.inDays < 7) {
+      return '${diff.inDays}d ago';
+    } else if (diff.inDays < 30) {
+      return '${(diff.inDays / 7).floor()}w ago';
+    } else {
+      return '${(diff.inDays / 30).floor()}m ago';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         child: Row(
           children: [
             // Track image
@@ -63,44 +83,15 @@ class TrackTile extends StatelessWidget {
 
             // Track info
             Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      if (isPlaying != null) ...[
-                        EqualizerIndicator(isPlaying: isPlaying!),
-                        const SizedBox(width: 8),
-                      ],
-                      Expanded(
-                        child: Text(
-                          track.title,
-                          style: context.subtitleM?.copyWith(
-                            color: isPlaying != null
-                                ? DSColors.blue
-                                : DSColors.black,
-                          ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 2),
-                  Text(
-                    track.artistName,
-                    style: context.textL?.copyWith(color: DSColors.gray60),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ],
-              ),
+              child: type == 'episode'
+                  ? _buildEpisodeContent(context)
+                  : _buildTrackContent(context),
             ),
 
             // Menu button
             GestureDetector(
               onTap: () {
-                onMenuTap();
+                onMenuTap(); //in case something different should happen
                 showItemOptionsBottomSheet(
                   context: context,
                   imageUrl: track.imageUrl,
@@ -117,6 +108,94 @@ class TrackTile extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildTrackContent(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            if (isPlaying != null) ...[
+              EqualizerIndicator(isPlaying: isPlaying!),
+              const SizedBox(width: 8),
+            ],
+            Expanded(
+              child: Text(
+                track.title,
+                style: context.subtitleM?.copyWith(
+                  color: isPlaying != null ? DSColors.blue : DSColors.black,
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 2),
+        Text(
+          track.artistName,
+          style: context.textL?.copyWith(color: DSColors.gray60),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildEpisodeContent(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            if (isPlaying != null) ...[
+              EqualizerIndicator(isPlaying: isPlaying!),
+              const SizedBox(width: 8),
+            ],
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    track.title,
+                    style: context.subtitleM?.copyWith(
+                      color: isPlaying != null ? DSColors.blue : DSColors.black,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 4),
+                  Row(
+                    children: [
+                      if (track.releaseDate != null)
+                        Text(
+                          _formatDate(track.releaseDate),
+                          style: context.subtitleLSemi?.copyWith(
+                            color: DSColors.gray60,
+                          ),
+                        ),
+                      Text(
+                        ' • ',
+                        style: context.subtitleLSemi?.copyWith(
+                          color: DSColors.gray60,
+                        ),
+                      ),
+                      Text(
+                        _formatDuration(track.duration),
+                        style: context.subtitleLSemi?.copyWith(
+                          color: DSColors.gray60,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }

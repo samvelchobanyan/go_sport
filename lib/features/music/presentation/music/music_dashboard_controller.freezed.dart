@@ -25,6 +25,8 @@ mixin _$MusicDashboardState {
   int get artistsCount => throw _privateConstructorUsedError;
   int get episodesCount => throw _privateConstructorUsedError;
   int get programsCount => throw _privateConstructorUsedError;
+  List<Album> get featuredAlbums => throw _privateConstructorUsedError;
+  List<Artist> get featuredArtists => throw _privateConstructorUsedError;
 
   /// Create a copy of MusicDashboardState
   /// with the given fields replaced by the non-null parameter values.
@@ -49,6 +51,8 @@ abstract class $MusicDashboardStateCopyWith<$Res> {
     int artistsCount,
     int episodesCount,
     int programsCount,
+    List<Album> featuredAlbums,
+    List<Artist> featuredArtists,
   });
 }
 
@@ -75,6 +79,8 @@ class _$MusicDashboardStateCopyWithImpl<$Res, $Val extends MusicDashboardState>
     Object? artistsCount = null,
     Object? episodesCount = null,
     Object? programsCount = null,
+    Object? featuredAlbums = null,
+    Object? featuredArtists = null,
   }) {
     return _then(
       _value.copyWith(
@@ -110,6 +116,14 @@ class _$MusicDashboardStateCopyWithImpl<$Res, $Val extends MusicDashboardState>
                 ? _value.programsCount
                 : programsCount // ignore: cast_nullable_to_non_nullable
                       as int,
+            featuredAlbums: null == featuredAlbums
+                ? _value.featuredAlbums
+                : featuredAlbums // ignore: cast_nullable_to_non_nullable
+                      as List<Album>,
+            featuredArtists: null == featuredArtists
+                ? _value.featuredArtists
+                : featuredArtists // ignore: cast_nullable_to_non_nullable
+                      as List<Artist>,
           )
           as $Val,
     );
@@ -134,6 +148,8 @@ abstract class _$$MusicDashboardStateImplCopyWith<$Res>
     int artistsCount,
     int episodesCount,
     int programsCount,
+    List<Album> featuredAlbums,
+    List<Artist> featuredArtists,
   });
 }
 
@@ -159,6 +175,8 @@ class __$$MusicDashboardStateImplCopyWithImpl<$Res>
     Object? artistsCount = null,
     Object? episodesCount = null,
     Object? programsCount = null,
+    Object? featuredAlbums = null,
+    Object? featuredArtists = null,
   }) {
     return _then(
       _$MusicDashboardStateImpl(
@@ -194,6 +212,14 @@ class __$$MusicDashboardStateImplCopyWithImpl<$Res>
             ? _value.programsCount
             : programsCount // ignore: cast_nullable_to_non_nullable
                   as int,
+        featuredAlbums: null == featuredAlbums
+            ? _value._featuredAlbums
+            : featuredAlbums // ignore: cast_nullable_to_non_nullable
+                  as List<Album>,
+        featuredArtists: null == featuredArtists
+            ? _value._featuredArtists
+            : featuredArtists // ignore: cast_nullable_to_non_nullable
+                  as List<Artist>,
       ),
     );
   }
@@ -211,7 +237,10 @@ class _$MusicDashboardStateImpl implements _MusicDashboardState {
     this.artistsCount = 0,
     this.episodesCount = 0,
     this.programsCount = 0,
-  });
+    final List<Album> featuredAlbums = const [],
+    final List<Artist> featuredArtists = const [],
+  }) : _featuredAlbums = featuredAlbums,
+       _featuredArtists = featuredArtists;
 
   @override
   @JsonKey()
@@ -236,10 +265,27 @@ class _$MusicDashboardStateImpl implements _MusicDashboardState {
   @override
   @JsonKey()
   final int programsCount;
+  final List<Album> _featuredAlbums;
+  @override
+  @JsonKey()
+  List<Album> get featuredAlbums {
+    if (_featuredAlbums is EqualUnmodifiableListView) return _featuredAlbums;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_featuredAlbums);
+  }
+
+  final List<Artist> _featuredArtists;
+  @override
+  @JsonKey()
+  List<Artist> get featuredArtists {
+    if (_featuredArtists is EqualUnmodifiableListView) return _featuredArtists;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_featuredArtists);
+  }
 
   @override
   String toString() {
-    return 'MusicDashboardState(isLoading: $isLoading, error: $error, favoritesCount: $favoritesCount, playlistsCount: $playlistsCount, albumsCount: $albumsCount, artistsCount: $artistsCount, episodesCount: $episodesCount, programsCount: $programsCount)';
+    return 'MusicDashboardState(isLoading: $isLoading, error: $error, favoritesCount: $favoritesCount, playlistsCount: $playlistsCount, albumsCount: $albumsCount, artistsCount: $artistsCount, episodesCount: $episodesCount, programsCount: $programsCount, featuredAlbums: $featuredAlbums, featuredArtists: $featuredArtists)';
   }
 
   @override
@@ -261,7 +307,15 @@ class _$MusicDashboardStateImpl implements _MusicDashboardState {
             (identical(other.episodesCount, episodesCount) ||
                 other.episodesCount == episodesCount) &&
             (identical(other.programsCount, programsCount) ||
-                other.programsCount == programsCount));
+                other.programsCount == programsCount) &&
+            const DeepCollectionEquality().equals(
+              other._featuredAlbums,
+              _featuredAlbums,
+            ) &&
+            const DeepCollectionEquality().equals(
+              other._featuredArtists,
+              _featuredArtists,
+            ));
   }
 
   @override
@@ -275,6 +329,8 @@ class _$MusicDashboardStateImpl implements _MusicDashboardState {
     artistsCount,
     episodesCount,
     programsCount,
+    const DeepCollectionEquality().hash(_featuredAlbums),
+    const DeepCollectionEquality().hash(_featuredArtists),
   );
 
   /// Create a copy of MusicDashboardState
@@ -299,6 +355,8 @@ abstract class _MusicDashboardState implements MusicDashboardState {
     final int artistsCount,
     final int episodesCount,
     final int programsCount,
+    final List<Album> featuredAlbums,
+    final List<Artist> featuredArtists,
   }) = _$MusicDashboardStateImpl;
 
   @override
@@ -317,6 +375,10 @@ abstract class _MusicDashboardState implements MusicDashboardState {
   int get episodesCount;
   @override
   int get programsCount;
+  @override
+  List<Album> get featuredAlbums;
+  @override
+  List<Artist> get featuredArtists;
 
   /// Create a copy of MusicDashboardState
   /// with the given fields replaced by the non-null parameter values.

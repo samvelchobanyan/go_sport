@@ -1,5 +1,8 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/domain/entities/track.dart';
@@ -62,7 +65,8 @@ class FavoritesListScreen extends ConsumerWidget {
             title: 'My Favorites',
             subtitle: 'tracks',
             itemCount: 0,
-            onTapIcon: null,
+            actionIcon: SvgPicture.asset('assets/icons/play_blue.svg'),
+            onActionIconTap: null,
           ),
           const SliverFillRemaining(
             hasScrollBody: false,
@@ -82,7 +86,8 @@ class FavoritesListScreen extends ConsumerWidget {
             title: 'My Favorites',
             subtitle: 'tracks',
             itemCount: 0,
-            onTapIcon: null,
+            actionIcon: SvgPicture.asset('assets/icons/play_blue.svg'),
+            onActionIconTap: null,
           ),
           SliverFillRemaining(
             hasScrollBody: false,
@@ -121,7 +126,8 @@ class FavoritesListScreen extends ConsumerWidget {
             title: 'My Favorites',
             subtitle: 'tracks',
             itemCount: 0,
-            onTapIcon: null,
+            actionIcon: SvgPicture.asset('assets/icons/play_blue.svg'),
+            onActionIconTap: null,
           ),
           SliverFillRemaining(
             hasScrollBody: false,
@@ -140,8 +146,9 @@ class FavoritesListScreen extends ConsumerWidget {
           iconPath: 'assets/icons/heart_bg.svg',
           title: 'My Favorites',
           subtitle: 'tracks',
+          actionIcon: SvgPicture.asset('assets/icons/play_blue.svg'),
           itemCount: favorites.length,
-          onTapIcon: () => _onPlayTap(ref, favorites, 'My Favorites', ''),
+          onActionIconTap: () => _onPlayTap(ref, favorites, 'My Favorites', ''),
         ),
 
         // 🔹 Songs list
@@ -159,14 +166,6 @@ class FavoritesListScreen extends ConsumerWidget {
     );
   }
 
-  // void _playAll(WidgetRef ref, List<dynamic> favorites) {
-  //   if (favorites.isEmpty) return;
-
-  //   ref
-  //       .read(playerStateProvider.notifier)
-  //       .playQueue(favorites, source: QueueSource.favorites());
-  // }
-
   void _onPlayTap(
     WidgetRef ref,
     List<Track> favorites,
@@ -174,34 +173,27 @@ class FavoritesListScreen extends ConsumerWidget {
     String imageUrl,
   ) {
     if (favorites.isEmpty) return;
-    final myFavoritesId = 'favorites'; // ID for favorites playlist
-
+    final randomIndex = Random().nextInt(favorites.length);
     ref
         .read(playerStateProvider.notifier)
         .playQueue(
           favorites,
           source: QueueSource.favorites(
-            id: myFavoritesId,
+            id: 'favorites', //todo change to real id later
             title: title,
             imageUrl: imageUrl,
           ),
+          startIndex: randomIndex,
         );
   }
-  // void _onTrackTap(WidgetRef ref, List<dynamic> favorites, int index) {
-  //   ref
-  //       .read(playerStateProvider.notifier)
-  //       .playQueue(favorites, source: QueueSource.favorites(), startIndex: index);
-  // }
 
   void _onTrackTap(WidgetRef ref, List<Track> favorites, int index) {
-    final myFavoritesId = 'favorites'; // ID for favorites playlist
-
     ref
         .read(playerStateProvider.notifier)
         .playQueue(
           favorites,
           source: QueueSource.favorites(
-            id: myFavoritesId,
+            id: index.toString(),
             title: 'My Favorites',
             imageUrl: '',
           ),
