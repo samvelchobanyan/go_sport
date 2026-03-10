@@ -8,7 +8,8 @@ class MyCategoriesTop extends StatelessWidget {
   final String iconPath;
   final String title;
   final String subtitle;
-  final VoidCallback? onTapIcon;
+  final SvgPicture? actionIcon;
+  final VoidCallback? onActionIconTap;
   final int itemCount;
 
   const MyCategoriesTop({
@@ -16,7 +17,8 @@ class MyCategoriesTop extends StatelessWidget {
     required this.iconPath,
     required this.title,
     required this.subtitle,
-    this.onTapIcon,
+    this.actionIcon,
+    this.onActionIconTap,
     required this.itemCount,
   });
 
@@ -59,12 +61,9 @@ class MyCategoriesTop extends StatelessWidget {
                   ),
                 ],
               ),
-              // Only show icon if onTapIcon callback is provided
-              if (onTapIcon != null)
-                GestureDetector(
-                  onTap: onTapIcon,
-                  child: SvgPicture.asset('assets/icons/play.svg'),
-                ),
+              // Only show icon if actionIcon is provided
+              if (actionIcon != null)
+                GestureDetector(onTap: onActionIconTap, child: actionIcon),
             ],
           ),
         ),

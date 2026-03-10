@@ -1,11 +1,16 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/domain/entities/track.dart';
+import 'package:go_sport/domain/state/player_state.dart';
 import 'package:go_sport/features/episodes/presentation/episodes_controller.dart';
 import 'package:go_sport/features/shared_widgets/dotted_divider.dart';
-import 'package:go_sport/features/shared_widgets/episode_item_row.dart';
 import 'package:go_sport/features/shared_widgets/my_categories_top.dart';
+import 'package:go_sport/features/shared_widgets/track_tile.dart';
 
 class EpisodesListScreen extends ConsumerStatefulWidget {
   const EpisodesListScreen({super.key});
@@ -40,7 +45,7 @@ class _EpisodesListScreenState extends ConsumerState<EpisodesListScreen> {
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(episodesStateProvider);
-    final episodes = state.episodesList;
+    final List<Track> episodes = state.episodesList;
     final isLoading = state.isLoading && episodes.isEmpty;
     final hasError = state.error != null;
     final errorMessage = state.error;
@@ -116,7 +121,11 @@ class _EpisodesListScreenState extends ConsumerState<EpisodesListScreen> {
                         title: 'New Episodes',
                         subtitle: 'episodes',
                         itemCount: episodes.length,
-                        onTapIcon: _playAll,
+                        actionIcon: SvgPicture.asset(
+                          'assets/icons/play_blue.svg',
+                        ),
+                        onActionIconTap: () =>
+                            _onPlayTap(ref, episodes, 'New Episodes', ''),
                       ),
 
                       // 🔹 Episodes list
@@ -149,14 +158,47 @@ class _EpisodesListScreenState extends ConsumerState<EpisodesListScreen> {
     );
   }
 
-  void _playAll() {
-    // TODO: Implement play-all episodes behavior
-    debugPrint('Play all episodes pressed');
+  void _onTrackTap(WidgetRef ref, List<Track> episodes, int index) {
+    ref
+        .read(playerStateProvider.notifier)
+        .playQueue(
+          episodes,
+          source: QueueSource.episodes(
+            id: index.toString(),
+            title: 'My Episodes',
+            imageUrl: '',
+          ),
+          startIndex: index,
+        );
   }
 
-  List<Widget> _buildEpisodesSliver(List<dynamic> episodes) {
+  void _onPlayTap(
+    WidgetRef ref,
+    List<Track> episodes,
+    String title,
+    String imageUrl,
+  ) {
+    if (episodes.isEmpty) return;
+    final randomIndex = Random().nextInt(episodes.length);
+    ref
+        .read(playerStateProvider.notifier)
+        .playQueue(
+          episodes,
+          source: QueueSource.episodes(
+            id: 'episodes', //todo change to real id later
+            title: title,
+            imageUrl: imageUrl,
+          ),
+          startIndex: randomIndex,
+        );
+  }
+
+  List<Widget> _buildEpisodesSliver(List<Track> episodes) {
     // Build children list: separators and items
     final children = <Widget>[];
+
+    final playerState = ref.watch(playerStateProvider);
+    final playingTrackId = playerState.currentTrack?.id;
 
     for (int i = 0; i < episodes.length; i++) {
       if (i > 0) {
@@ -168,14 +210,19 @@ class _EpisodesListScreenState extends ConsumerState<EpisodesListScreen> {
         );
       }
       final episode = episodes[i];
+
+      final trackIndex = i; // Capture index by value
+      final isCurrentTrack = episode.id == playingTrackId;
+      final bool? trackPlayingState = isCurrentTrack
+          ? playerState.isPlaying && playerState.isRadioMode == false
+          : null;
       children.add(
-        EpisodeItemRow(
-          imageUrl: episode.imageUrl ?? '',
-          title: episode.title,
-          releaseDate: episode.releaseDate,
-          duration: episode.duration,
-          onTap: () => debugPrint('Episode tapped: ${episode.id}'),
-          onIconTap: () => debugPrint('Episode icon tapped for: ${episode.id}'),
+        TrackTile(
+          type: 'episode',
+          track: episode,
+          isPlaying: trackPlayingState,
+          onTap: () => _onTrackTap(ref, episodes, trackIndex),
+          onMenuTap: () => debugPrint('Episode icon tapped for: ${episode.id}'),
         ),
       );
     }

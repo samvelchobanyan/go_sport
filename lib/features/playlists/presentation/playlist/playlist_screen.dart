@@ -125,7 +125,7 @@ class PlaylistScreen extends ConsumerWidget {
                   if (tracksValue != null) {
                     _onPlayTap(ref, tracksValue, playlist.title, playlist.imageUrl);
                   }
-                },
+                }, 
               ),
             ),
             bottom: PreferredSize(

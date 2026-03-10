@@ -1,6 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:go_sport/core/di/repository_providers.dart';
+import 'package:go_sport/domain/entities/album.dart';
+import 'package:go_sport/domain/entities/artist.dart';
 import 'package:go_sport/domain/repositories/music_repository.dart';
 
 part 'music_dashboard_controller.freezed.dart';
@@ -16,8 +18,11 @@ class MusicDashboardState with _$MusicDashboardState {
     @Default(0) int artistsCount,
     @Default(0) int episodesCount,
     @Default(0) int programsCount,
+    @Default([]) List<Album> featuredAlbums,
+    @Default([]) List<Artist> featuredArtists,
   }) = _MusicDashboardState;
 }
+
 class MusicDashboardController
     extends AutoDisposeNotifier<MusicDashboardState> {
   late final MusicRepository _repository;
@@ -26,11 +31,16 @@ class MusicDashboardController
   MusicDashboardState build() {
     _repository = ref.watch(musicRepositoryProvider);
     Future.microtask(() => load());
-    return const MusicDashboardState();
+    return MusicDashboardState();
   }
 
-
   Future<void> load() async {
+    loadDashboard();
+    loadFeaturedAlbums();
+    loadFeaturedArtists();
+  }
+
+  Future<void> loadDashboard() async {
     state = state.copyWith(isLoading: true, error: null);
 
     try {
@@ -55,9 +65,32 @@ class MusicDashboardController
     }
   }
 
+  Future<void> loadFeaturedAlbums() async {
+    state = state.copyWith(isLoading: true, error: null);
+
+    try {
+      final albums = await _repository.getAlbums();
+      state = state.copyWith(featuredAlbums: albums, isLoading: false);
+    } catch (e) {
+      state = state.copyWith(isLoading: false, error: e.toString());
+    }
+  }
+
+  Future<void> loadFeaturedArtists() async {
+    state = state.copyWith(isLoading: true, error: null);
+
+    try {
+      final artists = await _repository.getFeaturedArtists();
+      state = state.copyWith(featuredArtists: artists, isLoading: false);
+    } catch (e) {
+      state = state.copyWith(isLoading: false, error: e.toString());
+    }
+  }
+
   Future<void> refresh() async => await load();
 }
 
 final musicStateProvider =
     NotifierProvider.autoDispose<MusicDashboardController, MusicDashboardState>(
-        MusicDashboardController.new);
+      MusicDashboardController.new,
+    );
