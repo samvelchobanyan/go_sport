@@ -705,13 +705,14 @@ class PlaylistRepositoryMock implements PlaylistRepository {
   Future<List<Track>> getFavoritesPlaylist() async {
     await Future.delayed(const Duration(milliseconds: 300));
     // Return a mix of favorite tracks from different playlists
-    return [
-      _armenianRockTracks[0],
-      _popHitsTracks[1],
-      _worldRockTracks[0],
-      _chillTracks[2],
-      _classicRockTracks[1],
-    ];
+    // return [
+    //   _armenianRockTracks[0],
+    //   _popHitsTracks[1],
+    //   _worldRockTracks[0],
+    //   _chillTracks[2],
+    //   _classicRockTracks[1],
+    // ];
+    return _armenianRockTracks;
   }
 
   @override
