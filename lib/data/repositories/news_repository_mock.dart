@@ -78,7 +78,7 @@ class MockNewsRepository implements NewsRepository {
       subtitle: 'Summer 2025 transfer speculation',
       author: 'David Miller',
       imageUrl:
-          'https://images.unsplash.com/photo-1614632537239-d3d9e8a2e0b3?auto=format&fit=crop&w=800&q=80',
+          'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=800&q=80',
       publishedAt: DateTime(2025, 5, 5),
       content:
           'Premier League clubs are eyeing several high-profile targets...',
