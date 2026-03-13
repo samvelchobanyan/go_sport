@@ -4,7 +4,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
-import 'package:go_sport/features/shared_widgets/bottom_pop_up.dart';
 
 class ProgramItemRow extends StatefulWidget {
   final String imageUrl;

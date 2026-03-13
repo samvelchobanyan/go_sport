@@ -53,13 +53,13 @@ final GoRouter appRouter = GoRouter(
 
         // Music Branch
         StatefulShellBranch(
-          routes: [           
+          routes: [
             GoRoute(
               path: AppRoutes.music,
               builder: (context, state) => const MusicScreen(),
               routes: [
                 //playlist route
-                 GoRoute(
+                GoRoute(
                   path: 'playlist/:id',
                   pageBuilder: (context, state) {
                     final id = state.pathParameters['id']!;
@@ -71,7 +71,7 @@ final GoRouter appRouter = GoRouter(
                 ),
                 // Favorites route
                 GoRoute(
-                  path: 'favorites',
+                  path: 'myfavorites',
                   builder: (context, state) => const FavoritesListScreen(),
                 ),
                 // My Playlists route
@@ -106,7 +106,7 @@ final GoRouter appRouter = GoRouter(
                 ),
                 // Episodes route
                 GoRoute(
-                  path: 'episodes',
+                  path: 'myepisodes',
                   builder: (context, state) => const EpisodesListScreen(),
                 ),
 

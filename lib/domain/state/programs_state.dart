@@ -103,6 +103,24 @@ class ProgramsNotifier extends Notifier<ProgramsState> {
     state = state.copyWith(programs: {});
     await loadFeaturedPrograms();
   }
+
+    Future<void> loadMore() async {
+    if (state.isLoadingMore) return;
+
+    state = state.copyWith(isLoadingMore: true);
+
+    try {
+      final newTracks = await _repository.getFeaturedPrograms();
+      final programsMap = <String, Program>{
+        ...state.programs,
+        for (final program in newTracks) program.id: program,
+      };
+      state = state.copyWith(programs: programsMap, isLoadingMore: false);
+    } catch (e) {
+      state = state.copyWith(isLoadingMore: false, error: e.toString());
+    }
+  }
+
 }
 
 final programsStateProvider = NotifierProvider<ProgramsNotifier, ProgramsState>(

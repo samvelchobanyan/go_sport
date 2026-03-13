@@ -3,15 +3,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
+import 'package:go_sport/domain/entities/playlist.dart';
 import 'package:go_sport/domain/state/news_state.dart';
 import 'package:go_sport/domain/state/stories_state.dart';
 import 'package:go_sport/domain/state/featured_playlists_state.dart';
+import 'package:go_sport/features/shared_widgets/featured_playlists.dart';
 import '../../../../domain/entities/story.dart';
-import '../../../shared_widgets/wave_section_header.dart';
 
 import '../../../shared_widgets/user_avatar_button.dart';
 import '../../../shared_widgets/search_button.dart';
-import '../../../shared_widgets/playlist_card.dart';
 import '../../../shared_widgets/dotted_divider.dart';
 
 import 'widgets/hero_banner.dart';
@@ -25,7 +25,11 @@ import 'package:go_router/go_router.dart';
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
-  void _handleStoryAction(BuildContext context, String targetType, String targetId) {
+  void _handleStoryAction(
+    BuildContext context,
+    String targetType,
+    String targetId,
+  ) {
     switch (targetType) {
       case 'program':
         context.push('/program/$targetId');
@@ -50,7 +54,7 @@ class HomeScreen extends ConsumerWidget {
   void _openStoryOverlay(BuildContext context, WidgetRef ref, Story story) {
     // Mark story as viewed
     ref.read(storiesStateProvider.notifier).markAsViewed(story.id);
-    
+
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -79,15 +83,18 @@ class HomeScreen extends ConsumerWidget {
     final playlistsState = ref.watch(featuredPlaylistsStateProvider);
 
     // Check if any data is still loading (initial load)
-    final isLoading = (newsState.isLoading && newsState.articles.isEmpty) ||
+    final isLoading =
+        (newsState.isLoading && newsState.articles.isEmpty) ||
         (storiesState.isLoading && storiesState.stories.isEmpty) ||
         (playlistsState.isLoading && playlistsState.playlists.isEmpty);
 
     // Check for errors
-    final hasError = newsState.error != null || 
-        storiesState.error != null || 
+    final hasError =
+        newsState.error != null ||
+        storiesState.error != null ||
         playlistsState.error != null;
-    final errorMessage = newsState.error ?? storiesState.error ?? playlistsState.error;
+    final errorMessage =
+        newsState.error ?? storiesState.error ?? playlistsState.error;
 
     // Get data from states
     final stories = storiesState.storiesList;
@@ -117,7 +124,7 @@ class HomeScreen extends ConsumerWidget {
     required String? errorMessage,
     required List<Story> stories,
     required List news,
-    required List playlists,
+    required List<Playlist> playlists,
   }) {
     if (isLoading) {
       return const HomeSkeleton();
@@ -130,9 +137,16 @@ class HomeScreen extends ConsumerWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(Icons.error_outline, color: DSColors.errorColor, size: 48),
+              const Icon(
+                Icons.error_outline,
+                color: DSColors.errorColor,
+                size: 48,
+              ),
               const SizedBox(height: 16),
-              Text(errorMessage ?? 'Error loading data', textAlign: TextAlign.center),
+              Text(
+                errorMessage ?? 'Error loading data',
+                textAlign: TextAlign.center,
+              ),
               const SizedBox(height: 24),
               ElevatedButton(
                 onPressed: () => _refresh(ref),
@@ -178,10 +192,7 @@ class HomeScreen extends ConsumerWidget {
                 },
               ),
             ),
-            title: SvgPicture.asset(
-              'assets/icons/app_logo.svg',
-              height: 40,
-            ),
+            title: SvgPicture.asset('assets/icons/app_logo.svg', height: 40),
             centerTitle: true,
             actions: [
               SearchButton(
@@ -228,43 +239,7 @@ class HomeScreen extends ConsumerWidget {
           ),
 
           // Featured playlists header
-          const SliverToBoxAdapter(
-            child: Padding(
-              padding: EdgeInsets.only(top: 32, bottom: 16),
-              child: WaveSectionHeader(
-                title: 'Featured playlists',
-                showAnimation: true,
-              ),
-            ),
-          ),
-
-          // Featured playlists carousel
-          if (playlists.isNotEmpty)
-            SliverToBoxAdapter(
-              child: SizedBox(
-                height: 210,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  itemCount: playlists.length,
-                  itemBuilder: (context, index) {
-                    final playlist = playlists[index];
-                    return Padding(
-                      padding: const EdgeInsets.only(right: 12),
-                      child: PlaylistCard(
-                        id: playlist.id,
-                        title: playlist.title,
-                        imageUrl: playlist.imageUrl,
-                        trackCount: playlist.trackCount,
-                        onTap: () {
-                          context.push('/music/playlist/${playlist.id}');
-                        },
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ),
+          FeaturedPlaylistsSection(playlists: playlists),
 
           // News section header
           if (news.isNotEmpty)
@@ -279,10 +254,7 @@ class HomeScreen extends ConsumerWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: Row(
                       children: [
-                        Text(
-                          'News',
-                          style: context.h2,
-                        ),
+                        Text('News', style: context.h2),
                         const SizedBox(width: 8),
                         Icon(
                           Icons.arrow_forward_ios,
@@ -299,32 +271,29 @@ class HomeScreen extends ConsumerWidget {
           // News list (3 items)
           if (news.isNotEmpty)
             SliverList(
-              delegate: SliverChildBuilderDelegate(
-                (context, index) {
-                  final article = news[index];
-                  final isLast = index == 2 || index == news.length - 1;
+              delegate: SliverChildBuilderDelegate((context, index) {
+                final article = news[index];
+                final isLast = index == 2 || index == news.length - 1;
 
-                  return Column(
-                    children: [
-                      NewsItem(
-                        article: article,
-                        onTap: () {
-                          context.push('/news/${article.id}');
-                        },
+                return Column(
+                  children: [
+                    NewsItem(
+                      article: article,
+                      onTap: () {
+                        context.push('/news/${article.id}');
+                      },
+                    ),
+                    if (!isLast) ...[
+                      const SizedBox(height: 10),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16),
+                        child: DottedDivider(),
                       ),
-                      if (!isLast) ...[
-                        const SizedBox(height: 10),
-                        const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 16),
-                          child: DottedDivider(),
-                        ),
-                        const SizedBox(height: 10),
-                      ],
+                      const SizedBox(height: 10),
                     ],
-                  );
-                },
-                childCount: news.length > 3 ? 3 : news.length,
-              ),
+                  ],
+                );
+              }, childCount: news.length > 3 ? 3 : news.length),
             ),
         ],
       ),

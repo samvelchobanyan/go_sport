@@ -5,9 +5,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/domain/entities/track.dart';
 import 'package:go_sport/domain/state/player_state.dart';
-import 'package:go_sport/features/episodes/presentation/episodes_controller.dart';
+import 'package:go_sport/features/episodes/presentation/episodes_list/episodes_controller.dart';
 import 'package:go_sport/features/shared_widgets/dotted_divider.dart';
 import 'package:go_sport/features/shared_widgets/my_categories_top.dart';
 import 'package:go_sport/features/shared_widgets/track_tile.dart';
@@ -47,54 +48,10 @@ class _EpisodesListScreenState extends ConsumerState<EpisodesListScreen> {
     final state = ref.watch(episodesStateProvider);
     final List<Track> episodes = state.episodesList;
     final isLoading = state.isLoading && episodes.isEmpty;
-    final hasError = state.error != null;
-    final errorMessage = state.error;
 
     return Scaffold(
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
-          : (hasError && episodes.isEmpty)
-          ? Center(
-              child: Padding(
-                padding: const EdgeInsets.all(24.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Icon(
-                      Icons.error_outline,
-                      color: DSColors.errorColor,
-                      size: 48,
-                    ),
-                    const SizedBox(height: 16),
-                    Text(
-                      errorMessage ?? 'Error loading data',
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 24),
-                    ElevatedButton(
-                      onPressed: () =>
-                          ref.read(episodesStateProvider.notifier).refresh(),
-                      child: const Text('Повторить запрос'),
-                    ),
-                  ],
-                ),
-              ),
-            )
-          : (episodes.isEmpty)
-          ? Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text('No episodes yet', style: context.subtitleLBold),
-                  const SizedBox(height: 16),
-                  TextButton(
-                    onPressed: () =>
-                        ref.read(episodesStateProvider.notifier).refresh(),
-                    child: const Text('Обновить'),
-                  ),
-                ],
-              ),
-            )
           : RefreshIndicator(
               onRefresh: () =>
                   ref.read(episodesStateProvider.notifier).refresh(),
@@ -113,12 +70,11 @@ class _EpisodesListScreenState extends ConsumerState<EpisodesListScreen> {
                   ),
 
                   // 🔹 Foreground content
-                  CustomScrollView(
-                    controller: _scrollController,
-                    slivers: [
-                      MyCategoriesTop(
+                  Column(
+                    children: [
+                      MyCategoriesHeader(
                         iconPath: 'assets/icons/dynamic_bg.svg',
-                        title: 'New Episodes',
+                        title: 'My Episodes',
                         subtitle: 'episodes',
                         itemCount: episodes.length,
                         actionIcon: SvgPicture.asset(
@@ -130,24 +86,81 @@ class _EpisodesListScreenState extends ConsumerState<EpisodesListScreen> {
 
                       // 🔹 Episodes list
                       if (episodes.isEmpty)
-                        SliverFillRemaining(
-                          hasScrollBody: false,
-                          child: Center(
-                            child: Text(
-                              'No episodes yet',
-                              style: context.subtitleLBold,
-                            ),
+                        Center(
+                          child: Text(
+                            'No favorites yet',
+                            style: context.subtitleLBold,
                           ),
                         )
                       else
-                        ..._buildEpisodesSliver(episodes),
+                        Expanded(
+                          child: ClipRRect(
+                            borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(DSRadius.m),
+                              topRight: Radius.circular(DSRadius.m),
+                            ),
+                            child: Container(
+                              color: DSColors.white,
+                              child: ListView.separated(
+                                controller: _scrollController,
+                                itemCount:
+                                    episodes.length +
+                                    (state.isLoadingMore ? 1 : 0),
+                                separatorBuilder: (context, index) =>
+                                    const Padding(
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: 16,
+                                      ),
+                                      child: DottedDivider(),
+                                    ),
+                                itemBuilder: (context, index) {
+                                  if (index >= episodes.length) {
+                                    // bottom loading indicator
+                                    return const Padding(
+                                      padding: EdgeInsets.all(16),
+                                      child: Center(
+                                        child: CircularProgressIndicator(),
+                                      ),
+                                    );
+                                  }
 
-                      // 🔹 Loading indicator at the bottom
-                      if (state.isLoadingMore)
-                        const SliverToBoxAdapter(
-                          child: Padding(
-                            padding: EdgeInsets.all(16),
-                            child: Center(child: CircularProgressIndicator()),
+                                  final episode = episodes[index];
+                                  final playerState = ref.watch(
+                                    playerStateProvider,
+                                  );
+                                  final playingTrackId =
+                                      playerState.currentTrack?.id;
+                                  final isCurrentTrack =
+                                      episode.id == playingTrackId;
+                                  final bool? trackPlayingState = isCurrentTrack
+                                      ? playerState.isPlaying &&
+                                            playerState.isRadioMode == false
+                                      : null;
+
+                                  return ClipRRect(
+                                    borderRadius: index == 0
+                                        ? const BorderRadius.only(
+                                            topLeft: Radius.circular(24),
+                                            topRight: Radius.circular(24),
+                                          )
+                                        : BorderRadius.zero,
+                                    child: Container(
+                                      color: DSColors.white,
+                                      child: TrackTile(
+                                        type: 'episode',
+                                        track: episode,
+                                        isPlaying: trackPlayingState,
+                                        onTap: () =>
+                                            _onTrackTap(ref, episodes, index),
+                                        onMenuTap: () => debugPrint(
+                                          'Episode icon tapped for: ${episode.id}',
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
                           ),
                         ),
                     ],
@@ -191,56 +204,5 @@ class _EpisodesListScreenState extends ConsumerState<EpisodesListScreen> {
           ),
           startIndex: randomIndex,
         );
-  }
-
-  List<Widget> _buildEpisodesSliver(List<Track> episodes) {
-    // Build children list: separators and items
-    final children = <Widget>[];
-
-    final playerState = ref.watch(playerStateProvider);
-    final playingTrackId = playerState.currentTrack?.id;
-
-    for (int i = 0; i < episodes.length; i++) {
-      if (i > 0) {
-        children.add(
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16),
-            child: DottedDivider(),
-          ),
-        );
-      }
-      final episode = episodes[i];
-
-      final trackIndex = i; // Capture index by value
-      final isCurrentTrack = episode.id == playingTrackId;
-      final bool? trackPlayingState = isCurrentTrack
-          ? playerState.isPlaying && playerState.isRadioMode == false
-          : null;
-      children.add(
-        TrackTile(
-          type: 'episode',
-          track: episode,
-          isPlaying: trackPlayingState,
-          onTap: () => _onTrackTap(ref, episodes, trackIndex),
-          onMenuTap: () => debugPrint('Episode icon tapped for: ${episode.id}'),
-        ),
-      );
-    }
-
-    // Wrap in a single column inside a container
-    return [
-      SliverToBoxAdapter(
-        child: ClipRRect(
-          borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(24),
-            topRight: Radius.circular(24),
-          ),
-          child: Container(
-            color: DSColors.white,
-            child: Column(children: children),
-          ),
-        ),
-      ),
-    ];
   }
 }

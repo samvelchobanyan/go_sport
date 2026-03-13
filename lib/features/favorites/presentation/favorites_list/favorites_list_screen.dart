@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/domain/entities/track.dart';
 import 'package:go_sport/features/favorites/presentation/favorites_list/favorites_controller.dart';
 import 'package:go_sport/domain/state/player_state.dart';
@@ -82,8 +83,8 @@ class _FavoritesListScreenState extends ConsumerState<FavoritesListScreen> {
                 Expanded(
                   child: ClipRRect(
                     borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(24),
-                      topRight: Radius.circular(24),
+                      topLeft: Radius.circular(DSRadius.m),
+                      topRight: Radius.circular(DSRadius.m),
                     ),
                     child: Container(
                       color: DSColors.white,

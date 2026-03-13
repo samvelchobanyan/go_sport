@@ -69,7 +69,6 @@ class EpisodesNotifier extends Notifier<EpisodesState> {
 
     try {
       final episodes = await _repository.getFavoriteEpisodes();
-
       final episodesMap = {for (final episode in episodes) episode.id: episode};
 
       state = state.copyWith(episodes: episodesMap, isLoading: false);
@@ -83,16 +82,16 @@ class EpisodesNotifier extends Notifier<EpisodesState> {
 
     state = state.copyWith(isLoadingMore: true);
 
-    // try {
-    //   final newEpisodes = _repository.getAllEpisodes();
-    //   final episodesMap = {
-    //     ...state.episodes,
-    //     for (final episode in newEpisodes) episode.id: episode,
-    //   };
-    //   state = state.copyWith(episodes: episodesMap, isLoadingMore: false);
-    // } catch (e) {
-    //   state = state.copyWith(isLoadingMore: false, error: e.toString());
-    // }
+    try {
+      final episodes = await _repository.getFavoriteEpisodes();
+      final episodesMap = {
+        ...state.episodes,
+        for (final episode in episodes) episode.id: episode,
+      };
+      state = state.copyWith(episodes: episodesMap, isLoadingMore: false);
+    } catch (e) {
+      state = state.copyWith(isLoadingMore: false, error: e.toString());
+    }
   }
 
   Future<void> refresh() async {

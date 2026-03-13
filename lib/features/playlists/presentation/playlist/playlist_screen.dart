@@ -8,8 +8,8 @@ import 'package:go_sport/domain/state/player_state.dart';
 import 'package:go_sport/features/shared_widgets/dotted_divider.dart';
 
 import 'playlist_controller.dart';
-import 'widgets/playlist_hero.dart';
-import 'widgets/playlist_screen_skeleton.dart';
+import '../widgets/playlist_hero.dart';
+import '../widgets/playlist_screen_skeleton.dart';
 import '../../../shared_widgets/track_tile.dart';
 
 class PlaylistScreen extends ConsumerWidget {
@@ -52,6 +52,8 @@ class PlaylistScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+
+    print('Building PlaylistScreen for playlistId: $playlistId');
     final playlistsState = ref.watch(featuredPlaylistsStateProvider);
     final playlist = playlistsState.getPlaylist(playlistId);
     final tracksState = ref.watch(playlistControllerProvider(playlistId));
