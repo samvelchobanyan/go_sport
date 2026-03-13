@@ -42,8 +42,7 @@ class FeaturedPlaylistsSection extends StatelessWidget {
                         imageUrl: playlist.imageUrl,
                         trackCount: playlist.trackCount,
                         onTap: () {
-                          // TODO: Navigate to playlist screen
-                          print('Playlist tapped: ${playlist.id}');
+                          context.push('/music/playlist/${playlist.id}');
                         },
                       ),
                     );
