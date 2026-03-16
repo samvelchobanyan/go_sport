@@ -198,7 +198,7 @@ class _MusicScreenState extends ConsumerState<MusicScreen> {
                         ),
                       ),
 
-                      // playlist title
+                      // playlist section
                       FeaturedPlaylistsSection(playlists: playlists),
 
                       // albums title
@@ -284,7 +284,7 @@ class _MusicScreenState extends ConsumerState<MusicScreen> {
                                     return Padding(
                                       padding: const EdgeInsets.only(right: 16),
                                       child: ArtistCard(
-                                        name: featuredArtists[index].title,
+                                        name: featuredArtists[index].artistName,
                                         imageUrl:
                                             featuredArtists[index].imageUrl,
                                         onTap: () {

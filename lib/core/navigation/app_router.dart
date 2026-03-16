@@ -3,13 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:go_sport/core/navigation/main_shell.dart';
 import 'package:go_sport/core/navigation/page_transitions.dart';
 import 'package:go_sport/core/navigation/routes.dart';
+import 'package:go_sport/features/favorite_artists/presentation/artists_list/artists_list_screen.dart';
 import 'package:go_sport/features/home/presentation/home/home_screen.dart';
 import 'package:go_sport/features/music/presentation/music/music_screen.dart';
 import 'package:go_sport/features/radio/presentation/radio/radio_screen.dart';
 import 'package:go_sport/features/news/presentation/news_list/news_list_screen.dart';
 import 'package:go_sport/features/news/presentation/news_detail/news_detail_screen.dart';
-import 'package:go_sport/features/favorites/presentation/favorites_list/favorites_list_screen.dart';
-import 'package:go_sport/features/episodes/presentation/episodes_list/episodes_list_screen.dart';
+import 'package:go_sport/features/favorite_songs/presentation/favorites_list/favorites_list_screen.dart';
+import 'package:go_sport/features/favorites_episodes/presentation/episodes_list/episodes_list_screen.dart';
 import 'package:go_sport/features/programs/presentation/programs_screen.dart';
 import 'package:go_sport/features/playlists/presentation/playlist/playlist_screen.dart';
 
@@ -97,12 +98,7 @@ final GoRouter appRouter = GoRouter(
                 // My Artists route
                 GoRoute(
                   path: 'myartists',
-                  builder: (context, state) {
-                    // TODO: Create MyArtistsScreen
-                    return const Scaffold(
-                      body: Center(child: Text('My Artists')),
-                    );
-                  },
+                   builder: (context, state) => const FavoriteArtistsListScreen(),
                 ),
                 // Episodes route
                 GoRoute(

@@ -1,26 +1,24 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
-import 'package:go_sport/domain/entities/track.dart';
-import 'package:go_sport/domain/state/player_state.dart';
-import 'package:go_sport/features/episodes/presentation/episodes_list/episodes_controller.dart';
+import 'package:go_sport/domain/entities/artist.dart';
+import 'package:go_sport/features/favorite_artists/presentation/artists_list/artists_controller.dart';
+import 'package:go_sport/features/shared_widgets/artist_item_row.dart';
 import 'package:go_sport/features/shared_widgets/dotted_divider.dart';
 import 'package:go_sport/features/shared_widgets/my_categories_top.dart';
-import 'package:go_sport/features/shared_widgets/track_tile.dart';
 
-class EpisodesListScreen extends ConsumerStatefulWidget {
-  const EpisodesListScreen({super.key});
+class FavoriteArtistsListScreen extends ConsumerStatefulWidget {
+  const FavoriteArtistsListScreen({super.key});
 
   @override
-  ConsumerState<EpisodesListScreen> createState() => _EpisodesListScreenState();
+  ConsumerState<FavoriteArtistsListScreen> createState() =>
+      _FavoriteArtistsListScreenState();
 }
 
-class _EpisodesListScreenState extends ConsumerState<EpisodesListScreen> {
+class _FavoriteArtistsListScreenState
+    extends ConsumerState<FavoriteArtistsListScreen> {
   final ScrollController _scrollController = ScrollController();
 
   @override
@@ -39,22 +37,22 @@ class _EpisodesListScreenState extends ConsumerState<EpisodesListScreen> {
   void _onScroll() {
     if (_scrollController.position.pixels >=
         _scrollController.position.maxScrollExtent * 0.8) {
-      ref.read(episodesStateProvider.notifier).loadMore();
+      ref.read(artistsStateProvider.notifier).loadMore();
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final state = ref.watch(episodesStateProvider);
-    final List<Track> episodes = state.episodesList;
-    final isLoading = state.isLoading && episodes.isEmpty;
+    final state = ref.watch(artistsStateProvider);
+    final List<Artist> artists = state.favoriteArtists;
+    final isLoading = state.isLoading && artists.isEmpty;
 
     return Scaffold(
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
           : RefreshIndicator(
               onRefresh: () =>
-                  ref.read(episodesStateProvider.notifier).refresh(),
+                  ref.read(artistsStateProvider.notifier).refresh(),
               child: Stack(
                 children: [
                   // 🔹 Background image (visible behind rounded list)
@@ -74,18 +72,13 @@ class _EpisodesListScreenState extends ConsumerState<EpisodesListScreen> {
                     children: [
                       MyCategoriesHeader(
                         iconPath: 'assets/icons/dynamic_bg.svg',
-                        title: 'My Episodes',
-                        subtitle: 'episodes',
-                        itemCount: episodes.length,
-                        actionIcon: SvgPicture.asset(
-                          'assets/icons/play_blue.svg',
-                        ),
-                        onActionIconTap: () =>
-                            _onPlayTap(ref, episodes, 'New Episodes', ''),
+                        title: 'My Artists',
+                        subtitle: 'artists',
+                        itemCount: artists.length,
                       ),
 
                       // 🔹 Episodes list
-                      if (episodes.isEmpty)
+                      if (artists.isEmpty)
                         Center(
                           child: Text(
                             'No favorites yet',
@@ -104,7 +97,7 @@ class _EpisodesListScreenState extends ConsumerState<EpisodesListScreen> {
                               child: ListView.separated(
                                 controller: _scrollController,
                                 itemCount:
-                                    episodes.length +
+                                    artists.length +
                                     (state.isLoadingMore ? 1 : 0),
                                 separatorBuilder: (context, index) =>
                                     const Padding(
@@ -114,7 +107,7 @@ class _EpisodesListScreenState extends ConsumerState<EpisodesListScreen> {
                                       child: DottedDivider(),
                                     ),
                                 itemBuilder: (context, index) {
-                                  if (index >= episodes.length) {
+                                  if (index >= artists.length) {
                                     // bottom loading indicator
                                     return const Padding(
                                       padding: EdgeInsets.all(16),
@@ -124,18 +117,7 @@ class _EpisodesListScreenState extends ConsumerState<EpisodesListScreen> {
                                     );
                                   }
 
-                                  final episode = episodes[index];
-                                  final playerState = ref.watch(
-                                    playerStateProvider,
-                                  );
-                                  final playingTrackId =
-                                      playerState.currentTrack?.id;
-                                  final isCurrentTrack =
-                                      episode.id == playingTrackId;
-                                  final bool? trackPlayingState = isCurrentTrack
-                                      ? playerState.isPlaying &&
-                                            playerState.isRadioMode == false
-                                      : null;
+                                  final artist = artists[index];
 
                                   return ClipRRect(
                                     borderRadius: index == 0
@@ -146,15 +128,9 @@ class _EpisodesListScreenState extends ConsumerState<EpisodesListScreen> {
                                         : BorderRadius.zero,
                                     child: Container(
                                       color: DSColors.white,
-                                      child: TrackTile(
-                                        type: 'episode',
-                                        track: episode,
-                                        isPlaying: trackPlayingState,
-                                        onTap: () =>
-                                            _onTrackTap(ref, episodes, index),
-                                        onMenuTap: () => debugPrint(
-                                          'Episode icon tapped for: ${episode.id}',
-                                        ),
+                                      child: ArtistItemRow(
+                                        name: artist.artistName,
+                                        imageUrl: artist.imageUrl,
                                       ),
                                     ),
                                   );
@@ -169,40 +145,5 @@ class _EpisodesListScreenState extends ConsumerState<EpisodesListScreen> {
               ),
             ),
     );
-  }
-
-  void _onTrackTap(WidgetRef ref, List<Track> episodes, int index) {
-    ref
-        .read(playerStateProvider.notifier)
-        .playQueue(
-          episodes,
-          source: QueueSource.episodes(
-            id: index.toString(),
-            title: 'My Episodes',
-            imageUrl: '',
-          ),
-          startIndex: index,
-        );
-  }
-
-  void _onPlayTap(
-    WidgetRef ref,
-    List<Track> episodes,
-    String title,
-    String imageUrl,
-  ) {
-    if (episodes.isEmpty) return;
-    final randomIndex = Random().nextInt(episodes.length);
-    ref
-        .read(playerStateProvider.notifier)
-        .playQueue(
-          episodes,
-          source: QueueSource.episodes(
-            id: 'episodes', //todo change to real id later
-            title: title,
-            imageUrl: imageUrl,
-          ),
-          startIndex: randomIndex,
-        );
   }
 }
