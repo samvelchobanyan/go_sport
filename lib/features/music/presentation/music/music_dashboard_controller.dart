@@ -3,6 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:go_sport/core/di/repository_providers.dart';
 import 'package:go_sport/domain/entities/album.dart';
 import 'package:go_sport/domain/entities/artist.dart';
+import 'package:go_sport/domain/repositories/artists_repository.dart';
 import 'package:go_sport/domain/repositories/music_repository.dart';
 
 part 'music_dashboard_controller.freezed.dart';
@@ -26,10 +27,12 @@ class MusicDashboardState with _$MusicDashboardState {
 class MusicDashboardController
     extends AutoDisposeNotifier<MusicDashboardState> {
   late final MusicRepository _repository;
+  late final ArtistsRepository _artistsRepository;
 
   @override
   MusicDashboardState build() {
     _repository = ref.watch(musicRepositoryProvider);
+    _artistsRepository = ref.watch(artistsRepositoryProvider);
     Future.microtask(() => load());
     return const MusicDashboardState();
   }
@@ -54,8 +57,8 @@ class MusicDashboardController
         _repository.getArtistsCount(),
         _repository.getEpisodesCount(),
         _repository.getProgramsCount(),
-        _repository.getAlbums(),
-        _repository.getFeaturedArtists(),
+        _repository.getFeaturedAlbums(),
+        _artistsRepository.getFeaturedArtists(),
       ).wait;
 
       state = state.copyWith(
