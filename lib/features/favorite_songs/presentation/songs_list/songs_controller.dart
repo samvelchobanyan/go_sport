@@ -5,7 +5,7 @@ import '../../../../domain/entities/track.dart';
 import '../../../../domain/repositories/playlist_repository.dart';
 import '../../../../core/di/repository_providers.dart';
 
-part 'favorites_controller.freezed.dart';
+part 'songs_controller.freezed.dart';
 
 @freezed
 class FavoritesState with _$FavoritesState {

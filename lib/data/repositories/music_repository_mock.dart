@@ -1,5 +1,4 @@
 import 'package:go_sport/domain/entities/album.dart';
-import 'package:go_sport/domain/entities/artist.dart';
 import 'package:go_sport/domain/repositories/music_repository.dart';
 
 class MusicRepositoryMock implements MusicRepository {
@@ -13,7 +12,7 @@ class MusicRepositoryMock implements MusicRepository {
   Future<int> getAlbumsCount() async => 21;
 
   @override
-  Future<int> getArtistsCount() async => 16;
+  Future<int> getArtistsCount() async => 2;
 
   @override
   Future<int> getEpisodesCount() async => 6;

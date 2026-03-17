@@ -9,9 +9,9 @@ import 'package:go_sport/features/music/presentation/music/music_screen.dart';
 import 'package:go_sport/features/radio/presentation/radio/radio_screen.dart';
 import 'package:go_sport/features/news/presentation/news_list/news_list_screen.dart';
 import 'package:go_sport/features/news/presentation/news_detail/news_detail_screen.dart';
-import 'package:go_sport/features/favorite_songs/presentation/favorites_list/favorites_list_screen.dart';
-import 'package:go_sport/features/favorites_episodes/presentation/episodes_list/episodes_list_screen.dart';
-import 'package:go_sport/features/programs/presentation/programs_screen.dart';
+import 'package:go_sport/features/favorite_songs/presentation/songs_list/songs_list_screen.dart';
+import 'package:go_sport/features/favorite_episodes/presentation/episodes_list/episodes_list_screen.dart';
+import 'package:go_sport/features/favorite_programs/presentation/programs_list_screen.dart';
 import 'package:go_sport/features/playlists/presentation/playlist/playlist_screen.dart';
 
 final GoRouter appRouter = GoRouter(
@@ -73,7 +73,7 @@ final GoRouter appRouter = GoRouter(
                 // Favorites route
                 GoRoute(
                   path: 'myfavorites',
-                  builder: (context, state) => const FavoritesListScreen(),
+                  builder: (context, state) => const FavoriteSongsListScreen(),
                 ),
                 // My Playlists route
                 GoRoute(
@@ -98,18 +98,21 @@ final GoRouter appRouter = GoRouter(
                 // My Artists route
                 GoRoute(
                   path: 'myartists',
-                   builder: (context, state) => const FavoriteArtistsListScreen(),
+                  builder: (context, state) =>
+                      const FavoriteArtistsListScreen(),
                 ),
                 // Episodes route
                 GoRoute(
                   path: 'myepisodes',
-                  builder: (context, state) => const EpisodesListScreen(),
+                  builder: (context, state) =>
+                      const FavoriteEpisodesListScreen(),
                 ),
 
                 // My Programs route
                 GoRoute(
                   path: 'myprograms',
-                  builder: (context, state) => const ProgramsScreen(),
+                  builder: (context, state) =>
+                      const FavoriteProgramsListScreen(),
                 ),
               ],
             ),

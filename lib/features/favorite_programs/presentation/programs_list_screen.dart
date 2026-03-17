@@ -1,25 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
-import 'package:go_sport/domain/entities/artist.dart';
-import 'package:go_sport/features/favorite_artists/presentation/artists_list/artists_controller.dart';
-import 'package:go_sport/features/shared_widgets/artist_item_row.dart';
+import 'package:go_sport/domain/entities/program.dart';
+import 'package:go_sport/domain/state/programs_state.dart';
 import 'package:go_sport/features/shared_widgets/dotted_divider.dart';
 import 'package:go_sport/features/shared_widgets/my_categories_top.dart';
+import 'package:go_sport/features/shared_widgets/program_item_row.dart';
+import 'package:go_sport/design_system/ds_extensions.dart';
 
-class FavoriteArtistsListScreen extends ConsumerStatefulWidget {
-  const FavoriteArtistsListScreen({super.key});
+class FavoriteProgramsListScreen extends ConsumerStatefulWidget {
+  const FavoriteProgramsListScreen({super.key});
 
   @override
-  ConsumerState<FavoriteArtistsListScreen> createState() =>
-      _FavoriteArtistsListScreenState();
+  ConsumerState<FavoriteProgramsListScreen> createState() =>
+      _FavoriteProgramsListScreenState();
 }
 
-class _FavoriteArtistsListScreenState
-    extends ConsumerState<FavoriteArtistsListScreen> {
+class _FavoriteProgramsListScreenState
+    extends ConsumerState<FavoriteProgramsListScreen> {
   late final ScrollController _scrollController;
 
   @override
@@ -29,12 +29,12 @@ class _FavoriteArtistsListScreenState
   }
 
   void _onScroll() {
-    final state = ref.read(artistsStateProvider);
+    final state = ref.read(programsStateProvider);
     if (state.isLoading || state.isLoadingMore) return;
 
     if (_scrollController.position.pixels >=
         _scrollController.position.maxScrollExtent * 0.8) {
-      ref.read(artistsStateProvider.notifier).loadMore();
+      ref.read(programsStateProvider.notifier).loadMore();
     }
   }
 
@@ -47,15 +47,15 @@ class _FavoriteArtistsListScreenState
 
   @override
   Widget build(BuildContext context) {
-    final state = ref.watch(artistsStateProvider);
-    final List<Artist> artists = state.favoriteArtists;
+    final state = ref.watch(programsStateProvider);
+    final programs = state.programsList;
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.dark,
       child: Scaffold(
         body: Stack(
           children: [
-            // 🔹 Background image (visible behind rounded list)
+            // 🔹 Background image
             Positioned(
               top: 0,
               left: 0,
@@ -72,9 +72,9 @@ class _FavoriteArtistsListScreenState
               children: [
                 MyCategoriesHeader(
                   iconPath: 'assets/icons/dynamic_bg.svg',
-                  title: 'My Artists',
-                  subtitle: 'artists',
-                  itemCount: artists.length,
+                  title: 'Programs',
+                  subtitle: 'programs',
+                  itemCount: programs.length,
                 ),
 
                 Expanded(
@@ -85,15 +85,15 @@ class _FavoriteArtistsListScreenState
                     ),
                     child: Container(
                       color: DSColors.white,
-                      child: state.isLoading && state.artistsList.isEmpty
+                      child: state.isLoading && programs.isEmpty
                           ? const Center(
                               child: CircularProgressIndicator(),
                             ) //todo add skeleton loading later
-                          : state.error != null && state.artistsList.isEmpty
+                          : state.error != null && programs.isEmpty
                           ? _buildErrorWidget(state)
-                          : _buildArtistsList(
+                          : _buildProgramsList(
                               ref,
-                              state.artistsList,
+                              programs,
                               state.isLoadingMore,
                             ),
                     ),
@@ -107,38 +107,23 @@ class _FavoriteArtistsListScreenState
     );
   }
 
-  Widget _buildErrorWidget(ArtistsState state) {
-    return Center(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text('Failed to load favorite artists', style: context.subtitleLBold),
-          const SizedBox(height: 8),
-          ElevatedButton(
-            onPressed: () => ref.read(artistsStateProvider.notifier).refresh(),
-            child: const Text('Retry'),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildArtistsList(
+  Widget _buildProgramsList(
     WidgetRef ref,
-    List<Artist> artists,
+    List<Program> programs,
     bool isLoadingMore,
   ) {
-    if (artists.isEmpty) {
+    if (programs.isEmpty) {
       return Center(
-        child: Text('No favorite artists yet', style: context.subtitleLBold),
+        child: Text('No favorite programs yet', style: context.subtitleLBold),
       );
     }
 
     return ListView.separated(
       controller: _scrollController,
-      itemCount: artists.length + (isLoadingMore ? 1 : 0),
+      padding: const EdgeInsets.only(top: 16, bottom: 16),
+      itemCount: programs.length + (isLoadingMore ? 1 : 0),
       separatorBuilder: (context, index) {
-        if (index >= artists.length - 1) {
+        if (index >= programs.length - 1) {
           return const SizedBox.shrink();
         }
 
@@ -148,32 +133,41 @@ class _FavoriteArtistsListScreenState
         );
       },
       itemBuilder: (context, index) {
-        if (index >= artists.length) {
-          // bottom loading indicator
+        if (index >= programs.length) {
           return const Padding(
             padding: EdgeInsets.all(16),
             child: Center(child: CircularProgressIndicator()),
           );
         }
 
-        final artist = artists[index];
-
-        return ClipRRect(
-          borderRadius: index == 0
-              ? const BorderRadius.only(
-                  topLeft: Radius.circular(24),
-                  topRight: Radius.circular(24),
-                )
-              : BorderRadius.zero,
-          child: Container(
-            color: DSColors.white,
-            child: ArtistItemRow(
-              name: artist.artistName,
-              imageUrl: artist.imageUrl,
-            ),
-          ),
+        final program = programs[index];
+        return ProgramItemRow(
+          imageUrl: program.imageUrl ?? '',
+          title: program.title,
+          episodeCount: program.episodeCount,
+          onTap: () => debugPrint('Program tapped: ${program.id}'),
+          onIconTap: () => debugPrint('Program icon tapped for: ${program.id}'),
         );
       },
+    );
+  }
+
+  Widget _buildErrorWidget(ProgramsState state) {
+    return Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            'Failed to load favorite programs',
+            style: context.subtitleLBold,
+          ),
+          const SizedBox(height: 8),
+          ElevatedButton(
+            onPressed: () => ref.read(programsStateProvider.notifier).refresh(),
+            child: const Text('Retry'),
+          ),
+        ],
+      ),
     );
   }
 }

@@ -8,21 +8,22 @@ import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/domain/entities/track.dart';
-import 'package:go_sport/features/favorite_songs/presentation/favorites_list/favorites_controller.dart';
+import 'package:go_sport/features/favorite_songs/presentation/songs_list/songs_controller.dart';
 import 'package:go_sport/domain/state/player_state.dart';
 import 'package:go_sport/features/shared_widgets/dotted_divider.dart';
 import 'package:go_sport/features/shared_widgets/my_categories_top.dart';
 import 'package:go_sport/features/shared_widgets/track_tile.dart';
 
-class FavoritesListScreen extends ConsumerStatefulWidget {
-  const FavoritesListScreen({super.key});
+class FavoriteSongsListScreen extends ConsumerStatefulWidget {
+  const FavoriteSongsListScreen({super.key});
 
   @override
-  ConsumerState<FavoritesListScreen> createState() =>
-      _FavoritesListScreenState();
+  ConsumerState<FavoriteSongsListScreen> createState() =>
+      _FavoriteSongsListScreenState();
 }
 
-class _FavoritesListScreenState extends ConsumerState<FavoritesListScreen> {
+class _FavoriteSongsListScreenState
+    extends ConsumerState<FavoriteSongsListScreen> {
   late final ScrollController _scrollController;
 
   @override
@@ -88,7 +89,17 @@ class _FavoritesListScreenState extends ConsumerState<FavoritesListScreen> {
                     ),
                     child: Container(
                       color: DSColors.white,
-                      child: _buildBody(context, ref, state),
+                      child: state.isLoading && state.favoritesList.isEmpty
+                          ? const Center(
+                              child: CircularProgressIndicator(),
+                            ) //todo add skeleton loading later
+                          : state.error != null && state.favoritesList.isEmpty
+                          ? _buildErrorWidget(state)
+                          : _buildSongsList(
+                              ref,
+                              state.favoritesList,
+                              state.isLoadingMore,
+                            ),
                     ),
                   ),
                 ),
@@ -100,42 +111,71 @@ class _FavoritesListScreenState extends ConsumerState<FavoritesListScreen> {
     );
   }
 
-  Widget _buildBody(BuildContext context, WidgetRef ref, FavoritesState state) {
-    if (state.isLoading && state.favoritesList.isEmpty) {
-      return const Center(child: CircularProgressIndicator());
-    }
+  Widget _buildSongsList(WidgetRef ref, List<Track> songs, bool isLoadingMore) {
+    final playerState = ref.watch(playerStateProvider);
+    final playingTrackId = playerState.currentTrack?.id;
 
-    if (state.error != null && state.favoritesList.isEmpty) {
-      return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text('Error loading favorites', style: context.subtitleLSemi),
-            const SizedBox(height: 8),
-            Text(
-              state.error!,
-              style: context.textL?.copyWith(color: DSColors.gray60),
-            ),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: () =>
-                  ref.read(favoritesStateProvider.notifier).refresh(),
-              child: const Text('Retry'),
-            ),
-          ],
-        ),
-      );
-    }
-
-    final favorites = state.favoritesList;
-
-    if (favorites.isEmpty) {
+    if (songs.isEmpty) {
       return Center(
         child: Text('No favorites yet', style: context.subtitleLBold),
       );
     }
 
-    return _buildSongsList(ref, favorites, state.isLoadingMore);
+    return ListView.separated(
+      controller: _scrollController,
+      padding: EdgeInsets.only(bottom: isLoadingMore ? 16 : 100),
+      itemCount: songs.length + (isLoadingMore ? 1 : 0),
+      separatorBuilder: (context, index) {
+        if (index >= songs.length - 1) {
+          return const SizedBox.shrink();
+        }
+
+        return const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16),
+          child: DottedDivider(),
+        );
+      },
+      itemBuilder: (context, index) {
+        if (index == songs.length) {
+          return const Padding(
+            padding: EdgeInsets.all(16),
+            child: Center(child: CircularProgressIndicator()),
+          );
+        }
+
+        final track = songs[index];
+        final isCurrentTrack = track.id == playingTrackId;
+        final bool? trackPlayingState = isCurrentTrack
+            ? playerState.isPlaying && playerState.isRadioMode == false
+            : null;
+
+        return TrackTile(
+          track: track,
+          isPlaying: trackPlayingState,
+          onTap: () => _onTrackTap(ref, songs, index),
+          onMenuTap: () => _onTrackMenuTap(index),
+        );
+      },
+    );
+  }
+
+  Widget _buildErrorWidget(state) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text('Error loading favorites', style: context.subtitleLSemi),
+        const SizedBox(height: 8),
+        Text(
+          state.error!,
+          style: context.textL?.copyWith(color: DSColors.gray60),
+        ),
+        const SizedBox(height: 16),
+        ElevatedButton(
+          onPressed: () => ref.read(favoritesStateProvider.notifier).refresh(),
+          child: const Text('Retry'),
+        ),
+      ],
+    );
   }
 
   void _onPlayTap(
@@ -176,47 +216,5 @@ class _FavoritesListScreenState extends ConsumerState<FavoritesListScreen> {
   void _onTrackMenuTap(int index) {
     // TODO: Show track menu
     debugPrint('Track menu tapped at index: $index');
-  }
-
-  Widget _buildSongsList(WidgetRef ref, List<Track> songs, bool isLoadingMore) {
-    final playerState = ref.watch(playerStateProvider);
-    final playingTrackId = playerState.currentTrack?.id;
-
-    return ListView.separated(
-      controller: _scrollController,
-      padding: EdgeInsets.only(bottom: isLoadingMore ? 16 : 100),
-      itemCount: songs.length + (isLoadingMore ? 1 : 0),
-      separatorBuilder: (context, index) {
-        if (index >= songs.length - 1) {
-          return const SizedBox.shrink();
-        }
-
-        return const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16),
-          child: DottedDivider(),
-        );
-      },
-      itemBuilder: (context, index) {
-        if (index == songs.length) {
-          return const Padding(
-            padding: EdgeInsets.all(16),
-            child: Center(child: CircularProgressIndicator()),
-          );
-        }
-
-        final track = songs[index];
-        final isCurrentTrack = track.id == playingTrackId;
-        final bool? trackPlayingState = isCurrentTrack
-            ? playerState.isPlaying && playerState.isRadioMode == false
-            : null;
-
-        return TrackTile(
-          track: track,
-          isPlaying: trackPlayingState,
-          onTap: () => _onTrackTap(ref, songs, index),
-          onMenuTap: () => _onTrackMenuTap(index),
-        );
-      },
-    );
   }
 }
