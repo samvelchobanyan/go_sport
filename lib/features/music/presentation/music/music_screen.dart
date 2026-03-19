@@ -25,26 +25,7 @@ class MusicScreen extends ConsumerStatefulWidget {
 }
 
 class _MusicScreenState extends ConsumerState<MusicScreen> {
-  final ScrollController _scrollController = ScrollController();
-
   double appBarOpacity = 0;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _scrollController.addListener(() {
-      double offset = _scrollController.offset;
-
-      double newOpacity = (offset / 250).clamp(0, 1);
-
-      if (newOpacity != appBarOpacity) {
-        setState(() {
-          appBarOpacity = newOpacity;
-        });
-      }
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -116,18 +97,28 @@ class _MusicScreenState extends ConsumerState<MusicScreen> {
       backgroundColor: DSColors.white,
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
-          : RefreshIndicator(
-              onRefresh: () =>
-                  ref.read(featuredPlaylistsStateProvider.notifier).refresh(),
-              child: Stack(
-                children: [
-                  Image.asset(
-                    'assets/images/music_bg.png',
-                    width: screenWidth,
-                    fit: BoxFit.cover,
-                  ),
-                  CustomScrollView(
-                    controller: _scrollController,
+          : Stack(
+              children: [
+                Image.asset(
+                  'assets/images/music_bg.png',
+                  width: screenWidth,
+                  fit: BoxFit.cover,
+                ),
+                NotificationListener<ScrollNotification>(
+                  onNotification: (scrollInfo) {
+                    double offset = scrollInfo.metrics.pixels;
+                    double newOpacity = (offset / 250).clamp(0, 1);
+
+                    if (newOpacity != appBarOpacity) {
+                      setState(() {
+                        appBarOpacity = newOpacity;
+                      });
+                    }
+
+                    return false;
+                  },
+                  child: CustomScrollView(
+                    // controller: _scrollController,
                     slivers: [
                       /// 🔹 AppBar
                       SliverAppBar(
@@ -303,8 +294,8 @@ class _MusicScreenState extends ConsumerState<MusicScreen> {
                       ),
                     ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
     );
   }

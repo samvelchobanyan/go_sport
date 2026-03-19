@@ -3,9 +3,9 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:go_sport/core/di/repository_providers.dart';
 import 'package:go_sport/domain/repositories/programs_repository.dart';
 
-import '../entities/program.dart';
+import '../../../domain/entities/program.dart';
 
-part 'programs_state.freezed.dart';
+part 'programs_controller.freezed.dart';
 
 @freezed
 class ProgramsState with _$ProgramsState {
@@ -29,38 +29,8 @@ class ProgramsNotifier extends Notifier<ProgramsState> {
   @override
   ProgramsState build() {
     _repository = ref.watch(programsRepositoryProvider);
-    Future.microtask(() => loadFeaturedPrograms());
+    Future.microtask(() => loadFavorites());
     return const ProgramsState();
-  }
-
-  /// Load all programs. Doesnt exist in design yet
-  // Future<void> loadPrograms() async {
-  //   state = state.copyWith(isLoading: true, error: null);
-
-  //   try {
-  //     final programs = await _repository.getAllPrograms();
-
-  //     final programsMap = {for (final program in programs) program.id: program};
-
-  //     state = state.copyWith(programs: programsMap, isLoading: false);
-  //   } catch (e) {
-  //     state = state.copyWith(isLoading: false, error: e.toString());
-  //   }
-  // }
-
-  /// Load featured
-  Future<void> loadFeaturedPrograms() async {
-    state = state.copyWith(isLoading: true, error: null);
-
-    try {
-      final programs = await _repository.getFeaturedPrograms();
-
-      final programsMap = {for (final program in programs) program.id: program};
-
-      state = state.copyWith(programs: programsMap, isLoading: false);
-    } catch (e) {
-      state = state.copyWith(isLoading: false, error: e.toString());
-    }
   }
 
   /// Load favorites
@@ -101,16 +71,16 @@ class ProgramsNotifier extends Notifier<ProgramsState> {
 
   Future<void> refresh() async {
     state = state.copyWith(programs: {});
-    await loadFeaturedPrograms();
+    await loadFavorites();
   }
 
-    Future<void> loadMore() async {
+  Future<void> loadMore() async {
     if (state.isLoadingMore) return;
 
     state = state.copyWith(isLoadingMore: true);
 
     try {
-      final newTracks = await _repository.getFeaturedPrograms();
+      final newTracks = await _repository.getFavoritePrograms();
       final programsMap = <String, Program>{
         ...state.programs,
         for (final program in newTracks) program.id: program,
@@ -120,7 +90,6 @@ class ProgramsNotifier extends Notifier<ProgramsState> {
       state = state.copyWith(isLoadingMore: false, error: e.toString());
     }
   }
-
 }
 
 final programsStateProvider = NotifierProvider<ProgramsNotifier, ProgramsState>(

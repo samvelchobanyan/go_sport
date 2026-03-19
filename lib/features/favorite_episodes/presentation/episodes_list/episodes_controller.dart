@@ -28,48 +28,20 @@ class EpisodesNotifier extends Notifier<EpisodesState> {
   @override
   EpisodesState build() {
     _repository = ref.watch(episodesRepositoryProvider);
-    Future.microtask(() => loadEpisodes());
+    Future.microtask(() => loadFavoriteEpisodes());
     return const EpisodesState();
   }
 
-  Future<void> loadEpisodes() async {
+  Future<void> loadFavoriteEpisodes() async {
     state = state.copyWith(isLoading: true, error: null);
 
     try {
-      final episodes = await _repository.getFeaturedEpisodes();
+      final episodes = await _repository.getFavoriteEpisodes();
 
       final episodesMap = {
         ...state.episodes,
         for (final episode in episodes) episode.id: episode,
       };
-
-      state = state.copyWith(episodes: episodesMap, isLoading: false);
-    } catch (e) {
-      state = state.copyWith(isLoading: false, error: e.toString());
-    }
-  }
-
-  Future<void> loadFeaturedPrograms() async {
-    state = state.copyWith(isLoading: true, error: null);
-
-    try {
-      final episodes = await _repository.getFeaturedEpisodes();
-
-      final episodesMap = {for (final episode in episodes) episode.id: episode};
-
-      state = state.copyWith(episodes: episodesMap, isLoading: false);
-    } catch (e) {
-      state = state.copyWith(isLoading: false, error: e.toString());
-    }
-  }
-
-  /// Load favorites
-  Future<void> loadFavorites() async {
-    state = state.copyWith(isLoading: true, error: null);
-
-    try {
-      final episodes = await _repository.getFavoriteEpisodes();
-      final episodesMap = {for (final episode in episodes) episode.id: episode};
 
       state = state.copyWith(episodes: episodesMap, isLoading: false);
     } catch (e) {
@@ -96,7 +68,7 @@ class EpisodesNotifier extends Notifier<EpisodesState> {
 
   Future<void> refresh() async {
     state = state.copyWith(episodes: {});
-    await loadEpisodes();
+    await loadFavoriteEpisodes();
   }
 }
 
