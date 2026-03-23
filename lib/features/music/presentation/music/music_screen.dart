@@ -54,7 +54,7 @@ class _MusicScreenState extends ConsumerState<MusicScreen> {
       },
       {
         'icon': SvgPicture.asset('assets/icons/playlists_bg.svg'),
-        'title': 'My Playlist',
+        'title': 'My Playlists',
         'subtitle': playlistsCount > 0
             ? '$playlistsCount playlists'
             : 'No playlists',

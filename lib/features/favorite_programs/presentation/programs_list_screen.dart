@@ -7,7 +7,7 @@ import 'package:go_sport/domain/entities/program.dart';
 import 'package:go_sport/features/favorite_programs/presentation/programs_controller.dart';
 import 'package:go_sport/features/shared_widgets/dotted_divider.dart';
 import 'package:go_sport/features/shared_widgets/my_categories_top.dart';
-import 'package:go_sport/features/shared_widgets/program_item_row.dart';
+import 'package:go_sport/features/shared_widgets/program_tile.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 
 class FavoriteProgramsListScreen extends ConsumerStatefulWidget {
@@ -48,7 +48,7 @@ class _FavoriteProgramsListScreenState
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(programsStateProvider);
-    final programs = state.programsList;
+    final programs = state.programs;
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.dark,
@@ -73,7 +73,7 @@ class _FavoriteProgramsListScreenState
                 MyCategoriesHeader(
                   iconPath: 'assets/icons/dynamic_bg.svg',
                   title: 'Programs',
-                  subtitle: 'programs',
+                  subtitle: 'Programs',
                   itemCount: programs.length,
                 ),
 
@@ -141,12 +141,12 @@ class _FavoriteProgramsListScreenState
         }
 
         final program = programs[index];
-        return ProgramItemRow(
+        return ProgramTile(
           imageUrl: program.imageUrl ?? '',
           title: program.title,
           episodeCount: program.episodeCount,
           onTap: () => debugPrint('Program tapped: ${program.id}'),
-          onIconTap: () => debugPrint('Program icon tapped for: ${program.id}'),
+          // onIconTap: () => debugPrint('Program icon tapped for: ${program.id}'),
         );
       },
     );

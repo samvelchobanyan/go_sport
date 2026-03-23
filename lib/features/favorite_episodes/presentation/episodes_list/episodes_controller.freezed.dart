@@ -17,7 +17,7 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$EpisodesState {
-  Map<String, Track> get episodes => throw _privateConstructorUsedError;
+  List<Track> get episodes => throw _privateConstructorUsedError;
   bool get isLoading => throw _privateConstructorUsedError;
   bool get isLoadingMore => throw _privateConstructorUsedError;
   String? get error => throw _privateConstructorUsedError;
@@ -37,7 +37,7 @@ abstract class $EpisodesStateCopyWith<$Res> {
   ) = _$EpisodesStateCopyWithImpl<$Res, EpisodesState>;
   @useResult
   $Res call({
-    Map<String, Track> episodes,
+    List<Track> episodes,
     bool isLoading,
     bool isLoadingMore,
     String? error,
@@ -69,7 +69,7 @@ class _$EpisodesStateCopyWithImpl<$Res, $Val extends EpisodesState>
             episodes: null == episodes
                 ? _value.episodes
                 : episodes // ignore: cast_nullable_to_non_nullable
-                      as Map<String, Track>,
+                      as List<Track>,
             isLoading: null == isLoading
                 ? _value.isLoading
                 : isLoading // ignore: cast_nullable_to_non_nullable
@@ -98,7 +98,7 @@ abstract class _$$EpisodesStateImplCopyWith<$Res>
   @override
   @useResult
   $Res call({
-    Map<String, Track> episodes,
+    List<Track> episodes,
     bool isLoading,
     bool isLoadingMore,
     String? error,
@@ -129,7 +129,7 @@ class __$$EpisodesStateImplCopyWithImpl<$Res>
         episodes: null == episodes
             ? _value._episodes
             : episodes // ignore: cast_nullable_to_non_nullable
-                  as Map<String, Track>,
+                  as List<Track>,
         isLoading: null == isLoading
             ? _value.isLoading
             : isLoading // ignore: cast_nullable_to_non_nullable
@@ -151,19 +151,19 @@ class __$$EpisodesStateImplCopyWithImpl<$Res>
 
 class _$EpisodesStateImpl implements _EpisodesState {
   const _$EpisodesStateImpl({
-    final Map<String, Track> episodes = const {},
+    final List<Track> episodes = const [],
     this.isLoading = false,
     this.isLoadingMore = false,
     this.error,
   }) : _episodes = episodes;
 
-  final Map<String, Track> _episodes;
+  final List<Track> _episodes;
   @override
   @JsonKey()
-  Map<String, Track> get episodes {
-    if (_episodes is EqualUnmodifiableMapView) return _episodes;
+  List<Track> get episodes {
+    if (_episodes is EqualUnmodifiableListView) return _episodes;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableMapView(_episodes);
+    return EqualUnmodifiableListView(_episodes);
   }
 
   @override
@@ -213,14 +213,14 @@ class _$EpisodesStateImpl implements _EpisodesState {
 
 abstract class _EpisodesState implements EpisodesState {
   const factory _EpisodesState({
-    final Map<String, Track> episodes,
+    final List<Track> episodes,
     final bool isLoading,
     final bool isLoadingMore,
     final String? error,
   }) = _$EpisodesStateImpl;
 
   @override
-  Map<String, Track> get episodes;
+  List<Track> get episodes;
   @override
   bool get isLoading;
   @override

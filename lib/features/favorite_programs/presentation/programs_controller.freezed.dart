@@ -17,7 +17,7 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$ProgramsState {
-  Map<String, Program> get programs => throw _privateConstructorUsedError;
+  List<Program> get programs => throw _privateConstructorUsedError;
   bool get isLoading => throw _privateConstructorUsedError;
   bool get isLoadingMore => throw _privateConstructorUsedError;
   String? get error => throw _privateConstructorUsedError;
@@ -37,7 +37,7 @@ abstract class $ProgramsStateCopyWith<$Res> {
   ) = _$ProgramsStateCopyWithImpl<$Res, ProgramsState>;
   @useResult
   $Res call({
-    Map<String, Program> programs,
+    List<Program> programs,
     bool isLoading,
     bool isLoadingMore,
     String? error,
@@ -69,7 +69,7 @@ class _$ProgramsStateCopyWithImpl<$Res, $Val extends ProgramsState>
             programs: null == programs
                 ? _value.programs
                 : programs // ignore: cast_nullable_to_non_nullable
-                      as Map<String, Program>,
+                      as List<Program>,
             isLoading: null == isLoading
                 ? _value.isLoading
                 : isLoading // ignore: cast_nullable_to_non_nullable
@@ -98,7 +98,7 @@ abstract class _$$ProgramsStateImplCopyWith<$Res>
   @override
   @useResult
   $Res call({
-    Map<String, Program> programs,
+    List<Program> programs,
     bool isLoading,
     bool isLoadingMore,
     String? error,
@@ -129,7 +129,7 @@ class __$$ProgramsStateImplCopyWithImpl<$Res>
         programs: null == programs
             ? _value._programs
             : programs // ignore: cast_nullable_to_non_nullable
-                  as Map<String, Program>,
+                  as List<Program>,
         isLoading: null == isLoading
             ? _value.isLoading
             : isLoading // ignore: cast_nullable_to_non_nullable
@@ -151,19 +151,19 @@ class __$$ProgramsStateImplCopyWithImpl<$Res>
 
 class _$ProgramsStateImpl implements _ProgramsState {
   const _$ProgramsStateImpl({
-    final Map<String, Program> programs = const {},
+    final List<Program> programs = const [],
     this.isLoading = false,
     this.isLoadingMore = false,
     this.error,
   }) : _programs = programs;
 
-  final Map<String, Program> _programs;
+  final List<Program> _programs;
   @override
   @JsonKey()
-  Map<String, Program> get programs {
-    if (_programs is EqualUnmodifiableMapView) return _programs;
+  List<Program> get programs {
+    if (_programs is EqualUnmodifiableListView) return _programs;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableMapView(_programs);
+    return EqualUnmodifiableListView(_programs);
   }
 
   @override
@@ -213,14 +213,14 @@ class _$ProgramsStateImpl implements _ProgramsState {
 
 abstract class _ProgramsState implements ProgramsState {
   const factory _ProgramsState({
-    final Map<String, Program> programs,
+    final List<Program> programs,
     final bool isLoading,
     final bool isLoadingMore,
     final String? error,
   }) = _$ProgramsStateImpl;
 
   @override
-  Map<String, Program> get programs;
+  List<Program> get programs;
   @override
   bool get isLoading;
   @override

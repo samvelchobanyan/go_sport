@@ -10,17 +10,11 @@ part 'songs_controller.freezed.dart';
 @freezed
 class FavoritesState with _$FavoritesState {
   const factory FavoritesState({
-    @Default({}) Map<String, Track> favorites,
+    @Default([]) List<Track> favorites,
     @Default(false) bool isLoading,
     @Default(false) bool isLoadingMore,
     String? error,
   }) = _FavoritesState;
-}
-
-extension FavoritesStateX on FavoritesState {
-  List<Track> get favoritesList => favorites.values.toList();
-
-  Track? getFavorite(String id) => favorites[id];
 }
 
 class FavoritesNotifier extends Notifier<FavoritesState> {
@@ -37,11 +31,11 @@ class FavoritesNotifier extends Notifier<FavoritesState> {
     state = state.copyWith(isLoading: true, error: null);
 
     try {
-      final tracks = await _repository.getFavoritesPlaylist();
-      final favoritesMap = <String, Track>{
-        for (final track in tracks) track.id: track,
-      };
-      state = state.copyWith(favorites: favoritesMap, isLoading: false);
+      final tracks = await _repository.getFavoriteTracks();
+      // final favoritesMap = <String, Track>{
+      //   for (final track in tracks) track.id: track,
+      // };
+      state = state.copyWith(favorites: tracks, isLoading: false);
     } catch (e) {
       state = state.copyWith(isLoading: false, error: e.toString());
     }
@@ -53,19 +47,18 @@ class FavoritesNotifier extends Notifier<FavoritesState> {
     state = state.copyWith(isLoadingMore: true);
 
     try {
-      final newTracks = await _repository.getFavoritesPlaylist();
-      final favoritesMap = <String, Track>{
-        ...state.favorites,
-        for (final track in newTracks) track.id: track,
-      };
-      state = state.copyWith(favorites: favoritesMap, isLoadingMore: false);
+      final newTracks = await _repository.getFavoriteTracks();
+      state = state.copyWith(
+        favorites: [...state.favorites, ...newTracks],
+        isLoadingMore: false,
+      );
     } catch (e) {
       state = state.copyWith(isLoadingMore: false, error: e.toString());
     }
   }
 
   Future<void> refresh() async {
-    state = state.copyWith(favorites: {});
+    state = state.copyWith(favorites: []);
     await loadFavorites();
   }
 }

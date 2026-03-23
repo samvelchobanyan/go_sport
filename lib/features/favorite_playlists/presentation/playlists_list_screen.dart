@@ -1,25 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
-import 'package:go_sport/domain/entities/artist.dart';
-import 'package:go_sport/features/favorite_artists/presentation/artists_list/artists_controller.dart';
-import 'package:go_sport/features/shared_widgets/artist_tile.dart';
+import 'package:go_sport/domain/entities/playlist.dart';
+import 'package:go_sport/features/favorite_playlists/presentation/playlists_controller.dart';
 import 'package:go_sport/features/shared_widgets/dotted_divider.dart';
 import 'package:go_sport/features/shared_widgets/my_categories_top.dart';
+import 'package:go_sport/design_system/ds_extensions.dart';
+import 'package:go_sport/features/shared_widgets/playlist_tile.dart';
 
-class FavoriteArtistsListScreen extends ConsumerStatefulWidget {
-  const FavoriteArtistsListScreen({super.key});
+class FavoritePlaylistsListScreen extends ConsumerStatefulWidget {
+  const FavoritePlaylistsListScreen({super.key});
 
   @override
-  ConsumerState<FavoriteArtistsListScreen> createState() =>
-      _FavoriteArtistsListScreenState();
+  ConsumerState<FavoritePlaylistsListScreen> createState() =>
+      _FavoritePlaylistsListScreenState();
 }
 
-class _FavoriteArtistsListScreenState
-    extends ConsumerState<FavoriteArtistsListScreen> {
+class _FavoritePlaylistsListScreenState
+    extends ConsumerState<FavoritePlaylistsListScreen> {
   late final ScrollController _scrollController;
 
   @override
@@ -29,12 +29,12 @@ class _FavoriteArtistsListScreenState
   }
 
   void _onScroll() {
-    final state = ref.read(artistsStateProvider);
+    final state = ref.read(playlistsStateProvider);
     if (state.isLoading || state.isLoadingMore) return;
 
     if (_scrollController.position.pixels >=
         _scrollController.position.maxScrollExtent * 0.8) {
-      ref.read(artistsStateProvider.notifier).loadMore();
+      ref.read(playlistsStateProvider.notifier).loadMore();
     }
   }
 
@@ -47,15 +47,15 @@ class _FavoriteArtistsListScreenState
 
   @override
   Widget build(BuildContext context) {
-    final state = ref.watch(artistsStateProvider);
-    final List<Artist> artists = state.favoriteArtists;
+    final state = ref.watch(playlistsStateProvider);
+    final playlists = state.playlists;
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.dark,
       child: Scaffold(
         body: Stack(
           children: [
-            // 🔹 Background image (visible behind rounded list)
+            // 🔹 Background image
             Positioned(
               top: 0,
               left: 0,
@@ -71,10 +71,10 @@ class _FavoriteArtistsListScreenState
             Column(
               children: [
                 MyCategoriesHeader(
-                  iconPath: 'assets/icons/dynamic_bg.svg',
-                  title: 'My Artists',
-                  subtitle: 'Artists',
-                  itemCount: artists.length,
+                  iconPath: 'assets/icons/playlists_bg.svg',
+                  title: 'My Playlists',
+                  subtitle: 'Playlists',
+                  itemCount: playlists.length,
                 ),
 
                 Expanded(
@@ -85,15 +85,15 @@ class _FavoriteArtistsListScreenState
                     ),
                     child: Container(
                       color: DSColors.white,
-                      child: state.isLoading && state.artistsList.isEmpty
+                      child: state.isLoading && playlists.isEmpty
                           ? const Center(
                               child: CircularProgressIndicator(),
                             ) //todo add skeleton loading later
-                          : state.error != null && state.artistsList.isEmpty
+                          : state.error != null && playlists.isEmpty
                           ? _buildErrorWidget(state)
-                          : _buildArtistsList(
+                          : _buildPlaylistsList(
                               ref,
-                              state.artistsList,
+                              playlists,
                               state.isLoadingMore,
                             ),
                     ),
@@ -107,38 +107,23 @@ class _FavoriteArtistsListScreenState
     );
   }
 
-  Widget _buildErrorWidget(ArtistsState state) {
-    return Center(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text('Failed to load favorite artists', style: context.subtitleLBold),
-          const SizedBox(height: 8),
-          ElevatedButton(
-            onPressed: () => ref.read(artistsStateProvider.notifier).refresh(),
-            child: const Text('Retry'),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildArtistsList(
+  Widget _buildPlaylistsList(
     WidgetRef ref,
-    List<Artist> artists,
+    List<Playlist> playlists,
     bool isLoadingMore,
   ) {
-    if (artists.isEmpty) {
+    if (playlists.isEmpty) {
       return Center(
-        child: Text('No favorite artists yet', style: context.subtitleLBold),
+        child: Text('No favorite playlists yet', style: context.subtitleLBold),
       );
     }
 
     return ListView.separated(
       controller: _scrollController,
-      itemCount: artists.length + (isLoadingMore ? 1 : 0),
+      padding: const EdgeInsets.only(top: 16, bottom: 16),
+      itemCount: playlists.length + (isLoadingMore ? 1 : 0),
       separatorBuilder: (context, index) {
-        if (index >= artists.length - 1) {
+        if (index >= playlists.length - 1) {
           return const SizedBox.shrink();
         }
 
@@ -148,32 +133,41 @@ class _FavoriteArtistsListScreenState
         );
       },
       itemBuilder: (context, index) {
-        if (index >= artists.length) {
-          // bottom loading indicator
+        if (index >= playlists.length) {
           return const Padding(
             padding: EdgeInsets.all(16),
             child: Center(child: CircularProgressIndicator()),
           );
         }
 
-        final artist = artists[index];
-
-        return ClipRRect(
-          borderRadius: index == 0
-              ? const BorderRadius.only(
-                  topLeft: Radius.circular(24),
-                  topRight: Radius.circular(24),
-                )
-              : BorderRadius.zero,
-          child: Container(
-            color: DSColors.white,
-            child: ArtistTile(
-              name: artist.artistName,
-              imageUrl: artist.imageUrl,
-            ),
-          ),
+        final playlist = playlists[index];
+        return PlaylistTile(
+          id: playlist.id,
+          imageUrl: playlist.imageUrl,
+          title: playlist.title,
+          trackCount: playlist.trackCount,
         );
       },
+    );
+  }
+
+  Widget _buildErrorWidget(PlaylistsState state) {
+    return Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            'Failed to load favorite playlists',
+            style: context.subtitleLBold,
+          ),
+          const SizedBox(height: 8),
+          ElevatedButton(
+            onPressed: () =>
+                ref.read(playlistsStateProvider.notifier).refresh(),
+            child: const Text('Retry'),
+          ),
+        ],
+      ),
     );
   }
 }

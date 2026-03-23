@@ -9,17 +9,11 @@ part 'episodes_controller.freezed.dart';
 @freezed
 class EpisodesState with _$EpisodesState {
   const factory EpisodesState({
-    @Default({}) Map<String, Track> episodes,
+    @Default([]) List<Track> episodes,
     @Default(false) bool isLoading,
     @Default(false) bool isLoadingMore,
     String? error,
   }) = _EpisodesState;
-}
-
-extension EpisodesStateX on EpisodesState {
-  List<Track> get episodesList => episodes.values.toList();
-
-  Track? getEpisode(String id) => episodes[id];
 }
 
 class EpisodesNotifier extends Notifier<EpisodesState> {
@@ -38,12 +32,10 @@ class EpisodesNotifier extends Notifier<EpisodesState> {
     try {
       final episodes = await _repository.getFavoriteEpisodes();
 
-      final episodesMap = {
-        ...state.episodes,
-        for (final episode in episodes) episode.id: episode,
-      };
-
-      state = state.copyWith(episodes: episodesMap, isLoading: false);
+      state = state.copyWith(
+        episodes: [...state.episodes, ...episodes],
+        isLoading: false,
+      );
     } catch (e) {
       state = state.copyWith(isLoading: false, error: e.toString());
     }
@@ -55,19 +47,15 @@ class EpisodesNotifier extends Notifier<EpisodesState> {
     state = state.copyWith(isLoadingMore: true);
 
     try {
-      final episodes = await _repository.getFavoriteEpisodes();
-      final episodesMap = {
-        ...state.episodes,
-        for (final episode in episodes) episode.id: episode,
-      };
-      state = state.copyWith(episodes: episodesMap, isLoadingMore: false);
+      final newEpisodes = await _repository.getFavoriteEpisodes();
+      state = state.copyWith(episodes: [...state.episodes, ...newEpisodes]);
     } catch (e) {
       state = state.copyWith(isLoadingMore: false, error: e.toString());
     }
   }
 
   Future<void> refresh() async {
-    state = state.copyWith(episodes: {});
+    state = state.copyWith(episodes: []);
     await loadFavoriteEpisodes();
   }
 }

@@ -4,11 +4,11 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 
-class ArtistItemRow extends StatelessWidget {
+class ArtistTile extends StatelessWidget {
   final String name;
   final String imageUrl;
 
-  const ArtistItemRow({required this.name, required this.imageUrl, super.key});
+  const ArtistTile({required this.name, required this.imageUrl, super.key});
 
   @override
   Widget build(BuildContext context) {

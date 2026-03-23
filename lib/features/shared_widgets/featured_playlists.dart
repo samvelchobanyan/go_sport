@@ -41,9 +41,6 @@ class FeaturedPlaylistsSection extends StatelessWidget {
                         title: playlist.title,
                         imageUrl: playlist.imageUrl,
                         trackCount: playlist.trackCount,
-                        onTap: () {
-                          context.push('/music/playlist/${playlist.id}');
-                        },
                       ),
                     );
                   },

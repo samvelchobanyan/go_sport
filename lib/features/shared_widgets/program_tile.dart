@@ -5,31 +5,24 @@ import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 
-class ProgramItemRow extends StatefulWidget {
+class ProgramTile extends StatelessWidget {
   final String imageUrl;
   final String title;
   final int episodeCount;
   final VoidCallback onTap;
-  final VoidCallback onIconTap;
 
-  const ProgramItemRow({
+  const ProgramTile({
     required this.imageUrl,
     required this.title,
     required this.episodeCount,
     required this.onTap,
-    required this.onIconTap,
     super.key,
   });
 
   @override
-  State<ProgramItemRow> createState() => _ProgramItemRowState();
-}
-
-class _ProgramItemRowState extends State<ProgramItemRow> {
-  @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: widget.onTap,
+      onTap: onTap,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         child: Row(
@@ -50,7 +43,7 @@ class _ProgramItemRowState extends State<ProgramItemRow> {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(DSRadius.s),
                 child: CachedNetworkImage(
-                  imageUrl: widget.imageUrl,
+                  imageUrl: imageUrl,
                   width: 50,
                   height: 50,
                   fit: BoxFit.cover,
@@ -77,7 +70,7 @@ class _ProgramItemRowState extends State<ProgramItemRow> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    widget.title,
+                    title,
                     style: context.subtitleM,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
@@ -95,7 +88,7 @@ class _ProgramItemRowState extends State<ProgramItemRow> {
                       border: Border.all(color: DSColors.blue.withOpacity(0.3)),
                     ),
                     child: Text(
-                      '${widget.episodeCount} episode${widget.episodeCount != 1 ? 's' : ''}',
+                      '$episodeCount episode${episodeCount != 1 ? 's' : ''}',
                       style: context.fieldLabel?.copyWith(color: DSColors.blue),
                     ),
                   ),
@@ -103,22 +96,11 @@ class _ProgramItemRowState extends State<ProgramItemRow> {
               ),
             ),
             const SizedBox(width: 12),
-            // Right icon button
-            GestureDetector(
-              onTap: () {
-                widget.onIconTap();
-                // showItemOptionsBottomSheet(
-                //   context: context,
-                //   imageUrl: widget.imageUrl,
-                //   title: widget.title,
-                //   subtitle: null,
-                // );
-              },
-              child: SvgPicture.asset(
-                'assets/icons/arrow_right.svg',
-                width: 24,
-                height: 24,
-              ),
+
+            SvgPicture.asset(
+              'assets/icons/arrow_right.svg',
+              width: 24,
+              height: 24,
             ),
           ],
         ),

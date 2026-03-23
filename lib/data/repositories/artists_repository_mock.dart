@@ -19,6 +19,7 @@ class ArtistsRepositoryMock implements ArtistsRepository {
           isLiked: true,
           imageUrl:
               'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=300&h=300&fit=crop',
+          releaseYear: '2020',
         ),
         Album(
           id: 'a2',
@@ -27,6 +28,7 @@ class ArtistsRepositoryMock implements ArtistsRepository {
               'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=300&h=300&fit=crop',
           trackCount: 18,
           isLiked: false,
+          releaseYear: '2016',
           artist: 'The Weeknd',
         ),
       ],
@@ -47,6 +49,7 @@ class ArtistsRepositoryMock implements ArtistsRepository {
           artist: 'Dua Lipa',
           trackCount: 11,
           isLiked: false,
+          releaseYear: '2020',
         ),
         Album(
           id: 'a4',
@@ -56,6 +59,7 @@ class ArtistsRepositoryMock implements ArtistsRepository {
           artist: 'Dua Lipa',
           trackCount: 12,
           isLiked: false,
+          releaseYear: '1962',
         ),
       ],
     ),
@@ -75,6 +79,7 @@ class ArtistsRepositoryMock implements ArtistsRepository {
           artist: 'Imagine Dragons',
           trackCount: 8,
           isLiked: true,
+          releaseYear: '2025',
         ),
         Album(
           id: 'a6',
@@ -84,6 +89,7 @@ class ArtistsRepositoryMock implements ArtistsRepository {
           artist: 'Imagine Dragons',
           trackCount: 10,
           isLiked: true,
+          releaseYear: '1999',
         ),
       ],
     ),

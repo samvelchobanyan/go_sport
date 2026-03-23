@@ -10,6 +10,7 @@ class Album with _$Album {
     required String imageUrl,
     required String artist,
     required int trackCount,
+    required String releaseYear,
     @Default(false) bool isLiked,
   }) = _Album;
 }

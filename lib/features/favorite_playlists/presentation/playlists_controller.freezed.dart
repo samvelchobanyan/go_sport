@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'songs_controller.dart';
+part of 'playlists_controller.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -16,28 +16,28 @@ final _privateConstructorUsedError = UnsupportedError(
 );
 
 /// @nodoc
-mixin _$FavoritesState {
-  List<Track> get favorites => throw _privateConstructorUsedError;
+mixin _$PlaylistsState {
+  List<Playlist> get playlists => throw _privateConstructorUsedError;
   bool get isLoading => throw _privateConstructorUsedError;
   bool get isLoadingMore => throw _privateConstructorUsedError;
   String? get error => throw _privateConstructorUsedError;
 
-  /// Create a copy of FavoritesState
+  /// Create a copy of PlaylistsState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $FavoritesStateCopyWith<FavoritesState> get copyWith =>
+  $PlaylistsStateCopyWith<PlaylistsState> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $FavoritesStateCopyWith<$Res> {
-  factory $FavoritesStateCopyWith(
-    FavoritesState value,
-    $Res Function(FavoritesState) then,
-  ) = _$FavoritesStateCopyWithImpl<$Res, FavoritesState>;
+abstract class $PlaylistsStateCopyWith<$Res> {
+  factory $PlaylistsStateCopyWith(
+    PlaylistsState value,
+    $Res Function(PlaylistsState) then,
+  ) = _$PlaylistsStateCopyWithImpl<$Res, PlaylistsState>;
   @useResult
   $Res call({
-    List<Track> favorites,
+    List<Playlist> playlists,
     bool isLoading,
     bool isLoadingMore,
     String? error,
@@ -45,31 +45,31 @@ abstract class $FavoritesStateCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$FavoritesStateCopyWithImpl<$Res, $Val extends FavoritesState>
-    implements $FavoritesStateCopyWith<$Res> {
-  _$FavoritesStateCopyWithImpl(this._value, this._then);
+class _$PlaylistsStateCopyWithImpl<$Res, $Val extends PlaylistsState>
+    implements $PlaylistsStateCopyWith<$Res> {
+  _$PlaylistsStateCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of FavoritesState
+  /// Create a copy of PlaylistsState
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? favorites = null,
+    Object? playlists = null,
     Object? isLoading = null,
     Object? isLoadingMore = null,
     Object? error = freezed,
   }) {
     return _then(
       _value.copyWith(
-            favorites: null == favorites
-                ? _value.favorites
-                : favorites // ignore: cast_nullable_to_non_nullable
-                      as List<Track>,
+            playlists: null == playlists
+                ? _value.playlists
+                : playlists // ignore: cast_nullable_to_non_nullable
+                      as List<Playlist>,
             isLoading: null == isLoading
                 ? _value.isLoading
                 : isLoading // ignore: cast_nullable_to_non_nullable
@@ -89,16 +89,16 @@ class _$FavoritesStateCopyWithImpl<$Res, $Val extends FavoritesState>
 }
 
 /// @nodoc
-abstract class _$$FavoritesStateImplCopyWith<$Res>
-    implements $FavoritesStateCopyWith<$Res> {
-  factory _$$FavoritesStateImplCopyWith(
-    _$FavoritesStateImpl value,
-    $Res Function(_$FavoritesStateImpl) then,
-  ) = __$$FavoritesStateImplCopyWithImpl<$Res>;
+abstract class _$$PlaylistsStateImplCopyWith<$Res>
+    implements $PlaylistsStateCopyWith<$Res> {
+  factory _$$PlaylistsStateImplCopyWith(
+    _$PlaylistsStateImpl value,
+    $Res Function(_$PlaylistsStateImpl) then,
+  ) = __$$PlaylistsStateImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({
-    List<Track> favorites,
+    List<Playlist> playlists,
     bool isLoading,
     bool isLoadingMore,
     String? error,
@@ -106,30 +106,30 @@ abstract class _$$FavoritesStateImplCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$FavoritesStateImplCopyWithImpl<$Res>
-    extends _$FavoritesStateCopyWithImpl<$Res, _$FavoritesStateImpl>
-    implements _$$FavoritesStateImplCopyWith<$Res> {
-  __$$FavoritesStateImplCopyWithImpl(
-    _$FavoritesStateImpl _value,
-    $Res Function(_$FavoritesStateImpl) _then,
+class __$$PlaylistsStateImplCopyWithImpl<$Res>
+    extends _$PlaylistsStateCopyWithImpl<$Res, _$PlaylistsStateImpl>
+    implements _$$PlaylistsStateImplCopyWith<$Res> {
+  __$$PlaylistsStateImplCopyWithImpl(
+    _$PlaylistsStateImpl _value,
+    $Res Function(_$PlaylistsStateImpl) _then,
   ) : super(_value, _then);
 
-  /// Create a copy of FavoritesState
+  /// Create a copy of PlaylistsState
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? favorites = null,
+    Object? playlists = null,
     Object? isLoading = null,
     Object? isLoadingMore = null,
     Object? error = freezed,
   }) {
     return _then(
-      _$FavoritesStateImpl(
-        favorites: null == favorites
-            ? _value._favorites
-            : favorites // ignore: cast_nullable_to_non_nullable
-                  as List<Track>,
+      _$PlaylistsStateImpl(
+        playlists: null == playlists
+            ? _value._playlists
+            : playlists // ignore: cast_nullable_to_non_nullable
+                  as List<Playlist>,
         isLoading: null == isLoading
             ? _value.isLoading
             : isLoading // ignore: cast_nullable_to_non_nullable
@@ -149,21 +149,21 @@ class __$$FavoritesStateImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$FavoritesStateImpl implements _FavoritesState {
-  const _$FavoritesStateImpl({
-    final List<Track> favorites = const [],
+class _$PlaylistsStateImpl implements _PlaylistsState {
+  const _$PlaylistsStateImpl({
+    final List<Playlist> playlists = const [],
     this.isLoading = false,
     this.isLoadingMore = false,
     this.error,
-  }) : _favorites = favorites;
+  }) : _playlists = playlists;
 
-  final List<Track> _favorites;
+  final List<Playlist> _playlists;
   @override
   @JsonKey()
-  List<Track> get favorites {
-    if (_favorites is EqualUnmodifiableListView) return _favorites;
+  List<Playlist> get playlists {
+    if (_playlists is EqualUnmodifiableListView) return _playlists;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_favorites);
+    return EqualUnmodifiableListView(_playlists);
   }
 
   @override
@@ -177,17 +177,17 @@ class _$FavoritesStateImpl implements _FavoritesState {
 
   @override
   String toString() {
-    return 'FavoritesState(favorites: $favorites, isLoading: $isLoading, isLoadingMore: $isLoadingMore, error: $error)';
+    return 'PlaylistsState(playlists: $playlists, isLoading: $isLoading, isLoadingMore: $isLoadingMore, error: $error)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$FavoritesStateImpl &&
+            other is _$PlaylistsStateImpl &&
             const DeepCollectionEquality().equals(
-              other._favorites,
-              _favorites,
+              other._playlists,
+              _playlists,
             ) &&
             (identical(other.isLoading, isLoading) ||
                 other.isLoading == isLoading) &&
@@ -199,34 +199,34 @@ class _$FavoritesStateImpl implements _FavoritesState {
   @override
   int get hashCode => Object.hash(
     runtimeType,
-    const DeepCollectionEquality().hash(_favorites),
+    const DeepCollectionEquality().hash(_playlists),
     isLoading,
     isLoadingMore,
     error,
   );
 
-  /// Create a copy of FavoritesState
+  /// Create a copy of PlaylistsState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$FavoritesStateImplCopyWith<_$FavoritesStateImpl> get copyWith =>
-      __$$FavoritesStateImplCopyWithImpl<_$FavoritesStateImpl>(
+  _$$PlaylistsStateImplCopyWith<_$PlaylistsStateImpl> get copyWith =>
+      __$$PlaylistsStateImplCopyWithImpl<_$PlaylistsStateImpl>(
         this,
         _$identity,
       );
 }
 
-abstract class _FavoritesState implements FavoritesState {
-  const factory _FavoritesState({
-    final List<Track> favorites,
+abstract class _PlaylistsState implements PlaylistsState {
+  const factory _PlaylistsState({
+    final List<Playlist> playlists,
     final bool isLoading,
     final bool isLoadingMore,
     final String? error,
-  }) = _$FavoritesStateImpl;
+  }) = _$PlaylistsStateImpl;
 
   @override
-  List<Track> get favorites;
+  List<Playlist> get playlists;
   @override
   bool get isLoading;
   @override
@@ -234,10 +234,10 @@ abstract class _FavoritesState implements FavoritesState {
   @override
   String? get error;
 
-  /// Create a copy of FavoritesState
+  /// Create a copy of PlaylistsState
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$FavoritesStateImplCopyWith<_$FavoritesStateImpl> get copyWith =>
+  _$$PlaylistsStateImplCopyWith<_$PlaylistsStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

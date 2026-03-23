@@ -3,13 +3,13 @@ import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'media_card_shell.dart';
 import 'count_badge.dart';
+import 'package:go_router/go_router.dart';
 
 class PlaylistCard extends StatelessWidget {
   final String id;
   final String title;
   final String imageUrl;
   final int trackCount;
-  final VoidCallback onTap;
 
   const PlaylistCard({
     super.key,
@@ -17,13 +17,12 @@ class PlaylistCard extends StatelessWidget {
     required this.title,
     required this.imageUrl,
     required this.trackCount,
-    required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: () => context.push('/music/playlist/$id'),
       child: SizedBox(
         width: 140,
         child: Column(
@@ -35,7 +34,8 @@ class PlaylistCard extends StatelessWidget {
                 child: Image.network(
                   imageUrl,
                   fit: BoxFit.cover,
-                  errorBuilder: (_, __, ___) => Container(color: DSColors.gray20),
+                  errorBuilder: (_, __, ___) =>
+                      Container(color: DSColors.gray20),
                 ),
               ),
             ),
@@ -47,10 +47,7 @@ class PlaylistCard extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
             ),
             const SizedBox(height: 6),
-            CountBadge(
-              count: trackCount,
-              type: CountBadgeType.tracks,
-            ),
+            CountBadge(count: trackCount, type: CountBadgeType.tracks),
           ],
         ),
       ),

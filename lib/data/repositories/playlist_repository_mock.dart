@@ -688,6 +688,104 @@ class PlaylistRepositoryMock implements PlaylistRepository {
     'pl7': _electronicTracks,
   };
 
+  final List<Playlist> _favoritePlaylists = [
+    const Playlist(
+      id: 'pl1',
+      title: 'The Best of Armenian Rock Top 30',
+      imageUrl:
+          'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=800&q=80',
+      trackCount: 30,
+      isLiked: true,
+    ),
+    const Playlist(
+      id: 'pl3',
+      title: 'The Best Pop Hits 2026',
+      imageUrl:
+          'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=800&q=80',
+      trackCount: 25,
+      isLiked: true,
+    ),
+    const Playlist(
+      id: 'pl5',
+      title: 'Chill Vibes & Relax',
+      imageUrl:
+          'https://images.unsplash.com/photo-1459749411175-04bf5292ceea?auto=format&fit=crop&w=800&q=80',
+      trackCount: 18,
+      isLiked: true,
+    ),
+    const Playlist(
+      id: 'pl6',
+      title: 'Classic Rock Legends',
+      imageUrl:
+          'https://images.unsplash.com/photo-1511735111819-9a3f7709049c?auto=format&fit=crop&w=800&q=80',
+      trackCount: 50,
+      isLiked: true,
+    ),
+  ];
+
+  final List<Track> _favoriteTracks = [
+  Track(
+    id: 'fav1',
+    title: 'Toxicity',
+    artistName: 'System of a Down',
+    imageUrl:
+        'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=800&q=80',
+    duration: const Duration(minutes: 3, seconds: 39),
+    audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3',
+    isLiked: true,
+  ),
+  Track(
+    id: 'fav2',
+    title: 'Bohemian Rhapsody',
+    artistName: 'Queen',
+    imageUrl:
+        'https://images.unsplash.com/photo-1498038432885-c6f3f1b912ee?auto=format&fit=crop&w=800&q=80',
+    duration: const Duration(minutes: 5, seconds: 55),
+    audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
+    isLiked: true,
+  ),
+  Track(
+    id: 'fav3',
+    title: 'Blinding Lights',
+    artistName: 'The Weeknd',
+    imageUrl:
+        'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=800&q=80',
+    duration: const Duration(minutes: 3, seconds: 20),
+    audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3',
+    isLiked: true,
+  ),
+  Track(
+    id: 'fav4',
+    title: 'Lose Yourself',
+    artistName: 'Eminem',
+    imageUrl:
+        'https://images.unsplash.com/photo-1571902943202-507ec2618e8f?auto=format&fit=crop&w=800&q=80',
+    duration: const Duration(minutes: 5, seconds: 26),
+    audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3',
+    isLiked: true,
+  ),
+  Track(
+    id: 'fav5',
+    title: 'Dreams',
+    artistName: 'Fleetwood Mac',
+    imageUrl:
+        'https://images.unsplash.com/photo-1459749411175-04bf5292ceea?auto=format&fit=crop&w=800&q=80',
+    duration: const Duration(minutes: 4, seconds: 14),
+    audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3',
+    isLiked: true,
+  ),
+  Track(
+    id: 'fav6',
+    title: 'Titanium',
+    artistName: 'David Guetta ft. Sia',
+    imageUrl:
+        'https://images.unsplash.com/photo-1571330735066-03aaa9429d89?auto=format&fit=crop&w=800&q=80',
+    duration: const Duration(minutes: 4, seconds: 5),
+    audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3',
+    isLiked: true,
+  ),
+];
+
   @override
   Future<List<Playlist>> getFeaturedPlaylists() async {
     await Future.delayed(const Duration(milliseconds: 400));
@@ -697,22 +795,19 @@ class PlaylistRepositoryMock implements PlaylistRepository {
   @override
   Future<List<Track>> getPlaylistTracks(String playlistId) async {
     await Future.delayed(const Duration(milliseconds: 300));
-    // Возвращаем треки в зависимости от playlistId
     return _playlistTracksMap[playlistId] ?? _popHitsTracks;
   }
 
   @override
-  Future<List<Track>> getFavoritesPlaylist() async {
+  Future<List<Playlist>> getFavoritePlaylists() async {
     await Future.delayed(const Duration(milliseconds: 300));
-    // Return a mix of favorite tracks from different playlists
-    // return [
-    //   _armenianRockTracks[0],
-    //   _popHitsTracks[1],
-    //   _worldRockTracks[0],
-    //   _chillTracks[2],
-    //   _classicRockTracks[1],
-    // ];
-    return _armenianRockTracks;
+    return _favoritePlaylists;
+  }
+
+    @override
+  Future<List<Track>> getFavoriteTracks() async {
+    await Future.delayed(const Duration(milliseconds: 300));
+    return _favoriteTracks;
   }
 
   @override

@@ -52,7 +52,7 @@ class _FavoriteSongsListScreenState
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(favoritesStateProvider);
-    final favorites = state.favoritesList;
+    final favorites = state.favorites;
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.dark,
@@ -74,7 +74,7 @@ class _FavoriteSongsListScreenState
                 MyCategoriesHeader(
                   iconPath: 'assets/icons/heart_bg.svg',
                   title: 'My Favorites',
-                  subtitle: 'tracks',
+                  subtitle: 'Tracks',
                   itemCount: favorites.length,
                   actionIcon: SvgPicture.asset('assets/icons/play_blue.svg'),
                   onActionIconTap: favorites.isEmpty
@@ -89,15 +89,15 @@ class _FavoriteSongsListScreenState
                     ),
                     child: Container(
                       color: DSColors.white,
-                      child: state.isLoading && state.favoritesList.isEmpty
+                      child: state.isLoading && favorites.isEmpty
                           ? const Center(
                               child: CircularProgressIndicator(),
                             ) //todo add skeleton loading later
-                          : state.error != null && state.favoritesList.isEmpty
+                          : state.error != null && favorites.isEmpty
                           ? _buildErrorWidget(state)
                           : _buildSongsList(
                               ref,
-                              state.favoritesList,
+                              favorites,
                               state.isLoadingMore,
                             ),
                     ),

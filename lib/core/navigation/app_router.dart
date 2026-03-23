@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:go_sport/core/navigation/main_shell.dart';
 import 'package:go_sport/core/navigation/page_transitions.dart';
 import 'package:go_sport/core/navigation/routes.dart';
+import 'package:go_sport/features/favorite_albums/presentation/albums_list_screen.dart';
 import 'package:go_sport/features/favorite_artists/presentation/artists_list/artists_list_screen.dart';
+import 'package:go_sport/features/favorite_playlists/presentation/playlists_list_screen.dart';
 import 'package:go_sport/features/home/presentation/home/home_screen.dart';
 import 'package:go_sport/features/music/presentation/music/music_screen.dart';
 import 'package:go_sport/features/radio/presentation/radio/radio_screen.dart';
@@ -78,22 +80,13 @@ final GoRouter appRouter = GoRouter(
                 // My Playlists route
                 GoRoute(
                   path: 'myplaylists',
-                  builder: (context, state) {
-                    // TODO: Create MyPlaylistsScreen
-                    return const Scaffold(
-                      body: Center(child: Text('My Playlists')),
-                    );
-                  },
+                  builder: (context, state) =>
+                      const FavoritePlaylistsListScreen(),
                 ),
                 // My Albums route
                 GoRoute(
                   path: 'myalbums',
-                  builder: (context, state) {
-                    // TODO: Create MyAlbumsScreen
-                    return const Scaffold(
-                      body: Center(child: Text('My Albums')),
-                    );
-                  },
+                  builder: (context, state) => const FavoriteAlbumsListScreen(),
                 ),
                 // My Artists route
                 GoRoute(

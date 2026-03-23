@@ -11,8 +11,8 @@ import 'package:go_sport/domain/entities/track.dart';
 import 'package:go_sport/domain/state/player_state.dart';
 import 'package:go_sport/features/favorite_episodes/presentation/episodes_list/episodes_controller.dart';
 import 'package:go_sport/features/shared_widgets/dotted_divider.dart';
+import 'package:go_sport/features/shared_widgets/episode_tile.dart';
 import 'package:go_sport/features/shared_widgets/my_categories_top.dart';
-import 'package:go_sport/features/shared_widgets/track_tile.dart';
 
 class FavoriteEpisodesListScreen extends ConsumerStatefulWidget {
   const FavoriteEpisodesListScreen({super.key});
@@ -52,7 +52,7 @@ class _FavoriteEpisodesListScreenState
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(episodesStateProvider);
-    final List<Track> episodes = state.episodesList;
+    final List<Track> episodes = state.episodes;
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.dark,
@@ -77,7 +77,7 @@ class _FavoriteEpisodesListScreenState
                 MyCategoriesHeader(
                   iconPath: 'assets/icons/dynamic_bg.svg',
                   title: 'My Episodes',
-                  subtitle: 'episodes',
+                  subtitle: 'Episodes',
                   itemCount: episodes.length,
                   actionIcon: SvgPicture.asset('assets/icons/play_blue.svg'),
                   onActionIconTap: () =>
@@ -181,11 +181,9 @@ class _FavoriteEpisodesListScreenState
               : BorderRadius.zero,
           child: Container(
             color: DSColors.white,
-            child: TrackTile(
-              type: 'episode',
-              track: episode,
+            child: EpisodeTile(
+              episode: episode,
               isPlaying: trackPlayingState,
-
               onTap: () => _onTrackTap(ref, episodes, index),
               onMenuTap: () =>
                   debugPrint('Episode icon tapped for: ${episode.id}'),

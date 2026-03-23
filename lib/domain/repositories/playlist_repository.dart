@@ -4,6 +4,7 @@ import '../entities/track.dart';
 abstract interface class PlaylistRepository {
   Future<List<Playlist>> getFeaturedPlaylists();
   Future<List<Track>> getPlaylistTracks(String playlistId);
-  Future<List<Track>> getFavoritesPlaylist();
+  Future<List<Playlist>> getFavoritePlaylists();
+  Future<List<Track>> getFavoriteTracks();
   Future<void> toggleLike(String playlistId);
 }

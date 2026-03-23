@@ -65,59 +65,6 @@ class MyCategoriesHeader extends StatelessWidget {
   }
 }
 
-class MyCategoriesTop extends StatelessWidget {
-  final String iconPath;
-  final String title;
-  final String subtitle;
-  final SvgPicture? actionIcon;
-  final VoidCallback? onActionIconTap;
-  final int itemCount;
-
-  const MyCategoriesTop({
-    super.key,
-    required this.iconPath,
-    required this.title,
-    required this.subtitle,
-    this.actionIcon,
-    this.onActionIconTap,
-    required this.itemCount,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return SliverAppBar(
-      expandedHeight: 132,
-      backgroundColor: DSColors.transparent,
-      elevation: 0,
-      pinned: false,
-      floating: false,
-      leading: IconButton(
-        icon: Icon(Icons.arrow_back, color: DSColors.black),
-        onPressed: () => context.pop(),
-      ),
-      actions: [
-        IconButton(
-          icon: Icon(Icons.search, color: DSColors.black),
-          onPressed: () {},
-        ),
-      ],
-      bottom: PreferredSize(
-        preferredSize: const Size.fromHeight(80),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-          child: _MyCategoriesHeaderContent(
-            iconPath: iconPath,
-            title: title,
-            subtitle: subtitle,
-            actionIcon: actionIcon,
-            onActionIconTap: onActionIconTap,
-            itemCount: itemCount,
-          ),
-        ),
-      ),
-    );
-  }
-}
 
 class _MyCategoriesHeaderContent extends StatelessWidget {
   final String iconPath;

@@ -24,7 +24,7 @@ class EpisodesRepositoryMock implements EpisodesRepository {
       duration: const Duration(minutes: 52),
       audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3',
       releaseDate: DateTime(2026, 2, 22),
-      isLiked: false,
+      isLiked: true,
     ),
     Track(
       id: '3',
@@ -35,7 +35,7 @@ class EpisodesRepositoryMock implements EpisodesRepository {
       duration: const Duration(minutes: 38),
       audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3',
       releaseDate: DateTime(2026, 2, 20),
-      isLiked: false,
+      isLiked: true,
     ),
     Track(
       id: '4',
@@ -46,7 +46,7 @@ class EpisodesRepositoryMock implements EpisodesRepository {
       duration: const Duration(minutes: 41),
       audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3',
       releaseDate: DateTime(2026, 2, 17),
-      isLiked: false,
+      isLiked: true,
     ),
     Track(
       id: '5',
