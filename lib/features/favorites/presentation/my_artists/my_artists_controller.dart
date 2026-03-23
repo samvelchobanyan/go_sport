@@ -4,38 +4,36 @@ import 'package:go_sport/core/di/repository_providers.dart';
 import 'package:go_sport/domain/entities/artist.dart';
 import 'package:go_sport/domain/repositories/artists_repository.dart';
 
-part 'artists_controller.freezed.dart';
+part 'my_artists_controller.freezed.dart';
 
 @freezed
-class ArtistsState with _$ArtistsState {
-  const factory ArtistsState({
-    @Default([]) List<Artist> favoriteArtists,
+class MyArtistsState with _$MyArtistsState {
+  const factory MyArtistsState({
+    @Default([]) List<Artist> artists,
     @Default(false) bool isLoading,
     @Default(false) bool isLoadingMore,
     String? error,
-  }) = _ArtistsState;
+  }) = _MyArtistsState;
 }
 
-extension ArtistsStateX on ArtistsState {
-  List<Artist> get artistsList => favoriteArtists;
-
+extension MyArtistsStateX on MyArtistsState {
   Artist? getArtist(String id) {
     try {
-      return favoriteArtists.firstWhere((e) => e.id == id);
+      return artists.firstWhere((e) => e.id == id);
     } catch (err) {
       return null;
     }
   }
 }
 
-class ArtistsNotifier extends Notifier<ArtistsState> {
+class MyArtistsNotifier extends Notifier<MyArtistsState> {
   late final ArtistsRepository _repository;
 
   @override
-  ArtistsState build() {
+  MyArtistsState build() {
     _repository = ref.watch(artistsRepositoryProvider);
     Future.microtask(loadFavorites);
-    return ArtistsState();
+    return const MyArtistsState();
   }
 
   /// Load favorites
@@ -43,10 +41,10 @@ class ArtistsNotifier extends Notifier<ArtistsState> {
     state = state.copyWith(isLoading: true, error: null);
 
     try {
-      final favoriteArtists = await _repository.getFavoriteArtists();
+      final artists = await _repository.getFavoriteArtists();
 
       state = state.copyWith(
-        favoriteArtists: favoriteArtists,
+        artists: artists,
         isLoading: false,
       );
     } catch (err) {
@@ -63,7 +61,7 @@ class ArtistsNotifier extends Notifier<ArtistsState> {
       final moreArtists = await _repository.getFavoriteArtists();
 
       state = state.copyWith(
-        favoriteArtists: [...state.favoriteArtists, ...moreArtists],
+        artists: [...state.artists, ...moreArtists],
         isLoadingMore: false,
       );
     } catch (e) {
@@ -72,11 +70,12 @@ class ArtistsNotifier extends Notifier<ArtistsState> {
   }
 
   Future<void> refresh() async {
-    state = state.copyWith(favoriteArtists: []);
+    state = state.copyWith(artists: []);
     await loadFavorites();
   }
 }
 
-final artistsStateProvider = NotifierProvider<ArtistsNotifier, ArtistsState>(
-  ArtistsNotifier.new,
+final myArtistsStateProvider =
+    NotifierProvider<MyArtistsNotifier, MyArtistsState>(
+  MyArtistsNotifier.new,
 );

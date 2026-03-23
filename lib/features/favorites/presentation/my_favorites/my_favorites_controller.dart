@@ -5,26 +5,26 @@ import '../../../../domain/entities/track.dart';
 import '../../../../domain/repositories/playlist_repository.dart';
 import '../../../../core/di/repository_providers.dart';
 
-part 'songs_controller.freezed.dart';
+part 'my_favorites_controller.freezed.dart';
 
 @freezed
-class FavoritesState with _$FavoritesState {
-  const factory FavoritesState({
+class MyFavoritesState with _$MyFavoritesState {
+  const factory MyFavoritesState({
     @Default([]) List<Track> favorites,
     @Default(false) bool isLoading,
     @Default(false) bool isLoadingMore,
     String? error,
-  }) = _FavoritesState;
+  }) = _MyFavoritesState;
 }
 
-class FavoritesNotifier extends Notifier<FavoritesState> {
+class MyFavoritesNotifier extends Notifier<MyFavoritesState> {
   late final PlaylistRepository _repository;
 
   @override
-  FavoritesState build() {
+  MyFavoritesState build() {
     _repository = ref.watch(playlistRepositoryProvider);
     Future.microtask(() => loadFavorites());
-    return const FavoritesState();
+    return const MyFavoritesState();
   }
 
   Future<void> loadFavorites() async {
@@ -32,9 +32,6 @@ class FavoritesNotifier extends Notifier<FavoritesState> {
 
     try {
       final tracks = await _repository.getFavoriteTracks();
-      // final favoritesMap = <String, Track>{
-      //   for (final track in tracks) track.id: track,
-      // };
       state = state.copyWith(favorites: tracks, isLoading: false);
     } catch (e) {
       state = state.copyWith(isLoading: false, error: e.toString());
@@ -63,5 +60,7 @@ class FavoritesNotifier extends Notifier<FavoritesState> {
   }
 }
 
-final favoritesStateProvider =
-    NotifierProvider<FavoritesNotifier, FavoritesState>(FavoritesNotifier.new);
+final myFavoritesStateProvider =
+    NotifierProvider<MyFavoritesNotifier, MyFavoritesState>(
+  MyFavoritesNotifier.new,
+);

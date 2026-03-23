@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'episodes_controller.dart';
+part of 'new_episodes_controller.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -16,25 +16,25 @@ final _privateConstructorUsedError = UnsupportedError(
 );
 
 /// @nodoc
-mixin _$EpisodesState {
+mixin _$NewEpisodesState {
   List<Track> get episodes => throw _privateConstructorUsedError;
   bool get isLoading => throw _privateConstructorUsedError;
   bool get isLoadingMore => throw _privateConstructorUsedError;
   String? get error => throw _privateConstructorUsedError;
 
-  /// Create a copy of EpisodesState
+  /// Create a copy of NewEpisodesState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $EpisodesStateCopyWith<EpisodesState> get copyWith =>
+  $NewEpisodesStateCopyWith<NewEpisodesState> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $EpisodesStateCopyWith<$Res> {
-  factory $EpisodesStateCopyWith(
-    EpisodesState value,
-    $Res Function(EpisodesState) then,
-  ) = _$EpisodesStateCopyWithImpl<$Res, EpisodesState>;
+abstract class $NewEpisodesStateCopyWith<$Res> {
+  factory $NewEpisodesStateCopyWith(
+    NewEpisodesState value,
+    $Res Function(NewEpisodesState) then,
+  ) = _$NewEpisodesStateCopyWithImpl<$Res, NewEpisodesState>;
   @useResult
   $Res call({
     List<Track> episodes,
@@ -45,16 +45,16 @@ abstract class $EpisodesStateCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$EpisodesStateCopyWithImpl<$Res, $Val extends EpisodesState>
-    implements $EpisodesStateCopyWith<$Res> {
-  _$EpisodesStateCopyWithImpl(this._value, this._then);
+class _$NewEpisodesStateCopyWithImpl<$Res, $Val extends NewEpisodesState>
+    implements $NewEpisodesStateCopyWith<$Res> {
+  _$NewEpisodesStateCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of EpisodesState
+  /// Create a copy of NewEpisodesState
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -89,12 +89,12 @@ class _$EpisodesStateCopyWithImpl<$Res, $Val extends EpisodesState>
 }
 
 /// @nodoc
-abstract class _$$EpisodesStateImplCopyWith<$Res>
-    implements $EpisodesStateCopyWith<$Res> {
-  factory _$$EpisodesStateImplCopyWith(
-    _$EpisodesStateImpl value,
-    $Res Function(_$EpisodesStateImpl) then,
-  ) = __$$EpisodesStateImplCopyWithImpl<$Res>;
+abstract class _$$NewEpisodesStateImplCopyWith<$Res>
+    implements $NewEpisodesStateCopyWith<$Res> {
+  factory _$$NewEpisodesStateImplCopyWith(
+    _$NewEpisodesStateImpl value,
+    $Res Function(_$NewEpisodesStateImpl) then,
+  ) = __$$NewEpisodesStateImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({
@@ -106,15 +106,15 @@ abstract class _$$EpisodesStateImplCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$EpisodesStateImplCopyWithImpl<$Res>
-    extends _$EpisodesStateCopyWithImpl<$Res, _$EpisodesStateImpl>
-    implements _$$EpisodesStateImplCopyWith<$Res> {
-  __$$EpisodesStateImplCopyWithImpl(
-    _$EpisodesStateImpl _value,
-    $Res Function(_$EpisodesStateImpl) _then,
+class __$$NewEpisodesStateImplCopyWithImpl<$Res>
+    extends _$NewEpisodesStateCopyWithImpl<$Res, _$NewEpisodesStateImpl>
+    implements _$$NewEpisodesStateImplCopyWith<$Res> {
+  __$$NewEpisodesStateImplCopyWithImpl(
+    _$NewEpisodesStateImpl _value,
+    $Res Function(_$NewEpisodesStateImpl) _then,
   ) : super(_value, _then);
 
-  /// Create a copy of EpisodesState
+  /// Create a copy of NewEpisodesState
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -125,7 +125,7 @@ class __$$EpisodesStateImplCopyWithImpl<$Res>
     Object? error = freezed,
   }) {
     return _then(
-      _$EpisodesStateImpl(
+      _$NewEpisodesStateImpl(
         episodes: null == episodes
             ? _value._episodes
             : episodes // ignore: cast_nullable_to_non_nullable
@@ -149,8 +149,8 @@ class __$$EpisodesStateImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$EpisodesStateImpl implements _EpisodesState {
-  const _$EpisodesStateImpl({
+class _$NewEpisodesStateImpl implements _NewEpisodesState {
+  const _$NewEpisodesStateImpl({
     final List<Track> episodes = const [],
     this.isLoading = false,
     this.isLoadingMore = false,
@@ -177,14 +177,14 @@ class _$EpisodesStateImpl implements _EpisodesState {
 
   @override
   String toString() {
-    return 'EpisodesState(episodes: $episodes, isLoading: $isLoading, isLoadingMore: $isLoadingMore, error: $error)';
+    return 'NewEpisodesState(episodes: $episodes, isLoading: $isLoading, isLoadingMore: $isLoadingMore, error: $error)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$EpisodesStateImpl &&
+            other is _$NewEpisodesStateImpl &&
             const DeepCollectionEquality().equals(other._episodes, _episodes) &&
             (identical(other.isLoading, isLoading) ||
                 other.isLoading == isLoading) &&
@@ -202,22 +202,25 @@ class _$EpisodesStateImpl implements _EpisodesState {
     error,
   );
 
-  /// Create a copy of EpisodesState
+  /// Create a copy of NewEpisodesState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$EpisodesStateImplCopyWith<_$EpisodesStateImpl> get copyWith =>
-      __$$EpisodesStateImplCopyWithImpl<_$EpisodesStateImpl>(this, _$identity);
+  _$$NewEpisodesStateImplCopyWith<_$NewEpisodesStateImpl> get copyWith =>
+      __$$NewEpisodesStateImplCopyWithImpl<_$NewEpisodesStateImpl>(
+        this,
+        _$identity,
+      );
 }
 
-abstract class _EpisodesState implements EpisodesState {
-  const factory _EpisodesState({
+abstract class _NewEpisodesState implements NewEpisodesState {
+  const factory _NewEpisodesState({
     final List<Track> episodes,
     final bool isLoading,
     final bool isLoadingMore,
     final String? error,
-  }) = _$EpisodesStateImpl;
+  }) = _$NewEpisodesStateImpl;
 
   @override
   List<Track> get episodes;
@@ -228,10 +231,10 @@ abstract class _EpisodesState implements EpisodesState {
   @override
   String? get error;
 
-  /// Create a copy of EpisodesState
+  /// Create a copy of NewEpisodesState
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$EpisodesStateImplCopyWith<_$EpisodesStateImpl> get copyWith =>
+  _$$NewEpisodesStateImplCopyWith<_$NewEpisodesStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

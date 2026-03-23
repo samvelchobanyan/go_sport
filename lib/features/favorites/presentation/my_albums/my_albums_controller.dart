@@ -4,19 +4,19 @@ import 'package:go_sport/core/di/repository_providers.dart';
 import 'package:go_sport/domain/entities/album.dart';
 import 'package:go_sport/domain/repositories/albums_repository.dart';
 
-part 'albums_controller.freezed.dart';
+part 'my_albums_controller.freezed.dart';
 
 @freezed
-class AlbumsState with _$AlbumsState {
-  const factory AlbumsState({
+class MyAlbumsState with _$MyAlbumsState {
+  const factory MyAlbumsState({
     @Default([]) List<Album> albums,
     @Default(false) bool isLoading,
     @Default(false) bool isLoadingMore,
     String? error,
-  }) = _AlbumsState;
+  }) = _MyAlbumsState;
 }
 
-extension AlbumsStateX on AlbumsState {
+extension MyAlbumsStateX on MyAlbumsState {
   Album? getAlbum(String id) {
     try {
       return albums.firstWhere((a) => a.id == id);
@@ -26,14 +26,14 @@ extension AlbumsStateX on AlbumsState {
   }
 }
 
-class AlbumsNotifier extends Notifier<AlbumsState> {
+class MyAlbumsNotifier extends Notifier<MyAlbumsState> {
   late final AlbumsRepository _repository;
 
   @override
-  AlbumsState build() {
+  MyAlbumsState build() {
     _repository = ref.watch(albumsRepositoryProvider);
     Future.microtask(() => loadFavorites());
-    return const AlbumsState();
+    return const MyAlbumsState();
   }
 
   /// Load favorites
@@ -117,7 +117,7 @@ class AlbumsNotifier extends Notifier<AlbumsState> {
   }
 }
 
-final albumsStateProvider =
-    NotifierProvider<AlbumsNotifier, AlbumsState>(
-  AlbumsNotifier.new,
+final myAlbumsStateProvider =
+    NotifierProvider<MyAlbumsNotifier, MyAlbumsState>(
+  MyAlbumsNotifier.new,
 );

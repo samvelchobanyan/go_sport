@@ -3,27 +3,25 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/domain/entities/track.dart';
+import 'package:go_sport/features/favorites/presentation/my_favorites/my_favorites_controller.dart';
 import 'package:go_sport/domain/state/player_state.dart';
-import 'package:go_sport/features/favorite_episodes/presentation/episodes_list/episodes_controller.dart';
 import 'package:go_sport/features/shared_widgets/dotted_divider.dart';
-import 'package:go_sport/features/shared_widgets/episode_tile.dart';
 import 'package:go_sport/features/shared_widgets/my_categories_top.dart';
+import 'package:go_sport/features/shared_widgets/track_tile.dart';
 
-class FavoriteEpisodesListScreen extends ConsumerStatefulWidget {
-  const FavoriteEpisodesListScreen({super.key});
+class MyFavoritesScreen extends ConsumerStatefulWidget {
+  const MyFavoritesScreen({super.key});
 
   @override
-  ConsumerState<FavoriteEpisodesListScreen> createState() =>
-      _FavoriteEpisodesListScreenState();
+  ConsumerState<MyFavoritesScreen> createState() => _MyFavoritesScreenState();
 }
 
-class _FavoriteEpisodesListScreenState
-    extends ConsumerState<FavoriteEpisodesListScreen> {
+class _MyFavoritesScreenState extends ConsumerState<MyFavoritesScreen> {
   late final ScrollController _scrollController;
 
   @override
@@ -33,12 +31,12 @@ class _FavoriteEpisodesListScreenState
   }
 
   void _onScroll() {
-    final state = ref.read(episodesStateProvider);
+    final state = ref.read(myFavoritesStateProvider);
     if (state.isLoading || state.isLoadingMore) return;
 
     if (_scrollController.position.pixels >=
         _scrollController.position.maxScrollExtent * 0.8) {
-      ref.read(episodesStateProvider.notifier).loadMore();
+      ref.read(myFavoritesStateProvider.notifier).loadMore();
     }
   }
 
@@ -51,15 +49,14 @@ class _FavoriteEpisodesListScreenState
 
   @override
   Widget build(BuildContext context) {
-    final state = ref.watch(episodesStateProvider);
-    final List<Track> episodes = state.episodes;
+    final state = ref.watch(myFavoritesStateProvider);
+    final favorites = state.favorites;
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.dark,
       child: Scaffold(
         body: Stack(
           children: [
-            // 🔹 Background image (visible behind rounded list)
             Positioned(
               top: 0,
               left: 0,
@@ -70,20 +67,18 @@ class _FavoriteEpisodesListScreenState
                 fit: BoxFit.cover,
               ),
             ),
-
-            // 🔹 Foreground content
             Column(
               children: [
                 MyCategoriesHeader(
-                  iconPath: 'assets/icons/dynamic_bg.svg',
-                  title: 'My Episodes',
-                  subtitle: 'Episodes',
-                  itemCount: episodes.length,
+                  iconPath: 'assets/icons/heart_bg.svg',
+                  title: 'My Favorites',
+                  subtitle: 'Tracks',
+                  itemCount: favorites.length,
                   actionIcon: SvgPicture.asset('assets/icons/play_blue.svg'),
-                  onActionIconTap: () =>
-                      _onPlayTap(ref, episodes, 'New Episodes', ''),
+                  onActionIconTap: favorites.isEmpty
+                      ? null
+                      : () => _onPlayTap(ref, favorites, 'My Favorites', ''),
                 ),
-
                 Expanded(
                   child: ClipRRect(
                     borderRadius: const BorderRadius.only(
@@ -92,15 +87,15 @@ class _FavoriteEpisodesListScreenState
                     ),
                     child: Container(
                       color: DSColors.white,
-                      child: state.isLoading && state.episodes.isEmpty
+                      child: state.isLoading && favorites.isEmpty
                           ? const Center(
                               child: CircularProgressIndicator(),
-                            ) //todo add skeleton loading later
-                          : state.error != null && state.episodes.isEmpty
+                            )
+                          : state.error != null && favorites.isEmpty
                           ? _buildErrorWidget(state)
-                          : _buildEpisodesList(
+                          : _buildSongsList(
                               ref,
-                              episodes,
+                              favorites,
                               state.isLoadingMore,
                             ),
                     ),
@@ -114,31 +109,15 @@ class _FavoriteEpisodesListScreenState
     );
   }
 
-  Widget _buildErrorWidget(EpisodesState state) {
-    return Center(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text('Failed to load episodes', style: context.subtitleLBold),
-          const SizedBox(height: 8),
-          ElevatedButton(
-            onPressed: () => ref.read(episodesStateProvider.notifier).refresh(),
-            child: const Text('Retry'),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildEpisodesList(
+  Widget _buildSongsList(
     WidgetRef ref,
-    List<Track> episodes,
+    List<Track> songs,
     bool isLoadingMore,
   ) {
     final playerState = ref.watch(playerStateProvider);
     final playingTrackId = playerState.currentTrack?.id;
 
-    if (episodes.isEmpty) {
+    if (songs.isEmpty) {
       return Center(
         child: Text('No favorites yet', style: context.subtitleLBold),
       );
@@ -146,9 +125,10 @@ class _FavoriteEpisodesListScreenState
 
     return ListView.separated(
       controller: _scrollController,
-      itemCount: episodes.length + (isLoadingMore ? 1 : 0),
+      padding: EdgeInsets.only(bottom: isLoadingMore ? 16 : 100),
+      itemCount: songs.length + (isLoadingMore ? 1 : 0),
       separatorBuilder: (context, index) {
-        if (index >= episodes.length - 1) {
+        if (index >= songs.length - 1) {
           return const SizedBox.shrink();
         }
 
@@ -158,74 +138,81 @@ class _FavoriteEpisodesListScreenState
         );
       },
       itemBuilder: (context, index) {
-        if (index >= episodes.length) {
-          // bottom loading indicator
+        if (index == songs.length) {
           return const Padding(
             padding: EdgeInsets.all(16),
             child: Center(child: CircularProgressIndicator()),
           );
         }
 
-        final episode = episodes[index];
-        final isCurrentTrack = episode.id == playingTrackId;
+        final track = songs[index];
+        final isCurrentTrack = track.id == playingTrackId;
         final bool? trackPlayingState = isCurrentTrack
             ? playerState.isPlaying && playerState.isRadioMode == false
             : null;
 
-        return ClipRRect(
-          borderRadius: index == 0
-              ? const BorderRadius.only(
-                  topLeft: Radius.circular(24),
-                  topRight: Radius.circular(24),
-                )
-              : BorderRadius.zero,
-          child: Container(
-            color: DSColors.white,
-            child: EpisodeTile(
-              episode: episode,
-              isPlaying: trackPlayingState,
-              onTap: () => _onTrackTap(ref, episodes, index),
-              onMenuTap: () =>
-                  debugPrint('Episode icon tapped for: ${episode.id}'),
-            ),
-          ),
+        return TrackTile(
+          track: track,
+          isPlaying: trackPlayingState,
+          onTap: () => _onTrackTap(ref, songs, index),
+          onMenuTap: () => _onTrackMenuTap(index),
         );
       },
     );
   }
 
-  void _onTrackTap(WidgetRef ref, List<Track> episodes, int index) {
-    ref
-        .read(playerStateProvider.notifier)
-        .playQueue(
-          episodes,
-          source: QueueSource.episodes(
+  Widget _buildErrorWidget(MyFavoritesState state) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text('Error loading favorites', style: context.subtitleLSemi),
+        const SizedBox(height: 8),
+        Text(
+          state.error!,
+          style: context.textL?.copyWith(color: DSColors.gray60),
+        ),
+        const SizedBox(height: 16),
+        ElevatedButton(
+          onPressed: () =>
+              ref.read(myFavoritesStateProvider.notifier).refresh(),
+          child: const Text('Retry'),
+        ),
+      ],
+    );
+  }
+
+  void _onPlayTap(
+    WidgetRef ref,
+    List<Track> favorites,
+    String title,
+    String imageUrl,
+  ) {
+    if (favorites.isEmpty) return;
+    final randomIndex = Random().nextInt(favorites.length);
+    ref.read(playerStateProvider.notifier).playQueue(
+          favorites,
+          source: QueueSource.favorites(
+            id: 'favorites',
+            title: title,
+            imageUrl: imageUrl,
+          ),
+          startIndex: randomIndex,
+        );
+  }
+
+  void _onTrackTap(WidgetRef ref, List<Track> favorites, int index) {
+    ref.read(playerStateProvider.notifier).playQueue(
+          favorites,
+          source: QueueSource.favorites(
             id: index.toString(),
-            title: 'My Episodes',
+            title: 'My Favorites',
             imageUrl: '',
           ),
           startIndex: index,
         );
   }
 
-  void _onPlayTap(
-    WidgetRef ref,
-    List<Track> episodes,
-    String title,
-    String imageUrl,
-  ) {
-    if (episodes.isEmpty) return;
-    final randomIndex = Random().nextInt(episodes.length);
-    ref
-        .read(playerStateProvider.notifier)
-        .playQueue(
-          episodes,
-          source: QueueSource.episodes(
-            id: 'episodes', //todo change to real id later
-            title: title,
-            imageUrl: imageUrl,
-          ),
-          startIndex: randomIndex,
-        );
+  void _onTrackMenuTap(int index) {
+    debugPrint('Track menu tapped at index: $index');
   }
 }

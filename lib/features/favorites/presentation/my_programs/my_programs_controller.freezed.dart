@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'programs_controller.dart';
+part of 'my_programs_controller.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -16,25 +16,25 @@ final _privateConstructorUsedError = UnsupportedError(
 );
 
 /// @nodoc
-mixin _$ProgramsState {
+mixin _$MyProgramsState {
   List<Program> get programs => throw _privateConstructorUsedError;
   bool get isLoading => throw _privateConstructorUsedError;
   bool get isLoadingMore => throw _privateConstructorUsedError;
   String? get error => throw _privateConstructorUsedError;
 
-  /// Create a copy of ProgramsState
+  /// Create a copy of MyProgramsState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $ProgramsStateCopyWith<ProgramsState> get copyWith =>
+  $MyProgramsStateCopyWith<MyProgramsState> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $ProgramsStateCopyWith<$Res> {
-  factory $ProgramsStateCopyWith(
-    ProgramsState value,
-    $Res Function(ProgramsState) then,
-  ) = _$ProgramsStateCopyWithImpl<$Res, ProgramsState>;
+abstract class $MyProgramsStateCopyWith<$Res> {
+  factory $MyProgramsStateCopyWith(
+    MyProgramsState value,
+    $Res Function(MyProgramsState) then,
+  ) = _$MyProgramsStateCopyWithImpl<$Res, MyProgramsState>;
   @useResult
   $Res call({
     List<Program> programs,
@@ -45,16 +45,16 @@ abstract class $ProgramsStateCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$ProgramsStateCopyWithImpl<$Res, $Val extends ProgramsState>
-    implements $ProgramsStateCopyWith<$Res> {
-  _$ProgramsStateCopyWithImpl(this._value, this._then);
+class _$MyProgramsStateCopyWithImpl<$Res, $Val extends MyProgramsState>
+    implements $MyProgramsStateCopyWith<$Res> {
+  _$MyProgramsStateCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of ProgramsState
+  /// Create a copy of MyProgramsState
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -89,12 +89,12 @@ class _$ProgramsStateCopyWithImpl<$Res, $Val extends ProgramsState>
 }
 
 /// @nodoc
-abstract class _$$ProgramsStateImplCopyWith<$Res>
-    implements $ProgramsStateCopyWith<$Res> {
-  factory _$$ProgramsStateImplCopyWith(
-    _$ProgramsStateImpl value,
-    $Res Function(_$ProgramsStateImpl) then,
-  ) = __$$ProgramsStateImplCopyWithImpl<$Res>;
+abstract class _$$MyProgramsStateImplCopyWith<$Res>
+    implements $MyProgramsStateCopyWith<$Res> {
+  factory _$$MyProgramsStateImplCopyWith(
+    _$MyProgramsStateImpl value,
+    $Res Function(_$MyProgramsStateImpl) then,
+  ) = __$$MyProgramsStateImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({
@@ -106,15 +106,15 @@ abstract class _$$ProgramsStateImplCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$ProgramsStateImplCopyWithImpl<$Res>
-    extends _$ProgramsStateCopyWithImpl<$Res, _$ProgramsStateImpl>
-    implements _$$ProgramsStateImplCopyWith<$Res> {
-  __$$ProgramsStateImplCopyWithImpl(
-    _$ProgramsStateImpl _value,
-    $Res Function(_$ProgramsStateImpl) _then,
+class __$$MyProgramsStateImplCopyWithImpl<$Res>
+    extends _$MyProgramsStateCopyWithImpl<$Res, _$MyProgramsStateImpl>
+    implements _$$MyProgramsStateImplCopyWith<$Res> {
+  __$$MyProgramsStateImplCopyWithImpl(
+    _$MyProgramsStateImpl _value,
+    $Res Function(_$MyProgramsStateImpl) _then,
   ) : super(_value, _then);
 
-  /// Create a copy of ProgramsState
+  /// Create a copy of MyProgramsState
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -125,7 +125,7 @@ class __$$ProgramsStateImplCopyWithImpl<$Res>
     Object? error = freezed,
   }) {
     return _then(
-      _$ProgramsStateImpl(
+      _$MyProgramsStateImpl(
         programs: null == programs
             ? _value._programs
             : programs // ignore: cast_nullable_to_non_nullable
@@ -149,8 +149,8 @@ class __$$ProgramsStateImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$ProgramsStateImpl implements _ProgramsState {
-  const _$ProgramsStateImpl({
+class _$MyProgramsStateImpl implements _MyProgramsState {
+  const _$MyProgramsStateImpl({
     final List<Program> programs = const [],
     this.isLoading = false,
     this.isLoadingMore = false,
@@ -177,14 +177,14 @@ class _$ProgramsStateImpl implements _ProgramsState {
 
   @override
   String toString() {
-    return 'ProgramsState(programs: $programs, isLoading: $isLoading, isLoadingMore: $isLoadingMore, error: $error)';
+    return 'MyProgramsState(programs: $programs, isLoading: $isLoading, isLoadingMore: $isLoadingMore, error: $error)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$ProgramsStateImpl &&
+            other is _$MyProgramsStateImpl &&
             const DeepCollectionEquality().equals(other._programs, _programs) &&
             (identical(other.isLoading, isLoading) ||
                 other.isLoading == isLoading) &&
@@ -202,22 +202,25 @@ class _$ProgramsStateImpl implements _ProgramsState {
     error,
   );
 
-  /// Create a copy of ProgramsState
+  /// Create a copy of MyProgramsState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$ProgramsStateImplCopyWith<_$ProgramsStateImpl> get copyWith =>
-      __$$ProgramsStateImplCopyWithImpl<_$ProgramsStateImpl>(this, _$identity);
+  _$$MyProgramsStateImplCopyWith<_$MyProgramsStateImpl> get copyWith =>
+      __$$MyProgramsStateImplCopyWithImpl<_$MyProgramsStateImpl>(
+        this,
+        _$identity,
+      );
 }
 
-abstract class _ProgramsState implements ProgramsState {
-  const factory _ProgramsState({
+abstract class _MyProgramsState implements MyProgramsState {
+  const factory _MyProgramsState({
     final List<Program> programs,
     final bool isLoading,
     final bool isLoadingMore,
     final String? error,
-  }) = _$ProgramsStateImpl;
+  }) = _$MyProgramsStateImpl;
 
   @override
   List<Program> get programs;
@@ -228,10 +231,10 @@ abstract class _ProgramsState implements ProgramsState {
   @override
   String? get error;
 
-  /// Create a copy of ProgramsState
+  /// Create a copy of MyProgramsState
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$ProgramsStateImplCopyWith<_$ProgramsStateImpl> get copyWith =>
+  _$$MyProgramsStateImplCopyWith<_$MyProgramsStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

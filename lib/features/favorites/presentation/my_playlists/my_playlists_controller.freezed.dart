@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'playlists_controller.dart';
+part of 'my_playlists_controller.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -16,25 +16,25 @@ final _privateConstructorUsedError = UnsupportedError(
 );
 
 /// @nodoc
-mixin _$PlaylistsState {
+mixin _$MyPlaylistsState {
   List<Playlist> get playlists => throw _privateConstructorUsedError;
   bool get isLoading => throw _privateConstructorUsedError;
   bool get isLoadingMore => throw _privateConstructorUsedError;
   String? get error => throw _privateConstructorUsedError;
 
-  /// Create a copy of PlaylistsState
+  /// Create a copy of MyPlaylistsState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $PlaylistsStateCopyWith<PlaylistsState> get copyWith =>
+  $MyPlaylistsStateCopyWith<MyPlaylistsState> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $PlaylistsStateCopyWith<$Res> {
-  factory $PlaylistsStateCopyWith(
-    PlaylistsState value,
-    $Res Function(PlaylistsState) then,
-  ) = _$PlaylistsStateCopyWithImpl<$Res, PlaylistsState>;
+abstract class $MyPlaylistsStateCopyWith<$Res> {
+  factory $MyPlaylistsStateCopyWith(
+    MyPlaylistsState value,
+    $Res Function(MyPlaylistsState) then,
+  ) = _$MyPlaylistsStateCopyWithImpl<$Res, MyPlaylistsState>;
   @useResult
   $Res call({
     List<Playlist> playlists,
@@ -45,16 +45,16 @@ abstract class $PlaylistsStateCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$PlaylistsStateCopyWithImpl<$Res, $Val extends PlaylistsState>
-    implements $PlaylistsStateCopyWith<$Res> {
-  _$PlaylistsStateCopyWithImpl(this._value, this._then);
+class _$MyPlaylistsStateCopyWithImpl<$Res, $Val extends MyPlaylistsState>
+    implements $MyPlaylistsStateCopyWith<$Res> {
+  _$MyPlaylistsStateCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of PlaylistsState
+  /// Create a copy of MyPlaylistsState
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -89,12 +89,12 @@ class _$PlaylistsStateCopyWithImpl<$Res, $Val extends PlaylistsState>
 }
 
 /// @nodoc
-abstract class _$$PlaylistsStateImplCopyWith<$Res>
-    implements $PlaylistsStateCopyWith<$Res> {
-  factory _$$PlaylistsStateImplCopyWith(
-    _$PlaylistsStateImpl value,
-    $Res Function(_$PlaylistsStateImpl) then,
-  ) = __$$PlaylistsStateImplCopyWithImpl<$Res>;
+abstract class _$$MyPlaylistsStateImplCopyWith<$Res>
+    implements $MyPlaylistsStateCopyWith<$Res> {
+  factory _$$MyPlaylistsStateImplCopyWith(
+    _$MyPlaylistsStateImpl value,
+    $Res Function(_$MyPlaylistsStateImpl) then,
+  ) = __$$MyPlaylistsStateImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({
@@ -106,15 +106,15 @@ abstract class _$$PlaylistsStateImplCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$PlaylistsStateImplCopyWithImpl<$Res>
-    extends _$PlaylistsStateCopyWithImpl<$Res, _$PlaylistsStateImpl>
-    implements _$$PlaylistsStateImplCopyWith<$Res> {
-  __$$PlaylistsStateImplCopyWithImpl(
-    _$PlaylistsStateImpl _value,
-    $Res Function(_$PlaylistsStateImpl) _then,
+class __$$MyPlaylistsStateImplCopyWithImpl<$Res>
+    extends _$MyPlaylistsStateCopyWithImpl<$Res, _$MyPlaylistsStateImpl>
+    implements _$$MyPlaylistsStateImplCopyWith<$Res> {
+  __$$MyPlaylistsStateImplCopyWithImpl(
+    _$MyPlaylistsStateImpl _value,
+    $Res Function(_$MyPlaylistsStateImpl) _then,
   ) : super(_value, _then);
 
-  /// Create a copy of PlaylistsState
+  /// Create a copy of MyPlaylistsState
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -125,7 +125,7 @@ class __$$PlaylistsStateImplCopyWithImpl<$Res>
     Object? error = freezed,
   }) {
     return _then(
-      _$PlaylistsStateImpl(
+      _$MyPlaylistsStateImpl(
         playlists: null == playlists
             ? _value._playlists
             : playlists // ignore: cast_nullable_to_non_nullable
@@ -149,8 +149,8 @@ class __$$PlaylistsStateImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$PlaylistsStateImpl implements _PlaylistsState {
-  const _$PlaylistsStateImpl({
+class _$MyPlaylistsStateImpl implements _MyPlaylistsState {
+  const _$MyPlaylistsStateImpl({
     final List<Playlist> playlists = const [],
     this.isLoading = false,
     this.isLoadingMore = false,
@@ -177,14 +177,14 @@ class _$PlaylistsStateImpl implements _PlaylistsState {
 
   @override
   String toString() {
-    return 'PlaylistsState(playlists: $playlists, isLoading: $isLoading, isLoadingMore: $isLoadingMore, error: $error)';
+    return 'MyPlaylistsState(playlists: $playlists, isLoading: $isLoading, isLoadingMore: $isLoadingMore, error: $error)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$PlaylistsStateImpl &&
+            other is _$MyPlaylistsStateImpl &&
             const DeepCollectionEquality().equals(
               other._playlists,
               _playlists,
@@ -205,25 +205,25 @@ class _$PlaylistsStateImpl implements _PlaylistsState {
     error,
   );
 
-  /// Create a copy of PlaylistsState
+  /// Create a copy of MyPlaylistsState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$PlaylistsStateImplCopyWith<_$PlaylistsStateImpl> get copyWith =>
-      __$$PlaylistsStateImplCopyWithImpl<_$PlaylistsStateImpl>(
+  _$$MyPlaylistsStateImplCopyWith<_$MyPlaylistsStateImpl> get copyWith =>
+      __$$MyPlaylistsStateImplCopyWithImpl<_$MyPlaylistsStateImpl>(
         this,
         _$identity,
       );
 }
 
-abstract class _PlaylistsState implements PlaylistsState {
-  const factory _PlaylistsState({
+abstract class _MyPlaylistsState implements MyPlaylistsState {
+  const factory _MyPlaylistsState({
     final List<Playlist> playlists,
     final bool isLoading,
     final bool isLoadingMore,
     final String? error,
-  }) = _$PlaylistsStateImpl;
+  }) = _$MyPlaylistsStateImpl;
 
   @override
   List<Playlist> get playlists;
@@ -234,10 +234,10 @@ abstract class _PlaylistsState implements PlaylistsState {
   @override
   String? get error;
 
-  /// Create a copy of PlaylistsState
+  /// Create a copy of MyPlaylistsState
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$PlaylistsStateImplCopyWith<_$PlaylistsStateImpl> get copyWith =>
+  _$$MyPlaylistsStateImplCopyWith<_$MyPlaylistsStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

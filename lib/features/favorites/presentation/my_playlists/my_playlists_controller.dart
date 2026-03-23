@@ -1,31 +1,29 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:go_sport/core/di/repository_providers.dart';
-import 'package:go_sport/domain/entities/album.dart';
 import 'package:go_sport/domain/entities/playlist.dart';
-import 'package:go_sport/domain/repositories/albums_repository.dart';
 import 'package:go_sport/domain/repositories/playlist_repository.dart';
 
-part 'playlists_controller.freezed.dart';
+part 'my_playlists_controller.freezed.dart';
 
 @freezed
-class PlaylistsState with _$PlaylistsState {
-  const factory PlaylistsState({
+class MyPlaylistsState with _$MyPlaylistsState {
+  const factory MyPlaylistsState({
     @Default([]) List<Playlist> playlists,
     @Default(false) bool isLoading,
     @Default(false) bool isLoadingMore,
     String? error,
-  }) = _PlaylistsState;
+  }) = _MyPlaylistsState;
 }
 
-class PlaylistsNotifier extends Notifier<PlaylistsState> {
+class MyPlaylistsNotifier extends Notifier<MyPlaylistsState> {
   late final PlaylistRepository _repository;
 
   @override
-  PlaylistsState build() {
+  MyPlaylistsState build() {
     _repository = ref.watch(playlistRepositoryProvider);
     Future.microtask(() => loadFavorites());
-    return const PlaylistsState();
+    return const MyPlaylistsState();
   }
 
   /// Load favorites
@@ -40,34 +38,6 @@ class PlaylistsNotifier extends Notifier<PlaylistsState> {
       state = state.copyWith(isLoading: false, error: e.toString());
     }
   }
-
-  /// Optimistic like toggle
-  // Future<void> toggleLike(String id) async {
-  // final index = state.playlists.indexWhere((p) => p.id == id);
-  // if (index == -1) return;
-
-  // final playlist = state.playlists[index];
-  // final updated = playlist.copyWith(isLiked: !playlist.isLiked);
-
-  // // Optimistic update
-  // final updatedList = [...state.playlists];
-  // updatedList[index] = updated;
-
-  // state = state.copyWith(playlists: updatedList);
-
-  // try {
-  //   await _repository.toggleLike(id);
-  // } catch (e) {
-  //   // rollback
-  //   final rollbackList = [...state.playlists];
-  //   rollbackList[index] = playlist;
-
-  //   state = state.copyWith(
-  //     playlists: rollbackList,
-  //     error: e.toString(),
-  //   );
-  // }
-  // }
 
   Future<void> loadMore() async {
     if (state.isLoadingMore) return;
@@ -91,5 +61,7 @@ class PlaylistsNotifier extends Notifier<PlaylistsState> {
   }
 }
 
-final playlistsStateProvider =
-    NotifierProvider<PlaylistsNotifier, PlaylistsState>(PlaylistsNotifier.new);
+final myPlaylistsStateProvider =
+    NotifierProvider<MyPlaylistsNotifier, MyPlaylistsState>(
+  MyPlaylistsNotifier.new,
+);

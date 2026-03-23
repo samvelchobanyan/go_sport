@@ -4,22 +4,20 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/domain/entities/album.dart';
-import 'package:go_sport/features/favorite_albums/presentation/albums_controller.dart';
+import 'package:go_sport/features/favorites/presentation/my_albums/my_albums_controller.dart';
 import 'package:go_sport/features/shared_widgets/album_tile.dart';
 import 'package:go_sport/features/shared_widgets/dotted_divider.dart';
 import 'package:go_sport/features/shared_widgets/my_categories_top.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 
-class FavoriteAlbumsListScreen extends ConsumerStatefulWidget {
-  const FavoriteAlbumsListScreen({super.key});
+class MyAlbumsScreen extends ConsumerStatefulWidget {
+  const MyAlbumsScreen({super.key});
 
   @override
-  ConsumerState<FavoriteAlbumsListScreen> createState() =>
-      _FavoriteAlbumsListScreenState();
+  ConsumerState<MyAlbumsScreen> createState() => _MyAlbumsScreenState();
 }
 
-class _FavoriteAlbumsListScreenState
-    extends ConsumerState<FavoriteAlbumsListScreen> {
+class _MyAlbumsScreenState extends ConsumerState<MyAlbumsScreen> {
   late final ScrollController _scrollController;
 
   @override
@@ -29,12 +27,12 @@ class _FavoriteAlbumsListScreenState
   }
 
   void _onScroll() {
-    final state = ref.read(albumsStateProvider);
+    final state = ref.read(myAlbumsStateProvider);
     if (state.isLoading || state.isLoadingMore) return;
 
     if (_scrollController.position.pixels >=
         _scrollController.position.maxScrollExtent * 0.8) {
-      ref.read(albumsStateProvider.notifier).loadMore();
+      ref.read(myAlbumsStateProvider.notifier).loadMore();
     }
   }
 
@@ -47,7 +45,7 @@ class _FavoriteAlbumsListScreenState
 
   @override
   Widget build(BuildContext context) {
-    final state = ref.watch(albumsStateProvider);
+    final state = ref.watch(myAlbumsStateProvider);
     final albums = state.albums;
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
@@ -55,7 +53,6 @@ class _FavoriteAlbumsListScreenState
       child: Scaffold(
         body: Stack(
           children: [
-            // 🔹 Background image
             Positioned(
               top: 0,
               left: 0,
@@ -66,8 +63,6 @@ class _FavoriteAlbumsListScreenState
                 fit: BoxFit.cover,
               ),
             ),
-
-            // 🔹 Foreground content
             Column(
               children: [
                 MyCategoriesHeader(
@@ -76,7 +71,6 @@ class _FavoriteAlbumsListScreenState
                   subtitle: 'Albums',
                   itemCount: albums.length,
                 ),
-
                 Expanded(
                   child: ClipRRect(
                     borderRadius: const BorderRadius.only(
@@ -88,7 +82,7 @@ class _FavoriteAlbumsListScreenState
                       child: state.isLoading && albums.isEmpty
                           ? const Center(
                               child: CircularProgressIndicator(),
-                            ) //todo add skeleton loading later
+                            )
                           : state.error != null && albums.isEmpty
                           ? _buildErrorWidget(state)
                           : _buildAlbumsList(ref, albums, state.isLoadingMore),
@@ -148,7 +142,7 @@ class _FavoriteAlbumsListScreenState
     );
   }
 
-  Widget _buildErrorWidget(AlbumsState state) {
+  Widget _buildErrorWidget(MyAlbumsState state) {
     return Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -156,7 +150,7 @@ class _FavoriteAlbumsListScreenState
           Text('Failed to load favorite albums', style: context.subtitleLBold),
           const SizedBox(height: 8),
           ElevatedButton(
-            onPressed: () => ref.read(albumsStateProvider.notifier).refresh(),
+            onPressed: () => ref.read(myAlbumsStateProvider.notifier).refresh(),
             child: const Text('Retry'),
           ),
         ],

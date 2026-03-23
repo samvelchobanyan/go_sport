@@ -1,25 +1,27 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
-import 'package:go_sport/domain/entities/artist.dart';
-import 'package:go_sport/features/favorite_artists/presentation/artists_list/artists_controller.dart';
-import 'package:go_sport/features/shared_widgets/artist_tile.dart';
+import 'package:go_sport/domain/entities/track.dart';
+import 'package:go_sport/domain/state/player_state.dart';
+import 'package:go_sport/features/favorites/presentation/new_episodes/new_episodes_controller.dart';
 import 'package:go_sport/features/shared_widgets/dotted_divider.dart';
+import 'package:go_sport/features/shared_widgets/episode_tile.dart';
 import 'package:go_sport/features/shared_widgets/my_categories_top.dart';
 
-class FavoriteArtistsListScreen extends ConsumerStatefulWidget {
-  const FavoriteArtistsListScreen({super.key});
+class NewEpisodesScreen extends ConsumerStatefulWidget {
+  const NewEpisodesScreen({super.key});
 
   @override
-  ConsumerState<FavoriteArtistsListScreen> createState() =>
-      _FavoriteArtistsListScreenState();
+  ConsumerState<NewEpisodesScreen> createState() => _NewEpisodesScreenState();
 }
 
-class _FavoriteArtistsListScreenState
-    extends ConsumerState<FavoriteArtistsListScreen> {
+class _NewEpisodesScreenState extends ConsumerState<NewEpisodesScreen> {
   late final ScrollController _scrollController;
 
   @override
@@ -29,12 +31,12 @@ class _FavoriteArtistsListScreenState
   }
 
   void _onScroll() {
-    final state = ref.read(artistsStateProvider);
+    final state = ref.read(newEpisodesStateProvider);
     if (state.isLoading || state.isLoadingMore) return;
 
     if (_scrollController.position.pixels >=
         _scrollController.position.maxScrollExtent * 0.8) {
-      ref.read(artistsStateProvider.notifier).loadMore();
+      ref.read(newEpisodesStateProvider.notifier).loadMore();
     }
   }
 
@@ -47,15 +49,14 @@ class _FavoriteArtistsListScreenState
 
   @override
   Widget build(BuildContext context) {
-    final state = ref.watch(artistsStateProvider);
-    final List<Artist> artists = state.favoriteArtists;
+    final state = ref.watch(newEpisodesStateProvider);
+    final List<Track> episodes = state.episodes;
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.dark,
       child: Scaffold(
         body: Stack(
           children: [
-            // 🔹 Background image (visible behind rounded list)
             Positioned(
               top: 0,
               left: 0,
@@ -66,17 +67,17 @@ class _FavoriteArtistsListScreenState
                 fit: BoxFit.cover,
               ),
             ),
-
-            // 🔹 Foreground content
             Column(
               children: [
                 MyCategoriesHeader(
                   iconPath: 'assets/icons/dynamic_bg.svg',
-                  title: 'My Artists',
-                  subtitle: 'Artists',
-                  itemCount: artists.length,
+                  title: 'New Episodes',
+                  subtitle: 'Episodes',
+                  itemCount: episodes.length,
+                  actionIcon: SvgPicture.asset('assets/icons/play_blue.svg'),
+                  onActionIconTap: () =>
+                      _onPlayTap(ref, episodes, 'New Episodes', ''),
                 ),
-
                 Expanded(
                   child: ClipRRect(
                     borderRadius: const BorderRadius.only(
@@ -85,15 +86,15 @@ class _FavoriteArtistsListScreenState
                     ),
                     child: Container(
                       color: DSColors.white,
-                      child: state.isLoading && state.artistsList.isEmpty
+                      child: state.isLoading && state.episodes.isEmpty
                           ? const Center(
                               child: CircularProgressIndicator(),
-                            ) //todo add skeleton loading later
-                          : state.error != null && state.artistsList.isEmpty
+                            )
+                          : state.error != null && state.episodes.isEmpty
                           ? _buildErrorWidget(state)
-                          : _buildArtistsList(
+                          : _buildEpisodesList(
                               ref,
-                              state.artistsList,
+                              episodes,
                               state.isLoadingMore,
                             ),
                     ),
@@ -107,15 +108,16 @@ class _FavoriteArtistsListScreenState
     );
   }
 
-  Widget _buildErrorWidget(ArtistsState state) {
+  Widget _buildErrorWidget(NewEpisodesState state) {
     return Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text('Failed to load favorite artists', style: context.subtitleLBold),
+          Text('Failed to load episodes', style: context.subtitleLBold),
           const SizedBox(height: 8),
           ElevatedButton(
-            onPressed: () => ref.read(artistsStateProvider.notifier).refresh(),
+            onPressed: () =>
+                ref.read(newEpisodesStateProvider.notifier).refresh(),
             child: const Text('Retry'),
           ),
         ],
@@ -123,22 +125,25 @@ class _FavoriteArtistsListScreenState
     );
   }
 
-  Widget _buildArtistsList(
+  Widget _buildEpisodesList(
     WidgetRef ref,
-    List<Artist> artists,
+    List<Track> episodes,
     bool isLoadingMore,
   ) {
-    if (artists.isEmpty) {
+    final playerState = ref.watch(playerStateProvider);
+    final playingTrackId = playerState.currentTrack?.id;
+
+    if (episodes.isEmpty) {
       return Center(
-        child: Text('No favorite artists yet', style: context.subtitleLBold),
+        child: Text('No episodes yet', style: context.subtitleLBold),
       );
     }
 
     return ListView.separated(
       controller: _scrollController,
-      itemCount: artists.length + (isLoadingMore ? 1 : 0),
+      itemCount: episodes.length + (isLoadingMore ? 1 : 0),
       separatorBuilder: (context, index) {
-        if (index >= artists.length - 1) {
+        if (index >= episodes.length - 1) {
           return const SizedBox.shrink();
         }
 
@@ -148,15 +153,18 @@ class _FavoriteArtistsListScreenState
         );
       },
       itemBuilder: (context, index) {
-        if (index >= artists.length) {
-          // bottom loading indicator
+        if (index >= episodes.length) {
           return const Padding(
             padding: EdgeInsets.all(16),
             child: Center(child: CircularProgressIndicator()),
           );
         }
 
-        final artist = artists[index];
+        final episode = episodes[index];
+        final isCurrentTrack = episode.id == playingTrackId;
+        final bool? trackPlayingState = isCurrentTrack
+            ? playerState.isPlaying && playerState.isRadioMode == false
+            : null;
 
         return ClipRRect(
           borderRadius: index == 0
@@ -167,13 +175,47 @@ class _FavoriteArtistsListScreenState
               : BorderRadius.zero,
           child: Container(
             color: DSColors.white,
-            child: ArtistTile(
-              name: artist.artistName,
-              imageUrl: artist.imageUrl,
+            child: EpisodeTile(
+              episode: episode,
+              isPlaying: trackPlayingState,
+              onTap: () => _onTrackTap(ref, episodes, index),
+              onMenuTap: () =>
+                  debugPrint('Episode icon tapped for: ${episode.id}'),
             ),
           ),
         );
       },
     );
+  }
+
+  void _onTrackTap(WidgetRef ref, List<Track> episodes, int index) {
+    ref.read(playerStateProvider.notifier).playQueue(
+          episodes,
+          source: QueueSource.episodes(
+            id: index.toString(),
+            title: 'New Episodes',
+            imageUrl: '',
+          ),
+          startIndex: index,
+        );
+  }
+
+  void _onPlayTap(
+    WidgetRef ref,
+    List<Track> episodes,
+    String title,
+    String imageUrl,
+  ) {
+    if (episodes.isEmpty) return;
+    final randomIndex = Random().nextInt(episodes.length);
+    ref.read(playerStateProvider.notifier).playQueue(
+          episodes,
+          source: QueueSource.episodes(
+            id: 'episodes',
+            title: title,
+            imageUrl: imageUrl,
+          ),
+          startIndex: randomIndex,
+        );
   }
 }

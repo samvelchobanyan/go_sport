@@ -3,28 +3,28 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:go_sport/core/di/repository_providers.dart';
 import 'package:go_sport/domain/repositories/programs_repository.dart';
 
-import '../../../domain/entities/program.dart';
+import '../../../../domain/entities/program.dart';
 
-part 'programs_controller.freezed.dart';
+part 'my_programs_controller.freezed.dart';
 
 @freezed
-class ProgramsState with _$ProgramsState {
-  const factory ProgramsState({
+class MyProgramsState with _$MyProgramsState {
+  const factory MyProgramsState({
     @Default([]) List<Program> programs,
     @Default(false) bool isLoading,
     @Default(false) bool isLoadingMore,
     String? error,
-  }) = _ProgramsState;
+  }) = _MyProgramsState;
 }
 
-class ProgramsNotifier extends Notifier<ProgramsState> {
+class MyProgramsNotifier extends Notifier<MyProgramsState> {
   late final ProgramsRepository _repository;
 
   @override
-  ProgramsState build() {
+  MyProgramsState build() {
     _repository = ref.watch(programsRepositoryProvider);
     Future.microtask(() => loadFavorites());
-    return const ProgramsState();
+    return const MyProgramsState();
   }
 
   /// Load favorites
@@ -34,34 +34,11 @@ class ProgramsNotifier extends Notifier<ProgramsState> {
     try {
       final programs = await _repository.getFavoritePrograms();
 
-      // final programsMap = {for (final program in programs) program.id: program};
-
       state = state.copyWith(programs: programs, isLoading: false);
     } catch (e) {
       state = state.copyWith(isLoading: false, error: e.toString());
     }
   }
-
-  /// Optimistic like toggle (like News)
-  // Future<void> toggleLike(String id) async {
-  //   final program = state.programs.firstWhere((p) => p.id == id, orElse: () => throw ArgumentError('Program not found'));
-  //   if (program == null) return;
-
-  //   // Optimistic update
-  //   final updated = program.copyWith(isLiked: !program.isLiked);
-
-  //   state = state.copyWith(programs: {...state.programs, id: updated});
-
-  //   try {
-  //     await _repository.toggleLike(id);
-  //   } catch (e) {
-  //     // rollback
-  //     state = state.copyWith(
-  //       programs: {...state.programs, id: program},
-  //       error: e.toString(),
-  //     );
-  //   }
-  // }
 
   Future<void> refresh() async {
     state = state.copyWith(programs: []);
@@ -74,9 +51,9 @@ class ProgramsNotifier extends Notifier<ProgramsState> {
     state = state.copyWith(isLoadingMore: true);
 
     try {
-      final newTracks = await _repository.getFavoritePrograms();
+      final newPrograms = await _repository.getFavoritePrograms();
       state = state.copyWith(
-        programs: [...state.programs, ...newTracks],
+        programs: [...state.programs, ...newPrograms],
         isLoadingMore: false,
       );
     } catch (e) {
@@ -85,6 +62,7 @@ class ProgramsNotifier extends Notifier<ProgramsState> {
   }
 }
 
-final programsStateProvider = NotifierProvider<ProgramsNotifier, ProgramsState>(
-  ProgramsNotifier.new,
+final myProgramsStateProvider =
+    NotifierProvider<MyProgramsNotifier, MyProgramsState>(
+  MyProgramsNotifier.new,
 );

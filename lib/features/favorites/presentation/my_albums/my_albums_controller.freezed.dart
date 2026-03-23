@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'artists_controller.dart';
+part of 'my_albums_controller.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -16,28 +16,28 @@ final _privateConstructorUsedError = UnsupportedError(
 );
 
 /// @nodoc
-mixin _$ArtistsState {
-  List<Artist> get favoriteArtists => throw _privateConstructorUsedError;
+mixin _$MyAlbumsState {
+  List<Album> get albums => throw _privateConstructorUsedError;
   bool get isLoading => throw _privateConstructorUsedError;
   bool get isLoadingMore => throw _privateConstructorUsedError;
   String? get error => throw _privateConstructorUsedError;
 
-  /// Create a copy of ArtistsState
+  /// Create a copy of MyAlbumsState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $ArtistsStateCopyWith<ArtistsState> get copyWith =>
+  $MyAlbumsStateCopyWith<MyAlbumsState> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $ArtistsStateCopyWith<$Res> {
-  factory $ArtistsStateCopyWith(
-    ArtistsState value,
-    $Res Function(ArtistsState) then,
-  ) = _$ArtistsStateCopyWithImpl<$Res, ArtistsState>;
+abstract class $MyAlbumsStateCopyWith<$Res> {
+  factory $MyAlbumsStateCopyWith(
+    MyAlbumsState value,
+    $Res Function(MyAlbumsState) then,
+  ) = _$MyAlbumsStateCopyWithImpl<$Res, MyAlbumsState>;
   @useResult
   $Res call({
-    List<Artist> favoriteArtists,
+    List<Album> albums,
     bool isLoading,
     bool isLoadingMore,
     String? error,
@@ -45,31 +45,31 @@ abstract class $ArtistsStateCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$ArtistsStateCopyWithImpl<$Res, $Val extends ArtistsState>
-    implements $ArtistsStateCopyWith<$Res> {
-  _$ArtistsStateCopyWithImpl(this._value, this._then);
+class _$MyAlbumsStateCopyWithImpl<$Res, $Val extends MyAlbumsState>
+    implements $MyAlbumsStateCopyWith<$Res> {
+  _$MyAlbumsStateCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of ArtistsState
+  /// Create a copy of MyAlbumsState
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? favoriteArtists = null,
+    Object? albums = null,
     Object? isLoading = null,
     Object? isLoadingMore = null,
     Object? error = freezed,
   }) {
     return _then(
       _value.copyWith(
-            favoriteArtists: null == favoriteArtists
-                ? _value.favoriteArtists
-                : favoriteArtists // ignore: cast_nullable_to_non_nullable
-                      as List<Artist>,
+            albums: null == albums
+                ? _value.albums
+                : albums // ignore: cast_nullable_to_non_nullable
+                      as List<Album>,
             isLoading: null == isLoading
                 ? _value.isLoading
                 : isLoading // ignore: cast_nullable_to_non_nullable
@@ -89,16 +89,16 @@ class _$ArtistsStateCopyWithImpl<$Res, $Val extends ArtistsState>
 }
 
 /// @nodoc
-abstract class _$$ArtistsStateImplCopyWith<$Res>
-    implements $ArtistsStateCopyWith<$Res> {
-  factory _$$ArtistsStateImplCopyWith(
-    _$ArtistsStateImpl value,
-    $Res Function(_$ArtistsStateImpl) then,
-  ) = __$$ArtistsStateImplCopyWithImpl<$Res>;
+abstract class _$$MyAlbumsStateImplCopyWith<$Res>
+    implements $MyAlbumsStateCopyWith<$Res> {
+  factory _$$MyAlbumsStateImplCopyWith(
+    _$MyAlbumsStateImpl value,
+    $Res Function(_$MyAlbumsStateImpl) then,
+  ) = __$$MyAlbumsStateImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({
-    List<Artist> favoriteArtists,
+    List<Album> albums,
     bool isLoading,
     bool isLoadingMore,
     String? error,
@@ -106,30 +106,30 @@ abstract class _$$ArtistsStateImplCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$ArtistsStateImplCopyWithImpl<$Res>
-    extends _$ArtistsStateCopyWithImpl<$Res, _$ArtistsStateImpl>
-    implements _$$ArtistsStateImplCopyWith<$Res> {
-  __$$ArtistsStateImplCopyWithImpl(
-    _$ArtistsStateImpl _value,
-    $Res Function(_$ArtistsStateImpl) _then,
+class __$$MyAlbumsStateImplCopyWithImpl<$Res>
+    extends _$MyAlbumsStateCopyWithImpl<$Res, _$MyAlbumsStateImpl>
+    implements _$$MyAlbumsStateImplCopyWith<$Res> {
+  __$$MyAlbumsStateImplCopyWithImpl(
+    _$MyAlbumsStateImpl _value,
+    $Res Function(_$MyAlbumsStateImpl) _then,
   ) : super(_value, _then);
 
-  /// Create a copy of ArtistsState
+  /// Create a copy of MyAlbumsState
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? favoriteArtists = null,
+    Object? albums = null,
     Object? isLoading = null,
     Object? isLoadingMore = null,
     Object? error = freezed,
   }) {
     return _then(
-      _$ArtistsStateImpl(
-        favoriteArtists: null == favoriteArtists
-            ? _value._favoriteArtists
-            : favoriteArtists // ignore: cast_nullable_to_non_nullable
-                  as List<Artist>,
+      _$MyAlbumsStateImpl(
+        albums: null == albums
+            ? _value._albums
+            : albums // ignore: cast_nullable_to_non_nullable
+                  as List<Album>,
         isLoading: null == isLoading
             ? _value.isLoading
             : isLoading // ignore: cast_nullable_to_non_nullable
@@ -149,21 +149,21 @@ class __$$ArtistsStateImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$ArtistsStateImpl implements _ArtistsState {
-  const _$ArtistsStateImpl({
-    final List<Artist> favoriteArtists = const [],
+class _$MyAlbumsStateImpl implements _MyAlbumsState {
+  const _$MyAlbumsStateImpl({
+    final List<Album> albums = const [],
     this.isLoading = false,
     this.isLoadingMore = false,
     this.error,
-  }) : _favoriteArtists = favoriteArtists;
+  }) : _albums = albums;
 
-  final List<Artist> _favoriteArtists;
+  final List<Album> _albums;
   @override
   @JsonKey()
-  List<Artist> get favoriteArtists {
-    if (_favoriteArtists is EqualUnmodifiableListView) return _favoriteArtists;
+  List<Album> get albums {
+    if (_albums is EqualUnmodifiableListView) return _albums;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_favoriteArtists);
+    return EqualUnmodifiableListView(_albums);
   }
 
   @override
@@ -177,18 +177,15 @@ class _$ArtistsStateImpl implements _ArtistsState {
 
   @override
   String toString() {
-    return 'ArtistsState(favoriteArtists: $favoriteArtists, isLoading: $isLoading, isLoadingMore: $isLoadingMore, error: $error)';
+    return 'MyAlbumsState(albums: $albums, isLoading: $isLoading, isLoadingMore: $isLoadingMore, error: $error)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$ArtistsStateImpl &&
-            const DeepCollectionEquality().equals(
-              other._favoriteArtists,
-              _favoriteArtists,
-            ) &&
+            other is _$MyAlbumsStateImpl &&
+            const DeepCollectionEquality().equals(other._albums, _albums) &&
             (identical(other.isLoading, isLoading) ||
                 other.isLoading == isLoading) &&
             (identical(other.isLoadingMore, isLoadingMore) ||
@@ -199,31 +196,31 @@ class _$ArtistsStateImpl implements _ArtistsState {
   @override
   int get hashCode => Object.hash(
     runtimeType,
-    const DeepCollectionEquality().hash(_favoriteArtists),
+    const DeepCollectionEquality().hash(_albums),
     isLoading,
     isLoadingMore,
     error,
   );
 
-  /// Create a copy of ArtistsState
+  /// Create a copy of MyAlbumsState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$ArtistsStateImplCopyWith<_$ArtistsStateImpl> get copyWith =>
-      __$$ArtistsStateImplCopyWithImpl<_$ArtistsStateImpl>(this, _$identity);
+  _$$MyAlbumsStateImplCopyWith<_$MyAlbumsStateImpl> get copyWith =>
+      __$$MyAlbumsStateImplCopyWithImpl<_$MyAlbumsStateImpl>(this, _$identity);
 }
 
-abstract class _ArtistsState implements ArtistsState {
-  const factory _ArtistsState({
-    final List<Artist> favoriteArtists,
+abstract class _MyAlbumsState implements MyAlbumsState {
+  const factory _MyAlbumsState({
+    final List<Album> albums,
     final bool isLoading,
     final bool isLoadingMore,
     final String? error,
-  }) = _$ArtistsStateImpl;
+  }) = _$MyAlbumsStateImpl;
 
   @override
-  List<Artist> get favoriteArtists;
+  List<Album> get albums;
   @override
   bool get isLoading;
   @override
@@ -231,10 +228,10 @@ abstract class _ArtistsState implements ArtistsState {
   @override
   String? get error;
 
-  /// Create a copy of ArtistsState
+  /// Create a copy of MyAlbumsState
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$ArtistsStateImplCopyWith<_$ArtistsStateImpl> get copyWith =>
+  _$$MyAlbumsStateImplCopyWith<_$MyAlbumsStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
