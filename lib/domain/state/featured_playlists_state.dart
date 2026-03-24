@@ -18,7 +18,7 @@ class FeaturedPlaylistsState with _$FeaturedPlaylistsState {
 
 extension FeaturedPlaylistsStateX on FeaturedPlaylistsState {
   List<Playlist> get playlistsList => playlists.values.toList();
-  
+
   Playlist? getPlaylist(String id) => playlists[id];
 }
 
@@ -52,7 +52,7 @@ class FeaturedPlaylistsNotifier extends Notifier<FeaturedPlaylistsState> {
   void toggleLike(String playlistId) {
     final playlist = state.playlists[playlistId];
     if (playlist == null) return;
-    
+
     final updated = playlist.copyWith(isLiked: !playlist.isLiked);
     state = state.copyWith(
       playlists: {...state.playlists, playlistId: updated},
@@ -62,5 +62,5 @@ class FeaturedPlaylistsNotifier extends Notifier<FeaturedPlaylistsState> {
 
 final featuredPlaylistsStateProvider =
     NotifierProvider<FeaturedPlaylistsNotifier, FeaturedPlaylistsState>(
-  FeaturedPlaylistsNotifier.new,
-);
+      FeaturedPlaylistsNotifier.new,
+    );

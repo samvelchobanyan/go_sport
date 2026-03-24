@@ -32,9 +32,7 @@ class BottomNavBar extends StatelessWidget {
             width: 25,
             height: 25,
             colorFilter: ColorFilter.mode(
-              currentIndex == 0 
-                ? DSColors.black
-                : DSColors.gray50,
+              currentIndex == 0 ? DSColors.black : DSColors.gray50,
               BlendMode.srcIn,
             ),
           ),
@@ -46,9 +44,7 @@ class BottomNavBar extends StatelessWidget {
             width: 25,
             height: 25,
             colorFilter: ColorFilter.mode(
-              currentIndex == 1 
-                ? DSColors.black
-                : DSColors.gray50,
+              currentIndex == 1 ? DSColors.black : DSColors.gray50,
               BlendMode.srcIn,
             ),
           ),
@@ -60,9 +56,7 @@ class BottomNavBar extends StatelessWidget {
             width: 25,
             height: 25,
             colorFilter: ColorFilter.mode(
-              currentIndex == 2 
-                ? DSColors.black
-                : DSColors.gray50,
+              currentIndex == 2 ? DSColors.black : DSColors.gray50,
               BlendMode.srcIn,
             ),
           ),

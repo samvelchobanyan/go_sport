@@ -21,9 +21,7 @@ class UserAvatarButton extends StatelessWidget {
       child: Container(
         width: size,
         height: size,
-        decoration: const BoxDecoration(
-          shape: BoxShape.circle,
-        ),
+        decoration: const BoxDecoration(shape: BoxShape.circle),
         child: ClipOval(
           child: imageUrl != null
               ? CachedNetworkImage(
@@ -41,11 +39,7 @@ class UserAvatarButton extends StatelessWidget {
   Widget _buildPlaceholder() {
     return Container(
       color: DSColors.gray20,
-      child: Icon(
-        Icons.person,
-        color: DSColors.gray50,
-        size: size * 0.6,
-      ),
+      child: Icon(Icons.person, color: DSColors.gray50, size: size * 0.6),
     );
   }
 }

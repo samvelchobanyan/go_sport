@@ -319,6 +319,8 @@ class _MiniPlayerWidgetState extends ConsumerState<MiniPlayerWidget>
           album: (_, __, img) => img,
           playlist: (_, __, img) => img,
           program: (_, __, img) => img,
+          favorites: (_, __, img) => img,
+          episodes: (_, __, img) => img,
         ),
     )));
 

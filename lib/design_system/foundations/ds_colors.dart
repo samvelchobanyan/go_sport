@@ -8,14 +8,14 @@ class DSColors {
   static const white = Color(0xFFFFFFFF); // rgba(255,255,255,1)
 
   // Brand
-  static const blue   = Color(0xFF404AC3); // rgba(64,74,195,1)
-  static const lime   = Color(0xFFCFDC28); // rgba(207,220,40,1)
+  static const blue = Color(0xFF404AC3); // rgba(64,74,195,1)
+  static const lime = Color(0xFFCFDC28); // rgba(207,220,40,1)
   static const orange = Color(0xFFF55F2A); // rgba(245,95,42,1)
 
-  static const errorColor    = Color(0xFFFF3B30); // rgba(255,59,48,1)
+  static const errorColor = Color(0xFFFF3B30); // rgba(255,59,48,1)
   static const transparent = Colors.transparent;
 
-  // Grayscale (black with opacity)
+  // grayscale (black with opacity)
   // gray90 = darkest, gray5 = lightest
   static const gray90 = Color(0xE6000000); // 90%
   static const gray80 = Color(0xCC000000); // 80%
@@ -26,7 +26,7 @@ class DSColors {
   static const gray30 = Color(0x4D000000); // 30%
   static const gray20 = Color(0x33000000); // 20%
   static const gray10 = Color(0x1A000000); // 10%
-  static const gray5  = Color(0x0D000000); // 5%
+  static const gray5 = Color(0x0D000000); // 5%
 
   static const divider = gray20; // rgba(245,245,247,1)
 
@@ -36,4 +36,3 @@ class DSColors {
     Color(0xFF404AC3), // синий (замыкаем круг)
   ];
 }
-

@@ -24,10 +24,7 @@ class NewsListScreen extends ConsumerWidget {
           icon: Icon(Icons.arrow_back, color: DSColors.black),
           onPressed: () => context.pop(),
         ),
-        title: Text(
-          'News',
-          style: context.h2,
-        ),
+        title: Text('News', style: context.h2),
         centerTitle: true,
         actions: [
           IconButton(
@@ -54,10 +51,7 @@ class NewsListScreen extends ConsumerWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              'Error loading news',
-              style: context.subtitleLSemi,
-            ),
+            Text('Error loading news', style: context.subtitleLSemi),
             const SizedBox(height: 8),
             Text(
               state.error!,
@@ -78,9 +72,7 @@ class NewsListScreen extends ConsumerWidget {
     final articles = state.articlesList;
 
     if (articles.isEmpty) {
-      return const Center(
-        child: Text('No news available'),
-      );
+      return const Center(child: Text('No news available'));
     }
 
     return RefreshIndicator(

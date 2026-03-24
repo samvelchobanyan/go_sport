@@ -1,0 +1,65 @@
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/domain/entities/playlist.dart';
+import 'package:go_sport/features/shared_widgets/playlist_card.dart';
+import 'package:go_sport/features/shared_widgets/wave_section_header.dart';
+
+class FeaturedPlaylistsSection extends StatelessWidget {
+  final List<Playlist> playlists;
+
+  const FeaturedPlaylistsSection({super.key, required this.playlists});
+
+  @override
+  Widget build(BuildContext context) {
+    return SliverToBoxAdapter(
+      child: Container(
+        color: DSColors.white,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 16),
+              child: WaveSectionHeader(
+                title: 'Featured playlists',
+                showAnimation: true,
+              ),
+            ),
+            if (playlists.isNotEmpty)
+              SizedBox(
+                height: 210,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  itemCount: playlists.length,
+                  itemBuilder: (context, index) {
+                    final playlist = playlists[index];
+                    return Padding(
+                      padding: const EdgeInsets.only(right: 12),
+                      child: PlaylistCard(
+                        id: playlist.id,
+                        title: playlist.title,
+                        imageUrl: playlist.imageUrl,
+                        trackCount: playlist.trackCount,
+                      ),
+                    );
+                  },
+                ),
+              )
+            else
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 8,
+                ),
+                child: Text(
+                  'No featured playlists available.',
+                  style: TextStyle(color: DSColors.gray60),
+                ),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+}

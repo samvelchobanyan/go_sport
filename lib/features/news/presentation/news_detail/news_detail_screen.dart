@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -12,10 +13,7 @@ import 'widgets/news_detail_screen_skeleton.dart';
 class NewsDetailScreen extends ConsumerWidget {
   final String articleId;
 
-  const NewsDetailScreen({
-    super.key,
-    required this.articleId,
-  });
+  const NewsDetailScreen({super.key, required this.articleId});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -39,7 +37,11 @@ class NewsDetailScreen extends ConsumerWidget {
     return _buildContent(context, ref, article);
   }
 
-  Widget _buildContent(BuildContext context, WidgetRef ref, NewsArticle article) {
+  Widget _buildContent(
+    BuildContext context,
+    WidgetRef ref,
+    NewsArticle article,
+  ) {
     return Scaffold(
       backgroundColor: DSColors.white,
       appBar: AppBar(
@@ -58,7 +60,9 @@ class NewsDetailScreen extends ConsumerWidget {
                 builder: (context) {
                   final parts = article.author.split(' ');
                   final firstName = parts.isNotEmpty ? parts[0] : '';
-                  final lastName = parts.length > 1 ? parts.sublist(1).join(' ') : '';
+                  final lastName = parts.length > 1
+                      ? parts.sublist(1).join(' ')
+                      : '';
                   return Row(
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -112,15 +116,25 @@ class NewsDetailScreen extends ConsumerWidget {
                 borderRadius: BorderRadius.circular(DSRadius.s),
                 child: Hero(
                   tag: 'newsImage:$articleId',
-                  child: Image.network(
-                    article.imageUrl,
+                  child: CachedNetworkImage(
+                    imageUrl: article.imageUrl,
                     width: double.infinity,
                     height: 240,
                     fit: BoxFit.cover,
-                    errorBuilder: (_, __, ___) => Container(
-                      color: DSColors.divider,
+                    placeholder: (context, url) => Container(
                       width: double.infinity,
                       height: 240,
+                      color: DSColors.divider,
+                    ),
+                    errorWidget: (context, url, error) => Container(
+                      width: double.infinity,
+                      height: 240,
+                      color: DSColors.gray20,
+                      child: const Icon(
+                        Icons.error,
+                        color: DSColors.gray50,
+                        size: 28,
+                      ),
                     ),
                   ),
                 ),
@@ -131,10 +145,7 @@ class NewsDetailScreen extends ConsumerWidget {
             // Title
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24.0),
-              child: Text(
-                article.title,
-                style: context.h2,
-              ),
+              child: Text(article.title, style: context.h2),
             ),
             const SizedBox(height: 15),
 
@@ -145,10 +156,7 @@ class NewsDetailScreen extends ConsumerWidget {
                 child: Container(
                   decoration: BoxDecoration(
                     border: Border(
-                      left: BorderSide(
-                        color: DSColors.blue,
-                        width: 3,
-                      ),
+                      left: BorderSide(color: DSColors.blue, width: 3),
                     ),
                   ),
                   padding: const EdgeInsets.only(left: 16),
@@ -189,7 +197,9 @@ class NewsDetailScreen extends ConsumerWidget {
                   // Like button
                   GestureDetector(
                     onTap: () {
-                      ref.read(newsStateProvider.notifier).toggleLike(articleId);
+                      ref
+                          .read(newsStateProvider.notifier)
+                          .toggleLike(articleId);
                     },
                     child: Container(
                       width: 48,
@@ -199,7 +209,9 @@ class NewsDetailScreen extends ConsumerWidget {
                         shape: BoxShape.circle,
                       ),
                       child: Icon(
-                        article.isLiked ? Icons.thumb_up : Icons.thumb_up_outlined,
+                        article.isLiked
+                            ? Icons.thumb_up
+                            : Icons.thumb_up_outlined,
                         color: DSColors.white,
                         size: 24,
                       ),
@@ -240,11 +252,7 @@ class NewsDetailScreen extends ConsumerWidget {
                     ),
                     child: Row(
                       children: [
-                        Icon(
-                          Icons.thumb_up,
-                          size: 16,
-                          color: DSColors.blue,
-                        ),
+                        Icon(Icons.thumb_up, size: 16, color: DSColors.blue),
                         const SizedBox(width: 6),
                         Text(
                           '${article.likesCount}',

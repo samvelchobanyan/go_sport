@@ -16,6 +16,8 @@ class PlayerTopBar extends ConsumerWidget {
 			album: (id, title, imageUrl) => 'Album "$title"',
 			playlist: (id, title, imageUrl) => 'Playlist "$title"',
 			program: (id, title, imageUrl) => 'Program "$title"',
+			favorites: (id, title, imageUrl) => title,
+			episodes: (id, title, imageUrl) => title,
 		) ?? '';
 
 		return Padding(

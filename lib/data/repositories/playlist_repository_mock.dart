@@ -7,43 +7,50 @@ class PlaylistRepositoryMock implements PlaylistRepository {
     const Playlist(
       id: 'pl1',
       title: 'The Best of Armenian Rock Top 30',
-      imageUrl: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=800&q=80',
+      imageUrl:
+          'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=800&q=80',
       trackCount: 30,
     ),
     const Playlist(
       id: 'pl2',
       title: 'Top Rock Bands in the World',
-      imageUrl: 'https://images.unsplash.com/photo-1498038432885-c6f3f1b912ee?auto=format&fit=crop&w=800&q=80',
+      imageUrl:
+          'https://images.unsplash.com/photo-1498038432885-c6f3f1b912ee?auto=format&fit=crop&w=800&q=80',
       trackCount: 30,
     ),
     const Playlist(
       id: 'pl3',
       title: 'The Best Pop Hits 2026',
-      imageUrl: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=800&q=80',
+      imageUrl:
+          'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=800&q=80',
       trackCount: 25,
     ),
     const Playlist(
       id: 'pl4',
       title: 'Workout & Energy',
-      imageUrl: 'https://images.unsplash.com/photo-1571902943202-507ec2618e8f?auto=format&fit=crop&w=800&q=80',
+      imageUrl:
+          'https://images.unsplash.com/photo-1571902943202-507ec2618e8f?auto=format&fit=crop&w=800&q=80',
       trackCount: 42,
     ),
     const Playlist(
       id: 'pl5',
       title: 'Chill Vibes & Relax',
-      imageUrl: 'https://images.unsplash.com/photo-1459749411175-04bf5292ceea?auto=format&fit=crop&w=800&q=80',
+      imageUrl:
+          'https://images.unsplash.com/photo-1459749411175-04bf5292ceea?auto=format&fit=crop&w=800&q=80',
       trackCount: 18,
     ),
     const Playlist(
       id: 'pl6',
       title: 'Classic Rock Legends',
-      imageUrl: 'https://images.unsplash.com/photo-1511735111819-9a3f7709049c?auto=format&fit=crop&w=800&q=80',
+      imageUrl:
+          'https://images.unsplash.com/photo-1511735111819-9a3f7709049c?auto=format&fit=crop&w=800&q=80',
       trackCount: 50,
     ),
     const Playlist(
       id: 'pl7',
       title: 'Electronic Dreams',
-      imageUrl: 'https://images.unsplash.com/photo-1571330735066-03aaa9429d89?auto=format&fit=crop&w=800&q=80',
+      imageUrl:
+          'https://images.unsplash.com/photo-1571330735066-03aaa9429d89?auto=format&fit=crop&w=800&q=80',
       trackCount: 35,
     ),
   ];
@@ -54,7 +61,8 @@ class PlaylistRepositoryMock implements PlaylistRepository {
       id: 'arm1',
       title: 'Anytime You Need',
       artistName: 'Nemra',
-      imageUrl: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=800&q=80',
+      imageUrl:
+          'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=800&q=80',
       duration: const Duration(minutes: 4, seconds: 12),
       audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
     ),
@@ -62,7 +70,8 @@ class PlaylistRepositoryMock implements PlaylistRepository {
       id: 'arm2',
       title: 'Hayastan',
       artistName: 'System of a Down',
-      imageUrl: 'https://images.unsplash.com/photo-1498038432885-c6f3f1b912ee?auto=format&fit=crop&w=800&q=80',
+      imageUrl:
+          'https://images.unsplash.com/photo-1498038432885-c6f3f1b912ee?auto=format&fit=crop&w=800&q=80',
       duration: const Duration(minutes: 3, seconds: 45),
       audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3',
     ),
@@ -306,7 +315,8 @@ class PlaylistRepositoryMock implements PlaylistRepository {
       id: 'wr2',
       title: 'Stairway to Heaven',
       artistName: 'Led Zeppelin',
-      imageUrl: 'https://images.unsplash.com/photo-1511735111819-9a3f7709049c?auto=format&fit=crop&w=800&q=80',
+      imageUrl:
+          'https://images.unsplash.com/photo-1511735111819-9a3f7709049c?auto=format&fit=crop&w=800&q=80',
       duration: const Duration(minutes: 8, seconds: 2),
       audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-15.mp3',
     ),
@@ -350,7 +360,8 @@ class PlaylistRepositoryMock implements PlaylistRepository {
       id: 'pop1',
       title: 'Blinding Lights',
       artistName: 'The Weeknd',
-      imageUrl: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=800&q=80',
+      imageUrl:
+          'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=800&q=80',
       duration: const Duration(minutes: 3, seconds: 20),
       audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3',
     ),
@@ -358,7 +369,8 @@ class PlaylistRepositoryMock implements PlaylistRepository {
       id: 'pop2',
       title: 'Levitating',
       artistName: 'Dua Lipa',
-      imageUrl: 'https://images.unsplash.com/photo-1619983081563-430f63602796?auto=format&fit=crop&w=800&q=80',
+      imageUrl:
+          'https://images.unsplash.com/photo-1619983081563-430f63602796?auto=format&fit=crop&w=800&q=80',
       duration: const Duration(minutes: 3, seconds: 23),
       audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3',
     ),
@@ -402,7 +414,8 @@ class PlaylistRepositoryMock implements PlaylistRepository {
       id: 'wo1',
       title: 'Stronger',
       artistName: 'Kanye West',
-      imageUrl: 'https://images.unsplash.com/photo-1571902943202-507ec2618e8f?auto=format&fit=crop&w=800&q=80',
+      imageUrl:
+          'https://images.unsplash.com/photo-1571902943202-507ec2618e8f?auto=format&fit=crop&w=800&q=80',
       duration: const Duration(minutes: 5, seconds: 12),
       audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3',
     ),
@@ -454,7 +467,8 @@ class PlaylistRepositoryMock implements PlaylistRepository {
       id: 'ch1',
       title: 'Weightless',
       artistName: 'Marconi Union',
-      imageUrl: 'https://images.unsplash.com/photo-1459749411175-04bf5292ceea?auto=format&fit=crop&w=800&q=80',
+      imageUrl:
+          'https://images.unsplash.com/photo-1459749411175-04bf5292ceea?auto=format&fit=crop&w=800&q=80',
       duration: const Duration(minutes: 8, seconds: 9),
       audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
     ),
@@ -506,7 +520,8 @@ class PlaylistRepositoryMock implements PlaylistRepository {
       id: 'cr1',
       title: 'We Will Rock You',
       artistName: 'Queen',
-      imageUrl: 'https://images.unsplash.com/photo-1511735111819-9a3f7709049c?auto=format&fit=crop&w=800&q=80',
+      imageUrl:
+          'https://images.unsplash.com/photo-1511735111819-9a3f7709049c?auto=format&fit=crop&w=800&q=80',
       duration: const Duration(minutes: 2, seconds: 2),
       audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3',
     ),
@@ -558,7 +573,8 @@ class PlaylistRepositoryMock implements PlaylistRepository {
       id: 'el1',
       title: 'Strobe',
       artistName: 'Deadmau5',
-      imageUrl: 'https://images.unsplash.com/photo-1571330735066-03aaa9429d89?auto=format&fit=crop&w=800&q=80',
+      imageUrl:
+          'https://images.unsplash.com/photo-1571330735066-03aaa9429d89?auto=format&fit=crop&w=800&q=80',
       duration: const Duration(minutes: 10, seconds: 37),
       audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3',
     ),
@@ -615,6 +631,104 @@ class PlaylistRepositoryMock implements PlaylistRepository {
     'pl7': _electronicTracks,
   };
 
+  final List<Playlist> _favoritePlaylists = [
+    const Playlist(
+      id: 'pl1',
+      title: 'The Best of Armenian Rock Top 30',
+      imageUrl:
+          'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=800&q=80',
+      trackCount: 30,
+      isLiked: true,
+    ),
+    const Playlist(
+      id: 'pl3',
+      title: 'The Best Pop Hits 2026',
+      imageUrl:
+          'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=800&q=80',
+      trackCount: 25,
+      isLiked: true,
+    ),
+    const Playlist(
+      id: 'pl5',
+      title: 'Chill Vibes & Relax',
+      imageUrl:
+          'https://images.unsplash.com/photo-1459749411175-04bf5292ceea?auto=format&fit=crop&w=800&q=80',
+      trackCount: 18,
+      isLiked: true,
+    ),
+    const Playlist(
+      id: 'pl6',
+      title: 'Classic Rock Legends',
+      imageUrl:
+          'https://images.unsplash.com/photo-1511735111819-9a3f7709049c?auto=format&fit=crop&w=800&q=80',
+      trackCount: 50,
+      isLiked: true,
+    ),
+  ];
+
+  final List<Track> _favoriteTracks = [
+  Track(
+    id: 'fav1',
+    title: 'Toxicity',
+    artistName: 'System of a Down',
+    imageUrl:
+        'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=800&q=80',
+    duration: const Duration(minutes: 3, seconds: 39),
+    audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3',
+    isLiked: true,
+  ),
+  Track(
+    id: 'fav2',
+    title: 'Bohemian Rhapsody',
+    artistName: 'Queen',
+    imageUrl:
+        'https://images.unsplash.com/photo-1498038432885-c6f3f1b912ee?auto=format&fit=crop&w=800&q=80',
+    duration: const Duration(minutes: 5, seconds: 55),
+    audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
+    isLiked: true,
+  ),
+  Track(
+    id: 'fav3',
+    title: 'Blinding Lights',
+    artistName: 'The Weeknd',
+    imageUrl:
+        'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=800&q=80',
+    duration: const Duration(minutes: 3, seconds: 20),
+    audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3',
+    isLiked: true,
+  ),
+  Track(
+    id: 'fav4',
+    title: 'Lose Yourself',
+    artistName: 'Eminem',
+    imageUrl:
+        'https://images.unsplash.com/photo-1571902943202-507ec2618e8f?auto=format&fit=crop&w=800&q=80',
+    duration: const Duration(minutes: 5, seconds: 26),
+    audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3',
+    isLiked: true,
+  ),
+  Track(
+    id: 'fav5',
+    title: 'Dreams',
+    artistName: 'Fleetwood Mac',
+    imageUrl:
+        'https://images.unsplash.com/photo-1459749411175-04bf5292ceea?auto=format&fit=crop&w=800&q=80',
+    duration: const Duration(minutes: 4, seconds: 14),
+    audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3',
+    isLiked: true,
+  ),
+  Track(
+    id: 'fav6',
+    title: 'Titanium',
+    artistName: 'David Guetta ft. Sia',
+    imageUrl:
+        'https://images.unsplash.com/photo-1571330735066-03aaa9429d89?auto=format&fit=crop&w=800&q=80',
+    duration: const Duration(minutes: 4, seconds: 5),
+    audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3',
+    isLiked: true,
+  ),
+];
+
   @override
   Future<List<Playlist>> getFeaturedPlaylists() async {
     await Future.delayed(const Duration(milliseconds: 400));
@@ -624,8 +738,19 @@ class PlaylistRepositoryMock implements PlaylistRepository {
   @override
   Future<List<Track>> getPlaylistTracks(String playlistId) async {
     await Future.delayed(const Duration(milliseconds: 300));
-    // Возвращаем треки в зависимости от playlistId
     return _playlistTracksMap[playlistId] ?? _popHitsTracks;
+  }
+
+  @override
+  Future<List<Playlist>> getFavoritePlaylists() async {
+    await Future.delayed(const Duration(milliseconds: 300));
+    return _favoritePlaylists;
+  }
+
+    @override
+  Future<List<Track>> getFavoriteTracks() async {
+    await Future.delayed(const Duration(milliseconds: 300));
+    return _favoriteTracks;
   }
 
   @override

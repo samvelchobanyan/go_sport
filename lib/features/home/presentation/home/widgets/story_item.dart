@@ -7,11 +7,7 @@ class StoryItem extends StatelessWidget {
   final Story story;
   final VoidCallback onTap;
 
-  const StoryItem({
-    super.key,
-    required this.story,
-    required this.onTap,
-  });
+  const StoryItem({super.key, required this.story, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -23,14 +19,14 @@ class StoryItem extends StatelessWidget {
         padding: const EdgeInsets.all(2),
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          gradient: !story.isViewed 
+          gradient: !story.isViewed
               ? const SweepGradient(
                   colors: DSColors.storyGradient,
                   stops: [0.0, 0.5, 1.0],
-                ) 
+                )
               : null,
-          // border: story.isViewed 
-          //     ? Border.all(color: DSColors.divider, width: 2) 
+          // border: story.isViewed
+          //     ? Border.all(color: DSColors.divider, width: 2)
           //     : null,
           color: story.isViewed ? DSColors.divider : null,
         ),
@@ -42,7 +38,7 @@ class StoryItem extends StatelessWidget {
           ),
           child: Center(
             child: SizedBox(
-              width: 62,  // 72 - 2*(outerRing 2 + whiteRing 3) = 62
+              width: 62, // 72 - 2*(outerRing 2 + whiteRing 3) = 62
               height: 62,
               child: ClipOval(
                 child: CachedNetworkImage(
