@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_spacing.dart';
+import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/domain/entities/story.dart';
 
@@ -30,7 +31,9 @@ class StoryOverlay extends StatelessWidget {
               fit: BoxFit.cover,
               placeholder: (context, url) => Container(
                 color: DSColors.gray20,
-                child: const Center(child: CircularProgressIndicator()),
+                child: const Center(
+                  child: CircularProgressIndicator(),
+                ),
               ),
               errorWidget: (context, url, error) => Container(
                 color: DSColors.gray20,
@@ -56,7 +59,11 @@ class StoryOverlay extends StatelessWidget {
                   color: DSColors.white.withOpacity(0.9),
                   shape: BoxShape.circle,
                 ),
-                child: Icon(Icons.close, size: 24, color: DSColors.black),
+                child: Icon(
+                  Icons.close,
+                  size: 24,
+                  color: DSColors.black,
+                ),
               ),
             ),
           ),
@@ -80,7 +87,9 @@ class StoryOverlay extends StatelessWidget {
               child: SafeArea(
                 top: false,
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: DSSpacing.l),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: DSSpacing.l,
+                  ),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -90,7 +99,9 @@ class StoryOverlay extends StatelessWidget {
                       // Title
                       Text(
                         story.title,
-                        style: context.h2?.copyWith(color: DSColors.white),
+                        style: context.h2?.copyWith(
+                          color: DSColors.white,
+                        ),
                       ),
 
                       const SizedBox(height: 10),
@@ -109,63 +120,37 @@ class StoryOverlay extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.all(24),
                         child: GestureDetector(
-                          onTap: () =>
-                              onAction(story.ctaTargetType, story.ctaTargetId),
+                          onTap: () => onAction(story.ctaTargetType, story.ctaTargetId),
                           child: Container(
-                            //   width: double.infinity,
-                            //   height: 56,
-                            //   decoration: BoxDecoration(
-                            //     color: DSColors.lime,
-                            //     borderRadius: BorderRadius.circular(DSRadius.xl),
-                            //   ),
-                            //   child: Row(
-                            //     mainAxisAlignment: MainAxisAlignment.center,
-                            //     children: [
-                            //       Icon(
-                            //         Icons.campaign,
-                            //         size: 20,
-                            //         color: DSColors.black,
-                            //       ),
-                            //       const SizedBox(width: 8),
-                            //       Text(
-                            //         story.ctaLabel,
-                            //         style: context.subtitleLBold?.copyWith(
-                            //           color: DSColors.black,
-                            //         ),
-                            //       ),
-                            //     ],
-                            //   ),
-                            // ),
-                            width: double.infinity,
-                            height: 56,
-                            decoration: BoxDecoration(
-                              color: DSColors.lime,
-                              borderRadius: BorderRadius.circular(28),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.campaign,
-                                  size: 20,
+                          width: double.infinity,
+                          height: 56,
+                          decoration: BoxDecoration(
+                            color: DSColors.lime,
+                            borderRadius: BorderRadius.circular(DSRadius.xl),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.campaign,
+                                size: 20,
+                                color: DSColors.black,
+                              ),
+                              const SizedBox(width: 8),
+                              Text(
+                                story.ctaLabel,
+                                style: context.subtitleLBold?.copyWith(
                                   color: DSColors.black,
                                 ),
-                                const SizedBox(width: 8),
-                                Text(
-                                  story.ctaLabel,
-                                  style: context.subtitleLBold?.copyWith(
-                                    color: DSColors.black,
-                                  ),
-                                ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
+                        ),
                         ),
                       ),
 
                       SizedBox(
-                        height:
-                            MediaQuery.of(context).padding.bottom + DSSpacing.l,
+                        height: MediaQuery.of(context).padding.bottom + DSSpacing.l,
                       ),
                     ],
                   ),

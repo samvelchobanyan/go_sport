@@ -22,8 +22,7 @@ extension FeaturedPlaylistsStateX on FeaturedPlaylistsState {
   Playlist? getPlaylist(String id) => playlists[id];
 }
 
-class FeaturedPlaylistsNotifier
-    extends AutoDisposeNotifier<FeaturedPlaylistsState> {
+class FeaturedPlaylistsNotifier extends Notifier<FeaturedPlaylistsState> {
   late final PlaylistRepository _repository;
 
   @override
@@ -62,7 +61,6 @@ class FeaturedPlaylistsNotifier
 }
 
 final featuredPlaylistsStateProvider =
-    NotifierProvider.autoDispose<
-      FeaturedPlaylistsNotifier,
-      FeaturedPlaylistsState
-    >(FeaturedPlaylistsNotifier.new);
+    NotifierProvider<FeaturedPlaylistsNotifier, FeaturedPlaylistsState>(
+      FeaturedPlaylistsNotifier.new,
+    );
