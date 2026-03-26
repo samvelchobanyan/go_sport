@@ -14,6 +14,7 @@ import 'package:go_sport/features/favorites/presentation/my_favorites/my_favorit
 import 'package:go_sport/features/favorites/presentation/new_episodes/new_episodes_screen.dart';
 import 'package:go_sport/features/favorites/presentation/my_programs/my_programs_screen.dart';
 import 'package:go_sport/features/playlists/presentation/playlist/playlist_screen.dart';
+import 'package:go_sport/features/radio_page/presentation/radio/radio_page_screen.dart';
 
 final GoRouter appRouter = GoRouter(
   initialLocation: AppRoutes.home,
@@ -110,9 +111,13 @@ final GoRouter appRouter = GoRouter(
         // Radio Branch
         StatefulShellBranch(
           routes: [
+            // GoRoute(
+            //   path: AppRoutes.radio,
+            //   builder: (context, state) => const RadioScreen(),
+            // ),
             GoRoute(
               path: AppRoutes.radio,
-              builder: (context, state) => const RadioScreen(),
+              builder: (context, state) => const RadioPageScreen(),
             ),
           ],
         ),
