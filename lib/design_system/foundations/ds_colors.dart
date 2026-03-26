@@ -26,7 +26,7 @@ class DSColors {
   static const gray30 = Color(0x4D000000); // 30%
   static const gray20 = Color(0x33000000); // 20%
   static const gray10 = Color(0x1A000000); // 10%
-  static const gray5 = Color(0x0D000000); // 5%
+  static const gray5 = Color(0xFFF2F2F2); // 5%
 
   static const divider = gray20; // rgba(245,245,247,1)
 

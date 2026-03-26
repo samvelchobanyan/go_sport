@@ -3,7 +3,7 @@ import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/domain/entities/track.dart';
-import 'package:go_sport/features/shared_widgets/bottom_pop_up.dart';
+import 'package:go_sport/features/shared_widgets/bottom_pop_ups/track_options.dart';
 import 'package:go_sport/shared/widgets/equalizer_indicator.dart';
 
 class EpisodeTile extends StatelessWidget {
@@ -86,7 +86,7 @@ class EpisodeTile extends StatelessWidget {
             GestureDetector(
               onTap: () {
                 onMenuTap(); //in case something different should happen
-                showItemOptionsBottomSheet(
+                showTrackOptionsBottomSheet(
                   context: context,
                   imageUrl: episode.imageUrl,
                   title: episode.title,
