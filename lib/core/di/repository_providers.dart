@@ -11,13 +11,14 @@ import 'package:go_sport/domain/repositories/music_repository.dart';
 import 'package:go_sport/domain/repositories/programs_repository.dart';
 
 import '../../data/repositories/news_repository_mock.dart';
-import '../../data/repositories/playlist_repository_mock.dart';
+import '../../data/repositories/playlist_repository_impl.dart';
 import '../../data/repositories/story_repository_mock.dart';
 import '../../data/repositories/tracks_repository_mock.dart';
 import '../../domain/repositories/news_repository.dart';
 import '../../domain/repositories/playlist_repository.dart';
 import '../../domain/repositories/story_repository.dart';
 import '../../domain/repositories/track_repository.dart';
+import '../di/network_providers.dart';
 
 final storyRepositoryProvider = Provider<StoryRepository>((ref) {
   return StoryRepositoryMock();
@@ -28,7 +29,7 @@ final newsRepositoryProvider = Provider<NewsRepository>((ref) {
 });
 
 final playlistRepositoryProvider = Provider<PlaylistRepository>((ref) {
-  return PlaylistRepositoryMock();
+  return PlaylistRepositoryImpl(ref.read(apiClientProvider));
 });
 
 final tracksRepositoryProvider = Provider<TrackRepository>((ref) {

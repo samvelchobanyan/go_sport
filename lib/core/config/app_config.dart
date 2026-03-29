@@ -17,7 +17,7 @@ class AppConfig {
 
   static const dev = AppConfig._(
     env: AppEnv.dev,
-    apiBaseUrl: 'https://dev-api.gosport.com/v1',
+    apiBaseUrl: 'http://37.157.212.21:1338',
     connectTimeout: Duration(seconds: 30),
     receiveTimeout: Duration(seconds: 30),
     enableLogging: true,

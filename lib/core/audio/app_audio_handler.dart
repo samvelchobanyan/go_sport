@@ -55,6 +55,15 @@ class AppAudioHandler extends BaseAudioHandler with QueueHandler, SeekHandler {
           LoopMode.one: AudioServiceRepeatMode.one,
         }[_player.loopMode]!,
       ));
+    }, onError: (Object error, StackTrace stackTrace) {
+      debugPrint('AudioHandler: Playback error — $error');
+      // Skip to next track if available, otherwise stop
+      if (_player.hasNext) {
+        _player.seekToNext();
+        _player.play();
+      } else {
+        _player.stop();
+      }
     });
 
     // 2. Broadcast current track changes to the system
