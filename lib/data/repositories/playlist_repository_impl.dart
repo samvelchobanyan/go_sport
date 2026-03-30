@@ -29,15 +29,17 @@ class PlaylistRepositoryImpl implements PlaylistRepository {
   @override
   Future<List<Track>> getPlaylistTracks(String playlistId) async {
     final response = await _apiClient.get(
-      '/api/tracks',
+      '/api/playlists/$playlistId',
       queryParameters: {
-        'filters[Playlists][documentId][\$eq]': playlistId,
-        'populate': '*',
+        'populate[Tracks][populate][Album][populate]': 'Cover',
+        'populate[Tracks][populate][File][populate]': '*',
+        'populate[Cover][populate]': '*',
       },
     );
 
-    final data = response.data['data'] as List<dynamic>;
-    return data
+    final data = response.data['data'] as Map<String, dynamic>;
+    final tracks = data['Tracks'] as List<dynamic>? ?? [];
+    return tracks
         .map((e) => TrackDto.fromJson(e as Map<String, dynamic>).toDomain())
         .toList();
   }

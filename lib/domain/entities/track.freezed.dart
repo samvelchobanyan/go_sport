@@ -20,7 +20,7 @@ mixin _$Track {
   String get id => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   String get artistName => throw _privateConstructorUsedError;
-  String get imageUrl => throw _privateConstructorUsedError;
+  String? get imageUrl => throw _privateConstructorUsedError;
   Duration get duration => throw _privateConstructorUsedError;
   String get audioUrl => throw _privateConstructorUsedError;
   DateTime? get releaseDate => throw _privateConstructorUsedError;
@@ -41,7 +41,7 @@ abstract class $TrackCopyWith<$Res> {
     String id,
     String title,
     String artistName,
-    String imageUrl,
+    String? imageUrl,
     Duration duration,
     String audioUrl,
     DateTime? releaseDate,
@@ -67,7 +67,7 @@ class _$TrackCopyWithImpl<$Res, $Val extends Track>
     Object? id = null,
     Object? title = null,
     Object? artistName = null,
-    Object? imageUrl = null,
+    Object? imageUrl = freezed,
     Object? duration = null,
     Object? audioUrl = null,
     Object? releaseDate = freezed,
@@ -87,10 +87,10 @@ class _$TrackCopyWithImpl<$Res, $Val extends Track>
                 ? _value.artistName
                 : artistName // ignore: cast_nullable_to_non_nullable
                       as String,
-            imageUrl: null == imageUrl
+            imageUrl: freezed == imageUrl
                 ? _value.imageUrl
                 : imageUrl // ignore: cast_nullable_to_non_nullable
-                      as String,
+                      as String?,
             duration: null == duration
                 ? _value.duration
                 : duration // ignore: cast_nullable_to_non_nullable
@@ -125,7 +125,7 @@ abstract class _$$TrackImplCopyWith<$Res> implements $TrackCopyWith<$Res> {
     String id,
     String title,
     String artistName,
-    String imageUrl,
+    String? imageUrl,
     Duration duration,
     String audioUrl,
     DateTime? releaseDate,
@@ -150,7 +150,7 @@ class __$$TrackImplCopyWithImpl<$Res>
     Object? id = null,
     Object? title = null,
     Object? artistName = null,
-    Object? imageUrl = null,
+    Object? imageUrl = freezed,
     Object? duration = null,
     Object? audioUrl = null,
     Object? releaseDate = freezed,
@@ -170,10 +170,10 @@ class __$$TrackImplCopyWithImpl<$Res>
             ? _value.artistName
             : artistName // ignore: cast_nullable_to_non_nullable
                   as String,
-        imageUrl: null == imageUrl
+        imageUrl: freezed == imageUrl
             ? _value.imageUrl
             : imageUrl // ignore: cast_nullable_to_non_nullable
-                  as String,
+                  as String?,
         duration: null == duration
             ? _value.duration
             : duration // ignore: cast_nullable_to_non_nullable
@@ -202,7 +202,7 @@ class _$TrackImpl implements _Track {
     required this.id,
     required this.title,
     required this.artistName,
-    required this.imageUrl,
+    this.imageUrl,
     required this.duration,
     required this.audioUrl,
     this.releaseDate,
@@ -216,7 +216,7 @@ class _$TrackImpl implements _Track {
   @override
   final String artistName;
   @override
-  final String imageUrl;
+  final String? imageUrl;
   @override
   final Duration duration;
   @override
@@ -279,7 +279,7 @@ abstract class _Track implements Track {
     required final String id,
     required final String title,
     required final String artistName,
-    required final String imageUrl,
+    final String? imageUrl,
     required final Duration duration,
     required final String audioUrl,
     final DateTime? releaseDate,
@@ -293,7 +293,7 @@ abstract class _Track implements Track {
   @override
   String get artistName;
   @override
-  String get imageUrl;
+  String? get imageUrl;
   @override
   Duration get duration;
   @override

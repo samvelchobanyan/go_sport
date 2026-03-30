@@ -177,7 +177,7 @@ extension PlayerStateX on PlayerState {
   /// Image URL for display (track image or source image as fallback)
   String? get displayImageUrl {
     final trackImage = currentTrack?.imageUrl;
-    if (trackImage != null && trackImage.isNotEmpty) {
+    if (trackImage != null) {
       return trackImage;
     }
     // Fallback to source image

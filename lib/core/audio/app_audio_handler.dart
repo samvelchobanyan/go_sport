@@ -110,7 +110,7 @@ class AppAudioHandler extends BaseAudioHandler with QueueHandler, SeekHandler {
         title: track.title,
         artist: track.artistName,
         duration: track.duration,
-        artUri: Uri.parse(track.imageUrl),
+        artUri: track.imageUrl != null ? Uri.parse(track.imageUrl!) : null,
         extras: {'audioUrl': track.audioUrl, 'imageUrl': track.imageUrl},
       );
     }).toList();

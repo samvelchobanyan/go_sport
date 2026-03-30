@@ -28,6 +28,7 @@ class TrackDto {
   final int length;
   final _FileDto? file;
   final List<_ArtistDto> artists;
+  final String? albumCoverUrl;
 
   TrackDto({
     required this.documentId,
@@ -35,9 +36,13 @@ class TrackDto {
     required this.length,
     required this.file,
     required this.artists,
+    this.albumCoverUrl,
   });
 
   factory TrackDto.fromJson(Map<String, dynamic> json) {
+    final album = json['Album'] as Map<String, dynamic>?;
+    final cover = album?['Cover'] as Map<String, dynamic>?;
+
     return TrackDto(
       documentId: json['documentId'] as String,
       name: json['Name'] as String,
@@ -49,6 +54,7 @@ class TrackDto {
               ?.map((e) => _ArtistDto.fromJson(e as Map<String, dynamic>))
               .toList() ??
           [],
+      albumCoverUrl: cover?['url'] as String?,
     );
   }
 
@@ -58,7 +64,7 @@ class TrackDto {
       id: documentId,
       title: name,
       artistName: artists.isNotEmpty ? artists.first.name : '',
-      imageUrl: '',
+      imageUrl: albumCoverUrl,
       duration: Duration(seconds: length),
       audioUrl: file?.url ?? '',
     );
