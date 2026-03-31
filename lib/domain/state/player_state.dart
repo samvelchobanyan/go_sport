@@ -38,6 +38,17 @@ enum RepeatMode {
 
 @freezed
 sealed class QueueSource with _$QueueSource {
+  const QueueSource._();
+
+  @override
+  String get id => switch (this) {
+    QueueSourceAlbum(:final id) => id,
+    QueueSourcePlaylist(:final id) => id,
+    QueueSourceProgram(:final id) => id,
+    QueueSourceFavorites(:final id) => id,
+    QueueSourceEpisodes(:final id) => id,
+  };
+
   const factory QueueSource.album({
     required String id,
     required String title,
@@ -324,6 +335,13 @@ class PlayerNotifier extends Notifier<PlayerState> {
     int startIndex = 0,
   }) async {
     if (tracks.isEmpty) return;
+
+    // Same source — just skip to the track
+    if (state.source?.id == source.id && state.mode == PlaybackMode.music) {
+      state = state.copyWith(currentIndex: startIndex);
+      await skipTo(startIndex);
+      return;
+    }
 
     // 1. Update UI State immediately (Optimistic update)
     state = state.copyWith(
