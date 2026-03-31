@@ -5,6 +5,7 @@ abstract interface class ProgramsRepository {
   Future<List<Program>> getAllPrograms();
   Future<List<Program>> getFeaturedPrograms();
   Future<List<Program>> getFavoritePrograms();
+  Future<Program> getProgram(String programId);
 
   Future<void> toggleLike(String id);
 

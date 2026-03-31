@@ -18,7 +18,7 @@ class FeaturedPlaylistsSection extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: EdgeInsets.symmetric(vertical: 16),
+              padding: EdgeInsets.only(bottom: 16),
               child: WaveSectionHeader(
                 title: 'Featured playlists',
                 showAnimation: true,

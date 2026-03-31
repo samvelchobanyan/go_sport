@@ -7,6 +7,7 @@ import 'package:go_sport/features/favorites/presentation/my_artists/my_artists_s
 import 'package:go_sport/features/favorites/presentation/my_playlists/my_playlists_screen.dart';
 import 'package:go_sport/features/home/presentation/home/home_screen.dart';
 import 'package:go_sport/features/music/presentation/music/music_screen.dart';
+import 'package:go_sport/features/program_details/presentation/program_details/program_details_screen.dart';
 import 'package:go_sport/features/radio/presentation/radio/radio_screen.dart';
 import 'package:go_sport/features/news/presentation/news_list/news_list_screen.dart';
 import 'package:go_sport/features/news/presentation/news_detail/news_detail_screen.dart';
@@ -69,6 +70,18 @@ final GoRouter appRouter = GoRouter(
                     return fadeSlidePage(
                       state: state,
                       child: PlaylistScreen(playlistId: id),
+                    );
+                  },
+                ),
+
+                // program route
+                   GoRoute(
+                  path: 'program/:id',
+                  pageBuilder: (context, state) {
+                    final id = state.pathParameters['id']!;
+                    return fadeSlidePage(
+                      state: state,
+                      child: ProgramDetailsScreen(programId: id),
                     );
                   },
                 ),

@@ -184,7 +184,7 @@ class HomeScreen extends ConsumerWidget {
             pinned: true,
             floating: true,
             leading: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.only(top: 8, bottom: 8, left: 16),
               child: UserAvatarButton(
                 imageUrl: null,
                 onTap: () {
@@ -195,10 +195,13 @@ class HomeScreen extends ConsumerWidget {
             title: SvgPicture.asset('assets/icons/app_logo.svg', height: 40),
             centerTitle: true,
             actions: [
-              SearchButton(
-                onTap: () {
-                  // TODO: открыть поиск
-                },
+              Padding(
+                padding: const EdgeInsets.only(top: 8, bottom: 8, right: 16),
+                child: SearchButton(
+                  onTap: () {
+                    // TODO: открыть поиск
+                  },
+                ),
               ),
             ],
           ),
@@ -229,7 +232,7 @@ class HomeScreen extends ConsumerWidget {
 
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.only(top: 32),
+              padding: const EdgeInsets.only(top: 32, bottom: 16),
               child: PodcastBanner(
                 onTap: () {
                   // TODO: навигация
@@ -245,7 +248,7 @@ class HomeScreen extends ConsumerWidget {
           if (news.isNotEmpty)
             SliverToBoxAdapter(
               child: Padding(
-                padding: const EdgeInsets.only(top: 32, bottom: 16),
+                padding: const EdgeInsets.only(top: 32, bottom: 10),
                 child: GestureDetector(
                   onTap: () {
                     context.push('/news');

@@ -130,7 +130,11 @@ class _MusicScreenState extends ConsumerState<MusicScreen> {
                         floating: true,
 
                         leading: Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding: const EdgeInsets.only(
+                            top: 8,
+                            bottom: 8,
+                            left: 16,
+                          ),
                           child: UserAvatarButton(
                             imageUrl: null,
                             onTap: () {
@@ -141,10 +145,17 @@ class _MusicScreenState extends ConsumerState<MusicScreen> {
                         title: Text('Music', style: context.h2),
                         centerTitle: true,
                         actions: [
-                          SearchButton(
-                            onTap: () {
-                              // TODO: open music search
-                            },
+                          Padding(
+                            padding: const EdgeInsets.only(
+                              top: 8,
+                              bottom: 8,
+                              right: 16,
+                            ),
+                            child: SearchButton(
+                              onTap: () {
+                                // TODO: open music search
+                              },
+                            ),
                           ),
                         ],
                       ),

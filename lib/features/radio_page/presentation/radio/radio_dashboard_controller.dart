@@ -13,29 +13,18 @@ class RadioDashboardState with _$RadioDashboardState {
   const factory RadioDashboardState({
     @Default(false) bool isLoading,
     String? error,
-    // @Default(0) int favoritesCount,
-    // @Default(0) int playlistsCount,
-    // @Default(0) int albumsCount,
-    // @Default(0) int artistsCount,
-    // @Default(0) int episodesCount,
-    // @Default(0) int programsCount,
     @Default([]) List<Program> featuredPrograms,
     @Default([]) List<Track> featuredEpisodes,
-    // @Default([]) List<Artist> featuredArtists,
   }) = _RadioDashboardState;
 }
 
 class RadioDashboardController
     extends AutoDisposeNotifier<RadioDashboardState> {
-  // late final MusicRepository _repository;
-  // late final ArtistsRepository _artistsRepository;
   late final EpisodesRepository _episodesRepository;
   late final ProgramsRepository _programsRepository;
 
   @override
   RadioDashboardState build() {
-    // _repository = ref.watch(musicRepositoryProvider);
-    // _albumRepository = ref.watch(albumsRepositoryProvider);
     _episodesRepository = ref.watch(episodesRepositoryProvider);
     _programsRepository = ref.watch(programsRepositoryProvider);
     Future.microtask(() => load());
@@ -46,39 +35,13 @@ class RadioDashboardController
     state = state.copyWith(isLoading: true, error: null);
 
     try {
-      final (
-        // favorites,
-        // playlists,
-        // albumsCount,
-        // artistsCount,
-        // episodes,
-        featuredPrograms,
-        featuredEpisodes,
-        // albums,
-        // artists,
-      ) = await (
-        // _repository.getFavoritesCount(),
-        // _repository.getPlaylistsCount(),
-        // _repository.getAlbumsCount(),
-        // _repository.getArtistsCount(),
-        // _repository.getEpisodesCount(),
-        // _repository.getProgramsCount(),
-        // _albumRepository.getFeaturedAlbums(),
-        // _artistsRepository.getFeaturedArtists(),
+      final (featuredPrograms, featuredEpisodes) = await (
         _programsRepository.getFeaturedPrograms(),
         _episodesRepository.getFeaturedEpisodes(),
       ).wait;
 
       state = state.copyWith(
-        // isLoading: false,
-        // favoritesCount: favorites,
-        // playlistsCount: playlists,
-        // albumsCount: albumsCount,
-        // artistsCount: artistsCount,
-        // episodesCount: episodes,
-        // programsCount: programs,
-        // featuredAlbums: albums,
-        // featuredArtists: artists,
+        isLoading: false,
         featuredPrograms: featuredPrograms,
         featuredEpisodes: featuredEpisodes,
       );

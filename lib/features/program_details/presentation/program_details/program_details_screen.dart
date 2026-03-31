@@ -4,50 +4,47 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/domain/entities/track.dart';
-import 'package:go_sport/domain/state/featured_playlists_state.dart';
 import 'package:go_sport/domain/state/player_state.dart';
+
+import 'program_details_controller.dart';
+import '../widgets/program_hero.dart';
+import '../../../shared_widgets/track_tile.dart';
 import 'package:go_sport/features/shared_widgets/dotted_divider.dart';
 
-import 'playlist_controller.dart';
-import '../widgets/playlist_hero.dart';
-import '../widgets/playlist_screen_skeleton.dart';
-import '../../../shared_widgets/track_tile.dart';
+class ProgramDetailsScreen extends ConsumerWidget {
+  final String programId;
 
-class PlaylistScreen extends ConsumerWidget {
-  final String playlistId;
-
-  const PlaylistScreen({super.key, required this.playlistId});
+  const ProgramDetailsScreen({super.key, required this.programId});
 
   void _onTrackTap(
     WidgetRef ref,
     List<Track> tracks,
     int index,
-    String playlistTitle,
-    String playlistImageUrl,
+    String programTitle,
+    String programImageUrl,
   ) {
     ref
         .read(playerStateProvider.notifier)
         .playQueue(
           tracks,
-          source: QueueSource.playlist(
-            id: playlistId,
-            title: playlistTitle,
-            imageUrl: playlistImageUrl,
+          source: QueueSource.program(
+            id: programId,
+            title: programTitle,
+            imageUrl: programImageUrl,
           ),
           startIndex: index,
         );
   }
 
   void _onTrackMenuTap(int index) {
-    // TODO: Show track menu
     debugPrint('Track menu tapped at index: $index');
   }
 
   void _onPlayTap(
     WidgetRef ref,
     List<Track> tracks,
-    String playlistTitle,
-    String playlistImageUrl,
+    String programTitle,
+    String programImageUrl,
   ) {
     if (tracks.isEmpty) return;
 
@@ -55,36 +52,17 @@ class PlaylistScreen extends ConsumerWidget {
         .read(playerStateProvider.notifier)
         .playQueue(
           tracks,
-          source: QueueSource.playlist(
-            id: playlistId,
-            title: playlistTitle,
-            imageUrl: playlistImageUrl,
+          source: QueueSource.program(
+            id: programId,
+            title: programTitle,
+            imageUrl: programImageUrl,
           ),
         );
   }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    print('Building PlaylistScreen for playlistId: $playlistId');
-    final playlistsState = ref.watch(featuredPlaylistsStateProvider);
-    final playlist = playlistsState.getPlaylist(playlistId);
-    final tracksState = ref.watch(playlistControllerProvider(playlistId));
-
-    if (playlist == null) {
-      return Scaffold(
-        backgroundColor: DSColors.white,
-        appBar: AppBar(
-          backgroundColor: DSColors.white,
-          elevation: 0,
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back, color: DSColors.black),
-            onPressed: () => context.pop(),
-          ),
-        ),
-        body: const Center(child: Text('Playlist not found')),
-      );
-    }
-
+    final state = ref.watch(programDetailsControllerProvider(programId));
     final screenHeight = MediaQuery.of(context).size.height;
     final expandedHeight = screenHeight * 0.5;
 
@@ -94,6 +72,7 @@ class PlaylistScreen extends ConsumerWidget {
         backgroundColor: DSColors.white,
         body: CustomScrollView(
           slivers: [
+            // SliverAppBar with flexibleSpace
             SliverAppBar(
               expandedHeight: expandedHeight,
               pinned: true,
@@ -131,30 +110,28 @@ class PlaylistScreen extends ConsumerWidget {
                       size: 20,
                     ),
                   ),
-                  onPressed: () {
-                    // TODO: Share playlist
-                  },
+                  onPressed: () {},
                 ),
               ],
               flexibleSpace: FlexibleSpaceBar(
-                background: PlaylistHero(
-                  playlist: playlist,
-                  onLikeTap: () => ref
-                      .read(playlistControllerProvider(playlistId).notifier)
-                      .toggleLike(),
-                  onPlayTap: () {
-                    final tracksValue = tracksState.mapOrNull(
-                      data: (data) => data.tracks,
-                    );
-                    if (tracksValue != null) {
-                      _onPlayTap(
-                        ref,
-                        tracksValue,
-                        playlist.title,
-                        playlist.imageUrl,
-                      );
-                    }
-                  },
+                background: state.map(
+                  loading: (_) =>
+                      const Center(child: CircularProgressIndicator()),
+                  error: (e) => Center(child: Text('Error: ${e.message}')),
+                  data: (d) => ProgramHero(
+                    program: d.program,
+                    onNotificationTap: () {},
+                    onPlayTap: () {
+                      if (d.program.episodes.isNotEmpty) {
+                        _onPlayTap(
+                          ref,
+                          d.program.episodes,
+                          d.program.title,
+                          d.program.imageUrl,
+                        );
+                      }
+                    },
+                  ),
                 ),
               ),
               bottom: PreferredSize(
@@ -170,35 +147,31 @@ class PlaylistScreen extends ConsumerWidget {
                 ),
               ),
             ),
-            tracksState.when(
-              loading: () =>
-                  const SliverFillRemaining(child: PlaylistScreenSkeleton()),
-              error: (message) => SliverFillRemaining(
+
+            // Tracks list or loader/error
+            state.map(
+              loading: (_) => const SliverFillRemaining(
+                child: Center(child: CircularProgressIndicator()),
+              ),
+              error: (e) => SliverFillRemaining(
                 hasScrollBody: false,
                 child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Error: $message',
-                        style: const TextStyle(color: DSColors.black),
-                      ),
-                      const SizedBox(height: 16),
-                      ElevatedButton(
-                        onPressed: () => ref
-                            .read(
-                              playlistControllerProvider(playlistId).notifier,
-                            )
-                            .loadTracks(),
-                        child: const Text('Retry'),
-                      ),
-                    ],
+                  child: Text(
+                    'Error: ${e.message}',
+                    style: const TextStyle(color: DSColors.black),
                   ),
                 ),
               ),
-              data: (tracks) {
+              data: (d) {
+                final tracks = d.program.episodes;
                 final playerState = ref.watch(playerStateProvider);
                 final playingTrackId = playerState.currentTrack?.id;
+
+                if (tracks.isEmpty) {
+                  return const SliverFillRemaining(
+                    child: Center(child: Text('No tracks available')),
+                  );
+                }
 
                 return SliverPadding(
                   padding: const EdgeInsets.only(bottom: 100, top: 0),
@@ -207,8 +180,7 @@ class PlaylistScreen extends ConsumerWidget {
                       final track = tracks[index];
                       final isCurrentTrack = track.id == playingTrackId;
                       final bool? trackPlayingState = isCurrentTrack
-                          ? playerState.isPlaying &&
-                                playerState.isRadioMode == false
+                          ? playerState.isPlaying && !playerState.isRadioMode
                           : null;
 
                       return Column(
@@ -221,8 +193,8 @@ class PlaylistScreen extends ConsumerWidget {
                               ref,
                               tracks,
                               index,
-                              playlist.title,
-                              playlist.imageUrl,
+                              d.program.title,
+                              d.program.imageUrl,
                             ),
                             onMenuTap: () => _onTrackMenuTap(index),
                           ),

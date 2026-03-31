@@ -18,13 +18,7 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$RadioDashboardState {
   bool get isLoading => throw _privateConstructorUsedError;
-  String? get error =>
-      throw _privateConstructorUsedError; // @Default(0) int favoritesCount,
-  // @Default(0) int playlistsCount,
-  // @Default(0) int albumsCount,
-  // @Default(0) int artistsCount,
-  // @Default(0) int episodesCount,
-  // @Default(0) int programsCount,
+  String? get error => throw _privateConstructorUsedError;
   List<Program> get featuredPrograms => throw _privateConstructorUsedError;
   List<Track> get featuredEpisodes => throw _privateConstructorUsedError;
 
@@ -169,19 +163,7 @@ class _$RadioDashboardStateImpl implements _RadioDashboardState {
   final bool isLoading;
   @override
   final String? error;
-  // @Default(0) int favoritesCount,
-  // @Default(0) int playlistsCount,
-  // @Default(0) int albumsCount,
-  // @Default(0) int artistsCount,
-  // @Default(0) int episodesCount,
-  // @Default(0) int programsCount,
   final List<Program> _featuredPrograms;
-  // @Default(0) int favoritesCount,
-  // @Default(0) int playlistsCount,
-  // @Default(0) int albumsCount,
-  // @Default(0) int artistsCount,
-  // @Default(0) int episodesCount,
-  // @Default(0) int programsCount,
   @override
   @JsonKey()
   List<Program> get featuredPrograms {
@@ -256,12 +238,7 @@ abstract class _RadioDashboardState implements RadioDashboardState {
   @override
   bool get isLoading;
   @override
-  String? get error; // @Default(0) int favoritesCount,
-  // @Default(0) int playlistsCount,
-  // @Default(0) int albumsCount,
-  // @Default(0) int artistsCount,
-  // @Default(0) int episodesCount,
-  // @Default(0) int programsCount,
+  String? get error;
   @override
   List<Program> get featuredPrograms;
   @override
