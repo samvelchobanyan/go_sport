@@ -22,6 +22,16 @@ class _ArtistDto {
   }
 }
 
+class _CoverDto {
+  final String url;
+
+  _CoverDto({required this.url});
+
+  factory _CoverDto.fromJson(Map<String, dynamic> json) {
+    return _CoverDto(url: json['url'] as String);
+  }
+}
+
 class TrackDto {
   final String documentId;
   final String name;
@@ -41,7 +51,7 @@ class TrackDto {
 
   factory TrackDto.fromJson(Map<String, dynamic> json) {
     final album = json['Album'] as Map<String, dynamic>?;
-    final cover = album?['Cover'] as Map<String, dynamic>?;
+    final coverJson = album?['Cover'] as Map<String, dynamic>?;
 
     return TrackDto(
       documentId: json['documentId'] as String,
@@ -54,7 +64,7 @@ class TrackDto {
               ?.map((e) => _ArtistDto.fromJson(e as Map<String, dynamic>))
               .toList() ??
           [],
-      albumCoverUrl: cover?['url'] as String?,
+      albumCoverUrl: coverJson != null ? _CoverDto.fromJson(coverJson).url : null,
     );
   }
 
