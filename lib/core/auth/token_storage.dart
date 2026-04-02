@@ -1,4 +1,9 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
+final tokenStorageProvider = Provider<TokenStorage>((_) =>
+  throw UnimplementedError('tokenStorageProvider must be overridden in ProviderScope'));
+
 class TokenStorage {
   static const _accessTokenKey = 'access_token';
   static const _refreshTokenKey = 'refresh_token';

@@ -1,5 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_sport/data/repositories/auth_repository_impl.dart';
 import 'package:go_sport/data/repositories/albums_repository_impl.dart';
+import 'package:go_sport/domain/repositories/auth_repository.dart';
 import 'package:go_sport/data/repositories/albums_repository_mock.dart';
 import 'package:go_sport/data/repositories/artists_repository_impl.dart';
 import 'package:go_sport/data/repositories/artists_repository_mock.dart';
@@ -57,4 +59,8 @@ final artistsRepositoryProvider = Provider<ArtistsRepository>((ref) {
 
 final albumsRepositoryProvider = Provider<AlbumsRepository>((ref) {
   return AlbumsRepositoryImpl(ref.read(apiClientProvider));
+});
+
+final authRepositoryProvider = Provider<AuthRepository>((ref) {
+  return AuthRepositoryImpl(ref.read(apiClientProvider));
 });

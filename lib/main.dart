@@ -39,8 +39,9 @@ Future<void> main() async {
         overrides: [
           audioHandlerProvider.overrideWithValue(audioHandler),
           apiClientProvider.overrideWithValue(apiClient),
+          tokenStorageProvider.overrideWithValue(tokenStorage),
         ],
-        child: const MainApp(),
+        child: MainApp(tokenStorage: tokenStorage),
       ),
     );
   } catch (e, stackTrace) {
@@ -66,7 +67,9 @@ Future<void> main() async {
 }
 
 class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+  final TokenStorage tokenStorage;
+
+  const MainApp({super.key, required this.tokenStorage});
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +77,7 @@ class MainApp extends StatelessWidget {
       title: 'Audio App',
       debugShowCheckedModeBanner: false,
       theme: DSThemeData.mainTheme,
-      routerConfig: appRouter,
+      routerConfig: createAppRouter(tokenStorage),
     );
   }
 }
