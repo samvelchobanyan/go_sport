@@ -1,5 +1,4 @@
 import 'package:go_router/go_router.dart';
-import 'package:flutter/material.dart';
 import 'package:go_sport/core/navigation/main_shell.dart';
 import 'package:go_sport/core/navigation/page_transitions.dart';
 import 'package:go_sport/core/navigation/routes.dart';
@@ -14,6 +13,8 @@ import 'package:go_sport/features/news/presentation/news_detail/news_detail_scre
 import 'package:go_sport/features/favorites/presentation/my_favorites/my_favorites_screen.dart';
 import 'package:go_sport/features/favorites/presentation/new_episodes/new_episodes_screen.dart';
 import 'package:go_sport/features/favorites/presentation/my_programs/my_programs_screen.dart';
+import 'package:go_sport/domain/entities/album.dart';
+import 'package:go_sport/features/albums/presentation/album/album_screen.dart';
 import 'package:go_sport/features/playlists/presentation/playlist/playlist_screen.dart';
 
 final GoRouter appRouter = GoRouter(
@@ -61,6 +62,17 @@ final GoRouter appRouter = GoRouter(
               path: AppRoutes.music,
               builder: (context, state) => const MusicScreen(),
               routes: [
+                // Album route
+                GoRoute(
+                  path: 'album/:id',
+                  pageBuilder: (context, state) {
+                    final album = state.extra as Album;
+                    return fadeSlidePage(
+                      state: state,
+                      child: AlbumScreen(album: album),
+                    );
+                  },
+                ),
                 //playlist route
                 GoRoute(
                   path: 'playlist/:id',

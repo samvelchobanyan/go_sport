@@ -232,8 +232,9 @@ class _MusicScreenState extends ConsumerState<MusicScreen> {
                                           trackCount:
                                               featuredAlbums[index].trackCount,
                                           onTap: () {
-                                            print(
-                                              'Album tapped: ${featuredAlbums[index].id}',
+                                            context.push(
+                                              '/music/album/${featuredAlbums[index].id}',
+                                              extra: featuredAlbums[index],
                                             );
                                           },
                                         ),

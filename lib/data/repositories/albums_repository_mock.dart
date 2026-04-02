@@ -1,4 +1,5 @@
 import 'package:go_sport/domain/entities/album.dart';
+import 'package:go_sport/domain/entities/track.dart';
 import 'package:go_sport/domain/repositories/albums_repository.dart';
 
 class AlbumsRepositoryMock implements AlbumsRepository {
@@ -71,6 +72,12 @@ class AlbumsRepositoryMock implements AlbumsRepository {
   ) async {
     await Future.delayed(const Duration(milliseconds: 800));
     return _mockData.where((p) => p.isLiked).toList();
+  }
+
+  @override
+  Future<List<Track>> getAlbumTracks(String albumId) async {
+    await Future.delayed(const Duration(milliseconds: 800));
+    return [];
   }
 
   @override
