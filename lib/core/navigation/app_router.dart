@@ -19,27 +19,26 @@ import 'package:go_sport/domain/entities/album.dart';
 import 'package:go_sport/features/albums/presentation/album/album_screen.dart';
 import 'package:go_sport/features/playlists/presentation/playlist/playlist_screen.dart';
 
-const _privateRoutes = [
-  '/music/myfavorites',
-  '/music/myplaylists',
-  '/music/myalbums',
-  '/music/myartists',
-  '/music/myepisodes',
-  '/music/myprograms',
-];
-
 GoRouter createAppRouter(TokenStorage tokenStorage) {
   return GoRouter(
     initialLocation: AppRoutes.home,
     redirect: (context, state) {
       final isAuthenticated = tokenStorage.accessToken != null;
+      final isGuest = tokenStorage.choseGuest;
       final isLoginRoute = state.matchedLocation == AppRoutes.login;
-      final isPrivateRoute = _privateRoutes.contains(state.matchedLocation);
+      final isPrivateRoute = AppRoutes.privateRoutes.contains(state.matchedLocation);
 
-      if (!isAuthenticated && !isLoginRoute && isPrivateRoute) {
+      // unauthorized (первый запуск) — гоним на логин со всех маршрутов кроме самого логина
+      if (!isAuthenticated && !isGuest && !isLoginRoute) {
         return AppRoutes.login;
       }
 
+      // приватный маршрут — только для authenticated
+      if (!isAuthenticated && isPrivateRoute) {
+        return AppRoutes.login;
+      }
+
+      // уже залогинен — незачем показывать логин
       if (isAuthenticated && isLoginRoute) {
         return AppRoutes.home;
       }

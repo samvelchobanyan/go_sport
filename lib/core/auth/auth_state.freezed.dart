@@ -19,32 +19,38 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$AuthState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
+    required TResult Function() unauthorized,
     required TResult Function() guest,
     required TResult Function(String name, String avatarUrl) authenticated,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? unauthorized,
     TResult? Function()? guest,
     TResult? Function(String name, String avatarUrl)? authenticated,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? unauthorized,
     TResult Function()? guest,
     TResult Function(String name, String avatarUrl)? authenticated,
     required TResult orElse(),
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
+    required TResult Function(AuthUnauthorized value) unauthorized,
     required TResult Function(AuthGuest value) guest,
     required TResult Function(AuthAuthenticated value) authenticated,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(AuthUnauthorized value)? unauthorized,
     TResult? Function(AuthGuest value)? guest,
     TResult? Function(AuthAuthenticated value)? authenticated,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
+    TResult Function(AuthUnauthorized value)? unauthorized,
     TResult Function(AuthGuest value)? guest,
     TResult Function(AuthAuthenticated value)? authenticated,
     required TResult orElse(),
@@ -69,6 +75,119 @@ class _$AuthStateCopyWithImpl<$Res, $Val extends AuthState>
 
   /// Create a copy of AuthState
   /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+abstract class _$$AuthUnauthorizedImplCopyWith<$Res> {
+  factory _$$AuthUnauthorizedImplCopyWith(
+    _$AuthUnauthorizedImpl value,
+    $Res Function(_$AuthUnauthorizedImpl) then,
+  ) = __$$AuthUnauthorizedImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$AuthUnauthorizedImplCopyWithImpl<$Res>
+    extends _$AuthStateCopyWithImpl<$Res, _$AuthUnauthorizedImpl>
+    implements _$$AuthUnauthorizedImplCopyWith<$Res> {
+  __$$AuthUnauthorizedImplCopyWithImpl(
+    _$AuthUnauthorizedImpl _value,
+    $Res Function(_$AuthUnauthorizedImpl) _then,
+  ) : super(_value, _then);
+
+  /// Create a copy of AuthState
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+
+class _$AuthUnauthorizedImpl implements AuthUnauthorized {
+  const _$AuthUnauthorizedImpl();
+
+  @override
+  String toString() {
+    return 'AuthState.unauthorized()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$AuthUnauthorizedImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() unauthorized,
+    required TResult Function() guest,
+    required TResult Function(String name, String avatarUrl) authenticated,
+  }) {
+    return unauthorized();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? unauthorized,
+    TResult? Function()? guest,
+    TResult? Function(String name, String avatarUrl)? authenticated,
+  }) {
+    return unauthorized?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? unauthorized,
+    TResult Function()? guest,
+    TResult Function(String name, String avatarUrl)? authenticated,
+    required TResult orElse(),
+  }) {
+    if (unauthorized != null) {
+      return unauthorized();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(AuthUnauthorized value) unauthorized,
+    required TResult Function(AuthGuest value) guest,
+    required TResult Function(AuthAuthenticated value) authenticated,
+  }) {
+    return unauthorized(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(AuthUnauthorized value)? unauthorized,
+    TResult? Function(AuthGuest value)? guest,
+    TResult? Function(AuthAuthenticated value)? authenticated,
+  }) {
+    return unauthorized?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(AuthUnauthorized value)? unauthorized,
+    TResult Function(AuthGuest value)? guest,
+    TResult Function(AuthAuthenticated value)? authenticated,
+    required TResult orElse(),
+  }) {
+    if (unauthorized != null) {
+      return unauthorized(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class AuthUnauthorized implements AuthState {
+  const factory AuthUnauthorized() = _$AuthUnauthorizedImpl;
 }
 
 /// @nodoc
@@ -114,6 +233,7 @@ class _$AuthGuestImpl implements AuthGuest {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
+    required TResult Function() unauthorized,
     required TResult Function() guest,
     required TResult Function(String name, String avatarUrl) authenticated,
   }) {
@@ -123,6 +243,7 @@ class _$AuthGuestImpl implements AuthGuest {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? unauthorized,
     TResult? Function()? guest,
     TResult? Function(String name, String avatarUrl)? authenticated,
   }) {
@@ -132,6 +253,7 @@ class _$AuthGuestImpl implements AuthGuest {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? unauthorized,
     TResult Function()? guest,
     TResult Function(String name, String avatarUrl)? authenticated,
     required TResult orElse(),
@@ -145,6 +267,7 @@ class _$AuthGuestImpl implements AuthGuest {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
+    required TResult Function(AuthUnauthorized value) unauthorized,
     required TResult Function(AuthGuest value) guest,
     required TResult Function(AuthAuthenticated value) authenticated,
   }) {
@@ -154,6 +277,7 @@ class _$AuthGuestImpl implements AuthGuest {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(AuthUnauthorized value)? unauthorized,
     TResult? Function(AuthGuest value)? guest,
     TResult? Function(AuthAuthenticated value)? authenticated,
   }) {
@@ -163,6 +287,7 @@ class _$AuthGuestImpl implements AuthGuest {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
+    TResult Function(AuthUnauthorized value)? unauthorized,
     TResult Function(AuthGuest value)? guest,
     TResult Function(AuthAuthenticated value)? authenticated,
     required TResult orElse(),
@@ -259,6 +384,7 @@ class _$AuthAuthenticatedImpl implements AuthAuthenticated {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
+    required TResult Function() unauthorized,
     required TResult Function() guest,
     required TResult Function(String name, String avatarUrl) authenticated,
   }) {
@@ -268,6 +394,7 @@ class _$AuthAuthenticatedImpl implements AuthAuthenticated {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? unauthorized,
     TResult? Function()? guest,
     TResult? Function(String name, String avatarUrl)? authenticated,
   }) {
@@ -277,6 +404,7 @@ class _$AuthAuthenticatedImpl implements AuthAuthenticated {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? unauthorized,
     TResult Function()? guest,
     TResult Function(String name, String avatarUrl)? authenticated,
     required TResult orElse(),
@@ -290,6 +418,7 @@ class _$AuthAuthenticatedImpl implements AuthAuthenticated {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
+    required TResult Function(AuthUnauthorized value) unauthorized,
     required TResult Function(AuthGuest value) guest,
     required TResult Function(AuthAuthenticated value) authenticated,
   }) {
@@ -299,6 +428,7 @@ class _$AuthAuthenticatedImpl implements AuthAuthenticated {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(AuthUnauthorized value)? unauthorized,
     TResult? Function(AuthGuest value)? guest,
     TResult? Function(AuthAuthenticated value)? authenticated,
   }) {
@@ -308,6 +438,7 @@ class _$AuthAuthenticatedImpl implements AuthAuthenticated {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
+    TResult Function(AuthUnauthorized value)? unauthorized,
     TResult Function(AuthGuest value)? guest,
     TResult Function(AuthAuthenticated value)? authenticated,
     required TResult orElse(),

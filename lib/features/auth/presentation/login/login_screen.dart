@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:go_sport/core/navigation/routes.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/core/auth/auth_state.dart';
 import 'package:go_sport/features/auth/presentation/login/login_controller.dart';
 
 class LoginScreen extends ConsumerWidget {
@@ -76,7 +77,10 @@ class LoginScreen extends ConsumerWidget {
                 width: double.infinity,
                 height: 48,
                 child: OutlinedButton(
-                  onPressed: () => context.go(AppRoutes.home),
+                  onPressed: () async {
+                    await ref.read(authProvider.notifier).continueAsGuest();
+                    if (context.mounted) context.go(AppRoutes.home);
+                  },
                   style: OutlinedButton.styleFrom(
                     foregroundColor: DSColors.black,
                     side: const BorderSide(color: DSColors.black),

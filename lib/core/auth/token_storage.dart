@@ -7,18 +7,27 @@ final tokenStorageProvider = Provider<TokenStorage>((_) =>
 class TokenStorage {
   static const _accessTokenKey = 'access_token';
   static const _refreshTokenKey = 'refresh_token';
+  static const _choseGuestKey = 'chose_guest';
 
   final _secureStorage = const FlutterSecureStorage();
 
   String? _cachedAccessToken;
   String? _cachedRefreshToken;
+  bool _choseGuest = false;
 
   String? get accessToken => _cachedAccessToken;
   String? get refreshToken => _cachedRefreshToken;
+  bool get choseGuest => _choseGuest;
 
   Future<void> init() async {
     _cachedAccessToken = await _secureStorage.read(key: _accessTokenKey);
     _cachedRefreshToken = await _secureStorage.read(key: _refreshTokenKey);
+    _choseGuest = await _secureStorage.read(key: _choseGuestKey) == 'true';
+  }
+
+  Future<void> setChoseGuest() async {
+    _choseGuest = true;
+    await _secureStorage.write(key: _choseGuestKey, value: 'true');
   }
 
   Future<void> saveTokens({

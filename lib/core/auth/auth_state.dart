@@ -9,6 +9,7 @@ part 'auth_state.freezed.dart';
 
 @freezed
 sealed class AuthState with _$AuthState {
+  const factory AuthState.unauthorized() = AuthUnauthorized;
   const factory AuthState.guest() = AuthGuest;
   const factory AuthState.authenticated({
     required String name,
@@ -28,15 +29,24 @@ class AuthNotifier extends Notifier<AuthState> {
     if (_tokenStorage.accessToken != null) {
       return const AuthState.authenticated(name: '', avatarUrl: '');
     }
-    return const AuthState.guest();
+    if (_tokenStorage.choseGuest) {
+      return const AuthState.guest();
+    }
+    return const AuthState.unauthorized();
   }
 
   void setUser({required String name, required String avatarUrl}) {
     state = AuthState.authenticated(name: name, avatarUrl: avatarUrl);
   }
 
-  void setGuest() {
+  Future<void> continueAsGuest() async {
+    await _tokenStorage.setChoseGuest();
     state = const AuthState.guest();
+  }
+
+  Future<void> logout() async {
+    await _tokenStorage.clearTokens();
+    state = const AuthState.unauthorized();
   }
 }
 
