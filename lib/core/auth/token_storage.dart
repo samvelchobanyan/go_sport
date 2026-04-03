@@ -36,6 +36,7 @@ class TokenStorage {
   }) async {
     _cachedAccessToken = accessToken;
     _cachedRefreshToken = refreshToken;
+    _choseGuest = false;
     await Future.wait([
       _secureStorage.write(key: _accessTokenKey, value: accessToken),
       _secureStorage.write(key: _refreshTokenKey, value: refreshToken),
@@ -45,6 +46,7 @@ class TokenStorage {
   Future<void> clearTokens() async {
     _cachedAccessToken = null;
     _cachedRefreshToken = null;
+    _choseGuest = false;
     await Future.wait([
       _secureStorage.delete(key: _accessTokenKey),
       _secureStorage.delete(key: _refreshTokenKey),

@@ -1,5 +1,6 @@
 class AppRoutes {
   static const String login = '/login';
+  static const String profile = '/profile';
   static const String home = '/';
   static const String homeStory = '/story/:id';
   static const String homeNews = '/news';
@@ -21,6 +22,7 @@ class AppRoutes {
   static const String radioSchedule = '/radio/schedule';
 
   static const List<String> privateRoutes = [
+    profile,
     musicMyFavorites,
     musicMyPlaylists,
     musicMyAlbums,

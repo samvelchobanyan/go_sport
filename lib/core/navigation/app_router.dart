@@ -18,6 +18,7 @@ import 'package:go_sport/features/favorites/presentation/my_programs/my_programs
 import 'package:go_sport/domain/entities/album.dart';
 import 'package:go_sport/features/albums/presentation/album/album_screen.dart';
 import 'package:go_sport/features/playlists/presentation/playlist/playlist_screen.dart';
+import 'package:go_sport/features/profile/presentation/profile/profile_screen.dart';
 
 GoRouter createAppRouter(TokenStorage tokenStorage) {
   return GoRouter(
@@ -49,6 +50,13 @@ GoRouter createAppRouter(TokenStorage tokenStorage) {
       GoRoute(
         path: AppRoutes.login,
         builder: (context, state) => const LoginScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.profile,
+        pageBuilder: (context, state) => fadeSlidePage(
+          state: state,
+          child: const ProfileScreen(),
+        ),
       ),
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) {

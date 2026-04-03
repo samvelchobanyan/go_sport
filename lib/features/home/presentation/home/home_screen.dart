@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
+import 'package:go_sport/core/navigation/routes.dart';
 import 'package:go_sport/domain/entities/playlist.dart';
 import 'package:go_sport/domain/state/news_state.dart';
 import 'package:go_sport/domain/state/stories_state.dart';
@@ -188,7 +189,7 @@ class HomeScreen extends ConsumerWidget {
               child: UserAvatarButton(
                 imageUrl: null,
                 onTap: () {
-                  // TODO: навигация в профиль
+                  context.push(AppRoutes.profile);
                 },
               ),
             ),

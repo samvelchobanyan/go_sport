@@ -14,7 +14,7 @@ class GuestTimerBar extends StatefulWidget {
 }
 
 class _GuestTimerBarState extends State<GuestTimerBar> {
-  static const _guestDuration = Duration(minutes: 30);
+  static const _guestDuration = Duration(minutes: 3);
 
   late Duration _remaining;
   Timer? _timer;
@@ -111,52 +111,65 @@ class _GuestTimerBarState extends State<GuestTimerBar> {
       padding: EdgeInsets.only(
         left: 16,
         right: 16,
-        top: 12,
-        bottom: MediaQuery.of(context).padding.bottom + 12,
+        top: 13,
+        bottom: 13 + MediaQuery.of(context).padding.bottom,
       ),
       color: DSColors.black,
       child: Row(
         children: [
-          Expanded(
+          SizedBox(
+            width: 145,
             child: Text(
               'The app guest usage\nwill end soon',
               style: DSTypography.textL.copyWith(color: DSColors.white),
             ),
           ),
-          Container(
-            width: 55,
-            height: 36,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              color: const Color(0xFF2C2C2E),
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Text(
-              _formatTime(_remaining),
-              style: DSTypography.subtitleMBold.copyWith(color: DSColors.lime),
-            ),
-          ),
-          const SizedBox(width: 10),
-          Text(
-            '·',
-            style: TextStyle(color: DSColors.gray50, fontSize: 16),
-          ),
-          const SizedBox(width: 10),
-          SizedBox(
-            height: 36,
-            child: ElevatedButton.icon(
-              onPressed: widget.onRegisterTap,
-              icon: const Icon(Icons.person, size: 18),
-              label: const Text('Register'),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: DSColors.blue,
-                foregroundColor: DSColors.white,
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                shape: RoundedRectangleBorder(
+          const Spacer(),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                width: 55,
+                height: 33,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: DSColors.white.withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(20),
                 ),
+                child: Text(
+                  _formatTime(_remaining),
+                  style: DSTypography.textL.copyWith(color: DSColors.lime),
+                ),
               ),
-            ),
+              const SizedBox(width: 10),
+              Container(
+                width: 3,
+                height: 3,
+                decoration: BoxDecoration(
+                  color: DSColors.white.withValues(alpha: 0.2),
+                  shape: BoxShape.circle,
+                ),
+              ),
+              const SizedBox(width: 10),
+              SizedBox(
+                width: 101,
+                height: 33,
+                child: ElevatedButton.icon(
+                  onPressed: widget.onRegisterTap,
+                  icon: const Icon(Icons.person, size: 18),
+                  label: const Text('Register'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: DSColors.blue,
+                    foregroundColor: DSColors.white,
+                    padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 8),
+                    textStyle: DSTypography.fieldLabel.copyWith(color: DSColors.white),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
       ),

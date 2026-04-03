@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:go_sport/core/navigation/routes.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
@@ -134,7 +135,7 @@ class _MusicScreenState extends ConsumerState<MusicScreen> {
                           child: UserAvatarButton(
                             imageUrl: null,
                             onTap: () {
-                              // TODO: navigate to profile
+                              context.push(AppRoutes.profile);
                             },
                           ),
                         ),
