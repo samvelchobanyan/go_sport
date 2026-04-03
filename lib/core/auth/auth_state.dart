@@ -39,8 +39,8 @@ class AuthNotifier extends Notifier<AuthState> {
     state = AuthState.authenticated(name: name, avatarUrl: avatarUrl);
   }
 
-  Future<void> continueAsGuest() async {
-    await _tokenStorage.setChoseGuest();
+  void continueAsGuest() {
+    _tokenStorage.setChoseGuest();
     state = const AuthState.guest();
   }
 

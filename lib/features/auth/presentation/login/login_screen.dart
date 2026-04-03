@@ -77,8 +77,8 @@ class LoginScreen extends ConsumerWidget {
                 width: double.infinity,
                 height: 48,
                 child: OutlinedButton(
-                  onPressed: () async {
-                    await ref.read(authProvider.notifier).continueAsGuest();
+                  onPressed: () {
+                    ref.read(authProvider.notifier).continueAsGuest();
                     if (context.mounted) context.go(AppRoutes.home);
                   },
                   style: OutlinedButton.styleFrom(
