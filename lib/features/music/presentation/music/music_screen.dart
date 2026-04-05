@@ -281,8 +281,9 @@ class _MusicScreenState extends ConsumerState<MusicScreen> {
                                         imageUrl:
                                             featuredArtists[index].imageUrl,
                                         onTap: () {
-                                          print(
-                                            'Artist tapped: ${featuredArtists[index].id}',
+                                          context.push(
+                                            '/music/artist/${featuredArtists[index].id}',
+                                            extra: featuredArtists[index],
                                           );
                                         },
                                       ),

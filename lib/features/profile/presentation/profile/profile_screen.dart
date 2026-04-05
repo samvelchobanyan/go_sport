@@ -14,11 +14,11 @@ class ProfileScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final authState = ref.watch(authProvider);
     final userName = authState.maybeWhen(
-      authenticated: (name, avatarUrl) => name.isEmpty ? 'Profile' : name,
+      authenticated: (name, avatarUrl, userId) => name.isEmpty ? 'Profile' : name,
       orElse: () => 'Profile',
     );
     final avatarUrl = authState.maybeWhen(
-      authenticated: (name, avatarUrl) => avatarUrl.isEmpty ? null : avatarUrl,
+      authenticated: (name, avatarUrl, userId) => avatarUrl.isEmpty ? null : avatarUrl,
       orElse: () => null,
     );
 

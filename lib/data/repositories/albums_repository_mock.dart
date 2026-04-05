@@ -81,9 +81,10 @@ class AlbumsRepositoryMock implements AlbumsRepository {
   }
 
   @override
-  Future<void> toggleLike(String id) async {
+  Future<void> toggleLike(String albumId) async {
     await Future.delayed(const Duration(milliseconds: 300));
     // В реальном API здесь будет HTTP запрос
     // Состояние обновляется в domain state (optimistic update)
   }
 }
+  

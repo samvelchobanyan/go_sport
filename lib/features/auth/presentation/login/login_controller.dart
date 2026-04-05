@@ -51,6 +51,7 @@ class LoginController extends AutoDisposeNotifier<LoginState> {
       ref.read(authProvider.notifier).setUser(
             name: result.user.name,
             avatarUrl: '',
+            userId: result.user.id,
           );
 
       state = const LoginState.success();

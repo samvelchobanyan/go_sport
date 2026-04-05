@@ -56,32 +56,32 @@ class MyAlbumsNotifier extends Notifier<MyAlbumsState> {
   }
 
   /// Optimistic like toggle
-  Future<void> toggleLike(String id) async {
-    final index = state.albums.indexWhere((a) => a.id == id);
-    if (index == -1) return;
+  // Future<void> toggleLike(String id) async {
+  //   final index = state.albums.indexWhere((a) => a.id == id);
+  //   if (index == -1) return;
 
-    final album = state.albums[index];
-    final updated = album.copyWith(isLiked: !album.isLiked);
+  //   final album = state.albums[index];
+  //   final updated = album.copyWith(isLiked: !album.isLiked);
 
-    // Optimistic update
-    final updatedList = [...state.albums];
-    updatedList[index] = updated;
+  //   // Optimistic update
+  //   final updatedList = [...state.albums];
+  //   updatedList[index] = updated;
 
-    state = state.copyWith(albums: updatedList);
+  //   state = state.copyWith(albums: updatedList);
 
-    try {
-      await _repository.toggleLike(id);
-    } catch (e) {
-      // rollback
-      final rollbackList = [...state.albums];
-      rollbackList[index] = album;
+  //   try {
+  //     await _repository.toggleLike(id);
+  //   } catch (e) {
+  //     // rollback
+  //     final rollbackList = [...state.albums];
+  //     rollbackList[index] = album;
 
-      state = state.copyWith(
-        albums: rollbackList,
-        error: e.toString(),
-      );
-    }
-  }
+  //     state = state.copyWith(
+  //       albums: rollbackList,
+  //       error: e.toString(),
+  //     );
+  //   }
+  // }
 
   Future<void> refresh() async {
     state = state.copyWith(albums: []);

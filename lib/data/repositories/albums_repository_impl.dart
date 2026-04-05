@@ -45,13 +45,18 @@ class AlbumsRepositoryImpl implements AlbumsRepository {
 
   @override
   Future<List<Album>> getFavoriteAlbums() async {
-    throw UnimplementedError('getFavoritePlaylists requires authentication');
+    throw UnimplementedError('getFavoriteAlbums requires authentication');
   }
 
   @override
-  Future<void> toggleLike(String id) async {
-    await Future.delayed(const Duration(milliseconds: 300));
-    // В реальном API здесь будет HTTP запрос
-    // Состояние обновляется в domain state (optimistic update)
+  Future<void> toggleLike(String albumId) async {
+    await _apiClient.post(
+      '/api/user-albums',
+      data:{
+        'data': {
+          'Album': albumId,
+        },
+      }
+    );
   }
 }

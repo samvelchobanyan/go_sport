@@ -21,19 +21,20 @@ mixin _$AuthState {
   TResult when<TResult extends Object?>({
     required TResult Function() unauthorized,
     required TResult Function() guest,
-    required TResult Function(String name, String avatarUrl) authenticated,
+    required TResult Function(String name, String avatarUrl, int userId)
+    authenticated,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? unauthorized,
     TResult? Function()? guest,
-    TResult? Function(String name, String avatarUrl)? authenticated,
+    TResult? Function(String name, String avatarUrl, int userId)? authenticated,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? unauthorized,
     TResult Function()? guest,
-    TResult Function(String name, String avatarUrl)? authenticated,
+    TResult Function(String name, String avatarUrl, int userId)? authenticated,
     required TResult orElse(),
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -122,7 +123,8 @@ class _$AuthUnauthorizedImpl implements AuthUnauthorized {
   TResult when<TResult extends Object?>({
     required TResult Function() unauthorized,
     required TResult Function() guest,
-    required TResult Function(String name, String avatarUrl) authenticated,
+    required TResult Function(String name, String avatarUrl, int userId)
+    authenticated,
   }) {
     return unauthorized();
   }
@@ -132,7 +134,7 @@ class _$AuthUnauthorizedImpl implements AuthUnauthorized {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? unauthorized,
     TResult? Function()? guest,
-    TResult? Function(String name, String avatarUrl)? authenticated,
+    TResult? Function(String name, String avatarUrl, int userId)? authenticated,
   }) {
     return unauthorized?.call();
   }
@@ -142,7 +144,7 @@ class _$AuthUnauthorizedImpl implements AuthUnauthorized {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? unauthorized,
     TResult Function()? guest,
-    TResult Function(String name, String avatarUrl)? authenticated,
+    TResult Function(String name, String avatarUrl, int userId)? authenticated,
     required TResult orElse(),
   }) {
     if (unauthorized != null) {
@@ -235,7 +237,8 @@ class _$AuthGuestImpl implements AuthGuest {
   TResult when<TResult extends Object?>({
     required TResult Function() unauthorized,
     required TResult Function() guest,
-    required TResult Function(String name, String avatarUrl) authenticated,
+    required TResult Function(String name, String avatarUrl, int userId)
+    authenticated,
   }) {
     return guest();
   }
@@ -245,7 +248,7 @@ class _$AuthGuestImpl implements AuthGuest {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? unauthorized,
     TResult? Function()? guest,
-    TResult? Function(String name, String avatarUrl)? authenticated,
+    TResult? Function(String name, String avatarUrl, int userId)? authenticated,
   }) {
     return guest?.call();
   }
@@ -255,7 +258,7 @@ class _$AuthGuestImpl implements AuthGuest {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? unauthorized,
     TResult Function()? guest,
-    TResult Function(String name, String avatarUrl)? authenticated,
+    TResult Function(String name, String avatarUrl, int userId)? authenticated,
     required TResult orElse(),
   }) {
     if (guest != null) {
@@ -310,7 +313,7 @@ abstract class _$$AuthAuthenticatedImplCopyWith<$Res> {
     $Res Function(_$AuthAuthenticatedImpl) then,
   ) = __$$AuthAuthenticatedImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({String name, String avatarUrl});
+  $Res call({String name, String avatarUrl, int userId});
 }
 
 /// @nodoc
@@ -326,7 +329,11 @@ class __$$AuthAuthenticatedImplCopyWithImpl<$Res>
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({Object? name = null, Object? avatarUrl = null}) {
+  $Res call({
+    Object? name = null,
+    Object? avatarUrl = null,
+    Object? userId = null,
+  }) {
     return _then(
       _$AuthAuthenticatedImpl(
         name: null == name
@@ -337,6 +344,10 @@ class __$$AuthAuthenticatedImplCopyWithImpl<$Res>
             ? _value.avatarUrl
             : avatarUrl // ignore: cast_nullable_to_non_nullable
                   as String,
+        userId: null == userId
+            ? _value.userId
+            : userId // ignore: cast_nullable_to_non_nullable
+                  as int,
       ),
     );
   }
@@ -345,16 +356,22 @@ class __$$AuthAuthenticatedImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$AuthAuthenticatedImpl implements AuthAuthenticated {
-  const _$AuthAuthenticatedImpl({required this.name, required this.avatarUrl});
+  const _$AuthAuthenticatedImpl({
+    required this.name,
+    required this.avatarUrl,
+    required this.userId,
+  });
 
   @override
   final String name;
   @override
   final String avatarUrl;
+  @override
+  final int userId;
 
   @override
   String toString() {
-    return 'AuthState.authenticated(name: $name, avatarUrl: $avatarUrl)';
+    return 'AuthState.authenticated(name: $name, avatarUrl: $avatarUrl, userId: $userId)';
   }
 
   @override
@@ -364,11 +381,12 @@ class _$AuthAuthenticatedImpl implements AuthAuthenticated {
             other is _$AuthAuthenticatedImpl &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.avatarUrl, avatarUrl) ||
-                other.avatarUrl == avatarUrl));
+                other.avatarUrl == avatarUrl) &&
+            (identical(other.userId, userId) || other.userId == userId));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, name, avatarUrl);
+  int get hashCode => Object.hash(runtimeType, name, avatarUrl, userId);
 
   /// Create a copy of AuthState
   /// with the given fields replaced by the non-null parameter values.
@@ -386,9 +404,10 @@ class _$AuthAuthenticatedImpl implements AuthAuthenticated {
   TResult when<TResult extends Object?>({
     required TResult Function() unauthorized,
     required TResult Function() guest,
-    required TResult Function(String name, String avatarUrl) authenticated,
+    required TResult Function(String name, String avatarUrl, int userId)
+    authenticated,
   }) {
-    return authenticated(name, avatarUrl);
+    return authenticated(name, avatarUrl, userId);
   }
 
   @override
@@ -396,9 +415,9 @@ class _$AuthAuthenticatedImpl implements AuthAuthenticated {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? unauthorized,
     TResult? Function()? guest,
-    TResult? Function(String name, String avatarUrl)? authenticated,
+    TResult? Function(String name, String avatarUrl, int userId)? authenticated,
   }) {
-    return authenticated?.call(name, avatarUrl);
+    return authenticated?.call(name, avatarUrl, userId);
   }
 
   @override
@@ -406,11 +425,11 @@ class _$AuthAuthenticatedImpl implements AuthAuthenticated {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? unauthorized,
     TResult Function()? guest,
-    TResult Function(String name, String avatarUrl)? authenticated,
+    TResult Function(String name, String avatarUrl, int userId)? authenticated,
     required TResult orElse(),
   }) {
     if (authenticated != null) {
-      return authenticated(name, avatarUrl);
+      return authenticated(name, avatarUrl, userId);
     }
     return orElse();
   }
@@ -454,10 +473,12 @@ abstract class AuthAuthenticated implements AuthState {
   const factory AuthAuthenticated({
     required final String name,
     required final String avatarUrl,
+    required final int userId,
   }) = _$AuthAuthenticatedImpl;
 
   String get name;
   String get avatarUrl;
+  int get userId;
 
   /// Create a copy of AuthState
   /// with the given fields replaced by the non-null parameter values.

@@ -27,6 +27,7 @@ class AlbumDto {
   final String coverUrl;
   final int cnt;
   final int year;
+  final bool isLiked;
 
   AlbumDto({
     required this.documentId,
@@ -35,6 +36,7 @@ class AlbumDto {
     required this.coverUrl,
     required this.cnt,
     required this.year,
+    this.isLiked = false,
   });
 
   factory AlbumDto.fromJson(Map<String, dynamic> json) {
@@ -52,6 +54,7 @@ class AlbumDto {
           : '',
       cnt: json['cnt'] as int? ?? 0,
       year: json['Year'] as int? ?? 0,
+      isLiked: json['isLiked'] as bool? ?? false,
     );
   }
 
@@ -63,6 +66,7 @@ class AlbumDto {
       imageUrl: coverUrl,
       trackCount: cnt,
       releaseYear: year.toString(),
+      isLiked: isLiked,
     );
   }
 }

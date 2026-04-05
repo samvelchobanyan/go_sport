@@ -16,7 +16,9 @@ import 'package:go_sport/features/favorites/presentation/my_favorites/my_favorit
 import 'package:go_sport/features/favorites/presentation/new_episodes/new_episodes_screen.dart';
 import 'package:go_sport/features/favorites/presentation/my_programs/my_programs_screen.dart';
 import 'package:go_sport/domain/entities/album.dart';
+import 'package:go_sport/domain/entities/artist.dart';
 import 'package:go_sport/features/albums/presentation/album/album_screen.dart';
+import 'package:go_sport/features/artists/presentation/artist/artist_screen.dart';
 import 'package:go_sport/features/playlists/presentation/playlist/playlist_screen.dart';
 import 'package:go_sport/features/profile/presentation/profile/profile_screen.dart';
 
@@ -100,6 +102,17 @@ GoRouter createAppRouter(TokenStorage tokenStorage) {
                 path: AppRoutes.music,
                 builder: (context, state) => const MusicScreen(),
                 routes: [
+                  // Artist route
+                  GoRoute(
+                    path: 'artist/:id',
+                    pageBuilder: (context, state) {
+                      final artist = state.extra as Artist;
+                      return fadeSlidePage(
+                        state: state,
+                        child: ArtistScreen(artist: artist),
+                      );
+                    },
+                  ),
                   // Album route
                   GoRoute(
                     path: 'album/:id',

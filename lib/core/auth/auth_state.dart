@@ -14,6 +14,7 @@ sealed class AuthState with _$AuthState {
   const factory AuthState.authenticated({
     required String name,
     required String avatarUrl,
+    required int userId,
   }) = AuthAuthenticated;
 }
 
@@ -27,7 +28,7 @@ class AuthNotifier extends Notifier<AuthState> {
     _tokenStorage = ref.watch(tokenStorageProvider);
 
     if (_tokenStorage.accessToken != null) {
-      return const AuthState.authenticated(name: '', avatarUrl: '');
+      return const AuthState.authenticated(name: '', avatarUrl: '', userId: 0);
     }
     if (_tokenStorage.choseGuest) {
       return const AuthState.guest();
@@ -35,8 +36,8 @@ class AuthNotifier extends Notifier<AuthState> {
     return const AuthState.unauthorized();
   }
 
-  void setUser({required String name, required String avatarUrl}) {
-    state = AuthState.authenticated(name: name, avatarUrl: avatarUrl);
+  void setUser({required String name, required String avatarUrl, required int userId}) {
+    state = AuthState.authenticated(name: name, avatarUrl: avatarUrl, userId: userId);
   }
 
   void continueAsGuest() {
