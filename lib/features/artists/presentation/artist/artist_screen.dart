@@ -20,18 +20,31 @@ class ArtistScreen extends ConsumerStatefulWidget {
 
 class _ArtistScreenState extends ConsumerState<ArtistScreen> {
   late bool _isLiked;
+  late String? _likeId;
 
   @override
   void initState() {
     super.initState();
     _isLiked = widget.artist.isLiked;
+    _likeId = widget.artist.likeId;
   }
 
   void _onLikeTap() {
+    final previousIsLiked = _isLiked;
+    final previousLikeId = _likeId;
+
     setState(() => _isLiked = !_isLiked);
-    ref
-        .read(artistControllerProvider(widget.artist.id).notifier)
-        .toggleLike(widget.artist.id);
+
+    final notifier = ref.read(artistControllerProvider(widget.artist.id).notifier);
+
+    notifier.toggleLike(widget.artist.id, previousIsLiked ? previousLikeId : null).then((newLikeId) {
+      setState(() => _likeId = newLikeId);
+    }).catchError((_) {
+      setState(() {
+        _isLiked = previousIsLiked;
+        _likeId = previousLikeId;
+      });
+    });
   }
 
   @override

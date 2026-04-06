@@ -21,6 +21,7 @@ mixin _$Artist {
   String get artistName => throw _privateConstructorUsedError;
   String get imageUrl => throw _privateConstructorUsedError;
   bool get isLiked => throw _privateConstructorUsedError;
+  String? get likeId => throw _privateConstructorUsedError;
 
   /// Create a copy of Artist
   /// with the given fields replaced by the non-null parameter values.
@@ -33,7 +34,13 @@ abstract class $ArtistCopyWith<$Res> {
   factory $ArtistCopyWith(Artist value, $Res Function(Artist) then) =
       _$ArtistCopyWithImpl<$Res, Artist>;
   @useResult
-  $Res call({String id, String artistName, String imageUrl, bool isLiked});
+  $Res call({
+    String id,
+    String artistName,
+    String imageUrl,
+    bool isLiked,
+    String? likeId,
+  });
 }
 
 /// @nodoc
@@ -55,6 +62,7 @@ class _$ArtistCopyWithImpl<$Res, $Val extends Artist>
     Object? artistName = null,
     Object? imageUrl = null,
     Object? isLiked = null,
+    Object? likeId = freezed,
   }) {
     return _then(
       _value.copyWith(
@@ -74,6 +82,10 @@ class _$ArtistCopyWithImpl<$Res, $Val extends Artist>
                 ? _value.isLiked
                 : isLiked // ignore: cast_nullable_to_non_nullable
                       as bool,
+            likeId: freezed == likeId
+                ? _value.likeId
+                : likeId // ignore: cast_nullable_to_non_nullable
+                      as String?,
           )
           as $Val,
     );
@@ -88,7 +100,13 @@ abstract class _$$ArtistImplCopyWith<$Res> implements $ArtistCopyWith<$Res> {
   ) = __$$ArtistImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String id, String artistName, String imageUrl, bool isLiked});
+  $Res call({
+    String id,
+    String artistName,
+    String imageUrl,
+    bool isLiked,
+    String? likeId,
+  });
 }
 
 /// @nodoc
@@ -109,6 +127,7 @@ class __$$ArtistImplCopyWithImpl<$Res>
     Object? artistName = null,
     Object? imageUrl = null,
     Object? isLiked = null,
+    Object? likeId = freezed,
   }) {
     return _then(
       _$ArtistImpl(
@@ -128,6 +147,10 @@ class __$$ArtistImplCopyWithImpl<$Res>
             ? _value.isLiked
             : isLiked // ignore: cast_nullable_to_non_nullable
                   as bool,
+        likeId: freezed == likeId
+            ? _value.likeId
+            : likeId // ignore: cast_nullable_to_non_nullable
+                  as String?,
       ),
     );
   }
@@ -141,6 +164,7 @@ class _$ArtistImpl implements _Artist {
     required this.artistName,
     required this.imageUrl,
     this.isLiked = false,
+    this.likeId,
   });
 
   @override
@@ -152,10 +176,12 @@ class _$ArtistImpl implements _Artist {
   @override
   @JsonKey()
   final bool isLiked;
+  @override
+  final String? likeId;
 
   @override
   String toString() {
-    return 'Artist(id: $id, artistName: $artistName, imageUrl: $imageUrl, isLiked: $isLiked)';
+    return 'Artist(id: $id, artistName: $artistName, imageUrl: $imageUrl, isLiked: $isLiked, likeId: $likeId)';
   }
 
   @override
@@ -168,12 +194,13 @@ class _$ArtistImpl implements _Artist {
                 other.artistName == artistName) &&
             (identical(other.imageUrl, imageUrl) ||
                 other.imageUrl == imageUrl) &&
-            (identical(other.isLiked, isLiked) || other.isLiked == isLiked));
+            (identical(other.isLiked, isLiked) || other.isLiked == isLiked) &&
+            (identical(other.likeId, likeId) || other.likeId == likeId));
   }
 
   @override
   int get hashCode =>
-      Object.hash(runtimeType, id, artistName, imageUrl, isLiked);
+      Object.hash(runtimeType, id, artistName, imageUrl, isLiked, likeId);
 
   /// Create a copy of Artist
   /// with the given fields replaced by the non-null parameter values.
@@ -190,6 +217,7 @@ abstract class _Artist implements Artist {
     required final String artistName,
     required final String imageUrl,
     final bool isLiked,
+    final String? likeId,
   }) = _$ArtistImpl;
 
   @override
@@ -200,6 +228,8 @@ abstract class _Artist implements Artist {
   String get imageUrl;
   @override
   bool get isLiked;
+  @override
+  String? get likeId;
 
   /// Create a copy of Artist
   /// with the given fields replaced by the non-null parameter values.

@@ -10,5 +10,6 @@ class Artist with _$Artist {
     required String artistName,
     required String imageUrl,
     @Default(false) bool isLiked,
+    String? likeId,
   }) = _Artist;
 }

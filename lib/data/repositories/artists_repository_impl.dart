@@ -49,7 +49,18 @@ class ArtistsRepositoryImpl implements ArtistsRepository {
   }
 
   @override
-  Future<void> toggleLike(String id) async {
-    await Future.delayed(const Duration(milliseconds: 300));
+  Future<String?> toggleLike(String artistId, [String? likeId]) async {
+    if (likeId != null) {
+      await _apiClient.delete('/api/user-artists/$likeId');
+      return null;
+    }
+
+    final response = await _apiClient.post(
+      '/api/user-artists',
+      data: {
+        'data': {'Artist': artistId},
+      },
+    );
+    return response.data['data']['documentId'] as String;
   }
 }

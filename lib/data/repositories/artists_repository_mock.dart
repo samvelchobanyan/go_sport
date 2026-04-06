@@ -47,7 +47,9 @@ class ArtistsRepositoryMock implements ArtistsRepository {
   }
 
   @override
-  Future<void> toggleLike(String id) async {
+  Future<String?> toggleLike(String artistId, [String? likeId]) async {
     await Future.delayed(const Duration(milliseconds: 300));
+    if (likeId != null) return null;
+    return 'mock-like-id';
   }
 }

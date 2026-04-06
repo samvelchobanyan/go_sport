@@ -49,14 +49,18 @@ class AlbumsRepositoryImpl implements AlbumsRepository {
   }
 
   @override
-  Future<void> toggleLike(String albumId) async {
-    await _apiClient.post(
+  Future<String?> toggleLike(String albumId, [String? likeId]) async {
+    if (likeId != null) {
+      await _apiClient.delete('/api/user-albums/$likeId');
+      return null;
+    }
+
+    final response = await _apiClient.post(
       '/api/user-albums',
-      data:{
-        'data': {
-          'Album': albumId,
-        },
-      }
+      data: {
+        'data': {'Album': albumId},
+      },
     );
+    return response.data['data']['documentId'] as String;
   }
 }
