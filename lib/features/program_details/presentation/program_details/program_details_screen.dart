@@ -5,10 +5,10 @@ import 'package:go_router/go_router.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/domain/entities/track.dart';
 import 'package:go_sport/domain/state/player_state.dart';
-
+import 'package:go_sport/features/program_details/presentation/widgets/youtube_banner.dart';
+import 'package:go_sport/features/shared_widgets/track_tile_number.dart';
 import 'program_details_controller.dart';
 import '../widgets/program_hero.dart';
-import '../../../shared_widgets/track_tile.dart';
 import 'package:go_sport/features/shared_widgets/dotted_divider.dart';
 
 class ProgramDetailsScreen extends ConsumerWidget {
@@ -134,6 +134,7 @@ class ProgramDetailsScreen extends ConsumerWidget {
                   ),
                 ),
               ),
+
               bottom: PreferredSize(
                 preferredSize: const Size.fromHeight(24),
                 child: Container(
@@ -147,6 +148,9 @@ class ProgramDetailsScreen extends ConsumerWidget {
                 ),
               ),
             ),
+
+            // orange youtube banner
+            YoutubeBanner(),
 
             // Tracks list or loader/error
             state.map(
@@ -186,8 +190,9 @@ class ProgramDetailsScreen extends ConsumerWidget {
                       return Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          TrackTile(
+                          TrackTileNumber(
                             track: track,
+                            number: (index + 1).toString(),
                             isPlaying: trackPlayingState,
                             onTap: () => _onTrackTap(
                               ref,

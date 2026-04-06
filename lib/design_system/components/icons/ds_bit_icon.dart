@@ -53,7 +53,7 @@ class _DSBitIconState extends State<DSBitIcon>
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build( context) {
     if (_controller != null) {
       return AnimatedBuilder(
         animation: _controller!,

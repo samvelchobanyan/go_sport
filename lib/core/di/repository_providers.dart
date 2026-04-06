@@ -4,11 +4,13 @@ import 'package:go_sport/data/repositories/artists_repository_mock.dart';
 import 'package:go_sport/data/repositories/episodes_repository_mock.dart';
 import 'package:go_sport/data/repositories/music_repository_mock.dart';
 import 'package:go_sport/data/repositories/programs_repository_mock.dart';
+import 'package:go_sport/data/repositories/schedule_repository_mock.dart';
 import 'package:go_sport/domain/repositories/albums_repository.dart';
 import 'package:go_sport/domain/repositories/artists_repository.dart';
 import 'package:go_sport/domain/repositories/episodes_repository.dart';
 import 'package:go_sport/domain/repositories/music_repository.dart';
 import 'package:go_sport/domain/repositories/programs_repository.dart';
+import 'package:go_sport/domain/repositories/schedule_repository.dart';
 
 import '../../data/repositories/news_repository_mock.dart';
 import '../../data/repositories/playlist_repository_mock.dart';
@@ -54,4 +56,8 @@ final artistsRepositoryProvider = Provider<ArtistsRepository>((ref) {
 
 final albumsRepositoryProvider = Provider<AlbumsRepository>((ref) {
   return AlbumsRepositoryMock();
+});
+
+final scheduleRepositoryProvider = Provider<ScheduleRepository>((ref) {
+  return ScheduleRepositoryMock();
 });

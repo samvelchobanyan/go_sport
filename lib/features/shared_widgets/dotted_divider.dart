@@ -9,8 +9,8 @@ class DottedDivider extends StatelessWidget {
   const DottedDivider({
     super.key,
     this.color = DSColors.gray20,
-    this.dotSize = 3.0,
-    this.spacing = 5.0,
+    this.dotSize = 2.0,
+    this.spacing = 8.0,
   });
 
   @override

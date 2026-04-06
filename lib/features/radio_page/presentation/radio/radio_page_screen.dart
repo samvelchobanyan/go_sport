@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
@@ -62,7 +63,7 @@ class RadioPageScreen extends ConsumerWidget {
                           horizontal: 16,
                         ),
                         child: GestureDetector(
-                          onTap: () => {},
+                          onTap: () => {context.push('/radio/schedule')},
                           child: SvgPicture.asset('assets/icons/calendar.svg'),
                         ),
                       ),
@@ -100,7 +101,7 @@ class RadioPageScreen extends ConsumerWidget {
                                     child: ProgramCard(
                                       id: program.id,
                                       title: program.title,
-                                      imageUrl: program.imageUrl ,
+                                      imageUrl: program.imageUrl,
                                     ),
                                   );
                                 },

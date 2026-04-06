@@ -8,7 +8,6 @@ import 'package:go_sport/features/favorites/presentation/my_playlists/my_playlis
 import 'package:go_sport/features/home/presentation/home/home_screen.dart';
 import 'package:go_sport/features/music/presentation/music/music_screen.dart';
 import 'package:go_sport/features/program_details/presentation/program_details/program_details_screen.dart';
-import 'package:go_sport/features/radio/presentation/radio/radio_screen.dart';
 import 'package:go_sport/features/news/presentation/news_list/news_list_screen.dart';
 import 'package:go_sport/features/news/presentation/news_detail/news_detail_screen.dart';
 import 'package:go_sport/features/favorites/presentation/my_favorites/my_favorites_screen.dart';
@@ -16,6 +15,7 @@ import 'package:go_sport/features/favorites/presentation/new_episodes/new_episod
 import 'package:go_sport/features/favorites/presentation/my_programs/my_programs_screen.dart';
 import 'package:go_sport/features/playlists/presentation/playlist/playlist_screen.dart';
 import 'package:go_sport/features/radio_page/presentation/radio/radio_page_screen.dart';
+import 'package:go_sport/features/schedule/presentation/schedule/schedule_screen.dart';
 
 final GoRouter appRouter = GoRouter(
   initialLocation: AppRoutes.home,
@@ -75,7 +75,7 @@ final GoRouter appRouter = GoRouter(
                 ),
 
                 // program route
-                   GoRoute(
+                GoRoute(
                   path: 'program/:id',
                   pageBuilder: (context, state) {
                     final id = state.pathParameters['id']!;
@@ -131,6 +131,12 @@ final GoRouter appRouter = GoRouter(
             GoRoute(
               path: AppRoutes.radio,
               builder: (context, state) => const RadioPageScreen(),
+              routes: [
+                GoRoute(
+                  path: 'schedule',
+                  builder: (context, state) => const ScheduleScreen(),
+                ),
+              ],
             ),
           ],
         ),

@@ -205,6 +205,83 @@ class ProgramsRepositoryMock implements ProgramsRepository {
     ),
   ];
 
+  final Map<DateTime, List<Program>> _programsByDate = {
+    DateTime(2026, 9, 11): [
+      Program(
+        id: '1',
+        title: 'Morning Fitness',
+        imageUrl:
+            'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=300',
+        description: 'Start your day strong',
+        episodeCount: 1,
+        isLiked: true,
+        episodes: [
+          Track(
+            id: 't1',
+            title: 'Wake Up Workout',
+            artistName: 'Coach Alex',
+            imageUrl:
+                'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=300',
+            duration: const Duration(minutes: 20),
+            audioUrl:
+                'https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3',
+            releaseDate: DateTime(2026, 9, 11),
+            isLiked: false,
+          ),
+        ],
+      ),
+      Program(
+        id: '2',
+        title: 'Evening Yoga',
+        imageUrl:
+            'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=300',
+        description: 'Relax and recover',
+        episodeCount: 1,
+        isLiked: false,
+        episodes: [
+          Track(
+            id: 't2',
+            title: 'Stretch & Relax',
+            artistName: 'Yoga Flow',
+            imageUrl:
+                'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=300',
+            duration: const Duration(minutes: 30),
+            audioUrl:
+                'https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3',
+            releaseDate: DateTime(2026, 9, 11),
+            isLiked: false,
+          ),
+        ],
+      ),
+    ],
+
+    DateTime(2026, 9, 12): [
+      Program(
+        id: '3',
+        title: 'HIIT Blast',
+        imageUrl:
+            'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=300',
+        description: 'High intensity training',
+        episodeCount: 1,
+        isLiked: false,
+        episodes: [
+          Track(
+            id: 't3',
+            title: 'Burn Calories Fast',
+            artistName: 'HIIT Club',
+            imageUrl:
+                'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=300',
+            duration: const Duration(minutes: 25),
+            audioUrl:
+                'https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3',
+            releaseDate: DateTime(2026, 9, 12),
+            isLiked: false,
+          ),
+        ],
+      ),
+    ],
+  };
+
   @override
   Future<List<Program>> getAllPrograms(
     //{ required int page,
@@ -236,6 +313,15 @@ class ProgramsRepositoryMock implements ProgramsRepository {
   Future<Program> getProgram(String programId) async {
     await Future.delayed(const Duration(milliseconds: 300));
     return _mockData.firstWhere((p) => p.id == programId);
+  }
+
+  @override
+  Future<List<Program>> getProgramsByDate(DateTime date) async {
+    await Future.delayed(const Duration(milliseconds: 500));
+
+    final normalizedDate = DateTime(date.year, date.month, date.day);
+
+    return _programsByDate[normalizedDate] ?? [];
   }
 
   @override
