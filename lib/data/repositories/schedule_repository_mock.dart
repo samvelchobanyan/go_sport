@@ -10,41 +10,40 @@ class ScheduleRepositoryMock implements ScheduleRepository {
 
   void _generateMock() {
     final now = DateTime.now();
+    // Normalize "now" to midnight to avoid offset issues
+    final today = DateTime(now.year, now.month, now.day);
 
     int globalIndex = 0;
 
-    for (int day = 0; day < 10; day++) {
-      final date = DateTime(now.year, now.month, now.day + day);
+    // Start from -2 to include 2 days ago (e.g., April 5th if today is April 7th)
+    // Generate for 14 days to match the itemCount in your ListView
+    for (int dayOffset = -2; dayOffset < 12; dayOffset++) {
+      final date = today.add(Duration(days: dayOffset));
 
       final List<ScheduledProgram> dailyPrograms = [];
 
-      // Start at 06:00
+      // Start the radio broadcast at 06:00 AM for each specific day
       DateTime currentStart = DateTime(date.year, date.month, date.day, 6, 0);
 
       for (int i = 0; i < 14; i++) {
         final duration = Duration(minutes: 30 + (i % 3) * 15);
-
         final startDate = currentStart;
-        final endDate = startDate.add(duration);
-
+        
         dailyPrograms.add(
           ScheduledProgram(
-            id:
-                String.fromCharCode(65 + (globalIndex % 26)) +
-                globalIndex.toString(),
+            id: 'ID-${date.day}-${globalIndex}',
             title: 'Program ${globalIndex + 1}',
-            imageUrl: globalIndex < 10
-                ? 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=300&h=300&fit=crop'
-                : null,
+            imageUrl: 'https://picsum.photos/seed/${globalIndex}/300/300',
             startDate: startDate,
             duration: duration,
           ),
         );
 
-        currentStart = endDate;
+        currentStart = startDate.add(duration);
         globalIndex++;
       }
 
+      // Store using the normalized date (midnight) as the key
       _scheduleByDate[date] = dailyPrograms;
     }
   }
@@ -56,16 +55,16 @@ class ScheduleRepositoryMock implements ScheduleRepository {
   @override
   Future<List<DateTime>> getAllDates() async {
     await Future.delayed(const Duration(milliseconds: 300));
-
-    return _scheduleByDate.keys.toList();
+    return _scheduleByDate.keys.toList()..sort();
   }
 
   @override
   Future<List<ScheduledProgram>> getScheduleByDate(DateTime date) async {
     await Future.delayed(const Duration(milliseconds: 300));
-
+    
     final normalizedDate = _normalize(date);
-
+    
+    // Return programs if they exist, otherwise an empty list
     return _scheduleByDate[normalizedDate] ?? [];
   }
 }
