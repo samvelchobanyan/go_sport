@@ -136,7 +136,7 @@ class _MyProgramsScreenState extends ConsumerState<MyProgramsScreen> {
 
         final program = programs[index];
         return ProgramTile(
-          imageUrl: program.imageUrl ?? '',
+          imageUrl: program.imageUrl,
           title: program.title,
           episodeCount: program.episodeCount,
           onTap: () => debugPrint('Program tapped: ${program.id}'),

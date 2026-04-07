@@ -6,6 +6,7 @@ import 'package:go_sport/features/favorites/presentation/my_albums/my_albums_scr
 import 'package:go_sport/features/favorites/presentation/my_artists/my_artists_screen.dart';
 import 'package:go_sport/features/favorites/presentation/my_playlists/my_playlists_screen.dart';
 import 'package:go_sport/features/home/presentation/home/home_screen.dart';
+import 'package:go_sport/features/login/presentation/login/login_screen.dart';
 import 'package:go_sport/features/music/presentation/music/music_screen.dart';
 import 'package:go_sport/features/program_details/presentation/program_details/program_details_screen.dart';
 import 'package:go_sport/features/news/presentation/news_list/news_list_screen.dart';
@@ -55,68 +56,79 @@ final GoRouter appRouter = GoRouter(
           ],
         ),
 
+        // UNCOMMENT LATER
         // Music Branch
-        StatefulShellBranch(
+        // StatefulShellBranch(
+        //   routes: [
+        //     GoRoute(
+        //       path: AppRoutes.music,
+        //       builder: (context, state) => const MusicScreen(),
+        //       routes: [
+        //         //playlist route
+        //         GoRoute(
+        //           path: 'playlist/:id',
+        //           pageBuilder: (context, state) {
+        //             final id = state.pathParameters['id']!;
+        //             return fadeSlidePage(
+        //               state: state,
+        //               child: PlaylistScreen(playlistId: id),
+        //             );
+        //           },
+        //         ),
+
+        //         // program route
+        //         GoRoute(
+        //           path: 'program/:id',
+        //           pageBuilder: (context, state) {
+        //             final id = state.pathParameters['id']!;
+        //             return fadeSlidePage(
+        //               state: state,
+        //               child: ProgramDetailsScreen(programId: id),
+        //             );
+        //           },
+        //         ),
+        //         // Favorites route
+        //         GoRoute(
+        //           path: 'myfavorites',
+        //           builder: (context, state) => const MyFavoritesScreen(),
+        //         ),
+        //         // My Playlists route
+        //         GoRoute(
+        //           path: 'myplaylists',
+        //           builder: (context, state) => const MyPlaylistsScreen(),
+        //         ),
+        //         // My Albums route
+        //         GoRoute(
+        //           path: 'myalbums',
+        //           builder: (context, state) => const MyAlbumsScreen(),
+        //         ),
+        //         // My Artists route
+        //         GoRoute(
+        //           path: 'myartists',
+        //           builder: (context, state) => const MyArtistsScreen(),
+        //         ),
+        //         // Episodes route
+        //         GoRoute(
+        //           path: 'myepisodes',
+        //           builder: (context, state) => const NewEpisodesScreen(),
+        //         ),
+
+        //         // My Programs route
+        //         GoRoute(
+        //           path: 'myprograms',
+        //           builder: (context, state) => const MyProgramsScreen(),
+        //         ),
+        //       ],
+        //     ),
+        //   ],
+        // ),
+
+         StatefulShellBranch(
           routes: [
             GoRoute(
               path: AppRoutes.music,
-              builder: (context, state) => const MusicScreen(),
-              routes: [
-                //playlist route
-                GoRoute(
-                  path: 'playlist/:id',
-                  pageBuilder: (context, state) {
-                    final id = state.pathParameters['id']!;
-                    return fadeSlidePage(
-                      state: state,
-                      child: PlaylistScreen(playlistId: id),
-                    );
-                  },
-                ),
-
-                // program route
-                GoRoute(
-                  path: 'program/:id',
-                  pageBuilder: (context, state) {
-                    final id = state.pathParameters['id']!;
-                    return fadeSlidePage(
-                      state: state,
-                      child: ProgramDetailsScreen(programId: id),
-                    );
-                  },
-                ),
-                // Favorites route
-                GoRoute(
-                  path: 'myfavorites',
-                  builder: (context, state) => const MyFavoritesScreen(),
-                ),
-                // My Playlists route
-                GoRoute(
-                  path: 'myplaylists',
-                  builder: (context, state) => const MyPlaylistsScreen(),
-                ),
-                // My Albums route
-                GoRoute(
-                  path: 'myalbums',
-                  builder: (context, state) => const MyAlbumsScreen(),
-                ),
-                // My Artists route
-                GoRoute(
-                  path: 'myartists',
-                  builder: (context, state) => const MyArtistsScreen(),
-                ),
-                // Episodes route
-                GoRoute(
-                  path: 'myepisodes',
-                  builder: (context, state) => const NewEpisodesScreen(),
-                ),
-
-                // My Programs route
-                GoRoute(
-                  path: 'myprograms',
-                  builder: (context, state) => const MyProgramsScreen(),
-                ),
-              ],
+              builder: (context, state) => const LoginScreen(),
+             
             ),
           ],
         ),
