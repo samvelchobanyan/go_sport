@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/domain/entities/artist.dart';
 import 'package:go_sport/features/artists/presentation/artist/artist_controller.dart';
+import 'package:go_sport/features/artists/presentation/widgets/artist_screen_skeleton.dart';
 import 'package:go_sport/features/artists/presentation/widgets/artist_hero.dart';
 import 'package:go_sport/features/shared_widgets/album_tile.dart';
 import 'package:go_sport/features/shared_widgets/dotted_divider.dart';
@@ -20,18 +21,31 @@ class ArtistScreen extends ConsumerStatefulWidget {
 
 class _ArtistScreenState extends ConsumerState<ArtistScreen> {
   late bool _isLiked;
+  late String? _likeId;
 
   @override
   void initState() {
     super.initState();
     _isLiked = widget.artist.isLiked;
+    _likeId = widget.artist.likeId;
   }
 
   void _onLikeTap() {
+    final previousIsLiked = _isLiked;
+    final previousLikeId = _likeId;
+
     setState(() => _isLiked = !_isLiked);
-    ref
-        .read(artistControllerProvider(widget.artist.id).notifier)
-        .toggleLike(widget.artist.id);
+
+    final notifier = ref.read(artistControllerProvider(widget.artist.id).notifier);
+
+    notifier.toggleLike(widget.artist.id, previousIsLiked ? previousLikeId : null).then((newLikeId) {
+      setState(() => _likeId = newLikeId);
+    }).catchError((_) {
+      setState(() {
+        _isLiked = previousIsLiked;
+        _likeId = previousLikeId;
+      });
+    });
   }
 
   @override
@@ -106,9 +120,16 @@ class _ArtistScreenState extends ConsumerState<ArtistScreen> {
             ),
           ),
           albumsState.when(
-            loading: () => const SliverFillRemaining(
-              hasScrollBody: false,
-              child: Center(child: CircularProgressIndicator()),
+            loading: () => const SliverMainAxisGroup(
+              slivers: [
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: EdgeInsets.only(top: 8, bottom: 16),
+                    child: WaveSectionHeader(title: 'Albums'),
+                  ),
+                ),
+                ArtistScreenSkeleton(),
+              ],
             ),
             error: (message) => SliverFillRemaining(
               hasScrollBody: false,
@@ -131,45 +152,47 @@ class _ArtistScreenState extends ConsumerState<ArtistScreen> {
                 ),
               ),
             ),
-            data: (albums) => SliverPadding(
-              padding: const EdgeInsets.only(bottom: 100),
-              sliver: SliverList(
-                delegate: SliverChildBuilderDelegate(
-                  (context, index) {
-                    if (index == 0) {
-                      return const Padding(
-                        padding: EdgeInsets.only(top: 8, bottom: 16),
-                        child: WaveSectionHeader(title: 'Albums'),
-                      );
-                    }
-
-                    final albumIndex = index - 1;
-                    final album = albums[albumIndex];
-
-                    return Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        AlbumTile(
-                          imageUrl: album.imageUrl,
-                          albumName: album.title,
-                          artistName: album.artist,
-                          releaseYear: album.releaseYear,
-                          onTap: () => context.push(
-                            '/music/album/${album.id}',
-                            extra: album,
-                          ),
-                        ),
-                        if (albumIndex < albums.length - 1)
-                          const Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 24),
-                            child: DottedDivider(),
-                          ),
-                      ],
-                    );
-                  },
-                  childCount: albums.length + 1,
+            data: (albums) => SliverMainAxisGroup(
+              slivers: [
+                const SliverToBoxAdapter(
+                  child: Padding(
+                    padding: EdgeInsets.only(top: 8, bottom: 16),
+                    child: WaveSectionHeader(title: 'Albums'),
+                  ),
                 ),
-              ),
+                SliverPadding(
+                  padding: const EdgeInsets.only(bottom: 100),
+                  sliver: SliverList(
+                    delegate: SliverChildBuilderDelegate(
+                      (context, index) {
+                        final album = albums[index];
+
+                        return Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            AlbumTile(
+                              imageUrl: album.imageUrl,
+                              albumName: album.title,
+                              artistName: album.artist,
+                              releaseYear: album.releaseYear,
+                              onTap: () => context.push(
+                                '/music/album/${album.id}',
+                                extra: album,
+                              ),
+                            ),
+                            if (index < albums.length - 1)
+                              const Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 24),
+                                child: DottedDivider(),
+                              ),
+                          ],
+                        );
+                      },
+                      childCount: albums.length,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ],

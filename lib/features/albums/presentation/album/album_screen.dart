@@ -22,11 +22,13 @@ class AlbumScreen extends ConsumerStatefulWidget {
 
 class _AlbumScreenState extends ConsumerState<AlbumScreen> {
   late bool _isLiked;
+  late String? _likeId;
 
   @override
   void initState() {
     super.initState();
     _isLiked = widget.album.isLiked;
+    _likeId = widget.album.likeId;
   }
 
   void _onTrackTap(List<Track> tracks, int index) {
@@ -54,10 +56,21 @@ class _AlbumScreenState extends ConsumerState<AlbumScreen> {
   }
 
   void _onLikeTap() {
+    final previousIsLiked = _isLiked;
+    final previousLikeId = _likeId;
+
     setState(() => _isLiked = !_isLiked);
-    ref
-        .read(albumControllerProvider(widget.album.id).notifier)
-        .toggleLike(widget.album.id);
+
+    final notifier = ref.read(albumControllerProvider(widget.album.id).notifier);
+
+    notifier.toggleLike(widget.album.id, previousIsLiked ? previousLikeId : null).then((newLikeId) {
+      setState(() => _likeId = newLikeId);
+    }).catchError((_) {
+      setState(() {
+        _isLiked = previousIsLiked;
+        _likeId = previousLikeId;
+      });
+    });
   }
 
   @override

@@ -7,6 +7,6 @@ abstract interface class AlbumsRepository {
   Future<List<Album>> getFavoriteAlbums();
   Future<List<Track>> getAlbumTracks(String albumId);
 
-  Future<void> toggleLike(String albumId);
+  Future<String?> toggleLike(String albumId, [String? likeId]);
 
 }

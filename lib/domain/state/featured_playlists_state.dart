@@ -49,11 +49,14 @@ class FeaturedPlaylistsNotifier extends Notifier<FeaturedPlaylistsState> {
     await loadPlaylists();
   }
 
-  void toggleLike(String playlistId) {
+  void updateLike(String playlistId, String? likeId) {
     final playlist = state.playlists[playlistId];
     if (playlist == null) return;
 
-    final updated = playlist.copyWith(isLiked: !playlist.isLiked);
+    final updated = playlist.copyWith(
+      isLiked: likeId != null,
+      likeId: likeId,
+    );
     state = state.copyWith(
       playlists: {...state.playlists, playlistId: updated},
     );

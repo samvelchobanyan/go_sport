@@ -38,11 +38,10 @@ class PlaylistController extends AutoDisposeFamilyNotifier<PlaylistTracksState, 
     }
   }
 
-  Future<void> toggleLike() async {
+  Future<void> toggleLike(String? likeId) async {
     try {
-      await ref.read(playlistRepositoryProvider).toggleLike(arg);
-      // Обновляем глобальный стейт плейлистов
-      ref.read(featuredPlaylistsStateProvider.notifier).toggleLike(arg);
+      final newLikeId = await ref.read(playlistRepositoryProvider).toggleLike(arg, likeId);
+      ref.read(featuredPlaylistsStateProvider.notifier).updateLike(arg, newLikeId);
     } catch (e) {
       // Можно добавить обработку ошибки
     }

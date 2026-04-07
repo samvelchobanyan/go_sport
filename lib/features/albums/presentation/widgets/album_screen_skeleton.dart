@@ -53,6 +53,7 @@ class AlbumScreenSkeleton extends StatelessWidget {
               ),
             ),
           ),
+          const SizedBox(width: 12),
           Container(
             width: 40,
             height: 40,

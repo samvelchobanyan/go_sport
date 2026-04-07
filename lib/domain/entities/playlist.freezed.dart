@@ -22,6 +22,7 @@ mixin _$Playlist {
   String get imageUrl => throw _privateConstructorUsedError;
   int get trackCount => throw _privateConstructorUsedError;
   bool get isLiked => throw _privateConstructorUsedError;
+  String? get likeId => throw _privateConstructorUsedError;
 
   /// Create a copy of Playlist
   /// with the given fields replaced by the non-null parameter values.
@@ -41,6 +42,7 @@ abstract class $PlaylistCopyWith<$Res> {
     String imageUrl,
     int trackCount,
     bool isLiked,
+    String? likeId,
   });
 }
 
@@ -64,6 +66,7 @@ class _$PlaylistCopyWithImpl<$Res, $Val extends Playlist>
     Object? imageUrl = null,
     Object? trackCount = null,
     Object? isLiked = null,
+    Object? likeId = freezed,
   }) {
     return _then(
       _value.copyWith(
@@ -87,6 +90,10 @@ class _$PlaylistCopyWithImpl<$Res, $Val extends Playlist>
                 ? _value.isLiked
                 : isLiked // ignore: cast_nullable_to_non_nullable
                       as bool,
+            likeId: freezed == likeId
+                ? _value.likeId
+                : likeId // ignore: cast_nullable_to_non_nullable
+                      as String?,
           )
           as $Val,
     );
@@ -108,6 +115,7 @@ abstract class _$$PlaylistImplCopyWith<$Res>
     String imageUrl,
     int trackCount,
     bool isLiked,
+    String? likeId,
   });
 }
 
@@ -130,6 +138,7 @@ class __$$PlaylistImplCopyWithImpl<$Res>
     Object? imageUrl = null,
     Object? trackCount = null,
     Object? isLiked = null,
+    Object? likeId = freezed,
   }) {
     return _then(
       _$PlaylistImpl(
@@ -153,6 +162,10 @@ class __$$PlaylistImplCopyWithImpl<$Res>
             ? _value.isLiked
             : isLiked // ignore: cast_nullable_to_non_nullable
                   as bool,
+        likeId: freezed == likeId
+            ? _value.likeId
+            : likeId // ignore: cast_nullable_to_non_nullable
+                  as String?,
       ),
     );
   }
@@ -167,6 +180,7 @@ class _$PlaylistImpl implements _Playlist {
     required this.imageUrl,
     required this.trackCount,
     this.isLiked = false,
+    this.likeId,
   });
 
   @override
@@ -180,10 +194,12 @@ class _$PlaylistImpl implements _Playlist {
   @override
   @JsonKey()
   final bool isLiked;
+  @override
+  final String? likeId;
 
   @override
   String toString() {
-    return 'Playlist(id: $id, title: $title, imageUrl: $imageUrl, trackCount: $trackCount, isLiked: $isLiked)';
+    return 'Playlist(id: $id, title: $title, imageUrl: $imageUrl, trackCount: $trackCount, isLiked: $isLiked, likeId: $likeId)';
   }
 
   @override
@@ -197,12 +213,20 @@ class _$PlaylistImpl implements _Playlist {
                 other.imageUrl == imageUrl) &&
             (identical(other.trackCount, trackCount) ||
                 other.trackCount == trackCount) &&
-            (identical(other.isLiked, isLiked) || other.isLiked == isLiked));
+            (identical(other.isLiked, isLiked) || other.isLiked == isLiked) &&
+            (identical(other.likeId, likeId) || other.likeId == likeId));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, id, title, imageUrl, trackCount, isLiked);
+  int get hashCode => Object.hash(
+    runtimeType,
+    id,
+    title,
+    imageUrl,
+    trackCount,
+    isLiked,
+    likeId,
+  );
 
   /// Create a copy of Playlist
   /// with the given fields replaced by the non-null parameter values.
@@ -220,6 +244,7 @@ abstract class _Playlist implements Playlist {
     required final String imageUrl,
     required final int trackCount,
     final bool isLiked,
+    final String? likeId,
   }) = _$PlaylistImpl;
 
   @override
@@ -232,6 +257,8 @@ abstract class _Playlist implements Playlist {
   int get trackCount;
   @override
   bool get isLiked;
+  @override
+  String? get likeId;
 
   /// Create a copy of Playlist
   /// with the given fields replaced by the non-null parameter values.

@@ -55,7 +55,18 @@ class PlaylistRepositoryImpl implements PlaylistRepository {
   }
 
   @override
-  Future<void> toggleLike(String playlistId) async {
-    throw UnimplementedError('toggleLike requires authentication');
+  Future<String?> toggleLike(String playlistId, [String? likeId]) async {
+    if (likeId != null) {
+      await _apiClient.delete('/api/user-playlists/$likeId');
+      return null;
+    }
+
+    final response = await _apiClient.post(
+      '/api/user-playlists',
+      data: {
+        'data': {'Playlist': playlistId},
+      },
+    );
+    return response.data['data']['documentId'] as String;
   }
 }

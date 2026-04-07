@@ -10,5 +10,6 @@ class Playlist with _$Playlist {
     required String imageUrl,
     required int trackCount,
     @Default(false) bool isLiked,
+    String? likeId,
   }) = _Playlist;
 }

@@ -24,6 +24,7 @@ mixin _$Album {
   int get trackCount => throw _privateConstructorUsedError;
   String get releaseYear => throw _privateConstructorUsedError;
   bool get isLiked => throw _privateConstructorUsedError;
+  String? get likeId => throw _privateConstructorUsedError;
 
   /// Create a copy of Album
   /// with the given fields replaced by the non-null parameter values.
@@ -44,6 +45,7 @@ abstract class $AlbumCopyWith<$Res> {
     int trackCount,
     String releaseYear,
     bool isLiked,
+    String? likeId,
   });
 }
 
@@ -69,6 +71,7 @@ class _$AlbumCopyWithImpl<$Res, $Val extends Album>
     Object? trackCount = null,
     Object? releaseYear = null,
     Object? isLiked = null,
+    Object? likeId = freezed,
   }) {
     return _then(
       _value.copyWith(
@@ -100,6 +103,10 @@ class _$AlbumCopyWithImpl<$Res, $Val extends Album>
                 ? _value.isLiked
                 : isLiked // ignore: cast_nullable_to_non_nullable
                       as bool,
+            likeId: freezed == likeId
+                ? _value.likeId
+                : likeId // ignore: cast_nullable_to_non_nullable
+                      as String?,
           )
           as $Val,
     );
@@ -122,6 +129,7 @@ abstract class _$$AlbumImplCopyWith<$Res> implements $AlbumCopyWith<$Res> {
     int trackCount,
     String releaseYear,
     bool isLiked,
+    String? likeId,
   });
 }
 
@@ -146,6 +154,7 @@ class __$$AlbumImplCopyWithImpl<$Res>
     Object? trackCount = null,
     Object? releaseYear = null,
     Object? isLiked = null,
+    Object? likeId = freezed,
   }) {
     return _then(
       _$AlbumImpl(
@@ -177,6 +186,10 @@ class __$$AlbumImplCopyWithImpl<$Res>
             ? _value.isLiked
             : isLiked // ignore: cast_nullable_to_non_nullable
                   as bool,
+        likeId: freezed == likeId
+            ? _value.likeId
+            : likeId // ignore: cast_nullable_to_non_nullable
+                  as String?,
       ),
     );
   }
@@ -193,6 +206,7 @@ class _$AlbumImpl implements _Album {
     required this.trackCount,
     required this.releaseYear,
     this.isLiked = false,
+    this.likeId,
   });
 
   @override
@@ -210,10 +224,12 @@ class _$AlbumImpl implements _Album {
   @override
   @JsonKey()
   final bool isLiked;
+  @override
+  final String? likeId;
 
   @override
   String toString() {
-    return 'Album(id: $id, title: $title, imageUrl: $imageUrl, artist: $artist, trackCount: $trackCount, releaseYear: $releaseYear, isLiked: $isLiked)';
+    return 'Album(id: $id, title: $title, imageUrl: $imageUrl, artist: $artist, trackCount: $trackCount, releaseYear: $releaseYear, isLiked: $isLiked, likeId: $likeId)';
   }
 
   @override
@@ -230,7 +246,8 @@ class _$AlbumImpl implements _Album {
                 other.trackCount == trackCount) &&
             (identical(other.releaseYear, releaseYear) ||
                 other.releaseYear == releaseYear) &&
-            (identical(other.isLiked, isLiked) || other.isLiked == isLiked));
+            (identical(other.isLiked, isLiked) || other.isLiked == isLiked) &&
+            (identical(other.likeId, likeId) || other.likeId == likeId));
   }
 
   @override
@@ -243,6 +260,7 @@ class _$AlbumImpl implements _Album {
     trackCount,
     releaseYear,
     isLiked,
+    likeId,
   );
 
   /// Create a copy of Album
@@ -263,6 +281,7 @@ abstract class _Album implements Album {
     required final int trackCount,
     required final String releaseYear,
     final bool isLiked,
+    final String? likeId,
   }) = _$AlbumImpl;
 
   @override
@@ -279,6 +298,8 @@ abstract class _Album implements Album {
   String get releaseYear;
   @override
   bool get isLiked;
+  @override
+  String? get likeId;
 
   /// Create a copy of Album
   /// with the given fields replaced by the non-null parameter values.

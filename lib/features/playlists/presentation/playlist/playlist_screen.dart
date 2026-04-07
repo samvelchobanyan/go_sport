@@ -62,6 +62,12 @@ class PlaylistScreen extends ConsumerWidget {
         );
   }
 
+  void _onLikeTap(WidgetRef ref, String? likeId) {
+    ref
+        .read(playlistControllerProvider(playlistId).notifier)
+        .toggleLike(likeId);
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final playlistsState = ref.watch(featuredPlaylistsStateProvider);
@@ -135,9 +141,7 @@ class PlaylistScreen extends ConsumerWidget {
             flexibleSpace: FlexibleSpaceBar(
               background: PlaylistHero(
                 playlist: playlist,
-                onLikeTap: () => ref
-                    .read(playlistControllerProvider(playlistId).notifier)
-                    .toggleLike(),
+                onLikeTap: () => _onLikeTap(ref, playlist.likeId),
                 onPlayTap: () {
                   final tracksValue = tracksState.mapOrNull(
                     data: (data) => data.tracks,

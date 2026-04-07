@@ -27,7 +27,7 @@ class AlbumDto {
   final String coverUrl;
   final int cnt;
   final int year;
-  final bool isLiked;
+  final String? likeId;
 
   AlbumDto({
     required this.documentId,
@@ -36,25 +36,22 @@ class AlbumDto {
     required this.coverUrl,
     required this.cnt,
     required this.year,
-    this.isLiked = false,
+    this.likeId,
   });
 
   factory AlbumDto.fromJson(Map<String, dynamic> json) {
     final artistJson = json['Artist'] as Map<String, dynamic>?;
     final coverJson = json['Cover'] as Map<String, dynamic>?;
+    final likeJson = json['Like'] as Map<String, dynamic>?;
 
     return AlbumDto(
       documentId: json['documentId'] as String,
       name: json['Name'] as String,
-      artist: artistJson != null
-          ? _ArtistDto.fromJson(artistJson).name
-          : '',
-      coverUrl: coverJson != null
-          ? _CoverDto.fromJson(coverJson).url
-          : '',
+      artist: artistJson != null ? _ArtistDto.fromJson(artistJson).name : '',
+      coverUrl: coverJson != null ? _CoverDto.fromJson(coverJson).url : '',
       cnt: json['cnt'] as int? ?? 0,
       year: json['Year'] as int? ?? 0,
-      isLiked: json['isLiked'] as bool? ?? false,
+      likeId: likeJson?['documentId'] as String?,
     );
   }
 
@@ -66,7 +63,8 @@ class AlbumDto {
       imageUrl: coverUrl,
       trackCount: cnt,
       releaseYear: year.toString(),
-      isLiked: isLiked,
+      isLiked: likeId != null,
+      likeId: likeId,
     );
   }
 }

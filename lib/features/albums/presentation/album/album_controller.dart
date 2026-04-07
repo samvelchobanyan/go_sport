@@ -37,12 +37,8 @@ class AlbumController extends AutoDisposeFamilyNotifier<AlbumTracksState, String
     }
   }
 
-  Future<void> toggleLike(String albumId) async {
-    try {
-      await ref.read(albumsRepositoryProvider).toggleLike(albumId);
-    } catch (e) {
-      // ignore
-    }
+  Future<String?> toggleLike(String albumId, [String? likeId]) async {
+    return await ref.read(albumsRepositoryProvider).toggleLike(albumId, likeId);
   }
 }
 

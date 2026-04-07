@@ -45,18 +45,39 @@ class AlbumsRepositoryImpl implements AlbumsRepository {
 
   @override
   Future<List<Album>> getFavoriteAlbums() async {
-    throw UnimplementedError('getFavoriteAlbums requires authentication');
+    final response = await _apiClient.get(
+      '/api/user-albums',
+      queryParameters: {
+        'populate[Album][populate][Cover][populate]': '*',
+        'populate[Album][populate][Artist][fields][0]': 'Name',
+      },
+    );
+
+    final data = response.data['data'] as List<dynamic>;
+    return data.map((e) {
+      final entry = e as Map<String, dynamic>;
+      final albumJson = entry['Album'] as Map<String, dynamic>;
+
+      albumJson['cnt'] = entry['cnt'];
+      albumJson['Like'] = {'documentId': entry['documentId']};
+
+      return AlbumDto.fromJson(albumJson).toDomain();
+    }).toList();
   }
 
   @override
-  Future<void> toggleLike(String albumId) async {
-    await _apiClient.post(
+  Future<String?> toggleLike(String albumId, [String? likeId]) async {
+    if (likeId != null) {
+      await _apiClient.delete('/api/user-albums/$likeId');
+      return null;
+    }
+
+    final response = await _apiClient.post(
       '/api/user-albums',
-      data:{
-        'data': {
-          'Album': albumId,
-        },
-      }
+      data: {
+        'data': {'Album': albumId},
+      },
     );
+    return response.data['data']['documentId'] as String;
   }
 }
