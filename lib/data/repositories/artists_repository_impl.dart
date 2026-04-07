@@ -49,7 +49,14 @@ class ArtistsRepositoryImpl implements ArtistsRepository {
   }
 
   @override
-  Future<void> toggleLike(String id) async {
-    await Future.delayed(const Duration(milliseconds: 300));
+  Future<void> toggleLike(String artistId) async {
+    await _apiClient.post(
+      '/api/user-artists',
+      data:{
+        'data': {
+          'Artist': artistId,
+        },
+      }
+    );
   }
 }
