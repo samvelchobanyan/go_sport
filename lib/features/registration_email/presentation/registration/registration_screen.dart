@@ -8,8 +8,8 @@ import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/features/shared_widgets/input.dart';
 import 'package:go_router/go_router.dart';
 
-class LoginScreen extends ConsumerWidget {
-  const LoginScreen({super.key});
+class RegistrationScreen extends ConsumerWidget {
+  const RegistrationScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -24,9 +24,9 @@ class LoginScreen extends ConsumerWidget {
           children: [
             // Background Image (Top half)
             Image.asset(
-              'assets/images/login_bg.png',
+              'assets/images/email_registration_bg.png',
               width: screenWidth,
-              height: screenHeight * 0.6,
+              height: screenHeight * 0.7,
               fit: BoxFit.cover,
             ),
 
@@ -34,7 +34,7 @@ class LoginScreen extends ConsumerWidget {
             Align(
               alignment: Alignment.bottomCenter,
               child: Container(
-                height: screenHeight * 0.5, // Adjust height as needed
+                height: screenHeight * 0.4, // Adjust height as needed
                 width: screenWidth,
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 decoration: BoxDecoration(
@@ -55,13 +55,19 @@ class LoginScreen extends ConsumerWidget {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              SvgPicture.asset('assets/icons/login_blue.svg'),
+                              SvgPicture.asset('assets/icons/user.svg'),
                               SizedBox(width: 8),
-                              Text('Login', style: context.h2),
+                              Text('Registration', style: context.h2),
                             ],
                           ),
 
-                          SizedBox(height: 20),
+                          SizedBox(height: 14),
+                          Text(
+                            'Create your account to get started and unlock all features',
+                            style: context.bodyL?.copyWith(
+                              color: DSColors.gray70,
+                            ),
+                          ),
 
                           // Email Input
                           const CustomInput(
@@ -70,36 +76,19 @@ class LoginScreen extends ConsumerWidget {
                             keyboardType: TextInputType.emailAddress,
                           ),
 
-                          const SizedBox(height: 14),
+                          const SizedBox(height: 50),
 
-                          // Password Input
-                          const CustomInput(
-                            label: 'Password',
-                            hintText: 'Enter your password',
-                            obscureText: true,
-                          ),
-
-                          // Forgot Password
-                          Align(
-                            alignment: Alignment.centerRight,
-                            child: TextButton(
-                              onPressed: () {}, // TODO: Forgot Password logic
-                              child: Text(
-                                'Forgot Password?',
-                                style: context.subtitleMBold?.copyWith(
-                                  color: DSColors.blue,
-                                ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 14),
-
-                          // Login Button
+                          // Continue Button
                           ElevatedButton.icon(
-                            onPressed: () {},
-                            icon: SvgPicture.asset('assets/icons/login.svg'),
+                            onPressed: () {
+                              context.push('/confirm-email');
+                            },
+                            icon: Icon(
+                              Icons.arrow_forward,
+                              color: DSColors.lime,
+                            ),
                             label: Text(
-                              'Log in',
+                              'Continue',
                               style: context.subtitleLBold?.copyWith(
                                 color: DSColors.lime,
                               ),
@@ -146,60 +135,7 @@ class LoginScreen extends ConsumerWidget {
                               ],
                             ),
                           ),
-
-                          const SizedBox(height: 16),
-
-                          // Sign Up Row
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                "Don't have an account?",
-                                style: context.label?.copyWith(
-                                  color: DSColors.gray50,
-                                ),
-                              ),
-                              TextButton.icon(
-                                onPressed: () {
-                                  context.push('/registration');
-                                },
-                                icon: SvgPicture.asset('assets/icons/user.svg'),
-                                label: Text(
-                                  'Sign Up',
-                                  style: context.textL?.copyWith(
-                                    color: DSColors.blue,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                style: TextButton.styleFrom(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 8,
-                                  ),
-                                  minimumSize: Size
-                                      .zero, // Removes extra default padding
-                                  tapTargetSize:
-                                      MaterialTapTargetSize.shrinkWrap,
-                                ),
-                              ),
-                            ],
-                          ),
                         ],
-                      ),
-                    ),
-
-                    Spacer(),
-                    // Continue as Guest
-                    TextButton(
-                      onPressed: () {},
-                      style: TextButton.styleFrom(
-                        backgroundColor: DSColors.blue.withOpacity(0.05),
-                        shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.zero,
-                        ),
-                      ),
-                      child: Text(
-                        'Continue as guest',
-                        style: context.textL?.copyWith(color: DSColors.blue),
                       ),
                     ),
                   ],

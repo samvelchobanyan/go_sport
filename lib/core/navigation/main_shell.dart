@@ -15,16 +15,17 @@ class MainShell extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: navigationShell,
-      bottomNavigationBar: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const MiniPlayerWidget(),
-          BottomNavBar(
-            currentIndex: navigationShell.currentIndex,
-            onTap: (index) => navigationShell.goBranch(index),
-          ),
-        ],
-      ),
+      // UNCOMMENT LATER
+      // bottomNavigationBar: Column(
+      //   mainAxisSize: MainAxisSize.min,
+      //   children: [
+      //     const MiniPlayerWidget(),
+      //     BottomNavBar(
+      //       currentIndex: navigationShell.currentIndex,
+      //       onTap: (index) => navigationShell.goBranch(index),
+      //     ),
+      //   ],
+      // ),
     );
   }
 }

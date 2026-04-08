@@ -2,11 +2,14 @@ import 'package:go_router/go_router.dart';
 import 'package:go_sport/core/navigation/main_shell.dart';
 import 'package:go_sport/core/navigation/page_transitions.dart';
 import 'package:go_sport/core/navigation/routes.dart';
+import 'package:go_sport/features/confirm_email/presentation/confirm_email/confirm_email_screen.dart';
+import 'package:go_sport/features/confirm_phone/presentation/confirm_phone/confirm_phone_screen.dart';
 import 'package:go_sport/features/favorites/presentation/my_albums/my_albums_screen.dart';
 import 'package:go_sport/features/favorites/presentation/my_artists/my_artists_screen.dart';
 import 'package:go_sport/features/favorites/presentation/my_playlists/my_playlists_screen.dart';
 import 'package:go_sport/features/home/presentation/home/home_screen.dart';
 import 'package:go_sport/features/login/presentation/login/login_screen.dart';
+import 'package:go_sport/features/registration_phone/presentation/registration_phone/registration_phone_screen.dart';
 import 'package:go_sport/features/music/presentation/music/music_screen.dart';
 import 'package:go_sport/features/program_details/presentation/program_details/program_details_screen.dart';
 import 'package:go_sport/features/news/presentation/news_list/news_list_screen.dart';
@@ -16,6 +19,8 @@ import 'package:go_sport/features/favorites/presentation/new_episodes/new_episod
 import 'package:go_sport/features/favorites/presentation/my_programs/my_programs_screen.dart';
 import 'package:go_sport/features/playlists/presentation/playlist/playlist_screen.dart';
 import 'package:go_sport/features/radio_page/presentation/radio/radio_page_screen.dart';
+import 'package:go_sport/features/registration_email/presentation/registration/registration_screen.dart';
+import 'package:go_sport/features/registration_phone/presentation/registration_phone/registration_phone_screen.dart';
 import 'package:go_sport/features/schedule/presentation/schedule/schedule_screen.dart';
 
 final GoRouter appRouter = GoRouter(
@@ -122,13 +127,46 @@ final GoRouter appRouter = GoRouter(
         //     ),
         //   ],
         // ),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: AppRoutes.music, //todo change to login
+              builder: (context, state) => const LoginScreen(),
+            ),
+          ],
+        ),
+
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: AppRoutes.registration,
+              builder: (context, state) => const RegistrationScreen(),
+            ),
+          ],
+        ),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: AppRoutes.confirmEmail,
+              builder: (context, state) => const ConfirmEmailScreen(),
+            ),
+          ],
+        ),
 
          StatefulShellBranch(
           routes: [
             GoRoute(
-              path: AppRoutes.music,
-              builder: (context, state) => const LoginScreen(),
-             
+              path: AppRoutes.registrationPhone,
+              builder: (context, state) => const PhoneRegistrationScreen(),
+            ),
+          ],
+        ),
+
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: AppRoutes.confirmPhone,
+              builder: (context, state) => const ConfirmPhoneScreen(),
             ),
           ],
         ),

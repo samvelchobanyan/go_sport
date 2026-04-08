@@ -7,9 +7,9 @@ import 'package:go_sport/domain/repositories/albums_repository.dart';
 import 'package:go_sport/domain/repositories/artists_repository.dart';
 import 'package:go_sport/domain/repositories/music_repository.dart';
 
-part 'login_controller.freezed.dart';
+part 'confirm_email_controller.freezed.dart';
 
-// todo change to login controller and state
+// todo change to confirmation controller and state
 
 @freezed
 class MusicDashboardState with _$MusicDashboardState {
