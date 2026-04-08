@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_sport/core/di/repository_providers.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
@@ -36,7 +37,7 @@ class PlayerControlPanel extends ConsumerWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             // Track info row
-            _buildTrackInfo(context, track),
+            _buildTrackInfo(context, ref, track),
 
             const SizedBox(height: 25),
 
@@ -66,7 +67,7 @@ class PlayerControlPanel extends ConsumerWidget {
     );
   }
 
-  Widget _buildTrackInfo(BuildContext context, track) {
+  Widget _buildTrackInfo(BuildContext context, WidgetRef ref, track) {
     final imageUrl = track?.imageUrl;
     final title = track?.title ?? '';
     final artist = track?.artistName ?? '';
@@ -125,7 +126,23 @@ class PlayerControlPanel extends ConsumerWidget {
 
         // Like button
         GestureDetector(
-          onTap: () {
+          onTap: () async {
+            if (track == null) return;
+
+            final wasLiked = track.isLiked;
+            final prevLikeId = track.likeId;
+            final notifier = ref.read(playerStateProvider.notifier);
+
+            notifier.updateTrackLike(track.id, isLiked: !wasLiked, likeId: prevLikeId);
+
+            try {
+              final repo = ref.read(playlistRepositoryProvider);
+              final newLikeId = await repo.toggleLikeTrack(track.id, prevLikeId);
+              notifier.updateTrackLike(track.id, isLiked: !wasLiked, likeId: newLikeId);
+            } catch (e) {
+              // Handle error (e.g. show a snackbar)
+              notifier.updateTrackLike(track.id, isLiked: wasLiked, likeId: prevLikeId);
+            }
             // TODO: wire like action
           },
           child: Container(
@@ -135,11 +152,11 @@ class PlayerControlPanel extends ConsumerWidget {
               color: DSColors.white,
               shape: BoxShape.circle,
             ),
-            child: const Center(
+            child: Center(
               child: DSHeartIcon(
                 color: DSColors.orange,
                 size: 38,
-                isFilled: false,
+                isFilled: track?.isLiked ?? false,
               ),
             ),
           ),
