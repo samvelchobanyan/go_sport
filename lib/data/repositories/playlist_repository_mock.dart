@@ -769,4 +769,13 @@ class PlaylistRepositoryMock implements PlaylistRepository {
     }
     return null;
   }
+
+  @override
+  Future<String?> toggleLikeTrack(String trackId, [String? likeId]) async {
+    await Future.delayed(const Duration(milliseconds: 200));
+    if (likeId != null) {
+      return null;
+    }
+    return 'mock-like-$trackId';
+  }
 }

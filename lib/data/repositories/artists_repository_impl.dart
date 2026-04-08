@@ -28,7 +28,21 @@ class ArtistsRepositoryImpl implements ArtistsRepository {
 
   @override
   Future<List<Artist>> getFavoriteArtists() async {
-    throw UnimplementedError('getFavoriteArtists requires authentication');
+    final response = await _apiClient.get(
+      '/api/user-artists',
+      queryParameters: {
+        'populate[Artist][populate][Cover][populate]': '*',
+      },
+    );
+
+    final data = response.data['data'] as List<dynamic>;
+    final artistList = data.map((e) {
+      final entry = e as Map<String, dynamic>;
+      final artistJson = entry['Artist'] as Map<String, dynamic>;
+      return ArtistDto.fromJson(artistJson).toDomain();
+    }).toList();
+
+    return artistList;
   }
 
   @override

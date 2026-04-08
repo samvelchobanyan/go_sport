@@ -51,7 +51,22 @@ class PlaylistRepositoryImpl implements PlaylistRepository {
 
   @override
   Future<List<Track>> getFavoriteTracks() async {
-    throw UnimplementedError('getFavoriteTracks requires authentication');
+    final response = await _apiClient.get(
+      '/api/user-tracks',
+      queryParameters: {
+        'populate[Track][populate][Album][populate]': 'Cover',
+        'populate[Track][populate][File][populate]': '*',
+        'populate[Track][populate][Artists][fields][0]': 'Name',
+      },
+    );
+
+    final data = response.data['data'] as List<dynamic>;
+    return data.map((e) {
+      final entry = e as Map<String, dynamic>;
+      final trackJson = entry['Track'] as Map<String, dynamic>;
+      trackJson['Like'] = {'documentId': entry['documentId']};
+      return TrackDto.fromJson(trackJson).toDomain();
+    }).toList();
   }
 
   @override
@@ -65,6 +80,22 @@ class PlaylistRepositoryImpl implements PlaylistRepository {
       '/api/user-playlists',
       data: {
         'data': {'Playlist': playlistId},
+      },
+    );
+    return response.data['data']['documentId'] as String;
+  }
+
+  @override
+  Future<String?> toggleLikeTrack(String trackId, [String? likeId]) async {
+    if (likeId != null) {
+      await _apiClient.delete('/api/user-tracks/$likeId');
+      return null;
+    }
+
+    final response = await _apiClient.post(
+      '/api/user-tracks',
+      data: {
+        'data': {'Track': trackId},
       },
     );
     return response.data['data']['documentId'] as String;

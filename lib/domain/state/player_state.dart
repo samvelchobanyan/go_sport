@@ -495,6 +495,17 @@ class PlayerNotifier extends Notifier<PlayerState> {
     }
   }
 
+  /// Update track like state in the queue
+  void updateTrackLike(String trackId, {required bool isLiked, String? likeId}) {
+    final updatedTracks = state.tracks.map((t) {
+      if (t.id == trackId) {
+        return t.copyWith(isLiked: isLiked, likeId: likeId);
+      }
+      return t;
+    }).toList();
+    state = state.copyWith(tracks: updatedTracks);
+  }
+
   /// Resume music playback (after radio)
   Future<void> resumeMusic() async {
     if (state.tracks.isEmpty) return;

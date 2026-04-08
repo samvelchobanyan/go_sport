@@ -7,4 +7,5 @@ abstract interface class PlaylistRepository {
   Future<List<Playlist>> getFavoritePlaylists();
   Future<List<Track>> getFavoriteTracks();
   Future<String?> toggleLike(String playlistId, [String? likeId]);
+  Future<String?> toggleLikeTrack(String trackId, [String? likeId]);
 }

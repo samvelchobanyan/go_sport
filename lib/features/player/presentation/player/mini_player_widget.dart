@@ -11,7 +11,9 @@ import 'package:go_sport/design_system/components/icons/ds_wave_icon.dart';
 import 'package:go_sport/design_system/components/icons/ds_bit_icon.dart';
 import 'package:go_sport/domain/state/player_state.dart';
 import 'package:go_sport/domain/state/player_state_selectors.dart';
+import 'package:go_sport/core/di/repository_providers.dart';
 import 'package:go_sport/features/player/presentation/player/full_player_screen.dart';
+
 
 const double _kMiniPlayerHeight = 72.0;
 const double _kActivePanelWidthRatio = 0.8;
@@ -33,7 +35,6 @@ class _MiniPlayerWidgetState extends ConsumerState<MiniPlayerWidget>
   late final PageController _pageController; 
 
   bool _isMusicMode = true; // UI mode: which panel is expanded
-  bool _isLiked = false;
 
   @override
   void initState() {
@@ -211,17 +212,29 @@ class _MiniPlayerWidgetState extends ConsumerState<MiniPlayerWidget>
               const SizedBox(width: 8),
               // Like icon
               GestureDetector(
-                onTap: () {
-                  setState(() {
-                    _isLiked = !_isLiked;
-                  });
+                onTap: () async {
+                  if (track == null) return;
+
+                  final wasLiked = track.isLiked;
+                  final prevLikeId = track.likeId;
+                  final notifier = ref.read(playerStateProvider.notifier);
+
+                  notifier.updateTrackLike(track.id, isLiked: !wasLiked, likeId: prevLikeId);
+
+                  try {
+                    final repo = ref.read(playlistRepositoryProvider);
+                    final newLikeId = await repo.toggleLikeTrack(track.id, prevLikeId);
+                    notifier.updateTrackLike(track.id, isLiked: !wasLiked, likeId: newLikeId);
+                  } catch (e) {
+                    notifier.updateTrackLike(track.id, isLiked: wasLiked, likeId: prevLikeId);
+                  }
                 },
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 7),
                   child: DSHeartIcon(
                     color: DSColors.blue,
                     size: 32,
-                    isFilled: _isLiked,
+                    isFilled: track?.isLiked ?? false,
                   ),
                 ),
               ),
@@ -417,17 +430,32 @@ class _MiniPlayerWidgetState extends ConsumerState<MiniPlayerWidget>
                       const SizedBox(width: 8),
                       // Like icon
                       GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            _isLiked = !_isLiked;
-                          });
+                        onTap: () async {
+                          final track = swipeData.currentTrack;
+                          if(track == null) return;
+
+                          final wasLiked = track.isLiked;
+                          final prevLikeId = track.likeId;
+                          final notifier = ref.read(playerStateProvider.notifier);
+
+                          notifier.updateTrackLike(track.id, isLiked: !wasLiked, likeId: prevLikeId);
+
+                          try {
+                            final repo = ref.read(playlistRepositoryProvider);
+                            final newLikeId = await repo.toggleLikeTrack(track.id, prevLikeId);
+                            notifier.updateTrackLike(track.id, isLiked: !wasLiked, likeId: newLikeId);  
+                          } catch (e) {
+                            // Revert UI change on error
+                            notifier.updateTrackLike(track.id, isLiked: wasLiked, likeId: prevLikeId);
+                          }
+                          
                         },
                         child: Padding(
                           padding: const EdgeInsets.symmetric(vertical: 7),
                           child: DSHeartIcon(
                             color: DSColors.blue,
                             size: 32,
-                            isFilled: _isLiked,
+                            isFilled: swipeData.currentTrack?.isLiked ?? false,
                           ),
                         ),
                       ),

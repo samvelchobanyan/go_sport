@@ -39,6 +39,7 @@ class TrackDto {
   final _FileDto? file;
   final List<_ArtistDto> artists;
   final String? albumCoverUrl;
+  final String? likeId;
 
   TrackDto({
     required this.documentId,
@@ -47,11 +48,14 @@ class TrackDto {
     required this.file,
     required this.artists,
     this.albumCoverUrl,
+    this.likeId,
   });
 
   factory TrackDto.fromJson(Map<String, dynamic> json) {
     final album = json['Album'] as Map<String, dynamic>?;
     final coverJson = album?['Cover'] as Map<String, dynamic>?;
+
+    final likeJson = json['Like'] as Map<String, dynamic>?;
 
     return TrackDto(
       documentId: json['documentId'] as String,
@@ -65,6 +69,7 @@ class TrackDto {
               .toList() ??
           [],
       albumCoverUrl: coverJson != null ? _CoverDto.fromJson(coverJson).url : null,
+      likeId: likeJson?['documentId'] as String?,
     );
   }
 
@@ -77,6 +82,8 @@ class TrackDto {
       imageUrl: albumCoverUrl,
       duration: Duration(seconds: length),
       audioUrl: file?.url ?? '',
+      isLiked: likeId != null,
+      likeId: likeId,
     );
   }
 }

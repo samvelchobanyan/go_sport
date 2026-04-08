@@ -54,15 +54,15 @@ class AlbumsRepositoryImpl implements AlbumsRepository {
     );
 
     final data = response.data['data'] as List<dynamic>;
-    return data.map((e) {
+    final albumList = data.map((e) {
       final entry = e as Map<String, dynamic>;
       final albumJson = entry['Album'] as Map<String, dynamic>;
 
-      albumJson['cnt'] = entry['cnt'];
       albumJson['Like'] = {'documentId': entry['documentId']};
 
       return AlbumDto.fromJson(albumJson).toDomain();
     }).toList();
+    return albumList;
   }
 
   @override
