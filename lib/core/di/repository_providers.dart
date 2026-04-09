@@ -2,16 +2,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_sport/data/repositories/auth_repository_impl.dart';
 import 'package:go_sport/data/repositories/albums_repository_impl.dart';
 import 'package:go_sport/domain/repositories/auth_repository.dart';
-import 'package:go_sport/data/repositories/albums_repository_mock.dart';
 import 'package:go_sport/data/repositories/artists_repository_impl.dart';
-import 'package:go_sport/data/repositories/artists_repository_mock.dart';
-import 'package:go_sport/data/repositories/episodes_repository_mock.dart';
+import 'package:go_sport/data/repositories/episodes_repository_impl.dart';
 import 'package:go_sport/data/repositories/music_repository_mock.dart';
-import 'package:go_sport/data/repositories/programs_repository_mock.dart';
+import 'package:go_sport/data/repositories/programs_repository_impl.dart';
 import 'package:go_sport/data/repositories/schedule_repository_mock.dart';
 import 'package:go_sport/domain/repositories/albums_repository.dart';
 import 'package:go_sport/domain/repositories/artists_repository.dart';
-import 'package:go_sport/domain/repositories/auth_repository.dart';
 import 'package:go_sport/domain/repositories/episodes_repository.dart';
 import 'package:go_sport/domain/repositories/music_repository.dart';
 import 'package:go_sport/domain/repositories/programs_repository.dart';
@@ -44,11 +41,11 @@ final tracksRepositoryProvider = Provider<TrackRepository>((ref) {
 });
 
 final episodesRepositoryProvider = Provider<EpisodesRepository>((ref) {
-  return EpisodesRepositoryMock();
+  return EpisodesRepositoryImpl(ref.read(apiClientProvider));
 });
 
 final programsRepositoryProvider = Provider<ProgramsRepository>((ref) {
-  return ProgramsRepositoryMock();
+  return ProgramsRepositoryImpl(ref.read(apiClientProvider));
 });
 
 final musicRepositoryProvider = Provider<MusicRepository>((ref) {
@@ -60,7 +57,7 @@ final artistsRepositoryProvider = Provider<ArtistsRepository>((ref) {
 });
 
 final albumsRepositoryProvider = Provider<AlbumsRepository>((ref) {
-  return AlbumsRepositoryMock();
+  return AlbumsRepositoryImpl(ref.read(apiClientProvider));
 });
 
 final scheduleRepositoryProvider = Provider<ScheduleRepository>((ref) {

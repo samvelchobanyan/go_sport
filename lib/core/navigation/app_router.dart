@@ -23,8 +23,7 @@ import 'package:go_sport/domain/entities/artist.dart';
 import 'package:go_sport/features/albums/presentation/album/album_screen.dart';
 import 'package:go_sport/features/artists/presentation/artist/artist_screen.dart';
 import 'package:go_sport/features/playlists/presentation/playlist/playlist_screen.dart';
-import 'package:go_sport/features/radio/presentation/radio/radio_screen.dart';
-import 'package:go_sport/features/radio_page/presentation/radio/radio_page_screen.dart';
+import 'package:go_sport/features/radio/presentation/radio/radio_page_screen.dart';
 import 'package:go_sport/features/schedule/presentation/schedule/schedule_screen.dart';
 
 GoRouter createAppRouter(TokenStorage tokenStorage) {
@@ -115,6 +114,28 @@ GoRouter createAppRouter(TokenStorage tokenStorage) {
                     return fadeSlidePage(
                       state: state,
                       child: PlaylistScreen(playlistId: id),
+                    );
+                  },
+                ),
+                // Album route
+                GoRoute(
+                  path: 'album/:id',
+                  pageBuilder: (context, state) {
+                    final album = state.extra as Album;
+                    return fadeSlidePage(
+                      state: state,
+                      child: AlbumScreen(album: album),
+                    );
+                  },
+                ),
+                // Artist route
+                GoRoute(
+                  path: 'artist/:id',
+                  pageBuilder: (context, state) {
+                    final artist = state.extra as Artist;
+                    return fadeSlidePage(
+                      state: state,
+                      child: ArtistScreen(artist: artist),
                     );
                   },
                 ),
