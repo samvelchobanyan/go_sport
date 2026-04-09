@@ -15,20 +15,20 @@ class DSColors {
   static const errorColor = Color(0xFFFF3B30); // rgba(255,59,48,1)
   static const transparent = Colors.transparent;
 
-  // greyscale (black with opacity)
-  // grey90 = darkest, grey5 = lightest
-  static const grey90 = Color(0xE6000000); // 90%
-  static const grey80 = Color(0xCC000000); // 80%
-  static const grey70 = Color(0xB3000000); // 70%
-  static const grey60 = Color(0x99000000); // 60%
-  static const grey50 = Color(0x80000000); // 50%
-  static const grey40 = Color(0x66000000); // 40%
-  static const grey30 = Color(0x4D000000); // 30%
-  static const grey20 = Color(0x33000000); // 20%
-  static const grey10 = Color(0x1A000000); // 10%
-  static const grey5 = Color(0x0D000000); // 5%
+  // grayscale (black with opacity)
+  // gray90 = darkest, gray5 = lightest
+  static const gray90 = Color(0xE6000000); // 90%
+  static const gray80 = Color(0xCC000000); // 80%
+  static const gray70 = Color(0xB3000000); // 70%
+  static const gray60 = Color(0x99000000); // 60%
+  static const gray50 = Color(0x80000000); // 50%
+  static const gray40 = Color(0x66000000); // 40%
+  static const gray30 = Color(0x4D000000); // 30%
+  static const gray20 = Color(0x33000000); // 20%
+  static const gray10 = Color(0x1A000000); // 10%
+  static const gray5 = Color(0xFFF2F2F2); // 5%
 
-  static const divider = grey20; // rgba(245,245,247,1)
+  static const divider = gray20; // rgba(245,245,247,1)
 
   static const List<Color> storyGradient = [
     Color(0xFF404AC3), // синий из Figma

@@ -12,4 +12,10 @@ class AppRoutes {
   
   static const String radio = '/radio';
   static const String radioSchedule = '/radio/schedule';
+
+  static const String login = '/login';
+  static const String registration = '/registration';
+  static const String confirmEmail = '/confirm-email';
+  static const String confirmPhone = '/confirm-phone';
+  static const String registrationPhone = '/registration-phone';
 }

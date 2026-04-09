@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:go_sport/domain/entities/album.dart';
 
 part 'artist.freezed.dart';
 
@@ -6,9 +7,9 @@ part 'artist.freezed.dart';
 class Artist with _$Artist {
   const factory Artist({
     required String id,
-    required String title,
-    String? albumName,
+    required String artistName,
+    List<Album>? albums,
     required String imageUrl,
-    required bool liked,
+    @Default(false) bool isLiked,
   }) = _Artist;
 }

@@ -33,7 +33,7 @@ class DSTypography {
     color: DSColors.black,
   );
 
-    // ===== Subtitles =====
+  // ===== Subtitles =====
 
   static const TextStyle subtitleLBold = TextStyle(
     fontFamily: 'Montserrat',
@@ -129,6 +129,3 @@ class DSTypography {
     color: DSColors.black,
   );
 }
-
-
-

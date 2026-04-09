@@ -1,0 +1,289 @@
+// coverage:ignore-file
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
+
+part of 'album.dart';
+
+// **************************************************************************
+// FreezedGenerator
+// **************************************************************************
+
+T _$identity<T>(T value) => value;
+
+final _privateConstructorUsedError = UnsupportedError(
+  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
+);
+
+/// @nodoc
+mixin _$Album {
+  String get id => throw _privateConstructorUsedError;
+  String get title => throw _privateConstructorUsedError;
+  String get imageUrl => throw _privateConstructorUsedError;
+  String get artist => throw _privateConstructorUsedError;
+  int get trackCount => throw _privateConstructorUsedError;
+  String get releaseYear => throw _privateConstructorUsedError;
+  bool get isLiked => throw _privateConstructorUsedError;
+
+  /// Create a copy of Album
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $AlbumCopyWith<Album> get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $AlbumCopyWith<$Res> {
+  factory $AlbumCopyWith(Album value, $Res Function(Album) then) =
+      _$AlbumCopyWithImpl<$Res, Album>;
+  @useResult
+  $Res call({
+    String id,
+    String title,
+    String imageUrl,
+    String artist,
+    int trackCount,
+    String releaseYear,
+    bool isLiked,
+  });
+}
+
+/// @nodoc
+class _$AlbumCopyWithImpl<$Res, $Val extends Album>
+    implements $AlbumCopyWith<$Res> {
+  _$AlbumCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of Album
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = null,
+    Object? title = null,
+    Object? imageUrl = null,
+    Object? artist = null,
+    Object? trackCount = null,
+    Object? releaseYear = null,
+    Object? isLiked = null,
+  }) {
+    return _then(
+      _value.copyWith(
+            id: null == id
+                ? _value.id
+                : id // ignore: cast_nullable_to_non_nullable
+                      as String,
+            title: null == title
+                ? _value.title
+                : title // ignore: cast_nullable_to_non_nullable
+                      as String,
+            imageUrl: null == imageUrl
+                ? _value.imageUrl
+                : imageUrl // ignore: cast_nullable_to_non_nullable
+                      as String,
+            artist: null == artist
+                ? _value.artist
+                : artist // ignore: cast_nullable_to_non_nullable
+                      as String,
+            trackCount: null == trackCount
+                ? _value.trackCount
+                : trackCount // ignore: cast_nullable_to_non_nullable
+                      as int,
+            releaseYear: null == releaseYear
+                ? _value.releaseYear
+                : releaseYear // ignore: cast_nullable_to_non_nullable
+                      as String,
+            isLiked: null == isLiked
+                ? _value.isLiked
+                : isLiked // ignore: cast_nullable_to_non_nullable
+                      as bool,
+          )
+          as $Val,
+    );
+  }
+}
+
+/// @nodoc
+abstract class _$$AlbumImplCopyWith<$Res> implements $AlbumCopyWith<$Res> {
+  factory _$$AlbumImplCopyWith(
+    _$AlbumImpl value,
+    $Res Function(_$AlbumImpl) then,
+  ) = __$$AlbumImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({
+    String id,
+    String title,
+    String imageUrl,
+    String artist,
+    int trackCount,
+    String releaseYear,
+    bool isLiked,
+  });
+}
+
+/// @nodoc
+class __$$AlbumImplCopyWithImpl<$Res>
+    extends _$AlbumCopyWithImpl<$Res, _$AlbumImpl>
+    implements _$$AlbumImplCopyWith<$Res> {
+  __$$AlbumImplCopyWithImpl(
+    _$AlbumImpl _value,
+    $Res Function(_$AlbumImpl) _then,
+  ) : super(_value, _then);
+
+  /// Create a copy of Album
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = null,
+    Object? title = null,
+    Object? imageUrl = null,
+    Object? artist = null,
+    Object? trackCount = null,
+    Object? releaseYear = null,
+    Object? isLiked = null,
+  }) {
+    return _then(
+      _$AlbumImpl(
+        id: null == id
+            ? _value.id
+            : id // ignore: cast_nullable_to_non_nullable
+                  as String,
+        title: null == title
+            ? _value.title
+            : title // ignore: cast_nullable_to_non_nullable
+                  as String,
+        imageUrl: null == imageUrl
+            ? _value.imageUrl
+            : imageUrl // ignore: cast_nullable_to_non_nullable
+                  as String,
+        artist: null == artist
+            ? _value.artist
+            : artist // ignore: cast_nullable_to_non_nullable
+                  as String,
+        trackCount: null == trackCount
+            ? _value.trackCount
+            : trackCount // ignore: cast_nullable_to_non_nullable
+                  as int,
+        releaseYear: null == releaseYear
+            ? _value.releaseYear
+            : releaseYear // ignore: cast_nullable_to_non_nullable
+                  as String,
+        isLiked: null == isLiked
+            ? _value.isLiked
+            : isLiked // ignore: cast_nullable_to_non_nullable
+                  as bool,
+      ),
+    );
+  }
+}
+
+/// @nodoc
+
+class _$AlbumImpl implements _Album {
+  const _$AlbumImpl({
+    required this.id,
+    required this.title,
+    required this.imageUrl,
+    required this.artist,
+    required this.trackCount,
+    required this.releaseYear,
+    this.isLiked = false,
+  });
+
+  @override
+  final String id;
+  @override
+  final String title;
+  @override
+  final String imageUrl;
+  @override
+  final String artist;
+  @override
+  final int trackCount;
+  @override
+  final String releaseYear;
+  @override
+  @JsonKey()
+  final bool isLiked;
+
+  @override
+  String toString() {
+    return 'Album(id: $id, title: $title, imageUrl: $imageUrl, artist: $artist, trackCount: $trackCount, releaseYear: $releaseYear, isLiked: $isLiked)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$AlbumImpl &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.title, title) || other.title == title) &&
+            (identical(other.imageUrl, imageUrl) ||
+                other.imageUrl == imageUrl) &&
+            (identical(other.artist, artist) || other.artist == artist) &&
+            (identical(other.trackCount, trackCount) ||
+                other.trackCount == trackCount) &&
+            (identical(other.releaseYear, releaseYear) ||
+                other.releaseYear == releaseYear) &&
+            (identical(other.isLiked, isLiked) || other.isLiked == isLiked));
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    runtimeType,
+    id,
+    title,
+    imageUrl,
+    artist,
+    trackCount,
+    releaseYear,
+    isLiked,
+  );
+
+  /// Create a copy of Album
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$AlbumImplCopyWith<_$AlbumImpl> get copyWith =>
+      __$$AlbumImplCopyWithImpl<_$AlbumImpl>(this, _$identity);
+}
+
+abstract class _Album implements Album {
+  const factory _Album({
+    required final String id,
+    required final String title,
+    required final String imageUrl,
+    required final String artist,
+    required final int trackCount,
+    required final String releaseYear,
+    final bool isLiked,
+  }) = _$AlbumImpl;
+
+  @override
+  String get id;
+  @override
+  String get title;
+  @override
+  String get imageUrl;
+  @override
+  String get artist;
+  @override
+  int get trackCount;
+  @override
+  String get releaseYear;
+  @override
+  bool get isLiked;
+
+  /// Create a copy of Album
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$AlbumImplCopyWith<_$AlbumImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}

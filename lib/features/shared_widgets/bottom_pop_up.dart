@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/features/shared_widgets/dotted_divider.dart';
 
 void showItemOptionsBottomSheet({
@@ -13,11 +14,11 @@ void showItemOptionsBottomSheet({
   showModalBottomSheet(
     context: context,
     isScrollControlled: true,
-    backgroundColor: Colors.transparent,
+    backgroundColor: DSColors.transparent,
     builder: (context) => Container(
       height: MediaQuery.of(context).size.height * 0.35,
       decoration: const BoxDecoration(
-        color: Colors.white,
+        color: DSColors.white,
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(20),
           topRight: Radius.circular(20),
@@ -31,29 +32,37 @@ void showItemOptionsBottomSheet({
             // Album info
             Row(
               children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: Image.network(
-                    imageUrl,
-                    width: 60,
-                    height: 60,
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) {
-                      return Container(
-                        width: 60,
-                        height: 60,
-                        decoration: BoxDecoration(
-                          color: Colors.grey[300],
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: const Icon(Icons.image_not_supported),
-                      );
-                    },
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(DSRadius.xs),
+                    boxShadow: [
+                      BoxShadow(
+                        color: DSColors.black.withOpacity(0.7),
+                        blurRadius: 6,
+                        spreadRadius:
+                            -2, // prevents shadow from appearing on sides
+                        offset: const Offset(0, 4), // pushes shadow down
+                      ),
+                    ],
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(DSRadius.xs),
+                    child: Image.network(
+                      imageUrl,
+                      width: 48,
+                      height: 48,
+                      fit: BoxFit.cover,
+                      errorBuilder: (_, __, ___) => Container(
+                        width: 48,
+                        height: 48,
+                        color: DSColors.gray20,
+                      ),
+                    ),
                   ),
                 ),
                 const SizedBox(width: 12),
                 Expanded(
-                  child: Column(
+                  child: Column(  
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -68,7 +77,7 @@ void showItemOptionsBottomSheet({
                         Text(
                           subtitle,
                           style: context.textL?.copyWith(
-                            color: DSColors.grey60,
+                            color: DSColors.gray60,
                           ),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
@@ -80,7 +89,7 @@ void showItemOptionsBottomSheet({
               ],
             ),
             const SizedBox(height: 10),
-            DottedDivider(color: DSColors.grey20),
+            DottedDivider(color: DSColors.gray20),
             const SizedBox(height: 10),
             // Action buttons
             Column(

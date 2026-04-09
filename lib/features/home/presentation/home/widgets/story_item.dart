@@ -7,11 +7,7 @@ class StoryItem extends StatelessWidget {
   final Story story;
   final VoidCallback onTap;
 
-  const StoryItem({
-    super.key,
-    required this.story,
-    required this.onTap,
-  });
+  const StoryItem({super.key, required this.story, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -49,18 +45,18 @@ class StoryItem extends StatelessWidget {
                   imageUrl: story.imageUrl,
                   fit: BoxFit.cover,
                   placeholder: (context, url) => Container(
-                    color: DSColors.grey20,
+                    color: DSColors.gray20,
                     child: const Icon(
                       Icons.person,
-                      color: DSColors.grey50,
+                      color: DSColors.gray50,
                       size: 28,
                     ),
                   ),
                   errorWidget: (context, url, error) => Container(
-                    color: DSColors.grey20,
+                    color: DSColors.gray20,
                     child: const Icon(
                       Icons.error,
-                      color: DSColors.grey50,
+                      color: DSColors.gray50,
                       size: 28,
                     ),
                   ),

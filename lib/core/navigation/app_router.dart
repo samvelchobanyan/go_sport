@@ -1,14 +1,27 @@
 import 'package:go_router/go_router.dart';
-import 'package:flutter/material.dart';
 import 'package:go_sport/core/navigation/main_shell.dart';
+import 'package:go_sport/core/navigation/page_transitions.dart';
 import 'package:go_sport/core/navigation/routes.dart';
+import 'package:go_sport/features/confirm_email/presentation/confirm_email/confirm_email_screen.dart';
+import 'package:go_sport/features/confirm_phone/presentation/confirm_phone/confirm_phone_screen.dart';
+import 'package:go_sport/features/favorites/presentation/my_albums/my_albums_screen.dart';
+import 'package:go_sport/features/favorites/presentation/my_artists/my_artists_screen.dart';
+import 'package:go_sport/features/favorites/presentation/my_playlists/my_playlists_screen.dart';
 import 'package:go_sport/features/home/presentation/home/home_screen.dart';
+import 'package:go_sport/features/login/presentation/login/login_screen.dart';
+import 'package:go_sport/features/registration_phone/presentation/registration_phone/registration_phone_screen.dart';
 import 'package:go_sport/features/music/presentation/music/music_screen.dart';
-import 'package:go_sport/features/radio/presentation/radio/radio_screen.dart';
+import 'package:go_sport/features/program_details/presentation/program_details/program_details_screen.dart';
 import 'package:go_sport/features/news/presentation/news_list/news_list_screen.dart';
 import 'package:go_sport/features/news/presentation/news_detail/news_detail_screen.dart';
-import 'package:go_sport/features/favorites/presentation/favorites_list/favorites_list_screen.dart';
-import 'package:go_sport/features/episodes/presentation/episodes_list/episodes_list_screen.dart';
+import 'package:go_sport/features/favorites/presentation/my_favorites/my_favorites_screen.dart';
+import 'package:go_sport/features/favorites/presentation/new_episodes/new_episodes_screen.dart';
+import 'package:go_sport/features/favorites/presentation/my_programs/my_programs_screen.dart';
+import 'package:go_sport/features/playlists/presentation/playlist/playlist_screen.dart';
+import 'package:go_sport/features/radio_page/presentation/radio/radio_page_screen.dart';
+import 'package:go_sport/features/registration_email/presentation/registration/registration_screen.dart';
+import 'package:go_sport/features/registration_phone/presentation/registration_phone/registration_phone_screen.dart';
+import 'package:go_sport/features/schedule/presentation/schedule/schedule_screen.dart';
 
 final GoRouter appRouter = GoRouter(
   initialLocation: AppRoutes.home,
@@ -28,13 +41,19 @@ final GoRouter appRouter = GoRouter(
                 // News routes (nested in Home branch)
                 GoRoute(
                   path: 'news',
-                  builder: (context, state) => const NewsListScreen(),
+                  pageBuilder: (context, state) => fadeSlidePage(
+                    state: state,
+                    child: const NewsListScreen(),
+                  ),
                 ),
                 GoRoute(
                   path: 'news/:id',
-                  builder: (context, state) {
+                  pageBuilder: (context, state) {
                     final id = state.pathParameters['id']!;
-                    return NewsDetailScreen(articleId: id);
+                    return fadeSlidePage(
+                      state: state,
+                      child: NewsDetailScreen(articleId: id),
+                    );
                   },
                 ),
               ],
@@ -42,65 +61,112 @@ final GoRouter appRouter = GoRouter(
           ],
         ),
 
+        // UNCOMMENT LATER
         // Music Branch
+        // StatefulShellBranch(
+        //   routes: [
+        //     GoRoute(
+        //       path: AppRoutes.music,
+        //       builder: (context, state) => const MusicScreen(),
+        //       routes: [
+        //         //playlist route
+        //         GoRoute(
+        //           path: 'playlist/:id',
+        //           pageBuilder: (context, state) {
+        //             final id = state.pathParameters['id']!;
+        //             return fadeSlidePage(
+        //               state: state,
+        //               child: PlaylistScreen(playlistId: id),
+        //             );
+        //           },
+        //         ),
+
+        //         // program route
+        //         GoRoute(
+        //           path: 'program/:id',
+        //           pageBuilder: (context, state) {
+        //             final id = state.pathParameters['id']!;
+        //             return fadeSlidePage(
+        //               state: state,
+        //               child: ProgramDetailsScreen(programId: id),
+        //             );
+        //           },
+        //         ),
+        //         // Favorites route
+        //         GoRoute(
+        //           path: 'myfavorites',
+        //           builder: (context, state) => const MyFavoritesScreen(),
+        //         ),
+        //         // My Playlists route
+        //         GoRoute(
+        //           path: 'myplaylists',
+        //           builder: (context, state) => const MyPlaylistsScreen(),
+        //         ),
+        //         // My Albums route
+        //         GoRoute(
+        //           path: 'myalbums',
+        //           builder: (context, state) => const MyAlbumsScreen(),
+        //         ),
+        //         // My Artists route
+        //         GoRoute(
+        //           path: 'myartists',
+        //           builder: (context, state) => const MyArtistsScreen(),
+        //         ),
+        //         // Episodes route
+        //         GoRoute(
+        //           path: 'myepisodes',
+        //           builder: (context, state) => const NewEpisodesScreen(),
+        //         ),
+
+        //         // My Programs route
+        //         GoRoute(
+        //           path: 'myprograms',
+        //           builder: (context, state) => const MyProgramsScreen(),
+        //         ),
+        //       ],
+        //     ),
+        //   ],
+        // ),
         StatefulShellBranch(
           routes: [
             GoRoute(
-              path: AppRoutes.music,
-              builder: (context, state) => const MusicScreen(),
-              routes: [
-                // Favorites route
-                GoRoute(
-                  path: 'favorites',
-                  builder: (context, state) => const FavoritesListScreen(),
-                ),
-                // My Playlists route
-                GoRoute(
-                  path: 'myplaylists',
-                  builder: (context, state) {
-                    // TODO: Create MyPlaylistsScreen
-                    return const Scaffold(
-                      body: Center(child: Text('My Playlists')),
-                    );
-                  },
-                ),
-                // My Albums route
-                GoRoute(
-                  path: 'myalbums',
-                  builder: (context, state) {
-                    // TODO: Create MyAlbumsScreen
-                    return const Scaffold(
-                      body: Center(child: Text('My Albums')),
-                    );
-                  },
-                ),
-                // My Artists route
-                GoRoute(
-                  path: 'myartists',
-                  builder: (context, state) {
-                    // TODO: Create MyArtistsScreen
-                    return const Scaffold(
-                      body: Center(child: Text('My Artists')),
-                    );
-                  },
-                ),
-                // Episodes route
-                GoRoute(
-                  path: 'episodes',
-                  builder: (context, state) => const EpisodesListScreen(),
-                ),
+              path: AppRoutes.music, //todo change to login
+              builder: (context, state) => const LoginScreen(),
+            ),
+          ],
+        ),
 
-                // My Programs route
-                GoRoute(
-                  path: 'myprograms',
-                  builder: (context, state) {
-                    // TODO: Create MyProgramsScreen
-                    return const Scaffold(
-                      body: Center(child: Text('My Programs')),
-                    );
-                  },
-                ),
-              ],
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: AppRoutes.registration,
+              builder: (context, state) => const RegistrationScreen(),
+            ),
+          ],
+        ),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: AppRoutes.confirmEmail,
+              builder: (context, state) => const ConfirmEmailScreen(),
+            ),
+          ],
+        ),
+
+         StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: AppRoutes.registrationPhone,
+              builder: (context, state) => const PhoneRegistrationScreen(),
+            ),
+          ],
+        ),
+
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: AppRoutes.confirmPhone,
+              builder: (context, state) => const ConfirmPhoneScreen(),
             ),
           ],
         ),
@@ -108,9 +174,19 @@ final GoRouter appRouter = GoRouter(
         // Radio Branch
         StatefulShellBranch(
           routes: [
+            // GoRoute(
+            //   path: AppRoutes.radio,
+            //   builder: (context, state) => const RadioScreen(),
+            // ),
             GoRoute(
               path: AppRoutes.radio,
-              builder: (context, state) => const RadioScreen(),
+              builder: (context, state) => const RadioPageScreen(),
+              routes: [
+                GoRoute(
+                  path: 'schedule',
+                  builder: (context, state) => const ScheduleScreen(),
+                ),
+              ],
             ),
           ],
         ),

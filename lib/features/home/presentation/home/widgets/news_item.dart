@@ -1,23 +1,21 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/domain/entities/news_article.dart';
 
 class NewsItem extends StatelessWidget {
   final NewsArticle article;
   final VoidCallback onTap;
 
-  const NewsItem({
-    super.key,
-    required this.article,
-    required this.onTap,
-  });
+  const NewsItem({super.key, required this.article, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(8),
+      borderRadius: BorderRadius.circular(DSRadius.s),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
         child: Row(
@@ -26,7 +24,7 @@ class NewsItem extends StatelessWidget {
             // Изображение новости
             Container(
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(DSRadius.s),
                 boxShadow: [
                   BoxShadow(
                     color: DSColors.black.withValues(alpha: 0.20),
@@ -37,13 +35,30 @@ class NewsItem extends StatelessWidget {
                 ],
               ),
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: Image.network(
-                  article.imageUrl,
-                  width: 84,
-                  height: 84,
-                  fit: BoxFit.cover,
-                  errorBuilder: (_, __, ___) => Container(color: DSColors.divider, width: 84, height: 84),
+                borderRadius: BorderRadius.circular(DSRadius.s),
+                child: Hero(
+                  tag: 'newsImage:${article.id}',
+                  child: CachedNetworkImage(
+                    imageUrl: article.imageUrl,
+                    width: 84,
+                    height: 84,
+                    fit: BoxFit.cover,
+                    placeholder: (context, url) => Container(
+                      width: 84,
+                      height: 84,
+                      color: DSColors.divider,
+                    ),
+                    errorWidget: (context, url, error) => Container(
+                      width: 84,
+                      height: 84,
+                      color: DSColors.gray20,
+                      child: const Icon(
+                        Icons.error,
+                        color: DSColors.gray50,
+                        size: 28,
+                      ),
+                    ),
+                  ),
                 ),
               ),
             ),
