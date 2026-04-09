@@ -1,7 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_sport/data/repositories/auth_repository_impl.dart';
+import 'package:go_sport/data/repositories/albums_repository_impl.dart';
+import 'package:go_sport/domain/repositories/auth_repository.dart';
 import 'package:go_sport/data/repositories/albums_repository_mock.dart';
+import 'package:go_sport/data/repositories/artists_repository_impl.dart';
 import 'package:go_sport/data/repositories/artists_repository_mock.dart';
-import 'package:go_sport/data/repositories/auth_repository_mock.dart';
 import 'package:go_sport/data/repositories/episodes_repository_mock.dart';
 import 'package:go_sport/data/repositories/music_repository_mock.dart';
 import 'package:go_sport/data/repositories/programs_repository_mock.dart';
@@ -15,13 +18,14 @@ import 'package:go_sport/domain/repositories/programs_repository.dart';
 import 'package:go_sport/domain/repositories/schedule_repository.dart';
 
 import '../../data/repositories/news_repository_mock.dart';
-import '../../data/repositories/playlist_repository_mock.dart';
+import '../../data/repositories/playlist_repository_impl.dart';
 import '../../data/repositories/story_repository_mock.dart';
 import '../../data/repositories/tracks_repository_mock.dart';
 import '../../domain/repositories/news_repository.dart';
 import '../../domain/repositories/playlist_repository.dart';
 import '../../domain/repositories/story_repository.dart';
 import '../../domain/repositories/track_repository.dart';
+import '../di/network_providers.dart';
 
 final storyRepositoryProvider = Provider<StoryRepository>((ref) {
   return StoryRepositoryMock();
@@ -32,7 +36,7 @@ final newsRepositoryProvider = Provider<NewsRepository>((ref) {
 });
 
 final playlistRepositoryProvider = Provider<PlaylistRepository>((ref) {
-  return PlaylistRepositoryMock();
+  return PlaylistRepositoryImpl(ref.read(apiClientProvider));
 });
 
 final tracksRepositoryProvider = Provider<TrackRepository>((ref) {
@@ -47,13 +51,12 @@ final programsRepositoryProvider = Provider<ProgramsRepository>((ref) {
   return ProgramsRepositoryMock();
 });
 
-
 final musicRepositoryProvider = Provider<MusicRepository>((ref) {
   return MusicRepositoryMock();
 });
 
 final artistsRepositoryProvider = Provider<ArtistsRepository>((ref) {
-  return ArtistsRepositoryMock();
+  return ArtistsRepositoryImpl(ref.read(apiClientProvider));
 });
 
 final albumsRepositoryProvider = Provider<AlbumsRepository>((ref) {
@@ -65,5 +68,5 @@ final scheduleRepositoryProvider = Provider<ScheduleRepository>((ref) {
 });
 
 final authRepositoryProvider = Provider<AuthRepository>((ref) {
-  return AuthRepositoryMock();
+  return AuthRepositoryImpl(ref.read(apiClientProvider));
 });

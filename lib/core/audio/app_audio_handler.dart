@@ -1,5 +1,4 @@
 import 'package:audio_service/audio_service.dart';
-import 'package:flutter/foundation.dart';
 import 'package:just_audio/just_audio.dart';
 
 import '../../domain/entities/track.dart';
@@ -19,7 +18,6 @@ class AppAudioHandler extends BaseAudioHandler with QueueHandler, SeekHandler {
       final playing = _player.playing;
       final processingState = _player.processingState;
       
-      debugPrint("AudioHandler: Event Received. Playing=$playing, State=$processingState"); // <--- LOG
 
       playbackState.add(playbackState.value.copyWith(
         controls: [
@@ -55,6 +53,10 @@ class AppAudioHandler extends BaseAudioHandler with QueueHandler, SeekHandler {
           LoopMode.one: AudioServiceRepeatMode.one,
         }[_player.loopMode]!,
       ));
+    }, onError: (Object error, StackTrace stackTrace) {
+        playbackState.add(playbackState.value.copyWith(
+          processingState: AudioProcessingState.error,
+        ));
     });
 
     // 2. Broadcast current track changes to the system
@@ -101,7 +103,7 @@ class AppAudioHandler extends BaseAudioHandler with QueueHandler, SeekHandler {
         title: track.title,
         artist: track.artistName,
         duration: track.duration,
-        artUri: Uri.parse(track.imageUrl),
+        artUri: track.imageUrl != null ? Uri.parse(track.imageUrl!) : null,
         extras: {'audioUrl': track.audioUrl, 'imageUrl': track.imageUrl},
       );
     }).toList();

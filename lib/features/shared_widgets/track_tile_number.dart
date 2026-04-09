@@ -59,11 +59,11 @@ class TrackTileNumber extends StatelessWidget {
             // Menu button
             GestureDetector(
               onTap: () {
-                onMenuTap(); 
+                onMenuTap();
                 // todo change this sheet
                 showTrackOptionsBottomSheet(
                   context: context,
-                  imageUrl: track.imageUrl,
+                  imageUrl: track.imageUrl ?? '',
                   title: track.title,
                   subtitle: track.artistName,
                 );

@@ -8,10 +8,11 @@ class Track with _$Track {
     required String id,
     required String title,
     required String artistName,
-    required String imageUrl,
+    String? imageUrl,
     required Duration duration,
     required String audioUrl,
     DateTime? releaseDate,
     @Default(false) bool isLiked,
+    String? likeId,
   }) = _Track;
 }

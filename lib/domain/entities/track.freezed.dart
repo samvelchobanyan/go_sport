@@ -20,11 +20,12 @@ mixin _$Track {
   String get id => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   String get artistName => throw _privateConstructorUsedError;
-  String get imageUrl => throw _privateConstructorUsedError;
+  String? get imageUrl => throw _privateConstructorUsedError;
   Duration get duration => throw _privateConstructorUsedError;
   String get audioUrl => throw _privateConstructorUsedError;
   DateTime? get releaseDate => throw _privateConstructorUsedError;
   bool get isLiked => throw _privateConstructorUsedError;
+  String? get likeId => throw _privateConstructorUsedError;
 
   /// Create a copy of Track
   /// with the given fields replaced by the non-null parameter values.
@@ -41,11 +42,12 @@ abstract class $TrackCopyWith<$Res> {
     String id,
     String title,
     String artistName,
-    String imageUrl,
+    String? imageUrl,
     Duration duration,
     String audioUrl,
     DateTime? releaseDate,
     bool isLiked,
+    String? likeId,
   });
 }
 
@@ -67,11 +69,12 @@ class _$TrackCopyWithImpl<$Res, $Val extends Track>
     Object? id = null,
     Object? title = null,
     Object? artistName = null,
-    Object? imageUrl = null,
+    Object? imageUrl = freezed,
     Object? duration = null,
     Object? audioUrl = null,
     Object? releaseDate = freezed,
     Object? isLiked = null,
+    Object? likeId = freezed,
   }) {
     return _then(
       _value.copyWith(
@@ -87,10 +90,10 @@ class _$TrackCopyWithImpl<$Res, $Val extends Track>
                 ? _value.artistName
                 : artistName // ignore: cast_nullable_to_non_nullable
                       as String,
-            imageUrl: null == imageUrl
+            imageUrl: freezed == imageUrl
                 ? _value.imageUrl
                 : imageUrl // ignore: cast_nullable_to_non_nullable
-                      as String,
+                      as String?,
             duration: null == duration
                 ? _value.duration
                 : duration // ignore: cast_nullable_to_non_nullable
@@ -107,6 +110,10 @@ class _$TrackCopyWithImpl<$Res, $Val extends Track>
                 ? _value.isLiked
                 : isLiked // ignore: cast_nullable_to_non_nullable
                       as bool,
+            likeId: freezed == likeId
+                ? _value.likeId
+                : likeId // ignore: cast_nullable_to_non_nullable
+                      as String?,
           )
           as $Val,
     );
@@ -125,11 +132,12 @@ abstract class _$$TrackImplCopyWith<$Res> implements $TrackCopyWith<$Res> {
     String id,
     String title,
     String artistName,
-    String imageUrl,
+    String? imageUrl,
     Duration duration,
     String audioUrl,
     DateTime? releaseDate,
     bool isLiked,
+    String? likeId,
   });
 }
 
@@ -150,11 +158,12 @@ class __$$TrackImplCopyWithImpl<$Res>
     Object? id = null,
     Object? title = null,
     Object? artistName = null,
-    Object? imageUrl = null,
+    Object? imageUrl = freezed,
     Object? duration = null,
     Object? audioUrl = null,
     Object? releaseDate = freezed,
     Object? isLiked = null,
+    Object? likeId = freezed,
   }) {
     return _then(
       _$TrackImpl(
@@ -170,10 +179,10 @@ class __$$TrackImplCopyWithImpl<$Res>
             ? _value.artistName
             : artistName // ignore: cast_nullable_to_non_nullable
                   as String,
-        imageUrl: null == imageUrl
+        imageUrl: freezed == imageUrl
             ? _value.imageUrl
             : imageUrl // ignore: cast_nullable_to_non_nullable
-                  as String,
+                  as String?,
         duration: null == duration
             ? _value.duration
             : duration // ignore: cast_nullable_to_non_nullable
@@ -190,6 +199,10 @@ class __$$TrackImplCopyWithImpl<$Res>
             ? _value.isLiked
             : isLiked // ignore: cast_nullable_to_non_nullable
                   as bool,
+        likeId: freezed == likeId
+            ? _value.likeId
+            : likeId // ignore: cast_nullable_to_non_nullable
+                  as String?,
       ),
     );
   }
@@ -202,11 +215,12 @@ class _$TrackImpl implements _Track {
     required this.id,
     required this.title,
     required this.artistName,
-    required this.imageUrl,
+    this.imageUrl,
     required this.duration,
     required this.audioUrl,
     this.releaseDate,
     this.isLiked = false,
+    this.likeId,
   });
 
   @override
@@ -216,7 +230,7 @@ class _$TrackImpl implements _Track {
   @override
   final String artistName;
   @override
-  final String imageUrl;
+  final String? imageUrl;
   @override
   final Duration duration;
   @override
@@ -226,10 +240,12 @@ class _$TrackImpl implements _Track {
   @override
   @JsonKey()
   final bool isLiked;
+  @override
+  final String? likeId;
 
   @override
   String toString() {
-    return 'Track(id: $id, title: $title, artistName: $artistName, imageUrl: $imageUrl, duration: $duration, audioUrl: $audioUrl, releaseDate: $releaseDate, isLiked: $isLiked)';
+    return 'Track(id: $id, title: $title, artistName: $artistName, imageUrl: $imageUrl, duration: $duration, audioUrl: $audioUrl, releaseDate: $releaseDate, isLiked: $isLiked, likeId: $likeId)';
   }
 
   @override
@@ -249,7 +265,8 @@ class _$TrackImpl implements _Track {
                 other.audioUrl == audioUrl) &&
             (identical(other.releaseDate, releaseDate) ||
                 other.releaseDate == releaseDate) &&
-            (identical(other.isLiked, isLiked) || other.isLiked == isLiked));
+            (identical(other.isLiked, isLiked) || other.isLiked == isLiked) &&
+            (identical(other.likeId, likeId) || other.likeId == likeId));
   }
 
   @override
@@ -263,6 +280,7 @@ class _$TrackImpl implements _Track {
     audioUrl,
     releaseDate,
     isLiked,
+    likeId,
   );
 
   /// Create a copy of Track
@@ -279,11 +297,12 @@ abstract class _Track implements Track {
     required final String id,
     required final String title,
     required final String artistName,
-    required final String imageUrl,
+    final String? imageUrl,
     required final Duration duration,
     required final String audioUrl,
     final DateTime? releaseDate,
     final bool isLiked,
+    final String? likeId,
   }) = _$TrackImpl;
 
   @override
@@ -293,7 +312,7 @@ abstract class _Track implements Track {
   @override
   String get artistName;
   @override
-  String get imageUrl;
+  String? get imageUrl;
   @override
   Duration get duration;
   @override
@@ -302,6 +321,8 @@ abstract class _Track implements Track {
   DateTime? get releaseDate;
   @override
   bool get isLiked;
+  @override
+  String? get likeId;
 
   /// Create a copy of Track
   /// with the given fields replaced by the non-null parameter values.

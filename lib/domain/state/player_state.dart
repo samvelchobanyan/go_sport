@@ -38,6 +38,17 @@ enum RepeatMode {
 
 @freezed
 sealed class QueueSource with _$QueueSource {
+  const QueueSource._();
+
+  @override
+  String get id => switch (this) {
+    QueueSourceAlbum(:final id) => id,
+    QueueSourcePlaylist(:final id) => id,
+    QueueSourceProgram(:final id) => id,
+    QueueSourceFavorites(:final id) => id,
+    QueueSourceEpisodes(:final id) => id,
+  };
+
   const factory QueueSource.album({
     required String id,
     required String title,
@@ -177,7 +188,7 @@ extension PlayerStateX on PlayerState {
   /// Image URL for display (track image or source image as fallback)
   String? get displayImageUrl {
     final trackImage = currentTrack?.imageUrl;
-    if (trackImage != null && trackImage.isNotEmpty) {
+    if (trackImage != null) {
       return trackImage;
     }
     // Fallback to source image
@@ -324,6 +335,13 @@ class PlayerNotifier extends Notifier<PlayerState> {
     int startIndex = 0,
   }) async {
     if (tracks.isEmpty) return;
+
+    // Same source — just skip to the track
+    if (state.source?.id == source.id && state.mode == PlaybackMode.music) {
+      state = state.copyWith(currentIndex: startIndex);
+      await skipTo(startIndex);
+      return;
+    }
 
     // 1. Update UI State immediately (Optimistic update)
     state = state.copyWith(
@@ -475,6 +493,17 @@ class PlayerNotifier extends Notifier<PlayerState> {
         errorMessage: e.toString(),
       );
     }
+  }
+
+  /// Update track like state in the queue
+  void updateTrackLike(String trackId, {required bool isLiked, String? likeId}) {
+    final updatedTracks = state.tracks.map((t) {
+      if (t.id == trackId) {
+        return t.copyWith(isLiked: isLiked, likeId: likeId);
+      }
+      return t;
+    }).toList();
+    state = state.copyWith(tracks: updatedTracks);
   }
 
   /// Resume music playback (after radio)

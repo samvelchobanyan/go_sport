@@ -14,32 +14,37 @@ class LoginState with _$LoginState {
     @Default(false) bool isAuthenticated,
   }) = _LoginState;
 }
+// login_controller.dart
 
 class LoginController extends AutoDisposeNotifier<LoginState> {
   late final AuthRepository _authRepository;
 
   @override
   LoginState build() {
-    // Initialize repositories from providers
     _authRepository = ref.watch(authRepositoryProvider);
     return const LoginState();
   }
 
   Future<void> login(String email, String password) async {
+    // Start loading
     state = state.copyWith(isLoading: true, error: null);
 
-    // try {
-    //   // Logic for API call
-    //   await _authRepository.signIn(email, password);
+    try {
+      final result = await _authRepository.login(
+        identifier: email,
+        password: password,
+      );
 
-    //   state = state.copyWith(isLoading: false, isAuthenticated: true);
-    // } catch (e) {
-    //   state = state.copyWith(
-    //     isLoading: false,
-    //     error: e.toString(),
-    //     isAuthenticated: false,
-    //   );
-    // }
+      // TODO: Save result.jwt to secure storage if needed
+
+      state = state.copyWith(isLoading: false, isAuthenticated: true);
+    } catch (e) {
+      // Dio errors or parsing errors caught here
+      state = state.copyWith(
+        isLoading: false,
+        error: "Invalid credentials or server error",
+      );
+    }
   }
 }
 

@@ -34,7 +34,7 @@ class AlbumCard extends StatelessWidget {
           children: [
             MediaCardShell(
               child: Hero(
-                tag: 'playlist-image-$id',
+                tag: 'album-image-$id',
                 child: CachedNetworkImage(
                   imageUrl: imageUrl,
                   fit: BoxFit.cover,

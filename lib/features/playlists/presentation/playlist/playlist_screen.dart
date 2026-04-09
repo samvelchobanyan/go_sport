@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
@@ -63,9 +62,14 @@ class PlaylistScreen extends ConsumerWidget {
         );
   }
 
+  void _onLikeTap(WidgetRef ref, String? likeId) {
+    ref
+        .read(playlistControllerProvider(playlistId).notifier)
+        .toggleLike(likeId);
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    print('Building PlaylistScreen for playlistId: $playlistId');
     final playlistsState = ref.watch(featuredPlaylistsStateProvider);
     final playlist = playlistsState.getPlaylist(playlistId);
     final tracksState = ref.watch(playlistControllerProvider(playlistId));
@@ -88,19 +92,34 @@ class PlaylistScreen extends ConsumerWidget {
     final screenHeight = MediaQuery.of(context).size.height;
     final expandedHeight = screenHeight * 0.5;
 
-    return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle.light,
-      child: Scaffold(
-        backgroundColor: DSColors.white,
-        body: CustomScrollView(
-          slivers: [
-            SliverAppBar(
-              expandedHeight: expandedHeight,
-              pinned: true,
-              elevation: 0,
-              scrolledUnderElevation: 0,
-              backgroundColor: DSColors.black.withOpacity(0.9),
-              leading: IconButton(
+    return Scaffold(
+      backgroundColor: DSColors.white,
+      body: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            expandedHeight: expandedHeight,
+            pinned: true,
+            elevation: 0,
+            scrolledUnderElevation: 0,
+            backgroundColor: DSColors.black.withOpacity(0.9),
+            leading: IconButton(
+              icon: Container(
+                width: 36,
+                height: 36,
+                decoration: BoxDecoration(
+                  color: DSColors.black.withOpacity(0.3),
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(
+                  Icons.arrow_back,
+                  color: DSColors.white,
+                  size: 20,
+                ),
+              ),
+              onPressed: () => context.pop(),
+            ),
+            actions: [
+              IconButton(
                 icon: Container(
                   width: 36,
                   height: 36,
@@ -109,137 +128,112 @@ class PlaylistScreen extends ConsumerWidget {
                     shape: BoxShape.circle,
                   ),
                   child: const Icon(
-                    Icons.arrow_back,
+                    Icons.share,
                     color: DSColors.white,
                     size: 20,
                   ),
                 ),
-                onPressed: () => context.pop(),
+                onPressed: () {
+                  // TODO: Share playlist
+                },
               ),
-              actions: [
-                IconButton(
-                  icon: Container(
-                    width: 36,
-                    height: 36,
-                    decoration: BoxDecoration(
-                      color: DSColors.black.withOpacity(0.3),
-                      shape: BoxShape.circle,
-                    ),
-                    child: const Icon(
-                      Icons.share,
-                      color: DSColors.white,
-                      size: 20,
-                    ),
-                  ),
-                  onPressed: () {
-                    // TODO: Share playlist
-                  },
-                ),
-              ],
-              flexibleSpace: FlexibleSpaceBar(
-                background: PlaylistHero(
-                  playlist: playlist,
-                  onLikeTap: () => ref
-                      .read(playlistControllerProvider(playlistId).notifier)
-                      .toggleLike(),
-                  onPlayTap: () {
-                    final tracksValue = tracksState.mapOrNull(
-                      data: (data) => data.tracks,
+            ],
+            flexibleSpace: FlexibleSpaceBar(
+              background: PlaylistHero(
+                playlist: playlist,
+                onLikeTap: () => _onLikeTap(ref, playlist.likeId),
+                onPlayTap: () {
+                  final tracksValue = tracksState.mapOrNull(
+                    data: (data) => data.tracks,
+                  );
+                  if (tracksValue != null) {
+                    _onPlayTap(
+                      ref,
+                      tracksValue,
+                      playlist.title,
+                      playlist.imageUrl,
                     );
-                    if (tracksValue != null) {
-                      _onPlayTap(
-                        ref,
-                        tracksValue,
-                        playlist.title,
-                        playlist.imageUrl,
-                      );
-                    }
-                  },
+                  }
+                },
+              ),
+            ),
+            bottom: PreferredSize(
+              preferredSize: const Size.fromHeight(24),
+              child: Container(
+                height: 24,
+                decoration: const BoxDecoration(
+                  color: DSColors.white,
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
                 ),
               ),
-              bottom: PreferredSize(
-                preferredSize: const Size.fromHeight(24),
-                child: Container(
-                  height: 24,
-                  decoration: const BoxDecoration(
-                    color: DSColors.white,
-                    borderRadius: BorderRadius.vertical(
-                      top: Radius.circular(24),
+            ),
+          ),
+          tracksState.when(
+            loading: () => const PlaylistScreenSkeleton(),
+            error: (message) => SliverFillRemaining(
+              hasScrollBody: false,
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Error: $message',
+                      style: const TextStyle(color: DSColors.black),
                     ),
-                  ),
+                    const SizedBox(height: 16),
+                    ElevatedButton(
+                      onPressed: () => ref
+                          .read(playlistControllerProvider(playlistId).notifier)
+                          .loadTracks(),
+                      child: const Text('Retry'),
+                    ),
+                  ],
                 ),
               ),
             ),
-            tracksState.when(
-              loading: () =>
-                  const SliverFillRemaining(child: PlaylistScreenSkeleton()),
-              error: (message) => SliverFillRemaining(
-                hasScrollBody: false,
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Error: $message',
-                        style: const TextStyle(color: DSColors.black),
-                      ),
-                      const SizedBox(height: 16),
-                      ElevatedButton(
-                        onPressed: () => ref
-                            .read(
-                              playlistControllerProvider(playlistId).notifier,
-                            )
-                            .loadTracks(),
-                        child: const Text('Retry'),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              data: (tracks) {
-                final playerState = ref.watch(playerStateProvider);
-                final playingTrackId = playerState.currentTrack?.id;
+            data: (tracks) {
+              final playerState = ref.watch(playerStateProvider);
+              final playingTrackId = playerState.currentTrack?.id;
 
-                return SliverPadding(
-                  padding: const EdgeInsets.only(bottom: 100, top: 0),
-                  sliver: SliverList(
-                    delegate: SliverChildBuilderDelegate((context, index) {
-                      final track = tracks[index];
-                      final isCurrentTrack = track.id == playingTrackId;
-                      final bool? trackPlayingState = isCurrentTrack
-                          ? playerState.isPlaying &&
-                                playerState.isRadioMode == false
-                          : null;
+              return SliverPadding(
+                padding: const EdgeInsets.only(bottom: 100, top: 0),
+                sliver: SliverList(
+                  delegate: SliverChildBuilderDelegate((context, index) {
+                    final track = tracks[index];
+                    final isCurrentTrack = track.id == playingTrackId;
+                    final bool? trackPlayingState = isCurrentTrack
+                        ? playerState.isPlaying &&
+                              playerState.isRadioMode == false
+                        : null;
 
-                      return Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          TrackTile(
-                            track: track,
-                            isPlaying: trackPlayingState,
-                            onTap: () => _onTrackTap(
-                              ref,
-                              tracks,
-                              index,
-                              playlist.title,
-                              playlist.imageUrl,
-                            ),
-                            onMenuTap: () => _onTrackMenuTap(index),
+                    return Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        TrackTile(
+                          track: track,
+                          isPlaying: trackPlayingState,
+                          onTap: () => _onTrackTap(
+                            ref,
+                            tracks,
+                            index,
+                            playlist.title,
+                            playlist.imageUrl,
                           ),
-                          if (index < tracks.length - 1)
-                            const Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 24),
-                              child: DottedDivider(),
-                            ),
-                        ],
-                      );
-                    }, childCount: tracks.length),
-                  ),
-                );
-              },
-            ),
-          ],
-        ),
+                          onMenuTap: () => _onTrackMenuTap(index),
+                        ),
+                        if (index < tracks.length - 1)
+                          const Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 24),
+                            child: DottedDivider(),
+                          ),
+                      ],
+                    );
+                  }, childCount: tracks.length),
+                ),
+              );
+            },
+          ),
+        ],
       ),
     );
   }
