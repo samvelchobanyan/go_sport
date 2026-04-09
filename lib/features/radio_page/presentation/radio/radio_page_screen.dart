@@ -102,6 +102,7 @@ class RadioPageScreen extends ConsumerWidget {
                                       id: program.id,
                                       title: program.title,
                                       imageUrl: program.imageUrl,
+                                      episodeCount: program.episodeCount,
                                     ),
                                   );
                                 },
@@ -114,7 +115,7 @@ class RadioPageScreen extends ConsumerWidget {
                                 vertical: 8,
                               ),
                               child: Text(
-                                'No featured playlists available.',
+                                'No featured programs available.',
                                 style: TextStyle(color: DSColors.gray60),
                               ),
                             ),
@@ -136,7 +137,7 @@ class RadioPageScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildEpisodesList(WidgetRef ref, List<Track> episodes, context) {
+  Widget _buildEpisodesList(WidgetRef ref, List<Track> episodes, BuildContext  context) {
     final playerState = ref.watch(playerStateProvider);
     final playingTrackId = playerState.currentTrack?.id;
 
@@ -190,8 +191,8 @@ class RadioPageScreen extends ConsumerWidget {
         .playQueue(
           episodes,
           source: QueueSource.episodes(
-            id: index.toString(),
-            title: 'New Episodes',
+            id: 'radio-featured-episodes',
+            title: 'Featured episodes',
             imageUrl: '',
           ),
           startIndex: index,

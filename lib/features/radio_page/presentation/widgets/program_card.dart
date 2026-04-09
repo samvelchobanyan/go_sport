@@ -9,12 +9,14 @@ class ProgramCard extends StatelessWidget {
   final String id;
   final String title;
   final String imageUrl;
+  final int episodeCount;
 
   const ProgramCard({
     super.key,
     required this.id,
     required this.title,
     required this.imageUrl,
+    required this.episodeCount,
   });
 
   @override
@@ -45,7 +47,7 @@ class ProgramCard extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
             ),
             const SizedBox(height: 6),
-            CountBadge(count: 8, type: CountBadgeType.programs),
+            CountBadge(count: episodeCount, type: CountBadgeType.programs),
           ],
         ),
       ),
