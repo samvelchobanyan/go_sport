@@ -5,16 +5,57 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
+import 'package:go_sport/features/auth/login/presentation/login/login_controller.dart';
 import 'package:go_sport/features/shared_widgets/input.dart';
 import 'package:go_router/go_router.dart';
 
-class LoginScreen extends ConsumerWidget {
+class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends ConsumerState<LoginScreen> {
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    ref.listen<LoginState>(loginControllerProvider, (previous, next) {
+      if (next.isAuthenticated) {
+        context.go('/home'); // Use go() for login to clear the stack
+      }
+      if (next.error != null) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(next.error!)));
+      }
+    });
+
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
+
+    final loginState = ref.watch(loginControllerProvider);
+    final loginNotifier = ref.read(loginControllerProvider.notifier);
+
+    ref.listen<LoginState>(loginControllerProvider, (previous, next) {
+      if (next.isAuthenticated) {
+        context.go('/home');
+      }
+      if (next.error != null) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(next.error!)));
+      }
+    });
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.dark,
@@ -64,16 +105,18 @@ class LoginScreen extends ConsumerWidget {
                           SizedBox(height: 20),
 
                           // Email Input
-                          const CustomInput(
+                          CustomInput(
                             label: 'Email',
                             hintText: 'Enter your email',
+                            controller: _emailController,
                             keyboardType: TextInputType.emailAddress,
                           ),
 
                           const SizedBox(height: 14),
 
                           // Password Input
-                          const CustomInput(
+                          CustomInput(
+                            controller: _passwordController,
                             label: 'Password',
                             hintText: 'Enter your password',
                             obscureText: true,
@@ -96,10 +139,17 @@ class LoginScreen extends ConsumerWidget {
 
                           // Login Button
                           ElevatedButton.icon(
-                            onPressed: () {},
+                            onPressed: loginState.isLoading
+                                ? null
+                                : () {
+                                    loginNotifier.login(
+                                      _emailController.text,
+                                      _passwordController.text,
+                                    );
+                                  },
                             icon: SvgPicture.asset('assets/icons/login.svg'),
                             label: Text(
-                              'Log in',
+                              loginState.isLoading ? 'Processing...' : 'Log in',
                               style: context.subtitleLBold?.copyWith(
                                 color: DSColors.lime,
                               ),

@@ -102,7 +102,7 @@ class DSThemeData {
         backgroundColor: DSColors.white,
         indicatorColor: DSColors.transparent,
         elevation: 0,
-        height: 69,
+        height: 59,
         labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
         labelTextStyle: WidgetStateProperty.resolveWith((states) {
           if (states.contains(WidgetState.selected)) {

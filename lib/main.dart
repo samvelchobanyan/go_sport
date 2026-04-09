@@ -1,13 +1,26 @@
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_sport/core/di/network_providers.dart';
+import 'package:go_sport/core/network/api_client.dart';
 import 'core/audio/app_audio_handler.dart';
+import 'core/auth/token_storage.dart';
+import 'core/config/app_config.dart';
 import 'core/di/audio_providers.dart';
 import 'core/navigation/app_router.dart';
+import 'core/network/interceptors/auth_interceptor.dart';
 import 'design_system/theme/ds_theme_data.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  const env = String.fromEnvironment('ENV', defaultValue: 'dev');
+  final config = env == 'prod' ? AppConfig.prod : AppConfig.dev;
+
+  final tokenStorage = TokenStorage();
+  await tokenStorage.init();
+
+  final apiClient = ApiClient(config, [AuthInterceptor(tokenStorage)]);
 
   try {
     // Initialize AudioService
@@ -25,8 +38,10 @@ Future<void> main() async {
       ProviderScope(
         overrides: [
           audioHandlerProvider.overrideWithValue(audioHandler),
+          apiClientProvider.overrideWithValue(apiClient),
+          tokenStorageProvider.overrideWithValue(tokenStorage),
         ],
-        child: const MainApp(),
+        child: MainApp(tokenStorage: tokenStorage),
       ),
     );
   } catch (e, stackTrace) {
@@ -52,7 +67,9 @@ Future<void> main() async {
 }
 
 class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+  final TokenStorage tokenStorage;
+
+  const MainApp({super.key, required this.tokenStorage});
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +77,7 @@ class MainApp extends StatelessWidget {
       title: 'Audio App',
       debugShowCheckedModeBanner: false,
       theme: DSThemeData.mainTheme,
-      routerConfig: appRouter,
+      routerConfig: createAppRouter(tokenStorage),
     );
   }
 }

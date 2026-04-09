@@ -1,4 +1,5 @@
 import 'package:go_sport/domain/entities/album.dart';
+import 'package:go_sport/domain/entities/track.dart';
 import 'package:go_sport/domain/repositories/albums_repository.dart';
 
 class AlbumsRepositoryMock implements AlbumsRepository {
@@ -74,9 +75,16 @@ class AlbumsRepositoryMock implements AlbumsRepository {
   }
 
   @override
-  Future<void> toggleLike(String id) async {
+  Future<List<Track>> getAlbumTracks(String albumId) async {
+    await Future.delayed(const Duration(milliseconds: 800));
+    return [];
+  }
+
+  @override
+  Future<String?> toggleLike(String albumId, [String? likeId]) async {
     await Future.delayed(const Duration(milliseconds: 300));
-    // В реальном API здесь будет HTTP запрос
-    // Состояние обновляется в domain state (optimistic update)
+    if (likeId != null) return null;
+    return 'mock-like-id';
   }
 }
+  

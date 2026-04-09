@@ -43,14 +43,16 @@ class TrackTile extends StatelessWidget {
               ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(DSRadius.xs),
-                child: Image.network(
-                  track.imageUrl,
-                  width: 48,
-                  height: 48,
-                  fit: BoxFit.cover,
-                  errorBuilder: (_, __, ___) =>
-                      Container(width: 48, height: 48, color: DSColors.gray20),
-                ),
+                child: track.imageUrl != null
+                    ? Image.network(
+                        track.imageUrl!,
+                        width: 48,
+                        height: 48,
+                        fit: BoxFit.cover,
+                        errorBuilder: (_, __, ___) =>
+                            Container(width: 48, height: 48, color: DSColors.gray20),
+                      )
+                    : Container(width: 48, height: 48, color: DSColors.gray20),
               ),
             ),
             const SizedBox(width: 10),
@@ -64,7 +66,7 @@ class TrackTile extends StatelessWidget {
                 onMenuTap(); //in case something different should happen
                 showTrackOptionsBottomSheet(
                   context: context,
-                  imageUrl: track.imageUrl,
+                  imageUrl: track.imageUrl ?? '',
                   title: track.title,
                   subtitle: track.artistName,
                 );

@@ -12,5 +12,6 @@ class Album with _$Album {
     required int trackCount,
     required String releaseYear,
     @Default(false) bool isLiked,
+    String? likeId,
   }) = _Album;
 }

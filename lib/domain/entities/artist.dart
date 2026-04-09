@@ -8,8 +8,8 @@ class Artist with _$Artist {
   const factory Artist({
     required String id,
     required String artistName,
-    List<Album>? albums,
     required String imageUrl,
     @Default(false) bool isLiked,
+    String? likeId,
   }) = _Artist;
 }

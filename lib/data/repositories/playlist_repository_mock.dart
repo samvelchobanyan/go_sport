@@ -754,12 +754,28 @@ class PlaylistRepositoryMock implements PlaylistRepository {
   }
 
   @override
-  Future<void> toggleLike(String playlistId) async {
+  Future<String?> toggleLike(String playlistId, [String? likeId]) async {
     await Future.delayed(const Duration(milliseconds: 200));
     final index = _featuredPlaylists.indexWhere((p) => p.id == playlistId);
     if (index != -1) {
       final playlist = _featuredPlaylists[index];
-      _featuredPlaylists[index] = playlist.copyWith(isLiked: !playlist.isLiked);
+      if (likeId != null) {
+        _featuredPlaylists[index] = playlist.copyWith(isLiked: false, likeId: null);
+        return null;
+      }
+      final newLikeId = 'mock-like-$playlistId';
+      _featuredPlaylists[index] = playlist.copyWith(isLiked: true, likeId: newLikeId);
+      return newLikeId;
     }
+    return null;
+  }
+
+  @override
+  Future<String?> toggleLikeTrack(String trackId, [String? likeId]) async {
+    await Future.delayed(const Duration(milliseconds: 200));
+    if (likeId != null) {
+      return null;
+    }
+    return 'mock-like-$trackId';
   }
 }

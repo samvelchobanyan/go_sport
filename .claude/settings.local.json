@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep -r \"Provider\\\\|NotifierProvider\" c:fluttergo_sportlibdomainstate --include=*.dart)",
+      "Bash(find c:fluttergo_sportlib -name *featured* -o -name *program*state* -o -name *episode*state*)",
+      "Bash(grep \"\\\\.dart$\")",
+      "Bash(grep -l \"card\\\\|Card\" \"c:\\\\flutter\\\\go_sport\\\\lib\\\\features\\\\shared_widgets\"/*.dart)",
+      "Bash(xargs grep:*)",
+      "Bash(dart run:*)",
+      "Bash(flutter analyze:*)"
+    ]
+  }
+}

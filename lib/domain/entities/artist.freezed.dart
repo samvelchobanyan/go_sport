@@ -19,9 +19,9 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$Artist {
   String get id => throw _privateConstructorUsedError;
   String get artistName => throw _privateConstructorUsedError;
-  List<Album>? get albums => throw _privateConstructorUsedError;
   String get imageUrl => throw _privateConstructorUsedError;
   bool get isLiked => throw _privateConstructorUsedError;
+  String? get likeId => throw _privateConstructorUsedError;
 
   /// Create a copy of Artist
   /// with the given fields replaced by the non-null parameter values.
@@ -37,9 +37,9 @@ abstract class $ArtistCopyWith<$Res> {
   $Res call({
     String id,
     String artistName,
-    List<Album>? albums,
     String imageUrl,
     bool isLiked,
+    String? likeId,
   });
 }
 
@@ -60,9 +60,9 @@ class _$ArtistCopyWithImpl<$Res, $Val extends Artist>
   $Res call({
     Object? id = null,
     Object? artistName = null,
-    Object? albums = freezed,
     Object? imageUrl = null,
     Object? isLiked = null,
+    Object? likeId = freezed,
   }) {
     return _then(
       _value.copyWith(
@@ -74,10 +74,6 @@ class _$ArtistCopyWithImpl<$Res, $Val extends Artist>
                 ? _value.artistName
                 : artistName // ignore: cast_nullable_to_non_nullable
                       as String,
-            albums: freezed == albums
-                ? _value.albums
-                : albums // ignore: cast_nullable_to_non_nullable
-                      as List<Album>?,
             imageUrl: null == imageUrl
                 ? _value.imageUrl
                 : imageUrl // ignore: cast_nullable_to_non_nullable
@@ -86,6 +82,10 @@ class _$ArtistCopyWithImpl<$Res, $Val extends Artist>
                 ? _value.isLiked
                 : isLiked // ignore: cast_nullable_to_non_nullable
                       as bool,
+            likeId: freezed == likeId
+                ? _value.likeId
+                : likeId // ignore: cast_nullable_to_non_nullable
+                      as String?,
           )
           as $Val,
     );
@@ -103,9 +103,9 @@ abstract class _$$ArtistImplCopyWith<$Res> implements $ArtistCopyWith<$Res> {
   $Res call({
     String id,
     String artistName,
-    List<Album>? albums,
     String imageUrl,
     bool isLiked,
+    String? likeId,
   });
 }
 
@@ -125,9 +125,9 @@ class __$$ArtistImplCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? artistName = null,
-    Object? albums = freezed,
     Object? imageUrl = null,
     Object? isLiked = null,
+    Object? likeId = freezed,
   }) {
     return _then(
       _$ArtistImpl(
@@ -139,10 +139,6 @@ class __$$ArtistImplCopyWithImpl<$Res>
             ? _value.artistName
             : artistName // ignore: cast_nullable_to_non_nullable
                   as String,
-        albums: freezed == albums
-            ? _value._albums
-            : albums // ignore: cast_nullable_to_non_nullable
-                  as List<Album>?,
         imageUrl: null == imageUrl
             ? _value.imageUrl
             : imageUrl // ignore: cast_nullable_to_non_nullable
@@ -151,6 +147,10 @@ class __$$ArtistImplCopyWithImpl<$Res>
             ? _value.isLiked
             : isLiked // ignore: cast_nullable_to_non_nullable
                   as bool,
+        likeId: freezed == likeId
+            ? _value.likeId
+            : likeId // ignore: cast_nullable_to_non_nullable
+                  as String?,
       ),
     );
   }
@@ -162,34 +162,26 @@ class _$ArtistImpl implements _Artist {
   const _$ArtistImpl({
     required this.id,
     required this.artistName,
-    final List<Album>? albums,
     required this.imageUrl,
     this.isLiked = false,
-  }) : _albums = albums;
+    this.likeId,
+  });
 
   @override
   final String id;
   @override
   final String artistName;
-  final List<Album>? _albums;
-  @override
-  List<Album>? get albums {
-    final value = _albums;
-    if (value == null) return null;
-    if (_albums is EqualUnmodifiableListView) return _albums;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(value);
-  }
-
   @override
   final String imageUrl;
   @override
   @JsonKey()
   final bool isLiked;
+  @override
+  final String? likeId;
 
   @override
   String toString() {
-    return 'Artist(id: $id, artistName: $artistName, albums: $albums, imageUrl: $imageUrl, isLiked: $isLiked)';
+    return 'Artist(id: $id, artistName: $artistName, imageUrl: $imageUrl, isLiked: $isLiked, likeId: $likeId)';
   }
 
   @override
@@ -200,21 +192,15 @@ class _$ArtistImpl implements _Artist {
             (identical(other.id, id) || other.id == id) &&
             (identical(other.artistName, artistName) ||
                 other.artistName == artistName) &&
-            const DeepCollectionEquality().equals(other._albums, _albums) &&
             (identical(other.imageUrl, imageUrl) ||
                 other.imageUrl == imageUrl) &&
-            (identical(other.isLiked, isLiked) || other.isLiked == isLiked));
+            (identical(other.isLiked, isLiked) || other.isLiked == isLiked) &&
+            (identical(other.likeId, likeId) || other.likeId == likeId));
   }
 
   @override
-  int get hashCode => Object.hash(
-    runtimeType,
-    id,
-    artistName,
-    const DeepCollectionEquality().hash(_albums),
-    imageUrl,
-    isLiked,
-  );
+  int get hashCode =>
+      Object.hash(runtimeType, id, artistName, imageUrl, isLiked, likeId);
 
   /// Create a copy of Artist
   /// with the given fields replaced by the non-null parameter values.
@@ -229,9 +215,9 @@ abstract class _Artist implements Artist {
   const factory _Artist({
     required final String id,
     required final String artistName,
-    final List<Album>? albums,
     required final String imageUrl,
     final bool isLiked,
+    final String? likeId,
   }) = _$ArtistImpl;
 
   @override
@@ -239,11 +225,11 @@ abstract class _Artist implements Artist {
   @override
   String get artistName;
   @override
-  List<Album>? get albums;
-  @override
   String get imageUrl;
   @override
   bool get isLiked;
+  @override
+  String? get likeId;
 
   /// Create a copy of Artist
   /// with the given fields replaced by the non-null parameter values.

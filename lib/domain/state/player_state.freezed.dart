@@ -181,12 +181,12 @@ class __$$QueueSourceAlbumImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$QueueSourceAlbumImpl implements QueueSourceAlbum {
+class _$QueueSourceAlbumImpl extends QueueSourceAlbum {
   const _$QueueSourceAlbumImpl({
     required this.id,
     required this.title,
     required this.imageUrl,
-  });
+  }) : super._();
 
   @override
   final String id;
@@ -309,12 +309,13 @@ class _$QueueSourceAlbumImpl implements QueueSourceAlbum {
   }
 }
 
-abstract class QueueSourceAlbum implements QueueSource {
+abstract class QueueSourceAlbum extends QueueSource {
   const factory QueueSourceAlbum({
     required final String id,
     required final String title,
     required final String imageUrl,
   }) = _$QueueSourceAlbumImpl;
+  const QueueSourceAlbum._() : super._();
 
   @override
   String get id;
@@ -382,12 +383,12 @@ class __$$QueueSourcePlaylistImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$QueueSourcePlaylistImpl implements QueueSourcePlaylist {
+class _$QueueSourcePlaylistImpl extends QueueSourcePlaylist {
   const _$QueueSourcePlaylistImpl({
     required this.id,
     required this.title,
     required this.imageUrl,
-  });
+  }) : super._();
 
   @override
   final String id;
@@ -510,12 +511,13 @@ class _$QueueSourcePlaylistImpl implements QueueSourcePlaylist {
   }
 }
 
-abstract class QueueSourcePlaylist implements QueueSource {
+abstract class QueueSourcePlaylist extends QueueSource {
   const factory QueueSourcePlaylist({
     required final String id,
     required final String title,
     required final String imageUrl,
   }) = _$QueueSourcePlaylistImpl;
+  const QueueSourcePlaylist._() : super._();
 
   @override
   String get id;
@@ -583,12 +585,12 @@ class __$$QueueSourceProgramImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$QueueSourceProgramImpl implements QueueSourceProgram {
+class _$QueueSourceProgramImpl extends QueueSourceProgram {
   const _$QueueSourceProgramImpl({
     required this.id,
     required this.title,
     required this.imageUrl,
-  });
+  }) : super._();
 
   @override
   final String id;
@@ -711,12 +713,13 @@ class _$QueueSourceProgramImpl implements QueueSourceProgram {
   }
 }
 
-abstract class QueueSourceProgram implements QueueSource {
+abstract class QueueSourceProgram extends QueueSource {
   const factory QueueSourceProgram({
     required final String id,
     required final String title,
     required final String imageUrl,
   }) = _$QueueSourceProgramImpl;
+  const QueueSourceProgram._() : super._();
 
   @override
   String get id;
@@ -784,12 +787,12 @@ class __$$QueueSourceFavoritesImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$QueueSourceFavoritesImpl implements QueueSourceFavorites {
+class _$QueueSourceFavoritesImpl extends QueueSourceFavorites {
   const _$QueueSourceFavoritesImpl({
     required this.id,
     required this.title,
     required this.imageUrl,
-  });
+  }) : super._();
 
   @override
   final String id;
@@ -913,12 +916,13 @@ class _$QueueSourceFavoritesImpl implements QueueSourceFavorites {
   }
 }
 
-abstract class QueueSourceFavorites implements QueueSource {
+abstract class QueueSourceFavorites extends QueueSource {
   const factory QueueSourceFavorites({
     required final String id,
     required final String title,
     required final String imageUrl,
   }) = _$QueueSourceFavoritesImpl;
+  const QueueSourceFavorites._() : super._();
 
   @override
   String get id;
@@ -986,12 +990,12 @@ class __$$QueueSourceEpisodesImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$QueueSourceEpisodesImpl implements QueueSourceEpisodes {
+class _$QueueSourceEpisodesImpl extends QueueSourceEpisodes {
   const _$QueueSourceEpisodesImpl({
     required this.id,
     required this.title,
     required this.imageUrl,
-  });
+  }) : super._();
 
   @override
   final String id;
@@ -1114,12 +1118,13 @@ class _$QueueSourceEpisodesImpl implements QueueSourceEpisodes {
   }
 }
 
-abstract class QueueSourceEpisodes implements QueueSource {
+abstract class QueueSourceEpisodes extends QueueSource {
   const factory QueueSourceEpisodes({
     required final String id,
     required final String title,
     required final String imageUrl,
   }) = _$QueueSourceEpisodesImpl;
+  const QueueSourceEpisodes._() : super._();
 
   @override
   String get id;

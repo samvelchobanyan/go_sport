@@ -67,14 +67,16 @@ class EpisodeTile extends StatelessWidget {
               ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(DSRadius.xs),
-                child: Image.network(
-                  episode.imageUrl,
-                  width: 48,
-                  height: 48,
-                  fit: BoxFit.cover,
-                  errorBuilder: (_, __, ___) =>
-                      Container(width: 48, height: 48, color: DSColors.gray20),
-                ),
+                child: episode.imageUrl != null
+                    ? Image.network(
+                        episode.imageUrl!,
+                        width: 48,
+                        height: 48,
+                        fit: BoxFit.cover,
+                        errorBuilder: (_, __, ___) =>
+                            Container(width: 48, height: 48, color: DSColors.gray20),
+                      )
+                    : Container(width: 48, height: 48, color: DSColors.gray20),
               ),
             ),
             const SizedBox(width: 10),
@@ -88,7 +90,7 @@ class EpisodeTile extends StatelessWidget {
                 onMenuTap(); //in case something different should happen
                 showTrackOptionsBottomSheet(
                   context: context,
-                  imageUrl: episode.imageUrl,
+                  imageUrl: episode.imageUrl ?? '',
                   title: episode.title,
                   subtitle: episode.artistName,
                 );
