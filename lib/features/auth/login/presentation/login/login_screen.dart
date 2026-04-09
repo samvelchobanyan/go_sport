@@ -96,7 +96,7 @@ class LoginScreen extends ConsumerWidget {
 
                           // Login Button
                           ElevatedButton.icon(
-                            onPressed: () {},
+                            onPressed: () {context.push('/home');},
                             icon: SvgPicture.asset('assets/icons/login.svg'),
                             label: Text(
                               'Log in',
