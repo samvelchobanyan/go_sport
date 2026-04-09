@@ -24,6 +24,8 @@ import 'package:go_sport/features/albums/presentation/album/album_screen.dart';
 import 'package:go_sport/features/artists/presentation/artist/artist_screen.dart';
 import 'package:go_sport/features/playlists/presentation/playlist/playlist_screen.dart';
 import 'package:go_sport/features/radio/presentation/radio/radio_screen.dart';
+import 'package:go_sport/features/radio_page/presentation/radio/radio_page_screen.dart';
+import 'package:go_sport/features/schedule/presentation/schedule/schedule_screen.dart';
 
 GoRouter createAppRouter(TokenStorage tokenStorage) {
   return GoRouter(
@@ -157,7 +159,13 @@ GoRouter createAppRouter(TokenStorage tokenStorage) {
           routes: [
             GoRoute(
               path: AppRoutes.radio,
-              builder: (context, state) => const RadioScreen(),
+              builder: (context, state) => const RadioPageScreen(),
+              routes: [
+                GoRoute(
+                  path: 'schedule',
+                  builder: (context, state) => const ScheduleScreen(),
+                ),
+              ],
             ),
           ],
         ),
