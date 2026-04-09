@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
@@ -30,11 +31,13 @@ class ProgramCard extends StatelessWidget {
           children: [
             MediaCardShell(
               child: Hero(
-                tag: 'playlist-image-$id',
-                child: Image.network(
-                  imageUrl,
+                tag: 'program-image-$id',
+                child: CachedNetworkImage(
+                  imageUrl: imageUrl,
                   fit: BoxFit.cover,
-                  errorBuilder: (_, __, ___) =>
+                  placeholder: (context, url) =>
+                      Container(color: DSColors.gray20),
+                  errorWidget: (context, url, error) =>
                       Container(color: DSColors.gray20),
                 ),
               ),
