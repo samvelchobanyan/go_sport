@@ -31,7 +31,7 @@ class CustomInput extends StatelessWidget {
         // Label
         Text(
           label,
-          style: context.label, // Using your requested style
+          style: context.fieldLabel, // Using your requested style
         ),
 
         const SizedBox(height: 4), // Space between label and input

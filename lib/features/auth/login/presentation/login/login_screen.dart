@@ -49,6 +49,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.dark,
       child: Scaffold(
+        resizeToAvoidBottomInset: true,
         backgroundColor: DSColors.white,
         body: Stack(
           children: [
@@ -56,17 +57,18 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             Image.asset(
               'assets/images/login_bg.png',
               width: screenWidth,
-              height: screenHeight * 0.6,
+              height: screenHeight * 0.52,
               fit: BoxFit.cover,
+              cacheHeight: (screenHeight * 0.52).toInt(),
+              cacheWidth: screenWidth.toInt(),
             ),
 
             // Main Content Container
             Align(
               alignment: Alignment.bottomCenter,
               child: Container(
-                height: screenHeight * 0.5, // Adjust height as needed
                 width: screenWidth,
-                padding: const EdgeInsets.symmetric(vertical: 16),
+                padding: const EdgeInsets.only(top: 20, bottom: 0),
                 decoration: BoxDecoration(
                   color: DSColors.white,
                   borderRadius: const BorderRadius.only(
@@ -75,6 +77,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   ),
                 ),
                 child: Column(
+                  mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Padding(
@@ -91,7 +94,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             ],
                           ),
 
-                          SizedBox(height: 20),
+                          SizedBox(height: 15),
 
                           // Email Input
                           CustomInput(
@@ -101,7 +104,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             keyboardType: TextInputType.emailAddress,
                           ),
 
-                          const SizedBox(height: 14),
+                          const SizedBox(height: 16),
 
                           // Password Input
                           CustomInput(
@@ -110,6 +113,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             hintText: 'Enter your password',
                             obscureText: true,
                           ),
+
+                          const SizedBox(height: 4),
 
                           // Forgot Password
                           Align(
@@ -186,7 +191,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             ),
                           ),
 
-                          const SizedBox(height: 16),
+                          const SizedBox(height: 24),
 
                           // Sign Up Row
                           Row(
@@ -194,7 +199,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             children: [
                               Text(
                                 "Don't have an account?",
-                                style: context.label?.copyWith(
+                                style: context.bodyL?.copyWith(
                                   color: DSColors.gray50,
                                 ),
                               ),
@@ -205,9 +210,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                 icon: SvgPicture.asset('assets/icons/user.svg'),
                                 label: Text(
                                   'Sign Up',
-                                  style: context.textL?.copyWith(
+                                  style: context.subtitleMBold?.copyWith(
                                     color: DSColors.blue,
-                                    fontWeight: FontWeight.bold,
                                   ),
                                 ),
                                 style: TextButton.styleFrom(
@@ -226,19 +230,24 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       ),
                     ),
 
-                    Spacer(),
+                    const SizedBox(height: 34),
+
                     // Continue as Guest
-                    TextButton(
-                      onPressed: () {},
-                      style: TextButton.styleFrom(
-                        backgroundColor: DSColors.blue.withOpacity(0.05),
-                        shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.zero,
+                    SizedBox(
+                      height: 48,
+                      width: screenWidth,
+                      child: TextButton(
+                        onPressed: () {},
+                        style: TextButton.styleFrom(
+                          backgroundColor: DSColors.blue.withOpacity(0.05),
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.zero,
+                          ),
                         ),
-                      ),
-                      child: Text(
-                        'Continue as guest',
-                        style: context.textL?.copyWith(color: DSColors.blue),
+                        child: Text(
+                          'Continue as guest',
+                          style: context.subtitleMBold?.copyWith(color: DSColors.blue),
+                        ),
                       ),
                     ),
                   ],
