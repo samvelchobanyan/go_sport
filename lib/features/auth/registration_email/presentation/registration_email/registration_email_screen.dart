@@ -8,8 +8,8 @@ import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/features/shared_widgets/input.dart';
 import 'package:go_router/go_router.dart';
 
-class RegistrationScreen extends ConsumerWidget {
-  const RegistrationScreen({super.key});
+class RegistrationEmailScreen extends ConsumerWidget {
+  const RegistrationEmailScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

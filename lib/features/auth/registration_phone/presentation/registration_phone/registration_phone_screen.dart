@@ -7,8 +7,8 @@ import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/features/shared_widgets/input.dart';
 import 'package:go_router/go_router.dart';
 
-class PhoneRegistrationScreen extends ConsumerWidget {
-  const PhoneRegistrationScreen({super.key});
+class RegistrationPhoneScreen extends ConsumerWidget {
+  const RegistrationPhoneScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

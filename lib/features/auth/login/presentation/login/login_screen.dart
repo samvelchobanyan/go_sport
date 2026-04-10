@@ -29,17 +29,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    ref.listen<LoginState>(loginControllerProvider, (previous, next) {
-      if (next.isAuthenticated) {
-        context.go('/home'); // Use go() for login to clear the stack
-      }
-      if (next.error != null) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text(next.error!)));
-      }
-    });
-
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
 
@@ -48,7 +37,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
     ref.listen<LoginState>(loginControllerProvider, (previous, next) {
       if (next.isAuthenticated) {
-        context.go('/home');
+        context.push('/'); // Navigate to home
       }
       if (next.error != null) {
         ScaffoldMessenger.of(

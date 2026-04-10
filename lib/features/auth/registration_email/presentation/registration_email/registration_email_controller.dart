@@ -7,7 +7,7 @@ import 'package:go_sport/domain/repositories/albums_repository.dart';
 import 'package:go_sport/domain/repositories/artists_repository.dart';
 import 'package:go_sport/domain/repositories/music_repository.dart';
 
-part 'registration_controller.freezed.dart';
+part 'registration_email_controller.freezed.dart';
 
 // todo change to registration controller and state
 

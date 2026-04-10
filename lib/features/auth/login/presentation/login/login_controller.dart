@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:go_sport/core/auth/token_storage.dart';
 import 'package:go_sport/core/di/repository_providers.dart';
 // Assuming you have an AuthRepository
 import 'package:go_sport/domain/repositories/auth_repository.dart';
@@ -18,10 +19,12 @@ class LoginState with _$LoginState {
 
 class LoginController extends AutoDisposeNotifier<LoginState> {
   late final AuthRepository _authRepository;
+  late final TokenStorage _tokenStorage;
 
   @override
   LoginState build() {
     _authRepository = ref.watch(authRepositoryProvider);
+    _tokenStorage = ref.watch(tokenStorageProvider);
     return const LoginState();
   }
 
@@ -35,7 +38,7 @@ class LoginController extends AutoDisposeNotifier<LoginState> {
         password: password,
       );
 
-      // TODO: Save result.jwt to secure storage if needed
+      await _tokenStorage.saveTokens(accessToken: result.jwt, refreshToken: '');
 
       state = state.copyWith(isLoading: false, isAuthenticated: true);
     } catch (e) {

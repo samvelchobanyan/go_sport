@@ -4,12 +4,16 @@ import 'package:go_sport/core/auth/token_storage.dart';
 import 'package:go_sport/core/navigation/main_shell.dart';
 import 'package:go_sport/core/navigation/page_transitions.dart';
 import 'package:go_sport/core/navigation/routes.dart';
+import 'package:go_sport/features/auth/confirm_email/presentation/confirm_email/confirm_email_screen.dart';
+import 'package:go_sport/features/auth/confirm_phone/presentation/confirm_phone/confirm_phone_screen.dart';
+import 'package:go_sport/features/auth/registration_name/presentation/registration_name/registration_name_screen.dart';
 import 'package:go_sport/features/favorites/presentation/my_albums/my_albums_screen.dart';
 import 'package:go_sport/features/favorites/presentation/my_artists/my_artists_screen.dart';
 import 'package:go_sport/features/favorites/presentation/my_playlists/my_playlists_screen.dart';
 import 'package:go_sport/features/home/presentation/home/home_screen.dart';
 import 'package:go_sport/features/auth/login/presentation/login/login_screen.dart';
 import 'package:go_sport/features/auth/registration_phone/presentation/registration_phone/registration_phone_screen.dart';
+import 'package:go_sport/features/auth/registration_email/presentation/registration_email/registration_email_screen.dart';
 import 'package:go_sport/features/music/presentation/music/music_screen.dart';
 import 'package:go_sport/features/profile/presentation/profile/profile_screen.dart';
 import 'package:go_sport/features/program_details/presentation/program_details/program_details_screen.dart';
@@ -33,7 +37,9 @@ GoRouter createAppRouter(TokenStorage tokenStorage) {
       final isAuthenticated = tokenStorage.accessToken != null;
       final isGuest = tokenStorage.choseGuest;
       final isLoginRoute = state.matchedLocation == AppRoutes.login;
-      final isPrivateRoute = AppRoutes.privateRoutes.contains(state.matchedLocation);
+      final isPrivateRoute = AppRoutes.privateRoutes.contains(
+        state.matchedLocation,
+      );
 
       // unauthorized (первый запуск) — гоним на логин со всех маршрутов кроме самого логина
       if (!isAuthenticated && !isGuest && !isLoginRoute) {
@@ -58,11 +64,32 @@ GoRouter createAppRouter(TokenStorage tokenStorage) {
         builder: (context, state) => const LoginScreen(),
       ),
       GoRoute(
+        path: AppRoutes.registrationEmail,
+        builder: (context, state) => const RegistrationEmailScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.registrationPhone,
+        builder: (context, state) => const RegistrationPhoneScreen(),
+      ),
+       GoRoute(
+        path: AppRoutes.registrationName,
+        builder: (context, state) => const RegistrationNameScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.confirmEmail,
+        builder: (context, state) => const ConfirmEmailScreen(),
+      ),
+
+      GoRoute(
+        path: AppRoutes.confirmPhone,
+        builder: (context, state) => const ConfirmPhoneScreen(),
+      ),
+      
+
+      GoRoute(
         path: AppRoutes.profile,
-        pageBuilder: (context, state) => fadeSlidePage(
-          state: state,
-          child: const ProfileScreen(),
-        ),
+        pageBuilder: (context, state) =>
+            fadeSlidePage(state: state, child: const ProfileScreen()),
       ),
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) {
@@ -99,99 +126,99 @@ GoRouter createAppRouter(TokenStorage tokenStorage) {
             ],
           ),
 
-        // Music Branch
-        StatefulShellBranch(
-          routes: [
-            GoRoute(
-              path: AppRoutes.music,
-              builder: (context, state) => const MusicScreen(),
-              routes: [
-                //playlist route
-                GoRoute(
-                  path: 'playlist/:id',
-                  pageBuilder: (context, state) {
-                    final id = state.pathParameters['id']!;
-                    return fadeSlidePage(
-                      state: state,
-                      child: PlaylistScreen(playlistId: id),
-                    );
-                  },
-                ),
-                // Album route
-                GoRoute(
-                  path: 'album/:id',
-                  pageBuilder: (context, state) {
-                    final album = state.extra as Album;
-                    return fadeSlidePage(
-                      state: state,
-                      child: AlbumScreen(album: album),
-                    );
-                  },
-                ),
-                // Artist route
-                GoRoute(
-                  path: 'artist/:id',
-                  pageBuilder: (context, state) {
-                    final artist = state.extra as Artist;
-                    return fadeSlidePage(
-                      state: state,
-                      child: ArtistScreen(artist: artist),
-                    );
-                  },
-                ),
-                // Favorites route
-                GoRoute(
-                  path: 'myfavorites',
-                  builder: (context, state) => const MyFavoritesScreen(),
-                ),
-                // My Playlists route
-                GoRoute(
-                  path: 'myplaylists',
-                  builder: (context, state) => const MyPlaylistsScreen(),
-                ),
-                // My Albums route
-                GoRoute(
-                  path: 'myalbums',
-                  builder: (context, state) => const MyAlbumsScreen(),
-                ),
-                // My Artists route
-                GoRoute(
-                  path: 'myartists',
-                  builder: (context, state) => const MyArtistsScreen(),
-                ),
-                // Episodes route
-                GoRoute(
-                  path: 'myepisodes',
-                  builder: (context, state) => const NewEpisodesScreen(),
-                ),
+          // Music Branch
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: AppRoutes.music,
+                builder: (context, state) => const MusicScreen(),
+                routes: [
+                  //playlist route
+                  GoRoute(
+                    path: 'playlist/:id',
+                    pageBuilder: (context, state) {
+                      final id = state.pathParameters['id']!;
+                      return fadeSlidePage(
+                        state: state,
+                        child: PlaylistScreen(playlistId: id),
+                      );
+                    },
+                  ),
+                  // Album route
+                  GoRoute(
+                    path: 'album/:id',
+                    pageBuilder: (context, state) {
+                      final album = state.extra as Album;
+                      return fadeSlidePage(
+                        state: state,
+                        child: AlbumScreen(album: album),
+                      );
+                    },
+                  ),
+                  // Artist route
+                  GoRoute(
+                    path: 'artist/:id',
+                    pageBuilder: (context, state) {
+                      final artist = state.extra as Artist;
+                      return fadeSlidePage(
+                        state: state,
+                        child: ArtistScreen(artist: artist),
+                      );
+                    },
+                  ),
+                  // Favorites route
+                  GoRoute(
+                    path: 'myfavorites',
+                    builder: (context, state) => const MyFavoritesScreen(),
+                  ),
+                  // My Playlists route
+                  GoRoute(
+                    path: 'myplaylists',
+                    builder: (context, state) => const MyPlaylistsScreen(),
+                  ),
+                  // My Albums route
+                  GoRoute(
+                    path: 'myalbums',
+                    builder: (context, state) => const MyAlbumsScreen(),
+                  ),
+                  // My Artists route
+                  GoRoute(
+                    path: 'myartists',
+                    builder: (context, state) => const MyArtistsScreen(),
+                  ),
+                  // Episodes route
+                  GoRoute(
+                    path: 'myepisodes',
+                    builder: (context, state) => const NewEpisodesScreen(),
+                  ),
 
-                // My Programs route
-                GoRoute(
-                  path: 'myprograms',
-                  builder: (context, state) => const MyProgramsScreen(),
-                ),
-              ],
-            ),
-          ],
-        ),
+                  // My Programs route
+                  GoRoute(
+                    path: 'myprograms',
+                    builder: (context, state) => const MyProgramsScreen(),
+                  ),
+                ],
+              ),
+            ],
+          ),
 
-        // Radio Branch
-        StatefulShellBranch(
-          routes: [
-            GoRoute(
-              path: AppRoutes.radio,
-              builder: (context, state) => const RadioPageScreen(),
-              routes: [
-                GoRoute(
-                  path: 'schedule',
-                  builder: (context, state) => const ScheduleScreen(),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ],
-    ),
-  ],
-);
+          // Radio Branch
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: AppRoutes.radio,
+                builder: (context, state) => const RadioPageScreen(),
+                routes: [
+                  GoRoute(
+                    path: 'schedule',
+                    builder: (context, state) => const ScheduleScreen(),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ],
+      ),
+    ],
+  );
 }

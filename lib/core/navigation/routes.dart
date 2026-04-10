@@ -22,10 +22,11 @@ class AppRoutes {
   static const String radioSchedule = '/radio/schedule';
 
   // static const String login = '/login';
-  static const String registration = '/registration';
+  static const String registrationEmail = '/registration-email';
+  static const String registrationPhone = '/registration-phone';
+  static const String registrationName = '/registration-name';
   static const String confirmEmail = '/confirm-email';
   static const String confirmPhone = '/confirm-phone';
-  static const String registrationPhone = '/registration-phone';
 
   static const List<String> privateRoutes = [
     profile,
