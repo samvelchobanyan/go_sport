@@ -5,16 +5,71 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
+import 'package:go_sport/domain/state/registration_state.dart';
 import 'package:go_sport/features/shared_widgets/input.dart';
 import 'package:go_router/go_router.dart';
 
-class RegistrationEmailScreen extends ConsumerWidget {
+class RegistrationEmailScreen extends ConsumerStatefulWidget {
   const RegistrationEmailScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<RegistrationEmailScreen> createState() =>
+      _RegistrationEmailScreenState();
+}
+
+class _RegistrationEmailScreenState
+    extends ConsumerState<RegistrationEmailScreen> {
+  // 1. Create the controller
+  final _emailController = TextEditingController();
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    super.dispose();
+  }
+
+  void _onContinue() {
+    final email = _emailController.text.trim();
+
+    // 2. Simple Validation Logic
+    if (email.isEmpty) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Email cannot be empty')));
+      return;
+    }
+
+    if (!email.contains('@')) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please enter a valid email address')),
+      );
+      return;
+    }
+
+    // 3. Trigger the controller
+    ref.read(registrationControllerProvider.notifier).registerEmail(email);
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
+
+    final state = ref.watch(registrationControllerProvider);
+
+    ref.listen<RegistrationState>(registrationControllerProvider, (
+      prev,
+      next,
+    ) {
+      if (next.isSuccess) {
+        context.push('/confirm-email');
+      }
+      if (next.error != null) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(next.error!)));
+      }
+    });
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.dark,
@@ -70,7 +125,8 @@ class RegistrationEmailScreen extends ConsumerWidget {
                           ),
 
                           // Email Input
-                          const CustomInput(
+                          CustomInput(
+                            controller: _emailController,
                             label: 'Email',
                             hintText: 'Enter your email',
                             keyboardType: TextInputType.emailAddress,
@@ -80,15 +136,23 @@ class RegistrationEmailScreen extends ConsumerWidget {
 
                           // Continue Button
                           ElevatedButton.icon(
-                            onPressed: () {
-                              context.push('/confirm-email');
-                            },
-                            icon: Icon(
-                              Icons.arrow_forward,
-                              color: DSColors.lime,
-                            ),
+                            // Disable button if loading
+                            onPressed: state.isLoading ? null : _onContinue,
+                            icon: state.isLoading
+                                ? const SizedBox(
+                                    width: 20,
+                                    height: 20,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                      color: Colors.white,
+                                    ),
+                                  )
+                                : Icon(
+                                    Icons.arrow_forward,
+                                    color: DSColors.lime,
+                                  ),
                             label: Text(
-                              'Continue',
+                              state.isLoading ? 'Processing...' : 'Continue',
                               style: context.subtitleLBold?.copyWith(
                                 color: DSColors.lime,
                               ),
@@ -104,37 +168,6 @@ class RegistrationEmailScreen extends ConsumerWidget {
                             ),
                           ),
                           const SizedBox(height: 14),
-
-                          // Google Login Button
-                          TextButton(
-                            onPressed: () {},
-                            style: TextButton.styleFrom(
-                              padding: const EdgeInsets.symmetric(vertical: 14),
-                              backgroundColor: DSColors.blue.withOpacity(0.05),
-                              // This ensures no border is drawn
-                              side: BorderSide.none,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(
-                                  DSRadius.xl,
-                                ),
-                              ),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                SvgPicture.asset(
-                                  'assets/icons/google_logo.svg',
-                                ),
-                                const SizedBox(width: 8),
-                                Text(
-                                  'Login with Google',
-                                  style: context.subtitleLBold?.copyWith(
-                                    color: DSColors.gray60,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
                         ],
                       ),
                     ),

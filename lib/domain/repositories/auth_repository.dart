@@ -5,4 +5,29 @@ abstract interface class AuthRepository {
     required String identifier,
     required String password,
   });
+
+  Future<({String registrationToken})> registerEmail({required String email});
+
+  Future<void> verifyEmail({required String token, required String otp});
+
+  Future<void> resendEmailOtp({required String token});
+
+  Future<void> registerPhone({required String token, required String phone});
+
+  Future<void> verifyPhone({required String token, required String otp});
+
+  Future<void> resendPhoneOtp({required String token});
+
+  Future<void> skipPhone({required String token});
+
+  Future<void> setRegistrationPassword({
+    required String token,
+    required String password,
+  });
+
+  Future<({String jwt, User user})> finalizeProfile({
+    required String token,
+    required String name,
+    required String surname,
+  });
 }

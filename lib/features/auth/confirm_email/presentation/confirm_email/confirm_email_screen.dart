@@ -6,15 +6,64 @@ import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_router/go_router.dart';
+import 'package:go_sport/domain/state/registration_state.dart';
+import 'package:go_sport/features/shared_widgets/auth_number_box.dart';
 
-class ConfirmEmailScreen extends ConsumerWidget {
+class ConfirmEmailScreen extends ConsumerStatefulWidget {
   const ConfirmEmailScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ConfirmEmailScreen> createState() => _ConfirmEmailScreenState();
+}
+
+class _ConfirmEmailScreenState extends ConsumerState<ConfirmEmailScreen> {
+  // Create a list of controllers for the 6-digit OTP
+  final List<TextEditingController> _controllers = List.generate(
+    6,
+    (_) => TextEditingController(),
+  );
+
+  @override
+  void dispose() {
+    for (var controller in _controllers) {
+      controller.dispose();
+    }
+    super.dispose();
+  }
+
+  void _onContinue() {
+    // Join all digits to form the OTP string
+    final otp = _controllers.map((c) => c.text).join();
+
+    if (otp.length < 6) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please enter the full 6-digit code')),
+      );
+      return;
+    }
+
+    ref.read(registrationControllerProvider.notifier).verifyEmailOtp(otp);
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
 
+    // Watch the global state for the email and loading/error status
+    final registrationState = ref.watch(registrationControllerProvider);
+
+    // Listen for success to navigate
+    ref.listen<RegistrationState>(registrationControllerProvider, (prev, next) {
+      if (next.isConfirmSuccess) {
+        context.push('/registration-phone');
+      }
+      if (next.error != null) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(next.error!)));
+      }
+    });
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.dark,
       child: Scaffold(
@@ -72,7 +121,7 @@ class ConfirmEmailScreen extends ConsumerWidget {
                             ),
                           ),
                           Text(
-                            'alexandr.hovhannisyan@gmail.com', // TODO: dynamic
+                            registrationState.email ?? 'your email',
                             style: context.bodyL?.copyWith(
                               color: DSColors.gray70,
                               fontWeight: FontWeight.w600,
@@ -81,11 +130,14 @@ class ConfirmEmailScreen extends ConsumerWidget {
 
                           const SizedBox(height: 32),
 
-                          // 5-Digit Auth Number Input Blocks
+                          // 6-Digit Auth Number Input Blocks
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: List.generate(5, (index) {
-                              return _AuthNumberBox(isLast: index == 4);
+                            children: List.generate(6, (index) {
+                              return AuthNumberBox(
+                                controller: _controllers[index],
+                                isLast: index == 5,
+                              );
                             }),
                           ),
 
@@ -93,7 +145,9 @@ class ConfirmEmailScreen extends ConsumerWidget {
 
                           // Continue Button
                           ElevatedButton.icon(
-                            onPressed: () {context.push('/registration-phone');},
+                            onPressed: registrationState.isLoading
+                                ? null
+                                : _onContinue,
                             icon: Icon(
                               Icons.arrow_forward,
                               color: DSColors.lime,
@@ -119,7 +173,13 @@ class ConfirmEmailScreen extends ConsumerWidget {
 
                           // Resend Code Button
                           TextButton(
-                            onPressed: () {},
+                            onPressed: registrationState.isLoading
+                                ? null
+                                : () => ref
+                                      .read(
+                                        registrationControllerProvider.notifier,
+                                      )
+                                      .registerEmail(registrationState.email!),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
@@ -142,48 +202,6 @@ class ConfirmEmailScreen extends ConsumerWidget {
               ),
             ),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-/// Private helper widget for the single block input
-class _AuthNumberBox extends StatelessWidget {
-  final bool isLast;
-  const _AuthNumberBox({required this.isLast});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width:
-          (MediaQuery.of(context).size.width - 80) / 5, // Auto-calculates width
-      height: 56,
-      decoration: BoxDecoration(
-        color: DSColors.blue.withOpacity(0.05),
-        borderRadius: BorderRadius.circular(DSRadius.m),
-      ),
-      alignment: Alignment.center,
-      child: TextField(
-        onChanged: (value) {
-          if (value.length == 1 && !isLast) {
-            FocusScope.of(context).nextFocus(); // Auto-move to next block
-          }
-          if (value.isEmpty) {
-            FocusScope.of(context).previousFocus(); // Auto-move back on delete
-          }
-        },
-        style: context.subtitleM?.copyWith(fontWeight: FontWeight.bold),
-        keyboardType: TextInputType.number,
-        textAlign: TextAlign.center,
-        inputFormatters: [
-          LengthLimitingTextInputFormatter(1),
-          FilteringTextInputFormatter.digitsOnly,
-        ], 
-        decoration: const InputDecoration(
-          contentPadding: EdgeInsets.all(14),
-          border: InputBorder.none,
-          hintStyle: TextStyle(color: Colors.grey),
         ),
       ),
     );

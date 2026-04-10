@@ -64,7 +64,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             Align(
               alignment: Alignment.bottomCenter,
               child: Container(
-                height: screenHeight * 0.5, // Adjust height as needed
+                height: screenHeight * 0.6, // Adjust height as needed
                 width: screenWidth,
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 decoration: BoxDecoration(
@@ -200,7 +200,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                               ),
                               TextButton.icon(
                                 onPressed: () {
-                                  context.push('/registration');
+                                  context.push('/registration-email');
                                 },
                                 icon: SvgPicture.asset('assets/icons/user.svg'),
                                 label: Text(

@@ -1,5 +1,4 @@
 import 'package:go_router/go_router.dart';
-import 'package:flutter/material.dart';
 import 'package:go_sport/core/auth/token_storage.dart';
 import 'package:go_sport/core/navigation/main_shell.dart';
 import 'package:go_sport/core/navigation/page_transitions.dart';
@@ -16,7 +15,6 @@ import 'package:go_sport/features/auth/registration_phone/presentation/registrat
 import 'package:go_sport/features/auth/registration_email/presentation/registration_email/registration_email_screen.dart';
 import 'package:go_sport/features/music/presentation/music/music_screen.dart';
 import 'package:go_sport/features/profile/presentation/profile/profile_screen.dart';
-import 'package:go_sport/features/program_details/presentation/program_details/program_details_screen.dart';
 import 'package:go_sport/features/news/presentation/news_list/news_list_screen.dart';
 import 'package:go_sport/features/news/presentation/news_detail/news_detail_screen.dart';
 import 'package:go_sport/features/favorites/presentation/my_favorites/my_favorites_screen.dart';
@@ -36,13 +34,20 @@ GoRouter createAppRouter(TokenStorage tokenStorage) {
     redirect: (context, state) {
       final isAuthenticated = tokenStorage.accessToken != null;
       final isGuest = tokenStorage.choseGuest;
-      final isLoginRoute = state.matchedLocation == AppRoutes.login;
       final isPrivateRoute = AppRoutes.privateRoutes.contains(
         state.matchedLocation,
       );
 
+      final isAuthFlow =
+          state.matchedLocation == AppRoutes.login ||
+          state.matchedLocation == AppRoutes.registrationEmail ||
+          state.matchedLocation == AppRoutes.registrationPhone ||
+          state.matchedLocation == AppRoutes.registrationName ||
+          state.matchedLocation == AppRoutes.confirmEmail ||
+          state.matchedLocation == AppRoutes.confirmPhone;
+
       // unauthorized (первый запуск) — гоним на логин со всех маршрутов кроме самого логина
-      if (!isAuthenticated && !isGuest && !isLoginRoute) {
+      if (!isAuthenticated && !isGuest && !isAuthFlow) {
         return AppRoutes.login;
       }
 
@@ -52,7 +57,7 @@ GoRouter createAppRouter(TokenStorage tokenStorage) {
       }
 
       // уже залогинен — незачем показывать логин
-      if (isAuthenticated && isLoginRoute) {
+      if (isAuthenticated && isAuthFlow) {
         return AppRoutes.home;
       }
 
@@ -71,7 +76,7 @@ GoRouter createAppRouter(TokenStorage tokenStorage) {
         path: AppRoutes.registrationPhone,
         builder: (context, state) => const RegistrationPhoneScreen(),
       ),
-       GoRoute(
+      GoRoute(
         path: AppRoutes.registrationName,
         builder: (context, state) => const RegistrationNameScreen(),
       ),
@@ -84,7 +89,6 @@ GoRouter createAppRouter(TokenStorage tokenStorage) {
         path: AppRoutes.confirmPhone,
         builder: (context, state) => const ConfirmPhoneScreen(),
       ),
-      
 
       GoRoute(
         path: AppRoutes.profile,
