@@ -20,10 +20,9 @@ mixin _$Program {
   String get id => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   String get imageUrl => throw _privateConstructorUsedError;
-  String? get description => throw _privateConstructorUsedError;
   int get episodeCount => throw _privateConstructorUsedError;
   bool get isLiked => throw _privateConstructorUsedError;
-  List<Track> get episodes => throw _privateConstructorUsedError;
+  String? get likeId => throw _privateConstructorUsedError;
 
   /// Create a copy of Program
   /// with the given fields replaced by the non-null parameter values.
@@ -40,10 +39,9 @@ abstract class $ProgramCopyWith<$Res> {
     String id,
     String title,
     String imageUrl,
-    String? description,
     int episodeCount,
     bool isLiked,
-    List<Track> episodes,
+    String? likeId,
   });
 }
 
@@ -65,10 +63,9 @@ class _$ProgramCopyWithImpl<$Res, $Val extends Program>
     Object? id = null,
     Object? title = null,
     Object? imageUrl = null,
-    Object? description = freezed,
     Object? episodeCount = null,
     Object? isLiked = null,
-    Object? episodes = null,
+    Object? likeId = freezed,
   }) {
     return _then(
       _value.copyWith(
@@ -84,10 +81,6 @@ class _$ProgramCopyWithImpl<$Res, $Val extends Program>
                 ? _value.imageUrl
                 : imageUrl // ignore: cast_nullable_to_non_nullable
                       as String,
-            description: freezed == description
-                ? _value.description
-                : description // ignore: cast_nullable_to_non_nullable
-                      as String?,
             episodeCount: null == episodeCount
                 ? _value.episodeCount
                 : episodeCount // ignore: cast_nullable_to_non_nullable
@@ -96,10 +89,10 @@ class _$ProgramCopyWithImpl<$Res, $Val extends Program>
                 ? _value.isLiked
                 : isLiked // ignore: cast_nullable_to_non_nullable
                       as bool,
-            episodes: null == episodes
-                ? _value.episodes
-                : episodes // ignore: cast_nullable_to_non_nullable
-                      as List<Track>,
+            likeId: freezed == likeId
+                ? _value.likeId
+                : likeId // ignore: cast_nullable_to_non_nullable
+                      as String?,
           )
           as $Val,
     );
@@ -118,10 +111,9 @@ abstract class _$$ProgramImplCopyWith<$Res> implements $ProgramCopyWith<$Res> {
     String id,
     String title,
     String imageUrl,
-    String? description,
     int episodeCount,
     bool isLiked,
-    List<Track> episodes,
+    String? likeId,
   });
 }
 
@@ -142,10 +134,9 @@ class __$$ProgramImplCopyWithImpl<$Res>
     Object? id = null,
     Object? title = null,
     Object? imageUrl = null,
-    Object? description = freezed,
     Object? episodeCount = null,
     Object? isLiked = null,
-    Object? episodes = null,
+    Object? likeId = freezed,
   }) {
     return _then(
       _$ProgramImpl(
@@ -161,10 +152,6 @@ class __$$ProgramImplCopyWithImpl<$Res>
             ? _value.imageUrl
             : imageUrl // ignore: cast_nullable_to_non_nullable
                   as String,
-        description: freezed == description
-            ? _value.description
-            : description // ignore: cast_nullable_to_non_nullable
-                  as String?,
         episodeCount: null == episodeCount
             ? _value.episodeCount
             : episodeCount // ignore: cast_nullable_to_non_nullable
@@ -173,10 +160,10 @@ class __$$ProgramImplCopyWithImpl<$Res>
             ? _value.isLiked
             : isLiked // ignore: cast_nullable_to_non_nullable
                   as bool,
-        episodes: null == episodes
-            ? _value._episodes
-            : episodes // ignore: cast_nullable_to_non_nullable
-                  as List<Track>,
+        likeId: freezed == likeId
+            ? _value.likeId
+            : likeId // ignore: cast_nullable_to_non_nullable
+                  as String?,
       ),
     );
   }
@@ -189,11 +176,10 @@ class _$ProgramImpl implements _Program {
     required this.id,
     required this.title,
     required this.imageUrl,
-    this.description,
     required this.episodeCount,
     required this.isLiked,
-    required final List<Track> episodes,
-  }) : _episodes = episodes;
+    this.likeId,
+  });
 
   @override
   final String id;
@@ -202,22 +188,15 @@ class _$ProgramImpl implements _Program {
   @override
   final String imageUrl;
   @override
-  final String? description;
-  @override
   final int episodeCount;
   @override
   final bool isLiked;
-  final List<Track> _episodes;
   @override
-  List<Track> get episodes {
-    if (_episodes is EqualUnmodifiableListView) return _episodes;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_episodes);
-  }
+  final String? likeId;
 
   @override
   String toString() {
-    return 'Program(id: $id, title: $title, imageUrl: $imageUrl, description: $description, episodeCount: $episodeCount, isLiked: $isLiked, episodes: $episodes)';
+    return 'Program(id: $id, title: $title, imageUrl: $imageUrl, episodeCount: $episodeCount, isLiked: $isLiked, likeId: $likeId)';
   }
 
   @override
@@ -229,12 +208,10 @@ class _$ProgramImpl implements _Program {
             (identical(other.title, title) || other.title == title) &&
             (identical(other.imageUrl, imageUrl) ||
                 other.imageUrl == imageUrl) &&
-            (identical(other.description, description) ||
-                other.description == description) &&
             (identical(other.episodeCount, episodeCount) ||
                 other.episodeCount == episodeCount) &&
             (identical(other.isLiked, isLiked) || other.isLiked == isLiked) &&
-            const DeepCollectionEquality().equals(other._episodes, _episodes));
+            (identical(other.likeId, likeId) || other.likeId == likeId));
   }
 
   @override
@@ -243,10 +220,9 @@ class _$ProgramImpl implements _Program {
     id,
     title,
     imageUrl,
-    description,
     episodeCount,
     isLiked,
-    const DeepCollectionEquality().hash(_episodes),
+    likeId,
   );
 
   /// Create a copy of Program
@@ -263,10 +239,9 @@ abstract class _Program implements Program {
     required final String id,
     required final String title,
     required final String imageUrl,
-    final String? description,
     required final int episodeCount,
     required final bool isLiked,
-    required final List<Track> episodes,
+    final String? likeId,
   }) = _$ProgramImpl;
 
   @override
@@ -276,13 +251,11 @@ abstract class _Program implements Program {
   @override
   String get imageUrl;
   @override
-  String? get description;
-  @override
   int get episodeCount;
   @override
   bool get isLiked;
   @override
-  List<Track> get episodes;
+  String? get likeId;
 
   /// Create a copy of Program
   /// with the given fields replaced by the non-null parameter values.

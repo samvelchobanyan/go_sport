@@ -3,34 +3,46 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/domain/entities/program.dart';
 import 'package:go_sport/domain/entities/track.dart';
 import 'package:go_sport/domain/state/player_state.dart';
+import 'package:go_sport/features/program_details/presentation/widgets/program_episode_tile.dart';
+import 'package:go_sport/features/program_details/presentation/widgets/program_screen_skeleton.dart';
 import 'package:go_sport/features/program_details/presentation/widgets/youtube_banner.dart';
-import 'package:go_sport/features/shared_widgets/track_tile_number.dart';
 import 'program_details_controller.dart';
 import '../widgets/program_hero.dart';
 import 'package:go_sport/features/shared_widgets/dotted_divider.dart';
 
-class ProgramDetailsScreen extends ConsumerWidget {
-  final String programId;
+class ProgramDetailsScreen extends ConsumerStatefulWidget {
+  final Program program;
 
-  const ProgramDetailsScreen({super.key, required this.programId});
+  const ProgramDetailsScreen({super.key, required this.program});
 
-  void _onTrackTap(
-    WidgetRef ref,
-    List<Track> tracks,
-    int index,
-    String programTitle,
-    String programImageUrl,
-  ) {
+  @override
+  ConsumerState<ProgramDetailsScreen> createState() =>
+      _ProgramDetailsScreenState();
+}
+
+class _ProgramDetailsScreenState extends ConsumerState<ProgramDetailsScreen> {
+  late bool _isLiked;
+  late String? _likeId;
+
+  @override
+  void initState() {
+    super.initState();
+    _isLiked = widget.program.isLiked;
+    _likeId = widget.program.likeId;
+  }
+
+  void _onTrackTap(List<Track> episodes, int index) {
     ref
         .read(playerStateProvider.notifier)
         .playQueue(
-          tracks,
+          episodes,
           source: QueueSource.program(
-            id: programId,
-            title: programTitle,
-            imageUrl: programImageUrl,
+            id: widget.program.id,
+            title: widget.program.title,
+            imageUrl: widget.program.imageUrl,
           ),
           startIndex: index,
         );
@@ -40,29 +52,52 @@ class ProgramDetailsScreen extends ConsumerWidget {
     debugPrint('Track menu tapped at index: $index');
   }
 
-  void _onPlayTap(
-    WidgetRef ref,
-    List<Track> tracks,
-    String programTitle,
-    String programImageUrl,
-  ) {
-    if (tracks.isEmpty) return;
+  void _onPlayTap(List<Track> episodes) {
+    if (episodes.isEmpty) return;
 
     ref
         .read(playerStateProvider.notifier)
         .playQueue(
-          tracks,
+          episodes,
           source: QueueSource.program(
-            id: programId,
-            title: programTitle,
-            imageUrl: programImageUrl,
+            id: widget.program.id,
+            title: widget.program.title,
+            imageUrl: widget.program.imageUrl,
           ),
         );
   }
 
+  void _onLikeTap() {
+    final previousIsLiked = _isLiked;
+    final previousLikeId = _likeId;
+
+    setState(() => _isLiked = !_isLiked);
+
+    final notifier = ref.read(
+      programDetailsControllerProvider(widget.program.id).notifier,
+    );
+
+    notifier
+        .toggleLike(
+          widget.program.id,
+          previousIsLiked ? previousLikeId : null,
+        )
+        .then((newLikeId) {
+          setState(() => _likeId = newLikeId);
+        })
+        .catchError((_) {
+          setState(() {
+            _isLiked = previousIsLiked;
+            _likeId = previousLikeId;
+          });
+        });
+  }
+
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(programDetailsControllerProvider(programId));
+  Widget build(BuildContext context) {
+    final episodesState = ref.watch(
+      programDetailsControllerProvider(widget.program.id),
+    );
     final screenHeight = MediaQuery.of(context).size.height;
     final expandedHeight = screenHeight * 0.5;
 
@@ -72,19 +107,18 @@ class ProgramDetailsScreen extends ConsumerWidget {
         backgroundColor: DSColors.white,
         body: CustomScrollView(
           slivers: [
-            // SliverAppBar with flexibleSpace
             SliverAppBar(
               expandedHeight: expandedHeight,
               pinned: true,
               elevation: 0,
               scrolledUnderElevation: 0,
-              backgroundColor: DSColors.black.withOpacity(0.9),
+              backgroundColor: DSColors.black.withValues(alpha: 0.9),
               leading: IconButton(
                 icon: Container(
                   width: 36,
                   height: 36,
                   decoration: BoxDecoration(
-                    color: DSColors.black.withOpacity(0.3),
+                    color: DSColors.black.withValues(alpha: 0.3),
                     shape: BoxShape.circle,
                   ),
                   child: const Icon(
@@ -101,7 +135,7 @@ class ProgramDetailsScreen extends ConsumerWidget {
                     width: 36,
                     height: 36,
                     decoration: BoxDecoration(
-                      color: DSColors.black.withOpacity(0.3),
+                      color: DSColors.black.withValues(alpha: 0.3),
                       shape: BoxShape.circle,
                     ),
                     child: const Icon(
@@ -114,27 +148,17 @@ class ProgramDetailsScreen extends ConsumerWidget {
                 ),
               ],
               flexibleSpace: FlexibleSpaceBar(
-                background: state.map(
-                  loading: (_) =>
-                      const Center(child: CircularProgressIndicator()),
-                  error: (e) => Center(child: Text('Error: ${e.message}')),
-                  data: (d) => ProgramHero(
-                    program: d.program,
-                    onNotificationTap: () {},
-                    onPlayTap: () {
-                      if (d.program.episodes.isNotEmpty) {
-                        _onPlayTap(
-                          ref,
-                          d.program.episodes,
-                          d.program.title,
-                          d.program.imageUrl,
-                        );
-                      }
-                    },
-                  ),
+                background: ProgramHero(
+                  program: widget.program.copyWith(isLiked: _isLiked),
+                  onLikeTap: _onLikeTap,
+                  onPlayTap: () {
+                    final episodes = episodesState.mapOrNull(
+                      data: (data) => data.episodes,
+                    );
+                    if (episodes != null) _onPlayTap(episodes);
+                  },
                 ),
               ),
-
               bottom: PreferredSize(
                 preferredSize: const Size.fromHeight(24),
                 child: Container(
@@ -150,39 +174,51 @@ class ProgramDetailsScreen extends ConsumerWidget {
             ),
 
             // orange youtube banner
-            YoutubeBanner(),
+            const YoutubeBanner(),
 
-            // Tracks list or loader/error
-            state.map(
-              loading: (_) => const SliverFillRemaining(
-                child: Center(child: CircularProgressIndicator()),
-              ),
-              error: (e) => SliverFillRemaining(
+            episodesState.when(
+              loading: () => const ProgramScreenSkeleton(),
+              error: (message) => SliverFillRemaining(
                 hasScrollBody: false,
                 child: Center(
-                  child: Text(
-                    'Error: ${e.message}',
-                    style: const TextStyle(color: DSColors.black),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Error: $message',
+                        style: const TextStyle(color: DSColors.black),
+                      ),
+                      const SizedBox(height: 16),
+                      ElevatedButton(
+                        onPressed: () => ref
+                            .read(
+                              programDetailsControllerProvider(
+                                widget.program.id,
+                              ).notifier,
+                            )
+                            .loadEpisodes(),
+                        child: const Text('Retry'),
+                      ),
+                    ],
                   ),
                 ),
               ),
-              data: (d) {
-                final tracks = d.program.episodes;
-                final playerState = ref.watch(playerStateProvider);
-                final playingTrackId = playerState.currentTrack?.id;
-
-                if (tracks.isEmpty) {
+              data: (episodes) {
+                if (episodes.isEmpty) {
                   return const SliverFillRemaining(
-                    child: Center(child: Text('No tracks available')),
+                    child: Center(child: Text('No episodes available')),
                   );
                 }
 
+                final playerState = ref.watch(playerStateProvider);
+                final playingTrackId = playerState.currentTrack?.id;
+
                 return SliverPadding(
-                  padding: const EdgeInsets.only(bottom: 100, top: 0),
+                  padding: const EdgeInsets.only(bottom: 100),
                   sliver: SliverList(
                     delegate: SliverChildBuilderDelegate((context, index) {
-                      final track = tracks[index];
-                      final isCurrentTrack = track.id == playingTrackId;
+                      final episode = episodes[index];
+                      final isCurrentTrack = episode.id == playingTrackId;
                       final bool? trackPlayingState = isCurrentTrack
                           ? playerState.isPlaying && !playerState.isRadioMode
                           : null;
@@ -190,27 +226,21 @@ class ProgramDetailsScreen extends ConsumerWidget {
                       return Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          TrackTileNumber(
-                            track: track,
-                            number: (index + 1).toString(),
+                          ProgramEpisodeTile(
+                            episode: episode,
+                            index: index + 1,
                             isPlaying: trackPlayingState,
-                            onTap: () => _onTrackTap(
-                              ref,
-                              tracks,
-                              index,
-                              d.program.title,
-                              d.program.imageUrl,
-                            ),
+                            onTap: () => _onTrackTap(episodes, index),
                             onMenuTap: () => _onTrackMenuTap(index),
                           ),
-                          if (index < tracks.length - 1)
+                          if (index < episodes.length - 1)
                             const Padding(
                               padding: EdgeInsets.symmetric(horizontal: 24),
                               child: DottedDivider(),
                             ),
                         ],
                       );
-                    }, childCount: tracks.length),
+                    }, childCount: episodes.length),
                   ),
                 );
               },

@@ -27,11 +27,36 @@ class EpisodesRepositoryImpl implements EpisodesRepository {
 
   @override
   Future<List<Track>> getFavoriteEpisodes() async {
-    throw UnimplementedError();
+    final response = await _apiClient.get(
+      '/api/user-episodes',
+      queryParameters: {
+        'populate[Episode][populate][File][populate]': '*',
+        'populate[Episode][populate][Program][populate][Cover][populate]': '*',
+      },
+    );
+
+    final data = response.data['data'] as List<dynamic>;
+    return data.map((e) {
+      final entry = e as Map<String, dynamic>;
+      final episodeJson = entry['Episode'] as Map<String, dynamic>;
+      episodeJson['Like'] = {'documentId': entry['documentId']};
+      return EpisodeDto.fromJson(episodeJson).toDomain();
+    }).toList();
   }
 
   @override
-  Future<void> toggleLike(String id) async {
-    throw UnimplementedError();
+  Future<String?> toggleLikeEpisode(String episodeId, [String? likeId]) async {
+    if (likeId != null) {
+      await _apiClient.delete('/api/user-episodes/$likeId');
+      return null;
+    }
+
+    final response = await _apiClient.post(
+      '/api/user-episodes',
+      data: {
+        'data': {'Episode': episodeId},
+      },
+    );
+    return response.data['data']['documentId'] as String;
   }
 }

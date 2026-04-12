@@ -12,7 +12,6 @@ import 'package:go_sport/design_system/components/icons/ds_bit_icon.dart';
 import 'package:go_sport/domain/state/player_state.dart';
 import 'package:go_sport/domain/state/player_state_selectors.dart';
 import 'package:go_sport/core/di/repository_providers.dart';
-import 'package:go_sport/features/player/presentation/player/full_player_screen.dart';
 
 
 const double _kMiniPlayerHeight = 72.0;
@@ -23,7 +22,12 @@ const double _kProgressBarHeight = 2.0;
 const double _kProgressBarInset = 8.0;
 
 class MiniPlayerWidget extends ConsumerStatefulWidget {
-  const MiniPlayerWidget({super.key});
+  final VoidCallback onOpenFullPlayer;
+
+  const MiniPlayerWidget({
+    super.key,
+    required this.onOpenFullPlayer,
+  });
 
   @override
   ConsumerState<MiniPlayerWidget> createState() => _MiniPlayerWidgetState();
@@ -86,7 +90,7 @@ class _MiniPlayerWidgetState extends ConsumerState<MiniPlayerWidget>
               _buildPanel(
                 isMusicPanel: true,
                 isActive: _isMusicMode,
-                onTap: _isMusicMode ? () => FullPlayerScreen.show(context) : _toggleMode,
+                onTap: _isMusicMode ? widget.onOpenFullPlayer : _toggleMode,
               ),
             ],
           );
@@ -218,12 +222,18 @@ class _MiniPlayerWidgetState extends ConsumerState<MiniPlayerWidget>
                   final wasLiked = track.isLiked;
                   final prevLikeId = track.likeId;
                   final notifier = ref.read(playerStateProvider.notifier);
+                  final isEpisode = track.releaseDate != null;
 
                   notifier.updateTrackLike(track.id, isLiked: !wasLiked, likeId: prevLikeId);
 
                   try {
-                    final repo = ref.read(playlistRepositoryProvider);
-                    final newLikeId = await repo.toggleLikeTrack(track.id, prevLikeId);
+                    final newLikeId = isEpisode
+                        ? await ref
+                            .read(episodesRepositoryProvider)
+                            .toggleLikeEpisode(track.id, prevLikeId)
+                        : await ref
+                            .read(playlistRepositoryProvider)
+                            .toggleLikeTrack(track.id, prevLikeId);
                     notifier.updateTrackLike(track.id, isLiked: !wasLiked, likeId: newLikeId);
                   } catch (e) {
                     notifier.updateTrackLike(track.id, isLiked: wasLiked, likeId: prevLikeId);
@@ -432,23 +442,28 @@ class _MiniPlayerWidgetState extends ConsumerState<MiniPlayerWidget>
                       GestureDetector(
                         onTap: () async {
                           final track = swipeData.currentTrack;
-                          if(track == null) return;
+                          if (track == null) return;
 
                           final wasLiked = track.isLiked;
                           final prevLikeId = track.likeId;
                           final notifier = ref.read(playerStateProvider.notifier);
+                          final isEpisode = track.releaseDate != null;
 
                           notifier.updateTrackLike(track.id, isLiked: !wasLiked, likeId: prevLikeId);
 
                           try {
-                            final repo = ref.read(playlistRepositoryProvider);
-                            final newLikeId = await repo.toggleLikeTrack(track.id, prevLikeId);
-                            notifier.updateTrackLike(track.id, isLiked: !wasLiked, likeId: newLikeId);  
+                            final newLikeId = isEpisode
+                                ? await ref
+                                    .read(episodesRepositoryProvider)
+                                    .toggleLikeEpisode(track.id, prevLikeId)
+                                : await ref
+                                    .read(playlistRepositoryProvider)
+                                    .toggleLikeTrack(track.id, prevLikeId);
+                            notifier.updateTrackLike(track.id, isLiked: !wasLiked, likeId: newLikeId);
                           } catch (e) {
                             // Revert UI change on error
                             notifier.updateTrackLike(track.id, isLiked: wasLiked, likeId: prevLikeId);
                           }
-                          
                         },
                         child: Padding(
                           padding: const EdgeInsets.symmetric(vertical: 7),

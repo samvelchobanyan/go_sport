@@ -9,6 +9,7 @@ import 'package:go_sport/domain/entities/track.dart';
 import 'package:go_sport/domain/state/player_state.dart';
 import 'package:go_sport/features/radio/presentation/radio/radio_dashboard_controller.dart';
 import 'package:go_sport/features/radio/presentation/widgets/program_card.dart';
+import 'package:go_sport/features/radio/presentation/widgets/radio_page_skeleton.dart';
 import 'package:go_sport/features/shared_widgets/dotted_divider.dart';
 import 'package:go_sport/features/shared_widgets/episode_tile.dart';
 import 'package:go_sport/features/shared_widgets/live_banner.dart';
@@ -26,13 +27,15 @@ class RadioPageScreen extends ConsumerWidget {
     final featuredEpisodes = radioDashboardState.featuredEpisodes;
 
     final isLoading = radioDashboardState.isLoading;
+  final showInitialSkeleton =
+    isLoading && featuredPrograms.isEmpty && featuredEpisodes.isEmpty;
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.dark,
       child: Scaffold(
         backgroundColor: DSColors.white,
-        body: isLoading
-            ? const Center(child: CircularProgressIndicator())
+    body: showInitialSkeleton
+      ? const RadioPageSkeleton()
             : CustomScrollView(
                 slivers: [
                   SliverAppBar(
@@ -103,6 +106,10 @@ class RadioPageScreen extends ConsumerWidget {
                                       title: program.title,
                                       imageUrl: program.imageUrl,
                                       episodeCount: program.episodeCount,
+                                      onTap: () => context.push(
+                                        '/music/program/${program.id}',
+                                        extra: program,
+                                      ),
                                     ),
                                   );
                                 },

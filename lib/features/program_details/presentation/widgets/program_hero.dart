@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:go_sport/design_system/components/icons/ds_notification_icon.dart';
+import 'package:go_sport/design_system/components/icons/ds_heart_icon.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/domain/entities/program.dart';
 
 class ProgramHero extends StatelessWidget {
   final Program program;
-  final VoidCallback onNotificationTap;
+  final VoidCallback onLikeTap;
   final VoidCallback onPlayTap;
 
   const ProgramHero({
     super.key,
     required this.program,
-    required this.onNotificationTap,
+    required this.onLikeTap,
     required this.onPlayTap,
   });
 
@@ -67,18 +67,18 @@ class ProgramHero extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    // Notification button
+                    // Like button
                     GestureDetector(
-                      onTap: onNotificationTap,
+                      onTap: onLikeTap,
                       child: Container(
                         width: 48,
                         height: 48,
                         decoration: BoxDecoration(
-                          color: DSColors.white.withOpacity(0.2),
+                          color: DSColors.white.withValues(alpha: 0.2),
                           shape: BoxShape.circle,
                         ),
                         child: Center(
-                          child: DSNotificationIcon(
+                          child: DSHeartIcon(
                             color: DSColors.white,
                             size: 24,
                             isFilled: program.isLiked,

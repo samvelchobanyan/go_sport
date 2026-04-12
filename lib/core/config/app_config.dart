@@ -17,8 +17,8 @@ class AppConfig {
 
   static const dev = AppConfig._(
     env: AppEnv.dev,
-    // apiBaseUrl: 'http://37.157.212.21:1338/', //Samo
-    apiBaseUrl: 'http://192.168.1.4:1338', //Anna
+    apiBaseUrl: 'http://37.157.212.21:1338/', //Samo
+    // apiBaseUrl: 'http://192.168.1.4:1338', //Anna
     connectTimeout: Duration(seconds: 30),
     receiveTimeout: Duration(seconds: 30),
     enableLogging: true,

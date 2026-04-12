@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/domain/entities/program.dart';
@@ -139,7 +140,10 @@ class _MyProgramsScreenState extends ConsumerState<MyProgramsScreen> {
           imageUrl: program.imageUrl,
           title: program.title,
           episodeCount: program.episodeCount,
-          onTap: () => debugPrint('Program tapped: ${program.id}'),
+          onTap: () => context.push(
+            '/music/program/${program.id}',
+            extra: program,
+          ),
         );
       },
     );

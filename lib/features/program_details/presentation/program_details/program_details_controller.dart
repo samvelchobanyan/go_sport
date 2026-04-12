@@ -1,48 +1,52 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:go_sport/core/di/repository_providers.dart';
-import 'package:go_sport/domain/entities/program.dart';
-import 'package:go_sport/domain/repositories/programs_repository.dart';
+import 'package:go_sport/domain/entities/track.dart';
 
 part 'program_details_controller.freezed.dart';
 
 @freezed
-sealed class ProgramDetailsState with _$ProgramDetailsState {
-  const factory ProgramDetailsState.loading() = _Loading;
+sealed class ProgramEpisodesState with _$ProgramEpisodesState {
+  const factory ProgramEpisodesState.loading() = _ProgramEpisodesLoading;
 
-  const factory ProgramDetailsState.data({required Program program}) = _Data;
+  const factory ProgramEpisodesState.data({
+    required List<Track> episodes,
+  }) = _ProgramEpisodesData;
 
-  const factory ProgramDetailsState.error({required String message}) = _Error;
+  const factory ProgramEpisodesState.error({
+    required String message,
+  }) = _ProgramEpisodesError;
 }
 
 class ProgramDetailsController
-    extends AutoDisposeFamilyNotifier<ProgramDetailsState, String> {
-  late final ProgramsRepository _programsRepository;
-  late final String _programId;
-
+    extends AutoDisposeFamilyNotifier<ProgramEpisodesState, String> {
   @override
-  ProgramDetailsState build(String programId) {
-    _programId = programId; // <-- assign it here
-    _programsRepository = ref.watch(programsRepositoryProvider);
-    Future.microtask(() => load());
-
-    return const ProgramDetailsState.loading();
+  ProgramEpisodesState build(String programId) {
+    Future.microtask(() => loadEpisodes());
+    return const ProgramEpisodesState.loading();
   }
 
-  Future<void> load() async {
-    state = const ProgramDetailsState.loading();
+  Future<void> loadEpisodes() async {
+    state = const ProgramEpisodesState.loading();
 
     try {
-      final program = await _programsRepository.getProgram(_programId);
-
-      state = ProgramDetailsState.data(program: program);
+      final episodes = await ref
+          .read(programsRepositoryProvider)
+          .getProgramEpisodes(arg);
+      state = ProgramEpisodesState.data(episodes: episodes);
     } catch (e) {
-      state = ProgramDetailsState.error(message: e.toString());
+      state = ProgramEpisodesState.error(message: e.toString());
     }
+  }
+
+  Future<String?> toggleLike(String programId, [String? likeId]) async {
+    return await ref
+        .read(programsRepositoryProvider)
+        .toggleLike(programId, likeId);
   }
 }
 
 final programDetailsControllerProvider = NotifierProvider.autoDispose
-    .family<ProgramDetailsController, ProgramDetailsState, String>(
+    .family<ProgramDetailsController, ProgramEpisodesState, String>(
       ProgramDetailsController.new,
     );

@@ -24,11 +24,32 @@ import 'package:go_sport/features/favorites/presentation/new_episodes/new_episod
 import 'package:go_sport/features/favorites/presentation/my_programs/my_programs_screen.dart';
 import 'package:go_sport/domain/entities/album.dart';
 import 'package:go_sport/domain/entities/artist.dart';
+import 'package:go_sport/domain/entities/program.dart';
 import 'package:go_sport/features/albums/presentation/album/album_screen.dart';
 import 'package:go_sport/features/artists/presentation/artist/artist_screen.dart';
 import 'package:go_sport/features/playlists/presentation/playlist/playlist_screen.dart';
 import 'package:go_sport/features/radio/presentation/radio/radio_page_screen.dart';
 import 'package:go_sport/features/schedule/presentation/schedule/schedule_screen.dart';
+
+final GlobalKey<NavigatorState> _homeBranchNavigatorKey =
+    GlobalKey<NavigatorState>(debugLabel: 'homeBranchNavigator');
+final GlobalKey<NavigatorState> _musicBranchNavigatorKey =
+    GlobalKey<NavigatorState>(debugLabel: 'musicBranchNavigator');
+final GlobalKey<NavigatorState> _radioBranchNavigatorKey =
+    GlobalKey<NavigatorState>(debugLabel: 'radioBranchNavigator');
+
+GlobalKey<NavigatorState>? _branchNavigatorKeyResolver(int branchIndex) {
+  switch (branchIndex) {
+    case 0:
+      return _homeBranchNavigatorKey;
+    case 1:
+      return _musicBranchNavigatorKey;
+    case 2:
+      return _radioBranchNavigatorKey;
+    default:
+      return null;
+  }
+}
 
 GoRouter createAppRouter(TokenStorage tokenStorage) {
   return GoRouter(
@@ -93,11 +114,15 @@ GoRouter createAppRouter(TokenStorage tokenStorage) {
       ),
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) {
-          return MainShell(navigationShell: navigationShell);
+          return MainShell(
+            navigationShell: navigationShell,
+            branchNavigatorKeyResolver: _branchNavigatorKeyResolver,
+          );
         },
         branches: [
           // Home Branch
           StatefulShellBranch(
+            navigatorKey: _homeBranchNavigatorKey,
             routes: [
               GoRoute(
                 path: AppRoutes.home,
@@ -128,6 +153,7 @@ GoRouter createAppRouter(TokenStorage tokenStorage) {
 
           // Music Branch
           StatefulShellBranch(
+            navigatorKey: _musicBranchNavigatorKey,
             routes: [
               GoRoute(
                 path: AppRoutes.music,
@@ -197,6 +223,18 @@ GoRouter createAppRouter(TokenStorage tokenStorage) {
                     path: 'myprograms',
                     builder: (context, state) => const MyProgramsScreen(),
                   ),
+
+                  // Program details route
+                  GoRoute(
+                    path: 'program/:id',
+                    pageBuilder: (context, state) {
+                      final program = state.extra as Program;
+                      return fadeSlidePage(
+                        state: state,
+                        child: ProgramDetailsScreen(program: program),
+                      );
+                    },
+                  ),
                 ],
               ),
             ],
@@ -204,6 +242,7 @@ GoRouter createAppRouter(TokenStorage tokenStorage) {
 
           // Radio Branch
           StatefulShellBranch(
+            navigatorKey: _radioBranchNavigatorKey,
             routes: [
               GoRoute(
                 path: AppRoutes.radio,

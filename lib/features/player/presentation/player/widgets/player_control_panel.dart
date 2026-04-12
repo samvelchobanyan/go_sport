@@ -132,18 +132,23 @@ class PlayerControlPanel extends ConsumerWidget {
             final wasLiked = track.isLiked;
             final prevLikeId = track.likeId;
             final notifier = ref.read(playerStateProvider.notifier);
+            final isEpisode = track.releaseDate != null;
 
             notifier.updateTrackLike(track.id, isLiked: !wasLiked, likeId: prevLikeId);
 
             try {
-              final repo = ref.read(playlistRepositoryProvider);
-              final newLikeId = await repo.toggleLikeTrack(track.id, prevLikeId);
+              final newLikeId = isEpisode
+                  ? await ref
+                      .read(episodesRepositoryProvider)
+                      .toggleLikeEpisode(track.id, prevLikeId)
+                  : await ref
+                      .read(playlistRepositoryProvider)
+                      .toggleLikeTrack(track.id, prevLikeId);
               notifier.updateTrackLike(track.id, isLiked: !wasLiked, likeId: newLikeId);
             } catch (e) {
               // Handle error (e.g. show a snackbar)
               notifier.updateTrackLike(track.id, isLiked: wasLiked, likeId: prevLikeId);
             }
-            // TODO: wire like action
           },
           child: Container(
             width: 48,
