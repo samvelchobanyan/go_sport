@@ -86,7 +86,8 @@ class EpisodesRepositoryMock implements EpisodesRepository {
   }
 
   @override
-  Future<void> toggleLike(String id) async {
+  Future<String?> toggleLikeEpisode(String episodeId, [String? likeId]) async {
     await Future.delayed(const Duration(milliseconds: 300));
+    return likeId == null ? 'mock-like-${DateTime.now().millisecondsSinceEpoch}' : null;
   }
 }

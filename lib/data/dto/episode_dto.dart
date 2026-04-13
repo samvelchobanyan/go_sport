@@ -8,6 +8,7 @@ class EpisodeDto {
   final String? programName;
   final String? programCoverUrl;
   final DateTime? streamed;
+  final String? likeId;
 
   EpisodeDto({
     required this.documentId,
@@ -17,12 +18,14 @@ class EpisodeDto {
     this.programName,
     this.programCoverUrl,
     this.streamed,
+    this.likeId,
   });
 
   factory EpisodeDto.fromJson(Map<String, dynamic> json) {
     final fileJson = json['File'] as Map<String, dynamic>?;
     final programJson = json['Program'] as Map<String, dynamic>?;
     final coverJson = programJson?['Cover'] as Map<String, dynamic>?;
+    final likeJson = json['Like'] as Map<String, dynamic>?;
 
     return EpisodeDto(
       documentId: json['documentId'] as String,
@@ -34,6 +37,7 @@ class EpisodeDto {
       streamed: json['Streamed'] != null
           ? DateTime.parse(json['Streamed'] as String)
           : null,
+      likeId: likeJson?['documentId'] as String?,
     );
   }
 
@@ -46,6 +50,8 @@ class EpisodeDto {
       duration: Duration(seconds: length),
       audioUrl: fileUrl ?? '',
       releaseDate: streamed,
+      isLiked: likeId != null,
+      likeId: likeId,
     );
   }
 }

@@ -19,7 +19,7 @@ class FullPlayerScreen extends ConsumerWidget {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      useRootNavigator: true,
+      useRootNavigator: false,
       backgroundColor: DSColors.transparent,
       barrierColor: DSColors.black.withOpacity(0.3),
       enableDrag: true,

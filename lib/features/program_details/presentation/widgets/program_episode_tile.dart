@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
-import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/domain/entities/track.dart';
 import 'package:go_sport/features/shared_widgets/bottom_pop_ups/track_options.dart';
+import 'package:go_sport/features/shared_widgets/track_number_badge.dart';
 import 'package:go_sport/shared/widgets/equalizer_indicator.dart';
 
-class TrackTileNumber extends StatelessWidget {
-  final Track track;
-  final String number;
+class ProgramEpisodeTile extends StatelessWidget {
+  final Track episode;
+  final int index;
   final VoidCallback onTap;
   final VoidCallback onMenuTap;
   final bool? isPlaying;
 
-  const TrackTileNumber({
+  const ProgramEpisodeTile({
     super.key,
-    required this.track,
-    required this.number,
+    required this.episode,
+    required this.index,
     required this.onTap,
     required this.onMenuTap,
     this.isPlaying,
@@ -30,47 +30,22 @@ class TrackTileNumber extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         child: Row(
           children: [
-            // Track image
-            // Container(
-            //   decoration: BoxDecoration(
-            //     borderRadius: BorderRadius.circular(DSRadius.s),
-            //   ),
-            //   child:
-            Container(
-              decoration: BoxDecoration(
-                color: DSColors.blue.withOpacity(0.07),
-                borderRadius: BorderRadius.circular(DSRadius.s),
-              ),
-              height: 32,
-              width: 32,
-              child: Center(
-                child: Text(
-                  number,
-                  style: context.subtitleMBold?.copyWith(color: DSColors.blue),
-                ),
-              ),
-              // ),
-            ),
+            TrackNumberBadge(index: index),
             const SizedBox(width: 10),
-
-            // Track info
-            Expanded(child: _buildTrackContent(context)),
-
-            // Menu button
+            Expanded(child: _buildEpisodeContent(context)),
             GestureDetector(
               onTap: () {
                 onMenuTap();
-                // todo change this sheet
                 showTrackOptionsBottomSheet(
                   context: context,
-                  imageUrl: track.imageUrl ?? '',
-                  title: track.title,
-                  subtitle: track.artistName,
+                  imageUrl: episode.imageUrl ?? '',
+                  title: episode.title,
+                  subtitle: episode.artistName,
                 );
               },
               behavior: HitTestBehavior.opaque,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
+              child: const Padding(
+                padding: EdgeInsets.all(8.0),
                 child: Icon(Icons.more_horiz, color: DSColors.gray60, size: 24),
               ),
             ),
@@ -80,7 +55,7 @@ class TrackTileNumber extends StatelessWidget {
     );
   }
 
-  Widget _buildTrackContent(BuildContext context) {
+  Widget _buildEpisodeContent(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -92,7 +67,7 @@ class TrackTileNumber extends StatelessWidget {
             ],
             Expanded(
               child: Text(
-                track.title,
+                episode.title,
                 style: context.subtitleM?.copyWith(
                   color: isPlaying != null ? DSColors.blue : DSColors.black,
                 ),
@@ -105,9 +80,9 @@ class TrackTileNumber extends StatelessWidget {
         const SizedBox(height: 2),
         Row(
           children: [
-            if (track.releaseDate != null)
+            if (episode.releaseDate != null)
               Text(
-                _formatDate(track.releaseDate),
+                _formatDate(episode.releaseDate),
                 style: context.subtitleLSemi?.copyWith(color: DSColors.gray60),
               ),
             Text(
@@ -115,7 +90,7 @@ class TrackTileNumber extends StatelessWidget {
               style: context.subtitleLSemi?.copyWith(color: DSColors.gray60),
             ),
             Text(
-              _formatDuration(track.duration),
+              _formatDuration(episode.duration),
               style: context.subtitleLSemi?.copyWith(color: DSColors.gray60),
             ),
           ],

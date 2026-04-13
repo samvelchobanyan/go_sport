@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/features/shared_widgets/count_badge.dart';
@@ -11,6 +10,7 @@ class ProgramCard extends StatelessWidget {
   final String title;
   final String imageUrl;
   final int episodeCount;
+  final VoidCallback onTap;
 
   const ProgramCard({
     super.key,
@@ -18,12 +18,13 @@ class ProgramCard extends StatelessWidget {
     required this.title,
     required this.imageUrl,
     required this.episodeCount,
+    required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => context.push('/music/program/$id'),
+      onTap: onTap,
       child: SizedBox(
         width: 140,
         child: Column(

@@ -15,17 +15,19 @@ class ProgramDto {
   final String name;
   final _CoverDto? cover;
   final int cnt;
-  final String? description;
+  final String? likeId;
 
   ProgramDto({
     required this.documentId,
     required this.name,
     required this.cover,
     required this.cnt,
-    this.description,
+    this.likeId,
   });
 
   factory ProgramDto.fromJson(Map<String, dynamic> json) {
+    final likeJson = json['Like'] as Map<String, dynamic>?;
+
     return ProgramDto(
       documentId: json['documentId'] as String,
       name: json['Name'] as String,
@@ -33,7 +35,7 @@ class ProgramDto {
           ? _CoverDto.fromJson(json['Cover'] as Map<String, dynamic>)
           : null,
       cnt: json['cnt'] as int? ?? 0,
-      description: json['Description'] as String?,
+      likeId: likeJson?['documentId'] as String?,
     );
   }
 
@@ -43,9 +45,8 @@ class ProgramDto {
       title: name,
       imageUrl: cover?.url ?? '',
       episodeCount: cnt,
-      isLiked: false,
-      episodes: [],
-      description: description,
+      isLiked: likeId != null,
+      likeId: likeId,
     );
   }
 }

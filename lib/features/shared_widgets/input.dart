@@ -28,10 +28,8 @@ class CustomInput extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text(label, style: context.label),
-
-        const SizedBox(height: 4),
-
+        Text(label, style: context.fieldLabel),
+        SizedBox(height: 4),
         Container(
           decoration: BoxDecoration(
             color: DSColors.blue.withOpacity(0.07),

@@ -57,10 +57,7 @@ class _RegistrationEmailScreenState
 
     final state = ref.watch(registrationControllerProvider);
 
-    ref.listen<RegistrationState>(registrationControllerProvider, (
-      prev,
-      next,
-    ) {
+    ref.listen<RegistrationState>(registrationControllerProvider, (prev, next) {
       if (next.isSuccess) {
         context.push('/confirm-email');
       }
@@ -123,6 +120,8 @@ class _RegistrationEmailScreenState
                               color: DSColors.gray70,
                             ),
                           ),
+                          
+                          SizedBox(height: 20),
 
                           // Email Input
                           CustomInput(

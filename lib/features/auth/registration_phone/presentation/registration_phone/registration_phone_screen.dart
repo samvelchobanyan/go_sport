@@ -164,7 +164,7 @@ class _RegistrationPhoneScreenState
                           // Skip Button
                           TextButton(
                             onPressed: () {
-                              context.push('/home');
+                              context.push('/create-password');
                             },
                             style: TextButton.styleFrom(side: BorderSide.none),
                             child: Text(
