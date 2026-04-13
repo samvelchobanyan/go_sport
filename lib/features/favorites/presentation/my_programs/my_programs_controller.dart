@@ -13,6 +13,8 @@ class MyProgramsState with _$MyProgramsState {
     @Default([]) List<Program> programs,
     @Default(false) bool isLoading,
     @Default(false) bool isLoadingMore,
+    @Default(1) int currentPage,
+    @Default(true) bool hasMore,
     String? error,
   }) = _MyProgramsState;
 }
@@ -32,28 +34,40 @@ class MyProgramsNotifier extends Notifier<MyProgramsState> {
     state = state.copyWith(isLoading: true, error: null);
 
     try {
-      final programs = await _repository.getFavoritePrograms();
+      final result = await _repository.getFavoritePrograms(page: 1);
 
-      state = state.copyWith(programs: programs, isLoading: false);
+      state = state.copyWith(
+        programs: result.items,
+        currentPage: 1,
+        hasMore: result.hasMore,
+        isLoading: false,
+      );
     } catch (e) {
       state = state.copyWith(isLoading: false, error: e.toString());
     }
   }
 
   Future<void> refresh() async {
-    state = state.copyWith(programs: []);
+    state = state.copyWith(
+      programs: [],
+      currentPage: 1,
+      hasMore: true,
+    );
     await loadFavorites();
   }
 
   Future<void> loadMore() async {
-    if (state.isLoadingMore) return;
+    if (state.isLoadingMore || !state.hasMore) return;
 
     state = state.copyWith(isLoadingMore: true);
 
     try {
-      final newPrograms = await _repository.getFavoritePrograms();
+      final nextPage = state.currentPage + 1;
+      final result = await _repository.getFavoritePrograms(page: nextPage);
       state = state.copyWith(
-        programs: [...state.programs, ...newPrograms],
+        programs: [...state.programs, ...result.items],
+        currentPage: nextPage,
+        hasMore: result.hasMore,
         isLoadingMore: false,
       );
     } catch (e) {

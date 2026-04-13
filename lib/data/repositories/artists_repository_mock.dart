@@ -35,9 +35,23 @@ class ArtistsRepositoryMock implements ArtistsRepository {
   }
 
   @override
-  Future<List<Artist>> getFavoriteArtists() async {
+  Future<({List<Artist> items, bool hasMore})> getFavoriteArtists({
+    int page = 1,
+    int pageSize = 20,
+  }) async {
     await Future.delayed(const Duration(milliseconds: 800));
-    return _mockData.where((e) => e.isLiked).toList();
+    final all = _mockData.where((e) => e.isLiked).toList();
+    final total = all.length;
+    final pageCount = total == 0 ? 1 : (total / pageSize).ceil();
+    final start = (page - 1) * pageSize;
+    if (start >= total) {
+      return (items: <Artist>[], hasMore: false);
+    }
+    final end = (start + pageSize).clamp(0, total);
+    return (
+      items: all.sublist(start, end),
+      hasMore: page < pageCount,
+    );
   }
 
   @override

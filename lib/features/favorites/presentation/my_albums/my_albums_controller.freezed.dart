@@ -20,6 +20,8 @@ mixin _$MyAlbumsState {
   List<Album> get albums => throw _privateConstructorUsedError;
   bool get isLoading => throw _privateConstructorUsedError;
   bool get isLoadingMore => throw _privateConstructorUsedError;
+  int get currentPage => throw _privateConstructorUsedError;
+  bool get hasMore => throw _privateConstructorUsedError;
   String? get error => throw _privateConstructorUsedError;
 
   /// Create a copy of MyAlbumsState
@@ -40,6 +42,8 @@ abstract class $MyAlbumsStateCopyWith<$Res> {
     List<Album> albums,
     bool isLoading,
     bool isLoadingMore,
+    int currentPage,
+    bool hasMore,
     String? error,
   });
 }
@@ -62,6 +66,8 @@ class _$MyAlbumsStateCopyWithImpl<$Res, $Val extends MyAlbumsState>
     Object? albums = null,
     Object? isLoading = null,
     Object? isLoadingMore = null,
+    Object? currentPage = null,
+    Object? hasMore = null,
     Object? error = freezed,
   }) {
     return _then(
@@ -77,6 +83,14 @@ class _$MyAlbumsStateCopyWithImpl<$Res, $Val extends MyAlbumsState>
             isLoadingMore: null == isLoadingMore
                 ? _value.isLoadingMore
                 : isLoadingMore // ignore: cast_nullable_to_non_nullable
+                      as bool,
+            currentPage: null == currentPage
+                ? _value.currentPage
+                : currentPage // ignore: cast_nullable_to_non_nullable
+                      as int,
+            hasMore: null == hasMore
+                ? _value.hasMore
+                : hasMore // ignore: cast_nullable_to_non_nullable
                       as bool,
             error: freezed == error
                 ? _value.error
@@ -101,6 +115,8 @@ abstract class _$$MyAlbumsStateImplCopyWith<$Res>
     List<Album> albums,
     bool isLoading,
     bool isLoadingMore,
+    int currentPage,
+    bool hasMore,
     String? error,
   });
 }
@@ -122,6 +138,8 @@ class __$$MyAlbumsStateImplCopyWithImpl<$Res>
     Object? albums = null,
     Object? isLoading = null,
     Object? isLoadingMore = null,
+    Object? currentPage = null,
+    Object? hasMore = null,
     Object? error = freezed,
   }) {
     return _then(
@@ -137,6 +155,14 @@ class __$$MyAlbumsStateImplCopyWithImpl<$Res>
         isLoadingMore: null == isLoadingMore
             ? _value.isLoadingMore
             : isLoadingMore // ignore: cast_nullable_to_non_nullable
+                  as bool,
+        currentPage: null == currentPage
+            ? _value.currentPage
+            : currentPage // ignore: cast_nullable_to_non_nullable
+                  as int,
+        hasMore: null == hasMore
+            ? _value.hasMore
+            : hasMore // ignore: cast_nullable_to_non_nullable
                   as bool,
         error: freezed == error
             ? _value.error
@@ -154,6 +180,8 @@ class _$MyAlbumsStateImpl implements _MyAlbumsState {
     final List<Album> albums = const [],
     this.isLoading = false,
     this.isLoadingMore = false,
+    this.currentPage = 1,
+    this.hasMore = true,
     this.error,
   }) : _albums = albums;
 
@@ -173,11 +201,17 @@ class _$MyAlbumsStateImpl implements _MyAlbumsState {
   @JsonKey()
   final bool isLoadingMore;
   @override
+  @JsonKey()
+  final int currentPage;
+  @override
+  @JsonKey()
+  final bool hasMore;
+  @override
   final String? error;
 
   @override
   String toString() {
-    return 'MyAlbumsState(albums: $albums, isLoading: $isLoading, isLoadingMore: $isLoadingMore, error: $error)';
+    return 'MyAlbumsState(albums: $albums, isLoading: $isLoading, isLoadingMore: $isLoadingMore, currentPage: $currentPage, hasMore: $hasMore, error: $error)';
   }
 
   @override
@@ -190,6 +224,9 @@ class _$MyAlbumsStateImpl implements _MyAlbumsState {
                 other.isLoading == isLoading) &&
             (identical(other.isLoadingMore, isLoadingMore) ||
                 other.isLoadingMore == isLoadingMore) &&
+            (identical(other.currentPage, currentPage) ||
+                other.currentPage == currentPage) &&
+            (identical(other.hasMore, hasMore) || other.hasMore == hasMore) &&
             (identical(other.error, error) || other.error == error));
   }
 
@@ -199,6 +236,8 @@ class _$MyAlbumsStateImpl implements _MyAlbumsState {
     const DeepCollectionEquality().hash(_albums),
     isLoading,
     isLoadingMore,
+    currentPage,
+    hasMore,
     error,
   );
 
@@ -216,6 +255,8 @@ abstract class _MyAlbumsState implements MyAlbumsState {
     final List<Album> albums,
     final bool isLoading,
     final bool isLoadingMore,
+    final int currentPage,
+    final bool hasMore,
     final String? error,
   }) = _$MyAlbumsStateImpl;
 
@@ -225,6 +266,10 @@ abstract class _MyAlbumsState implements MyAlbumsState {
   bool get isLoading;
   @override
   bool get isLoadingMore;
+  @override
+  int get currentPage;
+  @override
+  bool get hasMore;
   @override
   String? get error;
 

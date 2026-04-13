@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/domain/entities/album.dart';
@@ -28,7 +29,7 @@ class _MyAlbumsScreenState extends ConsumerState<MyAlbumsScreen> {
 
   void _onScroll() {
     final state = ref.read(myAlbumsStateProvider);
-    if (state.isLoading || state.isLoadingMore) return;
+    if (state.isLoading || state.isLoadingMore || !state.hasMore) return;
 
     if (_scrollController.position.pixels >=
         _scrollController.position.maxScrollExtent * 0.8) {
@@ -108,37 +109,44 @@ class _MyAlbumsScreenState extends ConsumerState<MyAlbumsScreen> {
       );
     }
 
-    return ListView.separated(
-      controller: _scrollController,
-      padding: const EdgeInsets.only(top: 16, bottom: 16),
-      itemCount: albums.length + (isLoadingMore ? 1 : 0),
-      separatorBuilder: (context, index) {
-        if (index >= albums.length - 1) {
-          return const SizedBox.shrink();
-        }
+    return RefreshIndicator(
+      onRefresh: () => ref.read(myAlbumsStateProvider.notifier).refresh(),
+      child: ListView.separated(
+        controller: _scrollController,
+        physics: const AlwaysScrollableScrollPhysics(),
+        padding: const EdgeInsets.only(top: 16, bottom: 16),
+        itemCount: albums.length + (isLoadingMore ? 1 : 0),
+        separatorBuilder: (context, index) {
+          if (index >= albums.length - 1) {
+            return const SizedBox.shrink();
+          }
 
-        return const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16),
-          child: DottedDivider(),
-        );
-      },
-      itemBuilder: (context, index) {
-        if (index >= albums.length) {
           return const Padding(
-            padding: EdgeInsets.all(16),
-            child: Center(child: CircularProgressIndicator()),
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            child: DottedDivider(),
           );
-        }
+        },
+        itemBuilder: (context, index) {
+          if (index >= albums.length) {
+            return const Padding(
+              padding: EdgeInsets.all(16),
+              child: Center(child: CircularProgressIndicator()),
+            );
+          }
 
-        final album = albums[index];
-        return AlbumTile(
-          imageUrl: album.imageUrl,
-          albumName: album.title,
-          artistName: album.artist,
-          releaseYear: album.releaseYear,
-          onTap: () => debugPrint('Album tapped: ${album.id}'),
-        );
-      },
+          final album = albums[index];
+          return AlbumTile(
+            imageUrl: album.imageUrl,
+            albumName: album.title,
+            artistName: album.artist,
+            releaseYear: album.releaseYear,
+            onTap: () => context.push(
+              '/music/album/${album.id}',
+              extra: album,
+            ),
+          );
+        },
+      ),
     );
   }
 

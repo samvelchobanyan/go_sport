@@ -5,7 +5,10 @@ abstract interface class ProgramsRepository {
   /// Returns every program available in the repository.
   Future<List<Program>> getAllPrograms();
   Future<List<Program>> getFeaturedPrograms();
-  Future<List<Program>> getFavoritePrograms();
+  Future<({List<Program> items, bool hasMore})> getFavoritePrograms({
+    int page = 1,
+    int pageSize = 20,
+  });
   Future<List<Program>> getProgramsByDate(DateTime date);
   Future<List<Track>> getProgramEpisodes(String programId);
 

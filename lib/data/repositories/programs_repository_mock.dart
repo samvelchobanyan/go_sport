@@ -248,9 +248,23 @@ class ProgramsRepositoryMock implements ProgramsRepository {
   }
 
   @override
-  Future<List<Program>> getFavoritePrograms() async {
+  Future<({List<Program> items, bool hasMore})> getFavoritePrograms({
+    int page = 1,
+    int pageSize = 20,
+  }) async {
     await Future.delayed(const Duration(milliseconds: 800));
-    return _mockData.where((p) => p.isLiked).toList();
+    final all = _mockData.where((p) => p.isLiked).toList();
+    final total = all.length;
+    final pageCount = total == 0 ? 1 : (total / pageSize).ceil();
+    final start = (page - 1) * pageSize;
+    if (start >= total) {
+      return (items: <Program>[], hasMore: false);
+    }
+    final end = (start + pageSize).clamp(0, total);
+    return (
+      items: all.sublist(start, end),
+      hasMore: page < pageCount,
+    );
   }
 
   @override

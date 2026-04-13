@@ -9,7 +9,9 @@
       "Bash(dart run:*)",
       "Bash(flutter analyze:*)",
       "Bash(where dart:*)",
-      "Read(//c/flutter-projects//**)"
+      "Read(//c/flutter-projects//**)",
+      "Bash(adb devices:*)",
+      "Bash(adb install:*)"
     ]
   }
 }

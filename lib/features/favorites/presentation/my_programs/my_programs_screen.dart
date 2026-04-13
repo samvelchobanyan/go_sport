@@ -29,7 +29,7 @@ class _MyProgramsScreenState extends ConsumerState<MyProgramsScreen> {
 
   void _onScroll() {
     final state = ref.read(myProgramsStateProvider);
-    if (state.isLoading || state.isLoadingMore) return;
+    if (state.isLoading || state.isLoadingMore || !state.hasMore) return;
 
     if (_scrollController.position.pixels >=
         _scrollController.position.maxScrollExtent * 0.8) {
@@ -113,39 +113,44 @@ class _MyProgramsScreenState extends ConsumerState<MyProgramsScreen> {
       );
     }
 
-    return ListView.separated(
-      controller: _scrollController,
-      padding: const EdgeInsets.only(top: 16, bottom: 16),
-      itemCount: programs.length + (isLoadingMore ? 1 : 0),
-      separatorBuilder: (context, index) {
-        if (index >= programs.length - 1) {
-          return const SizedBox.shrink();
-        }
+    return RefreshIndicator(
+      onRefresh: () =>
+          ref.read(myProgramsStateProvider.notifier).refresh(),
+      child: ListView.separated(
+        controller: _scrollController,
+        physics: const AlwaysScrollableScrollPhysics(),
+        padding: const EdgeInsets.only(top: 16, bottom: 16),
+        itemCount: programs.length + (isLoadingMore ? 1 : 0),
+        separatorBuilder: (context, index) {
+          if (index >= programs.length - 1) {
+            return const SizedBox.shrink();
+          }
 
-        return const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16),
-          child: DottedDivider(),
-        );
-      },
-      itemBuilder: (context, index) {
-        if (index >= programs.length) {
           return const Padding(
-            padding: EdgeInsets.all(16),
-            child: Center(child: CircularProgressIndicator()),
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            child: DottedDivider(),
           );
-        }
+        },
+        itemBuilder: (context, index) {
+          if (index >= programs.length) {
+            return const Padding(
+              padding: EdgeInsets.all(16),
+              child: Center(child: CircularProgressIndicator()),
+            );
+          }
 
-        final program = programs[index];
-        return ProgramTile(
-          imageUrl: program.imageUrl,
-          title: program.title,
-          episodeCount: program.episodeCount,
-          onTap: () => context.push(
-            '/music/program/${program.id}',
-            extra: program,
-          ),
-        );
-      },
+          final program = programs[index];
+          return ProgramTile(
+            imageUrl: program.imageUrl,
+            title: program.title,
+            episodeCount: program.episodeCount,
+            onTap: () => context.push(
+              '/music/program/${program.id}',
+              extra: program,
+            ),
+          );
+        },
+      ),
     );
   }
 

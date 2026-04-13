@@ -748,9 +748,22 @@ class PlaylistRepositoryMock implements PlaylistRepository {
   }
 
     @override
-  Future<List<Track>> getFavoriteTracks() async {
+  Future<({List<Track> items, bool hasMore})> getFavoriteTracks({
+    int page = 1,
+    int pageSize = 20,
+  }) async {
     await Future.delayed(const Duration(milliseconds: 300));
-    return _favoriteTracks;
+    final total = _favoriteTracks.length;
+    final pageCount = total == 0 ? 1 : (total / pageSize).ceil();
+    final start = (page - 1) * pageSize;
+    if (start >= total) {
+      return (items: <Track>[], hasMore: false);
+    }
+    final end = (start + pageSize).clamp(0, total);
+    return (
+      items: _favoriteTracks.sublist(start, end),
+      hasMore: page < pageCount,
+    );
   }
 
   @override
