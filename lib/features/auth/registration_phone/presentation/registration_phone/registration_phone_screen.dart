@@ -4,16 +4,60 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
+import 'package:go_sport/domain/state/registration_state.dart';
 import 'package:go_sport/features/shared_widgets/input.dart';
 import 'package:go_router/go_router.dart';
 
-class RegistrationPhoneScreen extends ConsumerWidget {
+class RegistrationPhoneScreen extends ConsumerStatefulWidget {
   const RegistrationPhoneScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<RegistrationPhoneScreen> createState() =>
+      _RegistrationPhoneScreenState();
+}
+
+class _RegistrationPhoneScreenState
+    extends ConsumerState<RegistrationPhoneScreen> {
+  final _phoneController = TextEditingController();
+
+  @override
+  void dispose() {
+    _phoneController.dispose();
+    super.dispose();
+  }
+
+  void _onContinue() {
+    final phone = _phoneController.text.trim().replaceAll(RegExp(r'\D'), '');
+
+    if (phone.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Phone number cannot be empty')),
+      );
+      return;
+    }
+
+    ref
+        .read(registrationControllerProvider.notifier)
+        .registerPhone('+374$phone');
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
+
+    final state = ref.watch(registrationControllerProvider);
+
+    ref.listen<RegistrationState>(registrationControllerProvider, (prev, next) {
+      if (next.isSuccess) {
+        context.push('/confirm-phone');
+      }
+      if (next.error != null) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(next.error!)));
+      }
+    });
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.dark,
@@ -73,26 +117,34 @@ class RegistrationPhoneScreen extends ConsumerWidget {
                           SizedBox(height: 20),
 
                           // Phone Input
-                          const CustomInput(
-                            //todo add country code
+                          CustomInput(
+                            controller: _phoneController,
                             label: 'Phone number',
                             hintText: 'Enter your phone number',
                             keyboardType: TextInputType.phone,
+                            prefix: true,
                           ),
 
                           const SizedBox(height: 50),
 
                           // Continue Button
                           ElevatedButton.icon(
-                            onPressed: () {
-                              context.push('/confirm-phone');
-                            },
-                            icon: Icon(
-                              Icons.arrow_forward,
-                              color: DSColors.lime,
-                            ),
+                            onPressed: state.isLoading ? null : _onContinue,
+                            icon: state.isLoading
+                                ? const SizedBox(
+                                    width: 20,
+                                    height: 20,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                      color: Colors.white,
+                                    ),
+                                  )
+                                : Icon(
+                                    Icons.arrow_forward,
+                                    color: DSColors.lime,
+                                  ),
                             label: Text(
-                              'Continue',
+                              state.isLoading ? 'Processing...' : 'Continue',
                               style: context.subtitleLBold?.copyWith(
                                 color: DSColors.lime,
                               ),
