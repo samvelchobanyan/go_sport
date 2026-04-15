@@ -28,6 +28,7 @@ class AppRoutes {
   static const String confirmEmail = '/confirm-email';
   static const String confirmPhone = '/confirm-phone';
   static const String createPassword = '/create-password';
+  static const String expiredGuest = '/expired-guest';
 
   static const List<String> privateRoutes = [
     profile,

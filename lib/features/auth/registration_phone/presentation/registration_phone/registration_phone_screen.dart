@@ -49,9 +49,16 @@ class _RegistrationPhoneScreenState
     final state = ref.watch(registrationControllerProvider);
 
     ref.listen<RegistrationState>(registrationControllerProvider, (prev, next) {
-      if (next.isSuccess) {
-        context.push('/confirm-phone');
+      if (next.isSuccess && !next.isSkipSuccess) {
+        print('---->');
+        print(next);
+        context.go('/confirm-phone');
       }
+
+      if (next.isSkipSuccess) {
+        context.go('/create-password');
+      }
+
       if (next.error != null) {
         ScaffoldMessenger.of(
           context,
@@ -62,6 +69,7 @@ class _RegistrationPhoneScreenState
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.dark,
       child: Scaffold(
+        resizeToAvoidBottomInset: true,
         backgroundColor: DSColors.white,
         body: Stack(
           children: [
@@ -71,15 +79,17 @@ class _RegistrationPhoneScreenState
               width: screenWidth,
               height: screenHeight * 0.7,
               fit: BoxFit.cover,
+              cacheHeight: (screenHeight * 0.7).toInt(),
+              cacheWidth: screenWidth.toInt(),
             ),
 
             // Main Content Container
             Align(
               alignment: Alignment.bottomCenter,
               child: Container(
-                height: screenHeight * 0.4, // Adjust height as needed
+                // height: screenHeight * 0.4, // Adjust height as needed
                 width: screenWidth,
-                padding: const EdgeInsets.symmetric(vertical: 16),
+                padding: const EdgeInsets.only(top: 20, bottom: 0),
                 decoration: BoxDecoration(
                   color: DSColors.white,
                   borderRadius: const BorderRadius.only(
@@ -88,6 +98,7 @@ class _RegistrationPhoneScreenState
                   ),
                 ),
                 child: Column(
+                  mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Padding(
@@ -164,6 +175,9 @@ class _RegistrationPhoneScreenState
                           // Skip Button
                           TextButton(
                             onPressed: () {
+                              ref
+                                  .read(registrationControllerProvider.notifier)
+                                  .skipPhone();
                               context.push('/create-password');
                             },
                             style: TextButton.styleFrom(side: BorderSide.none),
@@ -174,6 +188,7 @@ class _RegistrationPhoneScreenState
                               ),
                             ),
                           ),
+                          const SizedBox(height: 20),
                         ],
                       ),
                     ),

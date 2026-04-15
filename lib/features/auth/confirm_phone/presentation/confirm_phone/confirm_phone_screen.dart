@@ -56,7 +56,7 @@ class _ConfirmPhoneScreenState extends ConsumerState<ConfirmPhoneScreen> {
     // Listen for success to navigate
     ref.listen<RegistrationState>(registrationControllerProvider, (prev, next) {
       if (next.isConfirmSuccess) {
-        context.push('/home');
+        context.go('/create-password');
       }
       if (next.error != null) {
         ScaffoldMessenger.of(
@@ -68,6 +68,7 @@ class _ConfirmPhoneScreenState extends ConsumerState<ConfirmPhoneScreen> {
       value: SystemUiOverlayStyle.dark,
       child: Scaffold(
         backgroundColor: DSColors.white,
+        resizeToAvoidBottomInset: true,
         body: Stack(
           children: [
             // Background Image
@@ -76,131 +77,177 @@ class _ConfirmPhoneScreenState extends ConsumerState<ConfirmPhoneScreen> {
               width: screenWidth,
               height: screenHeight * 0.7,
               fit: BoxFit.cover,
+              cacheHeight: (screenHeight * 0.7).toInt(),
+              cacheWidth: screenWidth.toInt(),
             ),
 
-            // Main Content Container
             Align(
               alignment: Alignment.bottomCenter,
-              child: Container(
-                height: screenHeight * 0.45, // Increased slightly for spacing
-                width: screenWidth,
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                decoration: BoxDecoration(
-                  color: DSColors.white,
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(DSRadius.m),
-                    topRight: Radius.circular(DSRadius.m),
-                  ),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          // Header Row
-                          Row(
-                            children: [
-                              SvgPicture.asset(
-                                'assets/icons/authorization.svg',
-                              ),
-                              const SizedBox(width: 8),
-                              Text(
-                                'Please check your phone',
-                                style: context.h2,
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 14),
-                          Text(
-                            'We have sent a confirmation code to',
-                            style: context.bodyL?.copyWith(
-                              color: DSColors.gray70,
-                            ),
-                          ),
-                          Text(
-                            registrationState.phoneNumber ?? 'your phone',
-                            style: context.bodyL?.copyWith(
-                              color: DSColors.gray70,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-
-                          const SizedBox(height: 32),
-
-                          // 6-Digit Auth Number Input Blocks
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: List.generate(6, (index) {
-                              return AuthNumberBox(
-                                controller: _controllers[index],
-                                isLast: index == 5,
-                              );
-                            }),
-                          ),
-
-                          const SizedBox(height: 40),
-
-                          // Continue Button
-                          ElevatedButton.icon(
-                            onPressed: registrationState.isLoading
-                                ? null
-                                : _onContinue,
-                            icon: Icon(
-                              Icons.arrow_forward,
-                              color: DSColors.lime,
-                            ),
-                            label: Text(
-                              'Continue',
-                              style: context.subtitleLBold?.copyWith(
-                                color: DSColors.lime,
-                              ),
-                            ),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: DSColors.blue,
-                              padding: const EdgeInsets.symmetric(vertical: 14),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(
-                                  DSRadius.xl,
-                                ),
-                              ),
-                            ),
-                          ),
-
-                          const SizedBox(height: 8),
-
-                          // Resend Code Button
-                          TextButton(
-                            onPressed: registrationState.isLoading
-                                ? null
-                                : () => ref
-                                      .read(
-                                        registrationControllerProvider.notifier,
-                                      )
-                                      .registerPhone(
-                                        registrationState.phoneNumber!,
-                                      ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(Icons.phone_rounded, color: DSColors.blue),
-                                const SizedBox(width: 8),
-                                Text(
-                                  'Resend Code',
-                                  style: context.subtitleMBold?.copyWith(
-                                    color: DSColors.blue,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // 1. Back Button
+                  Padding(
+                    padding: const EdgeInsets.only(left: 16),
+                    child: GestureDetector(
+                      onTap: () => context.go('/registration-phone'),
+                      child: Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: const BoxDecoration(
+                          color: DSColors.white,
+                          shape: BoxShape.circle,
+                          boxShadow: [
+                            BoxShadow(color: Colors.black12, blurRadius: 8),
+                          ],
+                        ),
+                        child: const Icon(
+                          Icons.arrow_back,
+                          color: DSColors.blue,
+                          size: 22,
+                        ),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+
+                  const SizedBox(height: 30),
+
+                  // 2. The White Container
+                  Container(
+                    width: screenWidth,
+                    padding: const EdgeInsets.only(top: 20, bottom: 0),
+                    decoration: BoxDecoration(
+                      color: DSColors.white,
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(DSRadius.m),
+                        topRight: Radius.circular(DSRadius.m),
+                      ),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              // Header Row
+                              Row(
+                                children: [
+                                  SvgPicture.asset(
+                                    'assets/icons/authorization.svg',
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Text(
+                                    'Please check your phone',
+                                    style: context.h2,
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 14),
+                              Text(
+                                'We have sent a confirmation code to',
+                                style: context.bodyL?.copyWith(
+                                  color: DSColors.gray70,
+                                ),
+                              ),
+                              Text(
+                                registrationState.phoneNumber ?? 'your phone',
+                                style: context.bodyL?.copyWith(
+                                  color: DSColors.gray70,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+
+                              const SizedBox(height: 32),
+
+                              // 6-Digit Auth Number Input Blocks
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: List.generate(6, (index) {
+                                  return AuthNumberBox(
+                                    controller: _controllers[index],
+                                    isLast: index == 5,
+                                  );
+                                }),
+                              ),
+
+                              const SizedBox(height: 40),
+
+                              // Continue Button
+                              ElevatedButton.icon(
+                                onPressed: () {
+                                  context.go('/create-password');
+                                },
+
+                                // uncomment later
+                                // registrationState.isLoading
+                                //     ? null
+                                //     : _onContinue,
+                                icon: Icon(
+                                  Icons.arrow_forward,
+                                  color: DSColors.lime,
+                                ),
+                                label: Text(
+                                  'Continue',
+                                  style: context.subtitleLBold?.copyWith(
+                                    color: DSColors.lime,
+                                  ),
+                                ),
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: DSColors.blue,
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 14,
+                                  ),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(
+                                      DSRadius.xl,
+                                    ),
+                                  ),
+                                ),
+                              ),
+
+                              const SizedBox(height: 8),
+
+                              // Resend Code Button
+                              TextButton(
+                                onPressed: registrationState.isLoading
+                                    ? null
+                                    : () => ref
+                                          .read(
+                                            registrationControllerProvider
+                                                .notifier,
+                                          )
+                                          .registerPhone(
+                                            registrationState.phoneNumber!,
+                                          ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.phone_rounded,
+                                      color: DSColors.blue,
+                                    ),
+                                    const SizedBox(width: 8),
+                                    Text(
+                                      'Resend Code',
+                                      style: context.subtitleMBold?.copyWith(
+                                        color: DSColors.blue,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(height: 20),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ),
           ],

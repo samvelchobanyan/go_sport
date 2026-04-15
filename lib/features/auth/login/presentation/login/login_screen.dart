@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_sport/core/auth/token_storage.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
@@ -37,7 +38,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
     ref.listen<LoginState>(loginControllerProvider, (previous, next) {
       if (next.isAuthenticated) {
-        context.push('/'); // Navigate to home
+        context.go('/'); // Navigate to home
       }
       if (next.error != null) {
         ScaffoldMessenger.of(
@@ -205,9 +206,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                               ),
                               TextButton.icon(
                                 onPressed: () {
-                                  context.push('/registration-email');
+                                  context.go('/registration-email');
                                 },
-                                icon: SvgPicture.asset('assets/icons/user.svg'),
+                                icon: Icon(
+                                  Icons.person_rounded,
+                                  color: DSColors.blue,
+                                ),
                                 label: Text(
                                   'Sign Up',
                                   style: context.subtitleMBold?.copyWith(
@@ -237,7 +241,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       height: 48,
                       width: screenWidth,
                       child: TextButton(
-                        onPressed: () {},
+                        onPressed: () async {
+                          await ref.read(tokenStorageProvider).setChoseGuest();
+
+                          context.go('/');
+                        },
                         style: TextButton.styleFrom(
                           backgroundColor: DSColors.blue.withOpacity(0.05),
                           shape: const RoundedRectangleBorder(
@@ -246,7 +254,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         ),
                         child: Text(
                           'Continue as guest',
-                          style: context.subtitleMBold?.copyWith(color: DSColors.blue),
+                          style: context.subtitleMBold?.copyWith(
+                            color: DSColors.blue,
+                          ),
                         ),
                       ),
                     ),

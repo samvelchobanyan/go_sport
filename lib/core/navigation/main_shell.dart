@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:go_sport/core/auth/auth_state.dart';
 import 'package:go_sport/core/navigation/routes.dart';
 import 'package:go_sport/core/navigation/widgets/bottom_nav_bar.dart';
-import 'package:go_sport/features/auth/presentation/widgets/guest_timer_bar.dart';
+import 'package:go_sport/features/auth/guest_timeout_bar/widgets/guest_timer_bar.dart';
 import 'package:go_sport/features/player/presentation/player/full_player_screen.dart';
 import 'package:go_sport/features/player/presentation/player/mini_player_widget.dart';
 

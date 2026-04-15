@@ -10,7 +10,8 @@ final tokenStorageProvider = Provider<TokenStorage>(
 class TokenStorage {
   static const _accessTokenKey = 'access_token';
   static const _refreshTokenKey = 'refresh_token';
-  // static const _choseGuestKey = 'chose_guest';
+  static const _choseGuestKey = 'chose_guest';
+
   String? _registrationToken;
 
   final _secureStorage = const FlutterSecureStorage();
@@ -28,12 +29,20 @@ class TokenStorage {
   Future<void> init() async {
     _cachedAccessToken = await _secureStorage.read(key: _accessTokenKey);
     _cachedRefreshToken = await _secureStorage.read(key: _refreshTokenKey);
+
+    final guestFlag = await _secureStorage.read(key: _choseGuestKey);
+    _choseGuest = guestFlag == 'true';
     // _choseGuest = await _secureStorage.read(key: _choseGuestKey) == 'true';
   }
 
-  void setChoseGuest() {
+  // void setChoseGuest() {
+  //   _choseGuest = true;
+  //   // await _secureStorage.write(key: _choseGuestKey, value: 'true');
+  // }
+
+  Future<void> setChoseGuest() async {
     _choseGuest = true;
-    // await _secureStorage.write(key: _choseGuestKey, value: 'true');
+    await _secureStorage.write(key: _choseGuestKey, value: 'true');
   }
 
   Future<void> saveTokens({
@@ -57,10 +66,11 @@ class TokenStorage {
     _cachedRefreshToken = null;
     _choseGuest = false;
     _registrationToken = null;
-    
+
     await Future.wait([
       _secureStorage.delete(key: _accessTokenKey),
       _secureStorage.delete(key: _refreshTokenKey),
+      _secureStorage.delete(key: _choseGuestKey),
     ]);
   }
 

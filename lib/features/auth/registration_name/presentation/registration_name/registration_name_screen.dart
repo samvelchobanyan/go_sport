@@ -6,19 +6,65 @@ import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_router/go_router.dart';
+import 'package:go_sport/domain/state/registration_state.dart';
 import 'package:go_sport/features/shared_widgets/input.dart';
 
-class RegistrationNameScreen extends ConsumerWidget {
+class RegistrationNameScreen extends ConsumerStatefulWidget {
   const RegistrationNameScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<RegistrationNameScreen> createState() =>
+      _RegistrationNameScreenState();
+}
+
+class _RegistrationNameScreenState
+    extends ConsumerState<RegistrationNameScreen> {
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _surnameController = TextEditingController();
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _surnameController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _onFinish() async {
+    final name = _nameController.text.trim();
+    final surname = _surnameController.text.trim();
+
+    if (name.isEmpty || surname.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please fill in both fields')),
+      );
+      return;
+    }
+
+    await ref
+        .read(registrationControllerProvider.notifier)
+        .finalizeProfile(name: name, surname: surname);
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
+
+    ref.listen<RegistrationState>(registrationControllerProvider, (prev, next) {
+      if (next.isSuccess) {
+        context.go('/');
+      }
+      if (next.error != null) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(next.error!)));
+      }
+    });
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.dark,
       child: Scaffold(
+        resizeToAvoidBottomInset: true,
         backgroundColor: DSColors.white,
         body: Stack(
           children: [
@@ -28,15 +74,16 @@ class RegistrationNameScreen extends ConsumerWidget {
               width: screenWidth,
               height: screenHeight * 0.7,
               fit: BoxFit.cover,
+              cacheHeight: (screenHeight * 0.7).toInt(),
+              cacheWidth: screenWidth.toInt(),
             ),
 
             // Main Content Container
             Align(
               alignment: Alignment.bottomCenter,
               child: Container(
-                height: screenHeight * 0.45, // Increased slightly for spacing
                 width: screenWidth,
-                padding: const EdgeInsets.symmetric(vertical: 16),
+                padding: const EdgeInsets.only(top: 20, bottom: 0),
                 decoration: BoxDecoration(
                   color: DSColors.white,
                   borderRadius: const BorderRadius.only(
@@ -45,6 +92,7 @@ class RegistrationNameScreen extends ConsumerWidget {
                   ),
                 ),
                 child: Column(
+                  mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Padding(
@@ -71,29 +119,29 @@ class RegistrationNameScreen extends ConsumerWidget {
                           const SizedBox(height: 32),
 
                           // Name Input
-                          const CustomInput(
+                          CustomInput(
+                            controller: _nameController,
                             label: 'Name',
                             hintText: 'Enter your name',
-                            keyboardType: TextInputType.text,
+                            keyboardType: TextInputType.name,
                           ),
 
                           const SizedBox(height: 16),
 
                           // Surname Input
-                          const CustomInput(
+                          CustomInput(
+                            controller: _surnameController,
                             label: 'Surname',
                             hintText: 'Enter your surname',
-                            keyboardType: TextInputType.text,
+                            keyboardType: TextInputType.name,
                           ),
 
                           const SizedBox(height: 16),
 
                           // Continue Button
                           ElevatedButton.icon(
-                            onPressed: () {
-                              context.push('/home');
-                            },
-                            icon: Icon(
+                            onPressed: _onFinish,
+                            icon: const Icon(
                               Icons.check_circle,
                               color: DSColors.lime,
                             ),
@@ -114,7 +162,7 @@ class RegistrationNameScreen extends ConsumerWidget {
                             ),
                           ),
 
-                          const SizedBox(height: 25),
+                          const SizedBox(height: 20),
                         ],
                       ),
                     ),

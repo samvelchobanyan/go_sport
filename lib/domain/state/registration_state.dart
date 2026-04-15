@@ -13,6 +13,7 @@ class RegistrationState with _$RegistrationState {
     @Default(false) bool isLoading,
     @Default(false) bool isSuccess,
     @Default(false) bool isConfirmSuccess,
+    @Default(false) bool isSkipSuccess,
     String? error,
 
     // Data gathered during the multi-step process
@@ -76,7 +77,7 @@ class RegistrationController extends Notifier<RegistrationState> {
     }
   }
 
-    Future<void> verifyPhoneOtp(String otp) async {
+  Future<void> verifyPhoneOtp(String otp) async {
     _prepareAction();
     final token = _tokenStorage.registrationToken;
     if (token == null) return _handleError("Session expired.");
@@ -89,16 +90,40 @@ class RegistrationController extends Notifier<RegistrationState> {
     }
   }
 
+  Future<void> skipPhone() async {
+    _prepareAction();
+    final token = _tokenStorage.registrationToken;
+    if (token == null) return _handleError("Session expired.");
+
+    try {
+      await _authRepository.skipPhone(token: token);
+      state = state.copyWith(
+        isLoading: false,
+        isSuccess: false,
+        isSkipSuccess: true,
+      );
+    } catch (e) {
+      _handleError("Error on skip phone");
+    }
+  }
+
   // --- STEP 4: Set Password ---
   Future<void> setPassword(String password) async {
     _prepareAction();
     final token = _tokenStorage.registrationToken;
+    if (token == null) return _handleError("Session expired.");
+
     try {
       await _authRepository.setRegistrationPassword(
-        token: token!,
+        token: token,
         password: password,
       );
-      state = state.copyWith(isLoading: false, isSuccess: true);
+      state = state.copyWith(
+        isLoading: false,
+        isSuccess: true,
+        isConfirmSuccess: false,
+        isSkipSuccess: false,
+      );
     } catch (e) {
       _handleError("Could not set password.");
     }
@@ -135,11 +160,23 @@ class RegistrationController extends Notifier<RegistrationState> {
   // --- Utilities ---
 
   void _prepareAction() {
-    state = state.copyWith(isLoading: true, isSuccess: false, error: null);
+    state = state.copyWith(
+      isLoading: true,
+      isSuccess: false,
+      isConfirmSuccess: false,
+      isSkipSuccess: false,
+      error: null,
+    );
   }
 
   void _handleError(String message) {
-    state = state.copyWith(isLoading: false, isSuccess: false, error: message);
+    state = state.copyWith(
+      isLoading: false,
+      isSuccess: false,
+      isConfirmSuccess: false,
+      isSkipSuccess: false,
+      error: message,
+    );
   }
 
   void clearFlow() {

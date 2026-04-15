@@ -21,6 +21,7 @@ mixin _$RegistrationState {
   bool get isLoading => throw _privateConstructorUsedError;
   bool get isSuccess => throw _privateConstructorUsedError;
   bool get isConfirmSuccess => throw _privateConstructorUsedError;
+  bool get isSkipSuccess => throw _privateConstructorUsedError;
   String? get error =>
       throw _privateConstructorUsedError; // Data gathered during the multi-step process
   String? get email => throw _privateConstructorUsedError;
@@ -46,6 +47,7 @@ abstract class $RegistrationStateCopyWith<$Res> {
     bool isLoading,
     bool isSuccess,
     bool isConfirmSuccess,
+    bool isSkipSuccess,
     String? error,
     String? email,
     String? phoneNumber,
@@ -72,6 +74,7 @@ class _$RegistrationStateCopyWithImpl<$Res, $Val extends RegistrationState>
     Object? isLoading = null,
     Object? isSuccess = null,
     Object? isConfirmSuccess = null,
+    Object? isSkipSuccess = null,
     Object? error = freezed,
     Object? email = freezed,
     Object? phoneNumber = freezed,
@@ -91,6 +94,10 @@ class _$RegistrationStateCopyWithImpl<$Res, $Val extends RegistrationState>
             isConfirmSuccess: null == isConfirmSuccess
                 ? _value.isConfirmSuccess
                 : isConfirmSuccess // ignore: cast_nullable_to_non_nullable
+                      as bool,
+            isSkipSuccess: null == isSkipSuccess
+                ? _value.isSkipSuccess
+                : isSkipSuccess // ignore: cast_nullable_to_non_nullable
                       as bool,
             error: freezed == error
                 ? _value.error
@@ -131,6 +138,7 @@ abstract class _$$RegistrationStateImplCopyWith<$Res>
     bool isLoading,
     bool isSuccess,
     bool isConfirmSuccess,
+    bool isSkipSuccess,
     String? error,
     String? email,
     String? phoneNumber,
@@ -156,6 +164,7 @@ class __$$RegistrationStateImplCopyWithImpl<$Res>
     Object? isLoading = null,
     Object? isSuccess = null,
     Object? isConfirmSuccess = null,
+    Object? isSkipSuccess = null,
     Object? error = freezed,
     Object? email = freezed,
     Object? phoneNumber = freezed,
@@ -175,6 +184,10 @@ class __$$RegistrationStateImplCopyWithImpl<$Res>
         isConfirmSuccess: null == isConfirmSuccess
             ? _value.isConfirmSuccess
             : isConfirmSuccess // ignore: cast_nullable_to_non_nullable
+                  as bool,
+        isSkipSuccess: null == isSkipSuccess
+            ? _value.isSkipSuccess
+            : isSkipSuccess // ignore: cast_nullable_to_non_nullable
                   as bool,
         error: freezed == error
             ? _value.error
@@ -208,6 +221,7 @@ class _$RegistrationStateImpl implements _RegistrationState {
     this.isLoading = false,
     this.isSuccess = false,
     this.isConfirmSuccess = false,
+    this.isSkipSuccess = false,
     this.error,
     this.email,
     this.phoneNumber,
@@ -226,6 +240,9 @@ class _$RegistrationStateImpl implements _RegistrationState {
   @JsonKey()
   final bool isConfirmSuccess;
   @override
+  @JsonKey()
+  final bool isSkipSuccess;
+  @override
   final String? error;
   // Data gathered during the multi-step process
   @override
@@ -239,7 +256,7 @@ class _$RegistrationStateImpl implements _RegistrationState {
 
   @override
   String toString() {
-    return 'RegistrationState(isLoading: $isLoading, isSuccess: $isSuccess, isConfirmSuccess: $isConfirmSuccess, error: $error, email: $email, phoneNumber: $phoneNumber, name: $name, surname: $surname)';
+    return 'RegistrationState(isLoading: $isLoading, isSuccess: $isSuccess, isConfirmSuccess: $isConfirmSuccess, isSkipSuccess: $isSkipSuccess, error: $error, email: $email, phoneNumber: $phoneNumber, name: $name, surname: $surname)';
   }
 
   @override
@@ -253,6 +270,8 @@ class _$RegistrationStateImpl implements _RegistrationState {
                 other.isSuccess == isSuccess) &&
             (identical(other.isConfirmSuccess, isConfirmSuccess) ||
                 other.isConfirmSuccess == isConfirmSuccess) &&
+            (identical(other.isSkipSuccess, isSkipSuccess) ||
+                other.isSkipSuccess == isSkipSuccess) &&
             (identical(other.error, error) || other.error == error) &&
             (identical(other.email, email) || other.email == email) &&
             (identical(other.phoneNumber, phoneNumber) ||
@@ -267,6 +286,7 @@ class _$RegistrationStateImpl implements _RegistrationState {
     isLoading,
     isSuccess,
     isConfirmSuccess,
+    isSkipSuccess,
     error,
     email,
     phoneNumber,
@@ -291,6 +311,7 @@ abstract class _RegistrationState implements RegistrationState {
     final bool isLoading,
     final bool isSuccess,
     final bool isConfirmSuccess,
+    final bool isSkipSuccess,
     final String? error,
     final String? email,
     final String? phoneNumber,
@@ -305,6 +326,8 @@ abstract class _RegistrationState implements RegistrationState {
   bool get isSuccess;
   @override
   bool get isConfirmSuccess;
+  @override
+  bool get isSkipSuccess;
   @override
   String? get error; // Data gathered during the multi-step process
   @override

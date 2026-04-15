@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_typography.dart';
 
@@ -26,7 +27,8 @@ class _GuestTimerBarState extends State<GuestTimerBar> {
     _timer = Timer.periodic(const Duration(seconds: 1), (_) {
       if (_remaining.inSeconds <= 0) {
         _timer?.cancel();
-        _showExpiredOverlay();
+        // _showExpiredOverlay();
+        context.go('/expired-guest');
         return;
       }
       setState(() {
@@ -41,63 +43,63 @@ class _GuestTimerBarState extends State<GuestTimerBar> {
     super.dispose();
   }
 
-  void _showExpiredOverlay() {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) => PopScope(
-        canPop: false,
-        child: Scaffold(
-          backgroundColor: DSColors.black.withValues(alpha: 0.9),
-          body: Center(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Icon(
-                    Icons.timer_off,
-                    color: DSColors.white,
-                    size: 64,
-                  ),
-                  const SizedBox(height: 24),
-                  Text(
-                    'Guest session expired',
-                    style: DSTypography.h2.copyWith(color: DSColors.white),
-                  ),
-                  const SizedBox(height: 12),
-                  Text(
-                    'Register to continue using the app',
-                    style: DSTypography.bodyL.copyWith(color: DSColors.gray50),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 32),
-                  SizedBox(
-                    width: double.infinity,
-                    height: 48,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                        widget.onRegisterTap();
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: DSColors.blue,
-                        foregroundColor: DSColors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                      child: const Text('Register'),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
+  // void _showExpiredOverlay() {
+  //   showDialog(
+  //     context: context,
+  //     barrierDismissible: false,
+  //     builder: (context) => PopScope(
+  //       canPop: false,
+  //       child: Scaffold(
+  //         backgroundColor: DSColors.black.withValues(alpha: 0.9),
+  //         body: Center(
+  //           child: Padding(
+  //             padding: const EdgeInsets.symmetric(horizontal: 24),
+  //             child: Column(
+  //               mainAxisAlignment: MainAxisAlignment.center,
+  //               children: [
+  //                 const Icon(
+  //                   Icons.timer_off,
+  //                   color: DSColors.white,
+  //                   size: 64,
+  //                 ),
+  //                 const SizedBox(height: 24),
+  //                 Text(
+  //                   'Guest session expired',
+  //                   style: DSTypography.h2.copyWith(color: DSColors.white),
+  //                 ),
+  //                 const SizedBox(height: 12),
+  //                 Text(
+  //                   'Register to continue using the app',
+  //                   style: DSTypography.bodyL.copyWith(color: DSColors.gray50),
+  //                   textAlign: TextAlign.center,
+  //                 ),
+  //                 const SizedBox(height: 32),
+  //                 SizedBox(
+  //                   width: double.infinity,
+  //                   height: 48,
+  //                   child: ElevatedButton(
+  //                     onPressed: () {
+  //                       Navigator.of(context).pop();
+  //                       widget.onRegisterTap();
+  //                     },
+  //                     style: ElevatedButton.styleFrom(
+  //                       backgroundColor: DSColors.blue,
+  //                       foregroundColor: DSColors.white,
+  //                       shape: RoundedRectangleBorder(
+  //                         borderRadius: BorderRadius.circular(12),
+  //                       ),
+  //                     ),
+  //                     child: const Text('Register'),
+  //                   ),
+  //                 ),
+  //               ],
+  //             ),
+  //           ),
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
 
   String _formatTime(Duration duration) {
     final minutes = duration.inMinutes.remainder(60).toString().padLeft(2, '0');

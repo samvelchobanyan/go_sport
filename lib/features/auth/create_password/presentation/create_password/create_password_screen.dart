@@ -5,21 +5,73 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
+import 'package:go_sport/domain/state/registration_state.dart';
 import 'package:go_sport/features/shared_widgets/input.dart';
 import 'package:go_router/go_router.dart';
 
-class CreatePasswordScreen extends ConsumerWidget {
+class CreatePasswordScreen extends ConsumerStatefulWidget {
   const CreatePasswordScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<CreatePasswordScreen> createState() =>
+      _CreatePasswordScreenState();
+}
+
+class _CreatePasswordScreenState extends ConsumerState<CreatePasswordScreen> {
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
+
+  @override
+  void dispose() {
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
+    super.dispose();
+  }
+
+  void _onContinue() {
+    final password = _passwordController.text;
+    final confirmPassword = _confirmPasswordController.text;
+
+    if (password.isEmpty) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Please enter a password')));
+      return;
+    }
+
+    if (password != confirmPassword) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Passwords do not match')));
+      return;
+    }
+
+    // Call your controller here
+    ref.read(registrationControllerProvider.notifier).setPassword(password);
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
+
+    ref.listen<RegistrationState>(registrationControllerProvider, (prev, next) {
+      if (next.isSuccess) {
+        context.go('/registration-name');
+      }
+      if (next.error != null) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(next.error!)));
+      }
+    });
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.dark,
       child: Scaffold(
         backgroundColor: DSColors.white,
+        resizeToAvoidBottomInset: true,
         body: Stack(
           children: [
             // Background Image (Top half)
@@ -28,15 +80,16 @@ class CreatePasswordScreen extends ConsumerWidget {
               width: screenWidth,
               height: screenHeight * 0.7,
               fit: BoxFit.cover,
+              cacheHeight: (screenHeight * 0.7).toInt(),
+              cacheWidth: screenWidth.toInt(),
             ),
 
             // Main Content Container
             Align(
               alignment: Alignment.bottomCenter,
               child: Container(
-                height: screenHeight * 0.4, // Adjust height as needed
                 width: screenWidth,
-                padding: const EdgeInsets.symmetric(vertical: 16),
+                padding: const EdgeInsets.only(top: 20, bottom: 0),
                 decoration: BoxDecoration(
                   color: DSColors.white,
                   borderRadius: const BorderRadius.only(
@@ -45,6 +98,7 @@ class CreatePasswordScreen extends ConsumerWidget {
                   ),
                 ),
                 child: Column(
+                  mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Padding(
@@ -56,7 +110,7 @@ class CreatePasswordScreen extends ConsumerWidget {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               SvgPicture.asset('assets/icons/lock.svg'),
-                              SizedBox(width: 8),
+                              const SizedBox(width: 8),
                               Text(
                                 'Please create a password',
                                 style: context.h2,
@@ -64,16 +118,19 @@ class CreatePasswordScreen extends ConsumerWidget {
                             ],
                           ),
 
-                          SizedBox(height: 14),
+                          const SizedBox(height: 14),
                           Text(
-                            'Your password must contain at least one special character',
+                            'Your password must contain at least one special character',
                             style: context.bodyL?.copyWith(
                               color: DSColors.gray70,
                             ),
                           ),
 
+                          const SizedBox(height: 16),
+
                           // Password Input
-                          const CustomInput(
+                          CustomInput(
+                            controller: _passwordController,
                             label: 'Password',
                             hintText: 'Enter your password',
                             keyboardType: TextInputType.text,
@@ -83,21 +140,20 @@ class CreatePasswordScreen extends ConsumerWidget {
                           const SizedBox(height: 16),
 
                           // Confirm Password Input
-                          const CustomInput(
+                          CustomInput(
+                            controller: _confirmPasswordController,
                             label: 'Repeat Password',
                             hintText: 'Enter your password again',
                             keyboardType: TextInputType.text,
                             obscureText: true,
                           ),
 
-                          SizedBox(height: 25),
- 
+                          const SizedBox(height: 25),
+
                           // Continue Button
                           ElevatedButton.icon(
-                            onPressed: () {
-                              context.push('/registration-name');
-                            },
-                            icon: Icon(
+                            onPressed: _onContinue,
+                            icon: const Icon(
                               Icons.arrow_forward,
                               color: DSColors.lime,
                             ),
@@ -117,7 +173,7 @@ class CreatePasswordScreen extends ConsumerWidget {
                               ),
                             ),
                           ),
-                          const SizedBox(height: 25),
+                          const SizedBox(height: 20),
                         ],
                       ),
                     ),

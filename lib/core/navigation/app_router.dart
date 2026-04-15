@@ -7,6 +7,7 @@ import 'package:go_sport/core/navigation/routes.dart';
 import 'package:go_sport/features/auth/confirm_email/presentation/confirm_email/confirm_email_screen.dart';
 import 'package:go_sport/features/auth/confirm_phone/presentation/confirm_phone/confirm_phone_screen.dart';
 import 'package:go_sport/features/auth/create_password/presentation/create_password/create_password_screen.dart';
+import 'package:go_sport/features/auth/expired_guest/presentation/expired_guest/expired_guest.dart';
 import 'package:go_sport/features/auth/registration_name/presentation/registration_name/registration_name_screen.dart';
 import 'package:go_sport/features/favorites/presentation/my_albums/my_albums_screen.dart';
 import 'package:go_sport/features/favorites/presentation/my_artists/my_artists_screen.dart';
@@ -68,6 +69,7 @@ GoRouter createAppRouter(TokenStorage tokenStorage) {
           state.matchedLocation == AppRoutes.registrationPhone ||
           state.matchedLocation == AppRoutes.registrationName ||
           state.matchedLocation == AppRoutes.confirmEmail ||
+          state.matchedLocation == AppRoutes.createPassword ||
           state.matchedLocation == AppRoutes.confirmPhone;
 
       // unauthorized (первый запуск) — гоним на логин со всех маршрутов кроме самого логина
@@ -123,6 +125,11 @@ GoRouter createAppRouter(TokenStorage tokenStorage) {
         path: AppRoutes.profile,
         pageBuilder: (context, state) =>
             fadeSlidePage(state: state, child: const ProfileScreen()),
+      ),
+
+            GoRoute(
+        path: AppRoutes.expiredGuest,
+        builder: (context, state) => const ExpiredGuestScreen(),
       ),
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) {
