@@ -12,6 +12,8 @@ class NewEpisodesState with _$NewEpisodesState {
     @Default([]) List<Track> episodes,
     @Default(false) bool isLoading,
     @Default(false) bool isLoadingMore,
+    @Default(1) int currentPage,
+    @Default(true) bool hasMore,
     String? error,
   }) = _NewEpisodesState;
 }
@@ -30,10 +32,12 @@ class NewEpisodesNotifier extends Notifier<NewEpisodesState> {
     state = state.copyWith(isLoading: true, error: null);
 
     try {
-      final episodes = await _repository.getFavoriteEpisodes();
+      final result = await _repository.getFavoriteEpisodes(page: 1);
 
       state = state.copyWith(
-        episodes: episodes,
+        episodes: result.items,
+        currentPage: 1,
+        hasMore: result.hasMore,
         isLoading: false,
       );
     } catch (e) {
@@ -42,14 +46,17 @@ class NewEpisodesNotifier extends Notifier<NewEpisodesState> {
   }
 
   Future<void> loadMore() async {
-    if (state.isLoadingMore) return;
+    if (state.isLoadingMore || !state.hasMore) return;
 
     state = state.copyWith(isLoadingMore: true);
 
     try {
-      final newEpisodes = await _repository.getFavoriteEpisodes();
+      final nextPage = state.currentPage + 1;
+      final result = await _repository.getFavoriteEpisodes(page: nextPage);
       state = state.copyWith(
-        episodes: [...state.episodes, ...newEpisodes],
+        episodes: [...state.episodes, ...result.items],
+        currentPage: nextPage,
+        hasMore: result.hasMore,
         isLoadingMore: false,
       );
     } catch (e) {
@@ -58,7 +65,11 @@ class NewEpisodesNotifier extends Notifier<NewEpisodesState> {
   }
 
   Future<void> refresh() async {
-    state = state.copyWith(episodes: []);
+    state = state.copyWith(
+      episodes: [],
+      currentPage: 1,
+      hasMore: true,
+    );
     await loadEpisodes();
   }
 }

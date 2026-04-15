@@ -26,22 +26,31 @@ class EpisodesRepositoryImpl implements EpisodesRepository {
   }
 
   @override
-  Future<List<Track>> getFavoriteEpisodes() async {
+  Future<({List<Track> items, bool hasMore})> getFavoriteEpisodes({
+    int page = 1,
+    int pageSize = 20,
+  }) async {
     final response = await _apiClient.get(
       '/api/user-episodes',
       queryParameters: {
         'populate[Episode][populate][File][populate]': '*',
         'populate[Episode][populate][Program][populate][Cover][populate]': '*',
+        'pagination[page]': page,
+        'pagination[pageSize]': pageSize,
       },
     );
 
     final data = response.data['data'] as List<dynamic>;
-    return data.map((e) {
+    final items = data.map((e) {
       final entry = e as Map<String, dynamic>;
       final episodeJson = entry['Episode'] as Map<String, dynamic>;
       episodeJson['Like'] = {'documentId': entry['documentId']};
       return EpisodeDto.fromJson(episodeJson).toDomain();
     }).toList();
+
+    final pageCount =
+        response.data['meta']['pagination']['pageCount'] as int;
+    return (items: items, hasMore: page < pageCount);
   }
 
   @override

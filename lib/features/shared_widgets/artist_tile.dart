@@ -1,21 +1,23 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/domain/entities/artist.dart';
 
 class ArtistTile extends StatelessWidget {
-  final String name;
-  final String imageUrl;
+  final Artist artist;
 
-  const ArtistTile({required this.name, required this.imageUrl, super.key});
+  const ArtistTile({required this.artist, super.key});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => {
-        //todo redirect to artist page
-      },
+      onTap: () => context.push(
+        '/music/artist/${artist.id}',
+        extra: artist,
+      ),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         child: Row(
@@ -34,7 +36,7 @@ class ArtistTile extends StatelessWidget {
               ),
               child: ClipOval(
                 child: CachedNetworkImage(
-                  imageUrl: imageUrl,
+                  imageUrl: artist.imageUrl,
                   width: 72,
                   height: 72,
                   fit: BoxFit.cover,
@@ -57,7 +59,11 @@ class ArtistTile extends StatelessWidget {
             Expanded(
               child: SizedBox(
                 width: 120,
-                child: Text(name, style: context.subtitleM, maxLines: 2),
+                child: Text(
+                  artist.artistName,
+                  style: context.subtitleM,
+                  maxLines: 2,
+                ),
               ),
             ),
             SvgPicture.asset(

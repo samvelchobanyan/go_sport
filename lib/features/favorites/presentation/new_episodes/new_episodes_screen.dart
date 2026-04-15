@@ -32,7 +32,7 @@ class _NewEpisodesScreenState extends ConsumerState<NewEpisodesScreen> {
 
   void _onScroll() {
     final state = ref.read(newEpisodesStateProvider);
-    if (state.isLoading || state.isLoadingMore) return;
+    if (state.isLoading || state.isLoadingMore || !state.hasMore) return;
 
     if (_scrollController.position.pixels >=
         _scrollController.position.maxScrollExtent * 0.8) {
@@ -139,52 +139,57 @@ class _NewEpisodesScreenState extends ConsumerState<NewEpisodesScreen> {
       );
     }
 
-    return ListView.separated(
-      controller: _scrollController,
-      itemCount: episodes.length + (isLoadingMore ? 1 : 0),
-      separatorBuilder: (context, index) {
-        if (index >= episodes.length - 1) {
-          return const SizedBox.shrink();
-        }
+    return RefreshIndicator(
+      onRefresh: () =>
+          ref.read(newEpisodesStateProvider.notifier).refresh(),
+      child: ListView.separated(
+        controller: _scrollController,
+        physics: const AlwaysScrollableScrollPhysics(),
+        itemCount: episodes.length + (isLoadingMore ? 1 : 0),
+        separatorBuilder: (context, index) {
+          if (index >= episodes.length - 1) {
+            return const SizedBox.shrink();
+          }
 
-        return const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16),
-          child: DottedDivider(),
-        );
-      },
-      itemBuilder: (context, index) {
-        if (index >= episodes.length) {
           return const Padding(
-            padding: EdgeInsets.all(16),
-            child: Center(child: CircularProgressIndicator()),
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            child: DottedDivider(),
           );
-        }
+        },
+        itemBuilder: (context, index) {
+          if (index >= episodes.length) {
+            return const Padding(
+              padding: EdgeInsets.all(16),
+              child: Center(child: CircularProgressIndicator()),
+            );
+          }
 
-        final episode = episodes[index];
-        final isCurrentTrack = episode.id == playingTrackId;
-        final bool? trackPlayingState = isCurrentTrack
-            ? playerState.isPlaying && playerState.isRadioMode == false
-            : null;
+          final episode = episodes[index];
+          final isCurrentTrack = episode.id == playingTrackId;
+          final bool? trackPlayingState = isCurrentTrack
+              ? playerState.isPlaying && playerState.isRadioMode == false
+              : null;
 
-        return ClipRRect(
-          borderRadius: index == 0
-              ? const BorderRadius.only(
-                  topLeft: Radius.circular(24),
-                  topRight: Radius.circular(24),
-                )
-              : BorderRadius.zero,
-          child: Container(
-            color: DSColors.white,
-            child: EpisodeTile(
-              episode: episode,
-              isPlaying: trackPlayingState,
-              onTap: () => _onTrackTap(ref, episodes, index),
-              onMenuTap: () =>
-                  debugPrint('Episode icon tapped for: ${episode.id}'),
+          return ClipRRect(
+            borderRadius: index == 0
+                ? const BorderRadius.only(
+                    topLeft: Radius.circular(24),
+                    topRight: Radius.circular(24),
+                  )
+                : BorderRadius.zero,
+            child: Container(
+              color: DSColors.white,
+              child: EpisodeTile(
+                episode: episode,
+                isPlaying: trackPlayingState,
+                onTap: () => _onTrackTap(ref, episodes, index),
+                onMenuTap: () =>
+                    debugPrint('Episode icon tapped for: ${episode.id}'),
+              ),
             ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 

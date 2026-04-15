@@ -32,7 +32,7 @@ class _MyFavoritesScreenState extends ConsumerState<MyFavoritesScreen> {
 
   void _onScroll() {
     final state = ref.read(myFavoritesStateProvider);
-    if (state.isLoading || state.isLoadingMore) return;
+    if (state.isLoading || state.isLoadingMore || !state.hasMore) return;
 
     if (_scrollController.position.pixels >=
         _scrollController.position.maxScrollExtent * 0.8) {
@@ -123,8 +123,12 @@ class _MyFavoritesScreenState extends ConsumerState<MyFavoritesScreen> {
       );
     }
 
-    return ListView.separated(
+    return RefreshIndicator(
+      onRefresh: () =>
+          ref.read(myFavoritesStateProvider.notifier).refresh(),
+      child: ListView.separated(
       controller: _scrollController,
+      physics: const AlwaysScrollableScrollPhysics(),
       padding: EdgeInsets.only(bottom: isLoadingMore ? 16 : 100),
       itemCount: songs.length + (isLoadingMore ? 1 : 0),
       separatorBuilder: (context, index) {
@@ -158,6 +162,7 @@ class _MyFavoritesScreenState extends ConsumerState<MyFavoritesScreen> {
           onMenuTap: () => _onTrackMenuTap(index),
         );
       },
+      ),
     );
   }
 

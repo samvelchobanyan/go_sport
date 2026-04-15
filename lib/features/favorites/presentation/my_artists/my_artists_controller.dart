@@ -12,6 +12,8 @@ class MyArtistsState with _$MyArtistsState {
     @Default([]) List<Artist> artists,
     @Default(false) bool isLoading,
     @Default(false) bool isLoadingMore,
+    @Default(1) int currentPage,
+    @Default(true) bool hasMore,
     String? error,
   }) = _MyArtistsState;
 }
@@ -41,10 +43,12 @@ class MyArtistsNotifier extends Notifier<MyArtistsState> {
     state = state.copyWith(isLoading: true, error: null);
 
     try {
-      final artists = await _repository.getFavoriteArtists();
+      final result = await _repository.getFavoriteArtists(page: 1);
 
       state = state.copyWith(
-        artists: artists,
+        artists: result.items,
+        currentPage: 1,
+        hasMore: result.hasMore,
         isLoading: false,
       );
     } catch (err) {
@@ -53,15 +57,18 @@ class MyArtistsNotifier extends Notifier<MyArtistsState> {
   }
 
   Future<void> loadMore() async {
-    if (state.isLoadingMore) return;
+    if (state.isLoadingMore || !state.hasMore) return;
 
     state = state.copyWith(isLoadingMore: true);
 
     try {
-      final moreArtists = await _repository.getFavoriteArtists();
+      final nextPage = state.currentPage + 1;
+      final result = await _repository.getFavoriteArtists(page: nextPage);
 
       state = state.copyWith(
-        artists: [...state.artists, ...moreArtists],
+        artists: [...state.artists, ...result.items],
+        currentPage: nextPage,
+        hasMore: result.hasMore,
         isLoadingMore: false,
       );
     } catch (e) {
@@ -70,7 +77,11 @@ class MyArtistsNotifier extends Notifier<MyArtistsState> {
   }
 
   Future<void> refresh() async {
-    state = state.copyWith(artists: []);
+    state = state.copyWith(
+      artists: [],
+      currentPage: 1,
+      hasMore: true,
+    );
     await loadFavorites();
   }
 }

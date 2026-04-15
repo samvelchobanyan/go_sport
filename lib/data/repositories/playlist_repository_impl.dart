@@ -50,23 +50,32 @@ class PlaylistRepositoryImpl implements PlaylistRepository {
   }
 
   @override
-  Future<List<Track>> getFavoriteTracks() async {
+  Future<({List<Track> items, bool hasMore})> getFavoriteTracks({
+    int page = 1,
+    int pageSize = 20,
+  }) async {
     final response = await _apiClient.get(
       '/api/user-tracks',
       queryParameters: {
         'populate[Track][populate][Album][populate]': 'Cover',
         'populate[Track][populate][File][populate]': '*',
         'populate[Track][populate][Artists][fields][0]': 'Name',
+        'pagination[page]': page,
+        'pagination[pageSize]': pageSize,
       },
     );
 
     final data = response.data['data'] as List<dynamic>;
-    return data.map((e) {
+    final items = data.map((e) {
       final entry = e as Map<String, dynamic>;
       final trackJson = entry['Track'] as Map<String, dynamic>;
       trackJson['Like'] = {'documentId': entry['documentId']};
       return TrackDto.fromJson(trackJson).toDomain();
     }).toList();
+
+    final pageCount =
+        response.data['meta']['pagination']['pageCount'] as int;
+    return (items: items, hasMore: page < pageCount);
   }
 
   @override

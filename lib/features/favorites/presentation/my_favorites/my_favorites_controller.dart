@@ -13,6 +13,8 @@ class MyFavoritesState with _$MyFavoritesState {
     @Default([]) List<Track> favorites,
     @Default(false) bool isLoading,
     @Default(false) bool isLoadingMore,
+    @Default(1) int currentPage,
+    @Default(true) bool hasMore,
     String? error,
   }) = _MyFavoritesState;
 }
@@ -31,22 +33,30 @@ class MyFavoritesNotifier extends Notifier<MyFavoritesState> {
     state = state.copyWith(isLoading: true, error: null);
 
     try {
-      final tracks = await _repository.getFavoriteTracks();
-      state = state.copyWith(favorites: tracks, isLoading: false);
+      final result = await _repository.getFavoriteTracks(page: 1);
+      state = state.copyWith(
+        favorites: result.items,
+        currentPage: 1,
+        hasMore: result.hasMore,
+        isLoading: false,
+      );
     } catch (e) {
       state = state.copyWith(isLoading: false, error: e.toString());
     }
   }
 
   Future<void> loadMore() async {
-    if (state.isLoadingMore) return;
+    if (state.isLoadingMore || !state.hasMore) return;
 
     state = state.copyWith(isLoadingMore: true);
 
     try {
-      final newTracks = await _repository.getFavoriteTracks();
+      final nextPage = state.currentPage + 1;
+      final result = await _repository.getFavoriteTracks(page: nextPage);
       state = state.copyWith(
-        favorites: [...state.favorites, ...newTracks],
+        favorites: [...state.favorites, ...result.items],
+        currentPage: nextPage,
+        hasMore: result.hasMore,
         isLoadingMore: false,
       );
     } catch (e) {
@@ -55,7 +65,11 @@ class MyFavoritesNotifier extends Notifier<MyFavoritesState> {
   }
 
   Future<void> refresh() async {
-    state = state.copyWith(favorites: []);
+    state = state.copyWith(
+      favorites: [],
+      currentPage: 1,
+      hasMore: true,
+    );
     await loadFavorites();
   }
 }

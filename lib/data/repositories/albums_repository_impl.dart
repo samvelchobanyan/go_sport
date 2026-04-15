@@ -44,12 +44,17 @@ class AlbumsRepositoryImpl implements AlbumsRepository {
   }
 
   @override
-  Future<List<Album>> getFavoriteAlbums() async {
+  Future<({List<Album> items, bool hasMore})> getFavoriteAlbums({
+    int page = 1,
+    int pageSize = 20,
+  }) async {
     final response = await _apiClient.get(
       '/api/user-albums',
       queryParameters: {
         'populate[Album][populate][Cover][populate]': '*',
         'populate[Album][populate][Artist][fields][0]': 'Name',
+        'pagination[page]': page,
+        'pagination[pageSize]': pageSize,
       },
     );
 
@@ -62,7 +67,10 @@ class AlbumsRepositoryImpl implements AlbumsRepository {
 
       return AlbumDto.fromJson(albumJson).toDomain();
     }).toList();
-    return albumList;
+
+    final pageCount =
+        response.data['meta']['pagination']['pageCount'] as int;
+    return (items: albumList, hasMore: page < pageCount);
   }
 
   @override

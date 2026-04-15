@@ -27,11 +27,16 @@ class ArtistsRepositoryImpl implements ArtistsRepository {
   }
 
   @override
-  Future<List<Artist>> getFavoriteArtists() async {
+  Future<({List<Artist> items, bool hasMore})> getFavoriteArtists({
+    int page = 1,
+    int pageSize = 20,
+  }) async {
     final response = await _apiClient.get(
       '/api/user-artists',
       queryParameters: {
         'populate[Artist][populate][Cover][populate]': '*',
+        'pagination[page]': page,
+        'pagination[pageSize]': pageSize,
       },
     );
 
@@ -42,7 +47,9 @@ class ArtistsRepositoryImpl implements ArtistsRepository {
       return ArtistDto.fromJson(artistJson).toDomain();
     }).toList();
 
-    return artistList;
+    final pageCount =
+        response.data['meta']['pagination']['pageCount'] as int;
+    return (items: artistList, hasMore: page < pageCount);
   }
 
   @override

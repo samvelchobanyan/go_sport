@@ -28,7 +28,7 @@ class _MyArtistsScreenState extends ConsumerState<MyArtistsScreen> {
 
   void _onScroll() {
     final state = ref.read(myArtistsStateProvider);
-    if (state.isLoading || state.isLoadingMore) return;
+    if (state.isLoading || state.isLoadingMore || !state.hasMore) return;
 
     if (_scrollController.position.pixels >=
         _scrollController.position.maxScrollExtent * 0.8) {
@@ -125,45 +125,48 @@ class _MyArtistsScreenState extends ConsumerState<MyArtistsScreen> {
       );
     }
 
-    return ListView.separated(
-      controller: _scrollController,
-      itemCount: artists.length + (isLoadingMore ? 1 : 0),
-      separatorBuilder: (context, index) {
-        if (index >= artists.length - 1) {
-          return const SizedBox.shrink();
-        }
+    return RefreshIndicator(
+      onRefresh: () => ref.read(myArtistsStateProvider.notifier).refresh(),
+      child: ListView.separated(
+        controller: _scrollController,
+        physics: const AlwaysScrollableScrollPhysics(),
+        itemCount: artists.length + (isLoadingMore ? 1 : 0),
+        separatorBuilder: (context, index) {
+          if (index >= artists.length - 1) {
+            return const SizedBox.shrink();
+          }
 
-        return const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16),
-          child: DottedDivider(),
-        );
-      },
-      itemBuilder: (context, index) {
-        if (index >= artists.length) {
           return const Padding(
-            padding: EdgeInsets.all(16),
-            child: Center(child: CircularProgressIndicator()),
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            child: DottedDivider(),
           );
-        }
+        },
+        itemBuilder: (context, index) {
+          if (index >= artists.length) {
+            return const Padding(
+              padding: EdgeInsets.all(16),
+              child: Center(child: CircularProgressIndicator()),
+            );
+          }
 
-        final artist = artists[index];
+          final artist = artists[index];
 
-        return ClipRRect(
-          borderRadius: index == 0
-              ? const BorderRadius.only(
-                  topLeft: Radius.circular(24),
-                  topRight: Radius.circular(24),
-                )
-              : BorderRadius.zero,
-          child: Container(
-            color: DSColors.white,
-            child: ArtistTile(
-              name: artist.artistName,
-              imageUrl: artist.imageUrl,
+          return ClipRRect(
+            borderRadius: index == 0
+                ? const BorderRadius.only(
+                    topLeft: Radius.circular(24),
+                    topRight: Radius.circular(24),
+                  )
+                : BorderRadius.zero,
+            child: Container(
+              color: DSColors.white,
+              child: ArtistTile(
+                artist: artist,
+              ),
             ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 }

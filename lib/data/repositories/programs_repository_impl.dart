@@ -65,22 +65,31 @@ class ProgramsRepositoryImpl implements ProgramsRepository {
   }
 
   @override
-  Future<List<Program>> getFavoritePrograms() async {
+  Future<({List<Program> items, bool hasMore})> getFavoritePrograms({
+    int page = 1,
+    int pageSize = 20,
+  }) async {
     final response = await _apiClient.get(
       '/api/user-programs',
       queryParameters: {
         'populate[Program][populate][Cover][populate]': '*',
+        'pagination[page]': page,
+        'pagination[pageSize]': pageSize,
       },
     );
 
     final data = response.data['data'] as List<dynamic>;
-    return data.map((e) {
+    final items = data.map((e) {
       final entry = e as Map<String, dynamic>;
       final programJson = entry['Program'] as Map<String, dynamic>;
       programJson['Like'] = {'documentId': entry['documentId']};
       programJson['cnt'] = entry['cnt'];
       return ProgramDto.fromJson(programJson).toDomain();
     }).toList();
+
+    final pageCount =
+        response.data['meta']['pagination']['pageCount'] as int;
+    return (items: items, hasMore: page < pageCount);
   }
 
   @override

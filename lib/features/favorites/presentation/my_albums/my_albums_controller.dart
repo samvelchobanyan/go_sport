@@ -12,6 +12,8 @@ class MyAlbumsState with _$MyAlbumsState {
     @Default([]) List<Album> albums,
     @Default(false) bool isLoading,
     @Default(false) bool isLoadingMore,
+    @Default(1) int currentPage,
+    @Default(true) bool hasMore,
     String? error,
   }) = _MyAlbumsState;
 }
@@ -41,10 +43,12 @@ class MyAlbumsNotifier extends Notifier<MyAlbumsState> {
     state = state.copyWith(isLoading: true, error: null);
 
     try {
-      final albums = await _repository.getFavoriteAlbums();
+      final result = await _repository.getFavoriteAlbums(page: 1);
 
       state = state.copyWith(
-        albums: albums,
+        albums: result.items,
+        currentPage: 1,
+        hasMore: result.hasMore,
         isLoading: false,
       );
     } catch (e) {
@@ -84,28 +88,27 @@ class MyAlbumsNotifier extends Notifier<MyAlbumsState> {
   // }
 
   Future<void> refresh() async {
-    state = state.copyWith(albums: []);
+    state = state.copyWith(
+      albums: [],
+      currentPage: 1,
+      hasMore: true,
+    );
     await loadFavorites();
   }
 
   Future<void> loadMore() async {
-    if (state.isLoadingMore) return;
+    if (state.isLoadingMore || !state.hasMore) return;
 
     state = state.copyWith(isLoadingMore: true);
 
     try {
-      final newAlbums = await _repository.getFavoriteAlbums();
-
-      // Avoid duplicates (optional but recommended)
-      final existingIds = state.albums.map((a) => a.id).toSet();
-
-      final merged = [
-        ...state.albums,
-        ...newAlbums.where((a) => !existingIds.contains(a.id)),
-      ];
+      final nextPage = state.currentPage + 1;
+      final result = await _repository.getFavoriteAlbums(page: nextPage);
 
       state = state.copyWith(
-        albums: merged,
+        albums: [...state.albums, ...result.items],
+        currentPage: nextPage,
+        hasMore: result.hasMore,
         isLoadingMore: false,
       );
     } catch (e) {
