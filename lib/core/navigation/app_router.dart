@@ -4,18 +4,20 @@ import 'package:go_sport/core/auth/token_storage.dart';
 import 'package:go_sport/core/navigation/main_shell.dart';
 import 'package:go_sport/core/navigation/page_transitions.dart';
 import 'package:go_sport/core/navigation/routes.dart';
-import 'package:go_sport/features/auth/confirm_email/presentation/confirm_email/confirm_email_screen.dart';
-import 'package:go_sport/features/auth/confirm_phone/presentation/confirm_phone/confirm_phone_screen.dart';
-import 'package:go_sport/features/auth/create_password/presentation/create_password/create_password_screen.dart';
-import 'package:go_sport/features/auth/expired_guest/presentation/expired_guest/expired_guest.dart';
-import 'package:go_sport/features/auth/registration_name/presentation/registration_name/registration_name_screen.dart';
+import 'package:go_sport/features/auth/check_email/presentation/check_email_screen.dart';
+import 'package:go_sport/features/auth/confirm_email/presentation/confirm_email_screen.dart';
+import 'package:go_sport/features/auth/confirm_phone/presentation/confirm_phone_screen.dart';
+import 'package:go_sport/features/auth/create_password/presentation/create_password_screen.dart';
+import 'package:go_sport/features/auth/expired_guest/presentation/expired_guest.dart';
+import 'package:go_sport/features/auth/registration_name/presentation/registration_name_screen.dart';
+import 'package:go_sport/features/auth/restore_password/presentation/restore_password_screen.dart';
 import 'package:go_sport/features/favorites/presentation/my_albums/my_albums_screen.dart';
 import 'package:go_sport/features/favorites/presentation/my_artists/my_artists_screen.dart';
 import 'package:go_sport/features/favorites/presentation/my_playlists/my_playlists_screen.dart';
 import 'package:go_sport/features/home/presentation/home/home_screen.dart';
 import 'package:go_sport/features/auth/login/presentation/login/login_screen.dart';
-import 'package:go_sport/features/auth/registration_phone/presentation/registration_phone/registration_phone_screen.dart';
-import 'package:go_sport/features/auth/registration_email/presentation/registration_email/registration_email_screen.dart';
+import 'package:go_sport/features/auth/registration_phone/presentation/registration_phone_screen.dart';
+import 'package:go_sport/features/auth/registration_email/presentation/registration_email_screen.dart';
 import 'package:go_sport/features/music/presentation/music/music_screen.dart';
 import 'package:go_sport/features/profile/presentation/profile/profile_screen.dart';
 import 'package:go_sport/features/news/presentation/news_list/news_list_screen.dart';
@@ -70,7 +72,10 @@ GoRouter createAppRouter(TokenStorage tokenStorage) {
           state.matchedLocation == AppRoutes.registrationName ||
           state.matchedLocation == AppRoutes.confirmEmail ||
           state.matchedLocation == AppRoutes.createPassword ||
-          state.matchedLocation == AppRoutes.confirmPhone;
+          state.matchedLocation == AppRoutes.restorePassword ||
+          state.matchedLocation == AppRoutes.checkEmail ||
+          state.matchedLocation == AppRoutes.newPassword ||
+          state.matchedLocation == AppRoutes.passwordChanged;
 
       // unauthorized (первый запуск) — гоним на логин со всех маршрутов кроме самого логина
       if (!isAuthenticated && !isGuest && !isAuthFlow) {
@@ -127,10 +132,21 @@ GoRouter createAppRouter(TokenStorage tokenStorage) {
             fadeSlidePage(state: state, child: const ProfileScreen()),
       ),
 
-            GoRoute(
+      GoRoute(
         path: AppRoutes.expiredGuest,
         builder: (context, state) => const ExpiredGuestScreen(),
       ),
+
+      GoRoute(
+        path: AppRoutes.restorePassword,
+        builder: (context, state) => const RestorePasswordScreen(),
+      ),
+
+      GoRoute(
+        path: AppRoutes.checkEmail,
+        builder: (context, state) => const CheckEmailScreen(),
+      ),
+
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) {
           return MainShell(

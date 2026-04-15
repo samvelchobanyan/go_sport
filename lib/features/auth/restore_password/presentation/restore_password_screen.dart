@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
@@ -8,37 +9,45 @@ import 'package:go_sport/domain/state/registration_state.dart';
 import 'package:go_sport/features/shared_widgets/input.dart';
 import 'package:go_router/go_router.dart';
 
-class RegistrationPhoneScreen extends ConsumerStatefulWidget {
-  const RegistrationPhoneScreen({super.key});
+class RestorePasswordScreen extends ConsumerStatefulWidget {
+  const RestorePasswordScreen({super.key});
 
   @override
-  ConsumerState<RegistrationPhoneScreen> createState() =>
-      _RegistrationPhoneScreenState();
+  ConsumerState<RestorePasswordScreen> createState() =>
+      _RestorePasswordScreenState();
 }
 
-class _RegistrationPhoneScreenState
-    extends ConsumerState<RegistrationPhoneScreen> {
-  final _phoneController = TextEditingController();
+class _RestorePasswordScreenState extends ConsumerState<RestorePasswordScreen> {
+  // 1. Create the controller
+  final _emailController = TextEditingController();
 
   @override
   void dispose() {
-    _phoneController.dispose();
+    _emailController.dispose();
     super.dispose();
   }
 
   void _onContinue() {
-    final phone = _phoneController.text.trim().replaceAll(RegExp(r'\D'), '');
+    // todo change to actual api calls
+    final email = _emailController.text.trim();
 
-    if (phone.isEmpty) {
+    // 2. Simple Validation Logic
+    if (email.isEmpty) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Email cannot be empty')));
+      return;
+    }
+
+    if (!email.contains('@')) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Phone number cannot be empty')),
+        const SnackBar(content: Text('Please enter a valid email address')),
       );
       return;
     }
 
-    ref
-        .read(registrationControllerProvider.notifier)
-        .registerPhone('+374$phone');
+    // 3. Trigger the controller
+    ref.read(registrationControllerProvider.notifier).registerEmail(email);
   }
 
   @override
@@ -49,16 +58,9 @@ class _RegistrationPhoneScreenState
     final state = ref.watch(registrationControllerProvider);
 
     ref.listen<RegistrationState>(registrationControllerProvider, (prev, next) {
-      if (next.isSuccess && !next.isSkipSuccess) {
-        print('---->');
-        print(next);
-        context.go('/confirm-phone');
+      if (next.isSuccess) {
+        context.go('/check-email');
       }
-
-      if (next.isSkipSuccess) {
-        context.go('/create-password');
-      }
-
       if (next.error != null) {
         ScaffoldMessenger.of(
           context,
@@ -75,7 +77,7 @@ class _RegistrationPhoneScreenState
           children: [
             // Background Image (Top half)
             Image.asset(
-              'assets/images/phone_registration_bg.png',
+              'assets/images/email_registration_bg.png',
               width: screenWidth,
               height: screenHeight * 0.7,
               fit: BoxFit.cover,
@@ -87,7 +89,6 @@ class _RegistrationPhoneScreenState
             Align(
               alignment: Alignment.bottomCenter,
               child: Container(
-                // height: screenHeight * 0.4, // Adjust height as needed
                 width: screenWidth,
                 padding: const EdgeInsets.only(top: 20, bottom: 0),
                 decoration: BoxDecoration(
@@ -98,8 +99,8 @@ class _RegistrationPhoneScreenState
                   ),
                 ),
                 child: Column(
-                  mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -109,38 +110,40 @@ class _RegistrationPhoneScreenState
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Icon(
-                                Icons.phone_in_talk_rounded,
-                                color: DSColors.blue,
-                              ),
+                              SvgPicture.asset('assets/icons/lock.svg'),
                               SizedBox(width: 8),
-                              Text('Phone Number', style: context.h2),
+                              Text('Restore password', style: context.h2),
                             ],
                           ),
 
-                          SizedBox(height: 10),
+                          SizedBox(height: 14),
                           Text(
-                            'We will send a one time password to your phone number via SMS',
+                            'We will send a password reset \nlink to your email',
                             style: context.bodyL?.copyWith(
                               color: DSColors.gray70,
                             ),
                           ),
+
                           SizedBox(height: 20),
 
-                          // Phone Input
+                          // Email Input
                           CustomInput(
-                            controller: _phoneController,
-                            label: 'Phone number',
-                            hintText: 'Enter your phone number',
-                            keyboardType: TextInputType.phone,
-                            prefix: true,
+                            controller: _emailController,
+                            label: 'Email',
+                            hintText: 'Enter your email',
+                            keyboardType: TextInputType.emailAddress,
                           ),
 
-                          const SizedBox(height: 50),
+                          const SizedBox(height: 100),
 
                           // Continue Button
                           ElevatedButton.icon(
-                            onPressed: state.isLoading ? null : _onContinue,
+                            // Disable button if loading
+                            onPressed: () {
+                              context.go('/check-email');
+                              // todo change to actual api call
+                              // state.isLoading ? null : _onContinue;
+                            },
                             icon: state.isLoading
                                 ? const SizedBox(
                                     width: 20,
@@ -170,25 +173,7 @@ class _RegistrationPhoneScreenState
                               ),
                             ),
                           ),
-                          const SizedBox(height: 14),
-
-                          // Skip Button
-                          TextButton(
-                            onPressed: () {
-                              ref
-                                  .read(registrationControllerProvider.notifier)
-                                  .skipPhone();
-                              context.push('/create-password');
-                            },
-                            style: TextButton.styleFrom(side: BorderSide.none),
-                            child: Text(
-                              'Skip',
-                              style: context.subtitleLBold?.copyWith(
-                                color: DSColors.blue,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 20),
+                          const SizedBox(height: 24),
                         ],
                       ),
                     ),

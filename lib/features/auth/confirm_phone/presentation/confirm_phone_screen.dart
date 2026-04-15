@@ -5,18 +5,18 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
-import 'package:go_router/go_router.dart';
 import 'package:go_sport/domain/state/registration_state.dart';
+import 'package:go_router/go_router.dart';
 import 'package:go_sport/features/shared_widgets/auth_number_box.dart';
 
-class ConfirmEmailScreen extends ConsumerStatefulWidget {
-  const ConfirmEmailScreen({super.key});
+class ConfirmPhoneScreen extends ConsumerStatefulWidget {
+  const ConfirmPhoneScreen({super.key});
 
   @override
-  ConsumerState<ConfirmEmailScreen> createState() => _ConfirmEmailScreenState();
+  ConsumerState<ConfirmPhoneScreen> createState() => _ConfirmPhoneScreenState();
 }
 
-class _ConfirmEmailScreenState extends ConsumerState<ConfirmEmailScreen> {
+class _ConfirmPhoneScreenState extends ConsumerState<ConfirmPhoneScreen> {
   // Create a list of controllers for the 6-digit OTP
   final List<TextEditingController> _controllers = List.generate(
     6,
@@ -42,7 +42,7 @@ class _ConfirmEmailScreenState extends ConsumerState<ConfirmEmailScreen> {
       return;
     }
 
-    ref.read(registrationControllerProvider.notifier).verifyEmailOtp(otp);
+    ref.read(registrationControllerProvider.notifier).verifyPhoneOtp(otp);
   }
 
   @override
@@ -50,13 +50,13 @@ class _ConfirmEmailScreenState extends ConsumerState<ConfirmEmailScreen> {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
 
-    // Watch the global state for the email and loading/error status
+    // Watch the global state for the phone and loading/error status
     final registrationState = ref.watch(registrationControllerProvider);
 
     // Listen for success to navigate
     ref.listen<RegistrationState>(registrationControllerProvider, (prev, next) {
       if (next.isConfirmSuccess) {
-        context.go('/registration-phone');
+        context.go('/create-password');
       }
       if (next.error != null) {
         ScaffoldMessenger.of(
@@ -64,7 +64,6 @@ class _ConfirmEmailScreenState extends ConsumerState<ConfirmEmailScreen> {
         ).showSnackBar(SnackBar(content: Text(next.error!)));
       }
     });
-
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.dark,
       child: Scaffold(
@@ -85,18 +84,14 @@ class _ConfirmEmailScreenState extends ConsumerState<ConfirmEmailScreen> {
             Align(
               alignment: Alignment.bottomCenter,
               child: Column(
-                mainAxisSize: MainAxisSize
-                    .min, 
-                crossAxisAlignment:
-                    CrossAxisAlignment.start, 
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // 1. Back Button
                   Padding(
-                    padding: const EdgeInsets.only(
-                      left: 16,
-                    ), 
+                    padding: const EdgeInsets.only(left: 16),
                     child: GestureDetector(
-                      onTap: () => context.go('/registration-email'),
+                      onTap: () => context.go('/registration-phone'),
                       child: Container(
                         padding: const EdgeInsets.all(12),
                         decoration: const BoxDecoration(
@@ -115,7 +110,7 @@ class _ConfirmEmailScreenState extends ConsumerState<ConfirmEmailScreen> {
                     ),
                   ),
 
-                  const SizedBox(height: 30), 
+                  const SizedBox(height: 30),
 
                   // 2. The White Container
                   Container(
@@ -136,7 +131,6 @@ class _ConfirmEmailScreenState extends ConsumerState<ConfirmEmailScreen> {
                           padding: const EdgeInsets.symmetric(horizontal: 16),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
-
                             children: [
                               // Header Row
                               Row(
@@ -146,7 +140,7 @@ class _ConfirmEmailScreenState extends ConsumerState<ConfirmEmailScreen> {
                                   ),
                                   const SizedBox(width: 8),
                                   Text(
-                                    'Please check your e-mail',
+                                    'Please check your phone',
                                     style: context.h2,
                                   ),
                                 ],
@@ -159,7 +153,7 @@ class _ConfirmEmailScreenState extends ConsumerState<ConfirmEmailScreen> {
                                 ),
                               ),
                               Text(
-                                registrationState.email ?? 'your email',
+                                registrationState.phoneNumber ?? 'your phone',
                                 style: context.bodyL?.copyWith(
                                   color: DSColors.gray70,
                                   fontWeight: FontWeight.w600,
@@ -184,9 +178,14 @@ class _ConfirmEmailScreenState extends ConsumerState<ConfirmEmailScreen> {
 
                               // Continue Button
                               ElevatedButton.icon(
-                                onPressed: registrationState.isLoading
-                                    ? null
-                                    : _onContinue,
+                                onPressed: () {
+                                  context.go('/create-password');
+                                },
+
+                                // uncomment later
+                                // registrationState.isLoading
+                                //     ? null
+                                //     : _onContinue,
                                 icon: Icon(
                                   Icons.arrow_forward,
                                   color: DSColors.lime,
@@ -221,14 +220,12 @@ class _ConfirmEmailScreenState extends ConsumerState<ConfirmEmailScreen> {
                                             registrationControllerProvider
                                                 .notifier,
                                           )
-                                          .registerEmail(
-                                            registrationState.email!,
-                                          ),
+                                          .resendPhoneOtp(),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Icon(
-                                      Icons.email_rounded,
+                                      Icons.phone_rounded,
                                       color: DSColors.blue,
                                     ),
                                     const SizedBox(width: 8),
@@ -241,7 +238,6 @@ class _ConfirmEmailScreenState extends ConsumerState<ConfirmEmailScreen> {
                                   ],
                                 ),
                               ),
-
                               const SizedBox(height: 20),
                             ],
                           ),

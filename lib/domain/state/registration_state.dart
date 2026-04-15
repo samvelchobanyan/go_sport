@@ -107,6 +107,30 @@ class RegistrationController extends Notifier<RegistrationState> {
     }
   }
 
+  Future<void> resendPhoneOtp() async {
+    _prepareAction();
+    final token = _tokenStorage.registrationToken;
+    if (token == null) return _handleError("Session expired.");
+
+    try {
+      await _authRepository.resendPhoneOtp(token: token);
+    } catch (e) {
+      _handleError("Error on resend phone OTP");
+    }
+  }
+
+  Future<void> resendEmailOtp() async {
+    _prepareAction();
+    final token = _tokenStorage.registrationToken;
+    if (token == null) return _handleError("Session expired.");
+
+    try {
+      await _authRepository.resendEmailOtp(token: token);
+    } catch (e) {
+      _handleError("Error on resend email OTP");
+    }
+  }
+
   // --- STEP 4: Set Password ---
   Future<void> setPassword(String password) async {
     _prepareAction();
