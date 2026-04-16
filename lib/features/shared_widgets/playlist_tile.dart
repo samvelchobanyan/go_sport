@@ -5,25 +5,37 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
+import 'package:go_sport/domain/entities/playlist.dart';
 
 class PlaylistTile extends StatelessWidget {
   final String id;
   final String imageUrl;
   final String title;
   final int trackCount;
+  final PlaylistType type;
 
   const PlaylistTile({
     required this.id,
     required this.imageUrl,
     required this.title,
     required this.trackCount,
+    this.type = PlaylistType.featured,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => context.push('/music/playlist/$id'),
+      onTap: () => context.push(
+        '/music/playlist/$id?type=${type.name}',
+        extra: Playlist(
+          id: id,
+          title: title,
+          imageUrl: imageUrl,
+          trackCount: trackCount,
+          type: type,
+        ),
+      ),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         child: Row(

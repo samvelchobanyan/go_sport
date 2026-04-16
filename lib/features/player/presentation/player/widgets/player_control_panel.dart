@@ -142,7 +142,7 @@ class PlayerControlPanel extends ConsumerWidget {
                       .read(episodesRepositoryProvider)
                       .toggleLikeEpisode(track.id, prevLikeId)
                   : await ref
-                      .read(playlistRepositoryProvider)
+                      .read(featuredPlaylistRepositoryProvider)
                       .toggleLikeTrack(track.id, prevLikeId);
               notifier.updateTrackLike(track.id, isLiked: !wasLiked, likeId: newLikeId);
             } catch (e) {

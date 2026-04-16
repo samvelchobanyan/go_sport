@@ -38,21 +38,21 @@ mixin _$PlaylistTracksState {
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_PlaylistTracksLoading value) loading,
-    required TResult Function(_PlaylistTracksData value) data,
-    required TResult Function(_PlaylistTracksError value) error,
+    required TResult Function(PlaylistTracksLoading value) loading,
+    required TResult Function(PlaylistTracksData value) data,
+    required TResult Function(PlaylistTracksError value) error,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_PlaylistTracksLoading value)? loading,
-    TResult? Function(_PlaylistTracksData value)? data,
-    TResult? Function(_PlaylistTracksError value)? error,
+    TResult? Function(PlaylistTracksLoading value)? loading,
+    TResult? Function(PlaylistTracksData value)? data,
+    TResult? Function(PlaylistTracksError value)? error,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_PlaylistTracksLoading value)? loading,
-    TResult Function(_PlaylistTracksData value)? data,
-    TResult Function(_PlaylistTracksError value)? error,
+    TResult Function(PlaylistTracksLoading value)? loading,
+    TResult Function(PlaylistTracksData value)? data,
+    TResult Function(PlaylistTracksError value)? error,
     required TResult orElse(),
   }) => throw _privateConstructorUsedError;
 }
@@ -102,7 +102,7 @@ class __$$PlaylistTracksLoadingImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$PlaylistTracksLoadingImpl implements _PlaylistTracksLoading {
+class _$PlaylistTracksLoadingImpl implements PlaylistTracksLoading {
   const _$PlaylistTracksLoadingImpl();
 
   @override
@@ -157,9 +157,9 @@ class _$PlaylistTracksLoadingImpl implements _PlaylistTracksLoading {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_PlaylistTracksLoading value) loading,
-    required TResult Function(_PlaylistTracksData value) data,
-    required TResult Function(_PlaylistTracksError value) error,
+    required TResult Function(PlaylistTracksLoading value) loading,
+    required TResult Function(PlaylistTracksData value) data,
+    required TResult Function(PlaylistTracksError value) error,
   }) {
     return loading(this);
   }
@@ -167,9 +167,9 @@ class _$PlaylistTracksLoadingImpl implements _PlaylistTracksLoading {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_PlaylistTracksLoading value)? loading,
-    TResult? Function(_PlaylistTracksData value)? data,
-    TResult? Function(_PlaylistTracksError value)? error,
+    TResult? Function(PlaylistTracksLoading value)? loading,
+    TResult? Function(PlaylistTracksData value)? data,
+    TResult? Function(PlaylistTracksError value)? error,
   }) {
     return loading?.call(this);
   }
@@ -177,9 +177,9 @@ class _$PlaylistTracksLoadingImpl implements _PlaylistTracksLoading {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_PlaylistTracksLoading value)? loading,
-    TResult Function(_PlaylistTracksData value)? data,
-    TResult Function(_PlaylistTracksError value)? error,
+    TResult Function(PlaylistTracksLoading value)? loading,
+    TResult Function(PlaylistTracksData value)? data,
+    TResult Function(PlaylistTracksError value)? error,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -189,8 +189,8 @@ class _$PlaylistTracksLoadingImpl implements _PlaylistTracksLoading {
   }
 }
 
-abstract class _PlaylistTracksLoading implements PlaylistTracksState {
-  const factory _PlaylistTracksLoading() = _$PlaylistTracksLoadingImpl;
+abstract class PlaylistTracksLoading implements PlaylistTracksState {
+  const factory PlaylistTracksLoading() = _$PlaylistTracksLoadingImpl;
 }
 
 /// @nodoc
@@ -230,7 +230,7 @@ class __$$PlaylistTracksDataImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$PlaylistTracksDataImpl implements _PlaylistTracksData {
+class _$PlaylistTracksDataImpl implements PlaylistTracksData {
   const _$PlaylistTracksDataImpl({required final List<Track> tracks})
     : _tracks = tracks;
 
@@ -307,9 +307,9 @@ class _$PlaylistTracksDataImpl implements _PlaylistTracksData {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_PlaylistTracksLoading value) loading,
-    required TResult Function(_PlaylistTracksData value) data,
-    required TResult Function(_PlaylistTracksError value) error,
+    required TResult Function(PlaylistTracksLoading value) loading,
+    required TResult Function(PlaylistTracksData value) data,
+    required TResult Function(PlaylistTracksError value) error,
   }) {
     return data(this);
   }
@@ -317,9 +317,9 @@ class _$PlaylistTracksDataImpl implements _PlaylistTracksData {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_PlaylistTracksLoading value)? loading,
-    TResult? Function(_PlaylistTracksData value)? data,
-    TResult? Function(_PlaylistTracksError value)? error,
+    TResult? Function(PlaylistTracksLoading value)? loading,
+    TResult? Function(PlaylistTracksData value)? data,
+    TResult? Function(PlaylistTracksError value)? error,
   }) {
     return data?.call(this);
   }
@@ -327,9 +327,9 @@ class _$PlaylistTracksDataImpl implements _PlaylistTracksData {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_PlaylistTracksLoading value)? loading,
-    TResult Function(_PlaylistTracksData value)? data,
-    TResult Function(_PlaylistTracksError value)? error,
+    TResult Function(PlaylistTracksLoading value)? loading,
+    TResult Function(PlaylistTracksData value)? data,
+    TResult Function(PlaylistTracksError value)? error,
     required TResult orElse(),
   }) {
     if (data != null) {
@@ -339,8 +339,8 @@ class _$PlaylistTracksDataImpl implements _PlaylistTracksData {
   }
 }
 
-abstract class _PlaylistTracksData implements PlaylistTracksState {
-  const factory _PlaylistTracksData({required final List<Track> tracks}) =
+abstract class PlaylistTracksData implements PlaylistTracksState {
+  const factory PlaylistTracksData({required final List<Track> tracks}) =
       _$PlaylistTracksDataImpl;
 
   List<Track> get tracks;
@@ -389,7 +389,7 @@ class __$$PlaylistTracksErrorImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$PlaylistTracksErrorImpl implements _PlaylistTracksError {
+class _$PlaylistTracksErrorImpl implements PlaylistTracksError {
   const _$PlaylistTracksErrorImpl({required this.message});
 
   @override
@@ -459,9 +459,9 @@ class _$PlaylistTracksErrorImpl implements _PlaylistTracksError {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_PlaylistTracksLoading value) loading,
-    required TResult Function(_PlaylistTracksData value) data,
-    required TResult Function(_PlaylistTracksError value) error,
+    required TResult Function(PlaylistTracksLoading value) loading,
+    required TResult Function(PlaylistTracksData value) data,
+    required TResult Function(PlaylistTracksError value) error,
   }) {
     return error(this);
   }
@@ -469,9 +469,9 @@ class _$PlaylistTracksErrorImpl implements _PlaylistTracksError {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_PlaylistTracksLoading value)? loading,
-    TResult? Function(_PlaylistTracksData value)? data,
-    TResult? Function(_PlaylistTracksError value)? error,
+    TResult? Function(PlaylistTracksLoading value)? loading,
+    TResult? Function(PlaylistTracksData value)? data,
+    TResult? Function(PlaylistTracksError value)? error,
   }) {
     return error?.call(this);
   }
@@ -479,9 +479,9 @@ class _$PlaylistTracksErrorImpl implements _PlaylistTracksError {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_PlaylistTracksLoading value)? loading,
-    TResult Function(_PlaylistTracksData value)? data,
-    TResult Function(_PlaylistTracksError value)? error,
+    TResult Function(PlaylistTracksLoading value)? loading,
+    TResult Function(PlaylistTracksData value)? data,
+    TResult Function(PlaylistTracksError value)? error,
     required TResult orElse(),
   }) {
     if (error != null) {
@@ -491,8 +491,8 @@ class _$PlaylistTracksErrorImpl implements _PlaylistTracksError {
   }
 }
 
-abstract class _PlaylistTracksError implements PlaylistTracksState {
-  const factory _PlaylistTracksError({required final String message}) =
+abstract class PlaylistTracksError implements PlaylistTracksState {
+  const factory PlaylistTracksError({required final String message}) =
       _$PlaylistTracksErrorImpl;
 
   String get message;

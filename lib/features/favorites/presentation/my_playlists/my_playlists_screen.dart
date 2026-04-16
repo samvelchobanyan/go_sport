@@ -1,50 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
+import 'package:go_sport/core/di/repository_providers.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/domain/entities/playlist.dart';
 import 'package:go_sport/features/favorites/presentation/my_playlists/my_playlists_controller.dart';
+import 'package:go_sport/features/playlists/presentation/bottom_sheets/create_playlist.dart';
 import 'package:go_sport/features/shared_widgets/dotted_divider.dart';
 import 'package:go_sport/features/shared_widgets/my_categories_top.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/features/shared_widgets/playlist_tile.dart';
 
-class MyPlaylistsScreen extends ConsumerStatefulWidget {
+class MyPlaylistsScreen extends ConsumerWidget {
   const MyPlaylistsScreen({super.key});
 
-  @override
-  ConsumerState<MyPlaylistsScreen> createState() => _MyPlaylistsScreenState();
-}
-
-class _MyPlaylistsScreenState extends ConsumerState<MyPlaylistsScreen> {
-  late final ScrollController _scrollController;
-
-  @override
-  void initState() {
-    super.initState();
-    _scrollController = ScrollController()..addListener(_onScroll);
-  }
-
-  void _onScroll() {
-    final state = ref.read(myPlaylistsStateProvider);
-    if (state.isLoading || state.isLoadingMore) return;
-
-    if (_scrollController.position.pixels >=
-        _scrollController.position.maxScrollExtent * 0.8) {
-      ref.read(myPlaylistsStateProvider.notifier).loadMore();
-    }
+  void _onCreatePlaylist(BuildContext context, WidgetRef ref) {
+    showCreatePlaylistBottomSheet(
+      context: context,
+      onSave: (name) async {
+        final repo = ref.read(customPlaylistRepositoryProvider);
+        final playlist = await repo.createCustomPlaylist(name);
+        ref.read(myPlaylistsStateProvider.notifier).refresh();
+        if (context.mounted) {
+          context.push('/music/playlist/${playlist.id}?type=custom', extra: playlist);
+        }
+      },
+    );
   }
 
   @override
-  void dispose() {
-    _scrollController.removeListener(_onScroll);
-    _scrollController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(myPlaylistsStateProvider);
     final playlists = state.playlists;
 
@@ -70,6 +58,12 @@ class _MyPlaylistsScreenState extends ConsumerState<MyPlaylistsScreen> {
                   title: 'My Playlists',
                   subtitle: 'Playlists',
                   itemCount: playlists.length,
+                  actionIcon: SvgPicture.asset(
+                    'assets/icons/plus.svg',
+                    width: 32,
+                    height: 32,
+                  ),
+                  onActionIconTap: () => _onCreatePlaylist(context, ref),
                 ),
                 Expanded(
                   child: ClipRRect(
@@ -80,16 +74,10 @@ class _MyPlaylistsScreenState extends ConsumerState<MyPlaylistsScreen> {
                     child: Container(
                       color: DSColors.white,
                       child: state.isLoading && playlists.isEmpty
-                          ? const Center(
-                              child: CircularProgressIndicator(),
-                            )
+                          ? const Center(child: CircularProgressIndicator())
                           : state.error != null && playlists.isEmpty
-                          ? _buildErrorWidget(state)
-                          : _buildPlaylistsList(
-                              ref,
-                              playlists,
-                              state.isLoadingMore,
-                            ),
+                          ? _buildErrorWidget(context, ref, state)
+                          : _buildPlaylistsList(context, playlists),
                     ),
                   ),
                 ),
@@ -101,11 +89,7 @@ class _MyPlaylistsScreenState extends ConsumerState<MyPlaylistsScreen> {
     );
   }
 
-  Widget _buildPlaylistsList(
-    WidgetRef ref,
-    List<Playlist> playlists,
-    bool isLoadingMore,
-  ) {
+  Widget _buildPlaylistsList(BuildContext context, List<Playlist> playlists) {
     if (playlists.isEmpty) {
       return Center(
         child: Text('No favorite playlists yet', style: context.subtitleLBold),
@@ -113,39 +97,30 @@ class _MyPlaylistsScreenState extends ConsumerState<MyPlaylistsScreen> {
     }
 
     return ListView.separated(
-      controller: _scrollController,
       padding: const EdgeInsets.only(top: 16, bottom: 16),
-      itemCount: playlists.length + (isLoadingMore ? 1 : 0),
-      separatorBuilder: (context, index) {
-        if (index >= playlists.length - 1) {
-          return const SizedBox.shrink();
-        }
-
-        return const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16),
-          child: DottedDivider(),
-        );
-      },
+      itemCount: playlists.length,
+      separatorBuilder: (context, index) => const Padding(
+        padding: EdgeInsets.symmetric(horizontal: 16),
+        child: DottedDivider(),
+      ),
       itemBuilder: (context, index) {
-        if (index >= playlists.length) {
-          return const Padding(
-            padding: EdgeInsets.all(16),
-            child: Center(child: CircularProgressIndicator()),
-          );
-        }
-
         final playlist = playlists[index];
         return PlaylistTile(
           id: playlist.id,
           imageUrl: playlist.imageUrl,
           title: playlist.title,
           trackCount: playlist.trackCount,
+          type: playlist.type,
         );
       },
     );
   }
 
-  Widget _buildErrorWidget(MyPlaylistsState state) {
+  Widget _buildErrorWidget(
+    BuildContext context,
+    WidgetRef ref,
+    MyPlaylistsState state,
+  ) {
     return Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,

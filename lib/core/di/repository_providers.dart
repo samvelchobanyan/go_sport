@@ -15,11 +15,13 @@ import 'package:go_sport/domain/repositories/programs_repository.dart';
 import 'package:go_sport/domain/repositories/schedule_repository.dart';
 
 import '../../data/repositories/news_repository_mock.dart';
-import '../../data/repositories/playlist_repository_impl.dart';
+import '../../data/repositories/custom_playlist_repository_impl.dart';
+import '../../data/repositories/featured_playlist_repository_impl.dart';
 import '../../data/repositories/story_repository_mock.dart';
 import '../../data/repositories/tracks_repository_mock.dart';
 import '../../domain/repositories/news_repository.dart';
-import '../../domain/repositories/playlist_repository.dart';
+import '../../domain/repositories/custom_playlist_repository.dart';
+import '../../domain/repositories/featured_playlist_repository.dart';
 import '../../domain/repositories/story_repository.dart';
 import '../../domain/repositories/track_repository.dart';
 import '../di/network_providers.dart';
@@ -32,8 +34,12 @@ final newsRepositoryProvider = Provider<NewsRepository>((ref) {
   return MockNewsRepository();
 });
 
-final playlistRepositoryProvider = Provider<PlaylistRepository>((ref) {
-  return PlaylistRepositoryImpl(ref.read(apiClientProvider));
+final featuredPlaylistRepositoryProvider = Provider<FeaturedPlaylistRepository>((ref) {
+  return FeaturedPlaylistRepositoryImpl(ref.read(apiClientProvider));
+});
+
+final customPlaylistRepositoryProvider = Provider<CustomPlaylistRepository>((ref) {
+  return CustomPlaylistRepositoryImpl(ref.read(apiClientProvider));
 });
 
 final tracksRepositoryProvider = Provider<TrackRepository>((ref) {

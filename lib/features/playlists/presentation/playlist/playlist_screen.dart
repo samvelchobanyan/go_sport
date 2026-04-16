@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/domain/entities/playlist.dart';
 import 'package:go_sport/domain/entities/track.dart';
 import 'package:go_sport/domain/state/featured_playlists_state.dart';
 import 'package:go_sport/domain/state/player_state.dart';
 import 'package:go_sport/features/shared_widgets/dotted_divider.dart';
 
+import 'custom_playlist_controller.dart';
 import 'playlist_controller.dart';
 import '../widgets/playlist_hero.dart';
 import '../widgets/playlist_screen_skeleton.dart';
@@ -14,8 +16,15 @@ import '../../../shared_widgets/track_tile.dart';
 
 class PlaylistScreen extends ConsumerWidget {
   final String playlistId;
+  final PlaylistType type;
+  final Playlist? playlist;
 
-  const PlaylistScreen({super.key, required this.playlistId});
+  const PlaylistScreen({
+    super.key,
+    required this.playlistId,
+    this.type = PlaylistType.featured,
+    this.playlist,
+  });
 
   void _onTrackTap(
     WidgetRef ref,
@@ -70,11 +79,17 @@ class PlaylistScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final playlistsState = ref.watch(featuredPlaylistsStateProvider);
-    final playlist = playlistsState.getPlaylist(playlistId);
-    final tracksState = ref.watch(playlistControllerProvider(playlistId));
+    final Playlist? currentPlaylist;
+    if (type == PlaylistType.custom) {
+      currentPlaylist = playlist;
+    } else {
+      final playlistsState = ref.watch(featuredPlaylistsStateProvider);
+      currentPlaylist = playlistsState.getPlaylist(playlistId);
+    }
 
-    if (playlist == null) {
+    debugPrint('PlaylistScreen: type=$type, id=$playlistId, playlist=$currentPlaylist');
+
+    if (currentPlaylist == null) {
       return Scaffold(
         backgroundColor: DSColors.white,
         appBar: AppBar(
@@ -88,6 +103,12 @@ class PlaylistScreen extends ConsumerWidget {
         body: const Center(child: Text('Playlist not found')),
       );
     }
+
+    final pl = currentPlaylist;
+
+    final tracksState = type == PlaylistType.featured
+        ? ref.watch(playlistControllerProvider(playlistId))
+        : ref.watch(customPlaylistControllerProvider(playlistId));
 
     final screenHeight = MediaQuery.of(context).size.height;
     final expandedHeight = screenHeight * 0.5;
@@ -140,8 +161,8 @@ class PlaylistScreen extends ConsumerWidget {
             ],
             flexibleSpace: FlexibleSpaceBar(
               background: PlaylistHero(
-                playlist: playlist,
-                onLikeTap: () => _onLikeTap(ref, playlist.likeId),
+                playlist: currentPlaylist,
+                onLikeTap: () => _onLikeTap(ref, pl.likeId),
                 onPlayTap: () {
                   final tracksValue = tracksState.mapOrNull(
                     data: (data) => data.tracks,
@@ -150,8 +171,8 @@ class PlaylistScreen extends ConsumerWidget {
                     _onPlayTap(
                       ref,
                       tracksValue,
-                      playlist.title,
-                      playlist.imageUrl,
+                      pl.title,
+                      pl.imageUrl,
                     );
                   }
                 },
@@ -182,9 +203,17 @@ class PlaylistScreen extends ConsumerWidget {
                     ),
                     const SizedBox(height: 16),
                     ElevatedButton(
-                      onPressed: () => ref
-                          .read(playlistControllerProvider(playlistId).notifier)
-                          .loadTracks(),
+                      onPressed: () {
+                        if (type == PlaylistType.featured) {
+                          ref
+                              .read(playlistControllerProvider(playlistId).notifier)
+                              .loadTracks();
+                        } else {
+                          ref
+                              .read(customPlaylistControllerProvider(playlistId).notifier)
+                              .loadTracks();
+                        }
+                      },
                       child: const Text('Retry'),
                     ),
                   ],
@@ -216,8 +245,8 @@ class PlaylistScreen extends ConsumerWidget {
                             ref,
                             tracks,
                             index,
-                            playlist.title,
-                            playlist.imageUrl,
+                            pl.title,
+                            pl.imageUrl,
                           ),
                           onMenuTap: () => _onTrackMenuTap(index),
                         ),

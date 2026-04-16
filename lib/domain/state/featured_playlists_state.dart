@@ -2,7 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../entities/playlist.dart';
-import '../repositories/playlist_repository.dart';
+import '../repositories/featured_playlist_repository.dart';
 import '../../core/di/repository_providers.dart';
 
 part 'featured_playlists_state.freezed.dart';
@@ -23,11 +23,11 @@ extension FeaturedPlaylistsStateX on FeaturedPlaylistsState {
 }
 
 class FeaturedPlaylistsNotifier extends Notifier<FeaturedPlaylistsState> {
-  late final PlaylistRepository _repository;
+  late final FeaturedPlaylistRepository _repository;
 
   @override
   FeaturedPlaylistsState build() {
-    _repository = ref.watch(playlistRepositoryProvider);
+    _repository = ref.watch(featuredPlaylistRepositoryProvider);
     Future.microtask(() => loadPlaylists());
     return const FeaturedPlaylistsState();
   }

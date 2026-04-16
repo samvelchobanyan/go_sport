@@ -3,8 +3,6 @@ import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/features/shared_widgets/bottom_pop_ups/action_button.dart';
 
-// todo apply this to playlist settings icon
-
 void showPlaylistBottomSheet({required BuildContext context}) {
   showModalBottomSheet(
     context: context,

@@ -1,8 +1,8 @@
-import '../../domain/repositories/playlist_repository.dart';
+import '../../domain/repositories/featured_playlist_repository.dart';
 import '../../domain/entities/playlist.dart';
 import '../../domain/entities/track.dart';
 
-class PlaylistRepositoryMock implements PlaylistRepository {
+class FeaturedPlaylistRepositoryMock implements FeaturedPlaylistRepository {
   final List<Playlist> _featuredPlaylists = [
     const Playlist(
       id: 'pl1',
@@ -742,7 +742,7 @@ class PlaylistRepositoryMock implements PlaylistRepository {
   }
 
   @override
-  Future<List<Playlist>> getFavoritePlaylists() async {
+  Future<List<Playlist>> getLikedFeaturedPlaylists() async {
     await Future.delayed(const Duration(milliseconds: 300));
     return _favoritePlaylists;
   }

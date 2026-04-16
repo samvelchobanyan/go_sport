@@ -3,12 +3,12 @@ import 'package:go_sport/data/dto/playlist_dto.dart';
 import 'package:go_sport/data/dto/track_dto.dart';
 import 'package:go_sport/domain/entities/playlist.dart';
 import 'package:go_sport/domain/entities/track.dart';
-import 'package:go_sport/domain/repositories/playlist_repository.dart';
+import 'package:go_sport/domain/repositories/featured_playlist_repository.dart';
 
-class PlaylistRepositoryImpl implements PlaylistRepository {
+class FeaturedPlaylistRepositoryImpl implements FeaturedPlaylistRepository {
   final ApiClient _apiClient;
 
-  PlaylistRepositoryImpl(this._apiClient);
+  FeaturedPlaylistRepositoryImpl(this._apiClient);
 
   @override
   Future<List<Playlist>> getFeaturedPlaylists() async {
@@ -45,8 +45,22 @@ class PlaylistRepositoryImpl implements PlaylistRepository {
   }
 
   @override
-  Future<List<Playlist>> getFavoritePlaylists() async {
-    throw UnimplementedError('getFavoritePlaylists requires authentication');
+  Future<List<Playlist>> getLikedFeaturedPlaylists() async {
+    final response = await _apiClient.get(
+      '/api/user-playlists',
+      queryParameters: {
+        'populate[Playlist][populate][Cover][populate]': '*',
+      },
+    );
+
+    final data = response.data['data'] as List<dynamic>;
+    return data.map((e) {
+      final entry = e as Map<String, dynamic>;
+      final playlistJson = entry['Playlist'] as Map<String, dynamic>;
+      playlistJson['Like'] = {'documentId': entry['documentId']};
+      playlistJson['cnt'] = entry['cnt'];
+      return PlaylistDto.fromJson(playlistJson).toDomain();
+    }).toList();
   }
 
   @override

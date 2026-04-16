@@ -9,15 +9,15 @@ part 'playlist_controller.freezed.dart';
 
 @freezed
 sealed class PlaylistTracksState with _$PlaylistTracksState {
-  const factory PlaylistTracksState.loading() = _PlaylistTracksLoading;
+  const factory PlaylistTracksState.loading() = PlaylistTracksLoading;
 
   const factory PlaylistTracksState.data({
     required List<Track> tracks,
-  }) = _PlaylistTracksData;
+  }) = PlaylistTracksData;
 
   const factory PlaylistTracksState.error({
     required String message,
-  }) = _PlaylistTracksError;
+  }) = PlaylistTracksError;
 }
 
 class PlaylistController extends AutoDisposeFamilyNotifier<PlaylistTracksState, String> {
@@ -31,7 +31,7 @@ class PlaylistController extends AutoDisposeFamilyNotifier<PlaylistTracksState, 
     state = const PlaylistTracksState.loading();
 
     try {
-      final tracks = await ref.read(playlistRepositoryProvider).getPlaylistTracks(arg);
+      final tracks = await ref.read(featuredPlaylistRepositoryProvider).getPlaylistTracks(arg);
       state = PlaylistTracksState.data(tracks: tracks);
     } catch (e) {
       state = PlaylistTracksState.error(message: e.toString());
@@ -40,7 +40,7 @@ class PlaylistController extends AutoDisposeFamilyNotifier<PlaylistTracksState, 
 
   Future<void> toggleLike(String? likeId) async {
     try {
-      final newLikeId = await ref.read(playlistRepositoryProvider).toggleLike(arg, likeId);
+      final newLikeId = await ref.read(featuredPlaylistRepositoryProvider).toggleLike(arg, likeId);
       ref.read(featuredPlaylistsStateProvider.notifier).updateLike(arg, newLikeId);
     } catch (e) {
       // Можно добавить обработку ошибки
