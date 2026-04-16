@@ -32,8 +32,9 @@ class AppRoutes {
   static const String checkEmail = '/check-email';
   static const String newPassword = '/new-password';
   static const String passwordChanged = '/password-changed';
-  static const String restorePassword = '/restore-password';
-
+  static const String changePassword = '/change-password';
+  static const String forgotPassword = '/forgot-password';
+  static const String confirmChangePassword = '/confirm-password-change';
 
   static const List<String> privateRoutes = [
     profile,

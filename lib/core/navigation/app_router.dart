@@ -4,13 +4,15 @@ import 'package:go_sport/core/auth/token_storage.dart';
 import 'package:go_sport/core/navigation/main_shell.dart';
 import 'package:go_sport/core/navigation/page_transitions.dart';
 import 'package:go_sport/core/navigation/routes.dart';
+import 'package:go_sport/features/auth/change_password/presentation/change_password_screen.dart';
 import 'package:go_sport/features/auth/check_email/presentation/check_email_screen.dart';
+import 'package:go_sport/features/auth/confirm_change_password/presentation/confirm_change_password_screen.dart';
 import 'package:go_sport/features/auth/confirm_email/presentation/confirm_email_screen.dart';
 import 'package:go_sport/features/auth/confirm_phone/presentation/confirm_phone_screen.dart';
 import 'package:go_sport/features/auth/create_password/presentation/create_password_screen.dart';
 import 'package:go_sport/features/auth/expired_guest/presentation/expired_guest.dart';
 import 'package:go_sport/features/auth/registration_name/presentation/registration_name_screen.dart';
-import 'package:go_sport/features/auth/restore_password/presentation/restore_password_screen.dart';
+import 'package:go_sport/features/auth/forgot_password/presentation/forgot_password_screen.dart';
 import 'package:go_sport/features/favorites/presentation/my_albums/my_albums_screen.dart';
 import 'package:go_sport/features/favorites/presentation/my_artists/my_artists_screen.dart';
 import 'package:go_sport/features/favorites/presentation/my_playlists/my_playlists_screen.dart';
@@ -72,10 +74,12 @@ GoRouter createAppRouter(TokenStorage tokenStorage) {
           state.matchedLocation == AppRoutes.registrationName ||
           state.matchedLocation == AppRoutes.confirmEmail ||
           state.matchedLocation == AppRoutes.createPassword ||
-          state.matchedLocation == AppRoutes.restorePassword ||
+          state.matchedLocation == AppRoutes.confirmChangePassword ||
+          state.matchedLocation == AppRoutes.forgotPassword ||
           state.matchedLocation == AppRoutes.checkEmail ||
           state.matchedLocation == AppRoutes.newPassword ||
-          state.matchedLocation == AppRoutes.passwordChanged;
+          state.matchedLocation == AppRoutes.passwordChanged ||
+          state.matchedLocation == AppRoutes.changePassword;
 
       // unauthorized (первый запуск) — гоним на логин со всех маршрутов кроме самого логина
       if (!isAuthenticated && !isGuest && !isAuthFlow) {
@@ -138,13 +142,23 @@ GoRouter createAppRouter(TokenStorage tokenStorage) {
       ),
 
       GoRoute(
-        path: AppRoutes.restorePassword,
-        builder: (context, state) => const RestorePasswordScreen(),
+        path: AppRoutes.forgotPassword,
+        builder: (context, state) => const ForgotPasswordScreen(),
       ),
 
       GoRoute(
         path: AppRoutes.checkEmail,
         builder: (context, state) => const CheckEmailScreen(),
+      ),
+
+      GoRoute(
+        path: AppRoutes.changePassword,
+        builder: (context, state) => const ChangePasswordScreen(),
+      ),
+
+      GoRoute(
+        path: AppRoutes.confirmChangePassword,
+        builder: (context, state) => const ConfirmChangePasswordScreen(),
       ),
 
       StatefulShellRoute.indexedStack(

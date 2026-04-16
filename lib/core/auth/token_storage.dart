@@ -13,6 +13,7 @@ class TokenStorage {
   static const _choseGuestKey = 'chose_guest';
 
   String? _registrationToken;
+  String? _resetToken;
 
   final _secureStorage = const FlutterSecureStorage();
 
@@ -21,6 +22,7 @@ class TokenStorage {
   bool _choseGuest = false;
 
   String? get registrationToken => _registrationToken;
+  String? get resetToken => _resetToken;
 
   String? get accessToken => _cachedAccessToken;
   String? get refreshToken => _cachedRefreshToken;
@@ -54,6 +56,7 @@ class TokenStorage {
     _choseGuest = false;
 
     _registrationToken = null;
+    _resetToken = null;
 
     await Future.wait([
       _secureStorage.write(key: _accessTokenKey, value: accessToken),
@@ -66,6 +69,7 @@ class TokenStorage {
     _cachedRefreshToken = null;
     _choseGuest = false;
     _registrationToken = null;
+    _resetToken = null;
 
     await Future.wait([
       _secureStorage.delete(key: _accessTokenKey),
@@ -78,7 +82,15 @@ class TokenStorage {
     _registrationToken = token;
   }
 
+  void saveResetToken(String token) {
+    _resetToken = token;
+  }
+
   void clearRegistrationToken() {
     _registrationToken = null;
+  }
+
+  void clearResetToken() {
+    _resetToken = null;
   }
 }

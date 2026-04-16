@@ -154,4 +154,43 @@ class AuthRepositoryImpl implements AuthRepository {
 
     return (jwt: jwt, user: user);
   }
+
+  @override
+  Future<({String resetToken})> forgotPasswordOtp({
+    required String email,
+  }) async {
+    final response = await _apiClient.post(
+      '/api/auth/forgot-password-otp',
+      data: {'email': email},
+      options: Options(extra: {'public': true}),
+    );
+
+    // We return a record containing the resetToken from the API response
+    return (resetToken: response.data['resetToken'] as String);
+  }
+
+  @override
+  Future<void> verifyResetOtp({
+    required String token,
+    required String otp,
+  }) async {
+    await _apiClient.post(
+      '/api/auth/verify-reset-otp',
+      data: {'resetToken': token, 'otp': otp},
+      options: Options(extra: {'public': true}),
+    );
+  }
+
+  @override
+  Future<void> resetPasswordOtp({
+    required String token,
+    required String otp,
+    required String password,
+  }) async {
+    await _apiClient.post(
+      '/api/auth/reset-password-otp',
+      data: {'resetToken': token, 'otp': otp, 'password': password},
+      options: Options(extra: {'public': true}),
+    );
+  }
 }

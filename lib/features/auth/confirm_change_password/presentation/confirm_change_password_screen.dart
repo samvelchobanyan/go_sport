@@ -1,48 +1,49 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
-import 'package:go_sport/core/navigation/routes.dart';
 import 'package:go_sport/domain/state/forgot_password_state.dart';
-import 'package:go_sport/features/shared_widgets/auth_number_box.dart';
+import 'package:go_sport/features/auth/login/presentation/login/login_controller.dart';
+import 'package:go_sport/features/shared_widgets/input.dart';
 import 'package:go_router/go_router.dart';
 
-class CheckEmailScreen extends ConsumerStatefulWidget {
-  const CheckEmailScreen({super.key});
+class ConfirmChangePasswordScreen extends ConsumerStatefulWidget {
+  const ConfirmChangePasswordScreen({super.key});
 
   @override
-  ConsumerState<CheckEmailScreen> createState() => _CheckEmailScreenState();
+  ConsumerState<ConfirmChangePasswordScreen> createState() =>
+      _ConfirmChangePasswordScreenState();
 }
 
-class _CheckEmailScreenState extends ConsumerState<CheckEmailScreen> {
-  // Create a list of controllers for the 6-digit OTP
-  final List<TextEditingController> _controllers = List.generate(
-    6,
-    (_) => TextEditingController(),
-  );
+class _ConfirmChangePasswordScreenState
+    extends ConsumerState<ConfirmChangePasswordScreen> {
+  late final TextEditingController _passwordController;
+  late final TextEditingController _emailController;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Grab inputed values from RegistrationState
+    final forgotPasswordState = ref.read(forgotPasswordControllerProvider);
+
+    _emailController = TextEditingController(
+      text: forgotPasswordState.email ?? '',
+    );
+
+    _passwordController = TextEditingController(
+      text: forgotPasswordState.newPassword ?? '',
+    );
+  }
 
   @override
   void dispose() {
-    for (var controller in _controllers) {
-      controller.dispose();
-    }
+    _passwordController.dispose();
+    _emailController.dispose();
     super.dispose();
-  }
-
-  void _onContinue() {
-    // Join all digits to form the OTP string
-    final otp = _controllers.map((c) => c.text).join();
-
-    if (otp.length < 6) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please enter the full 6-digit code')),
-      );
-      return;
-    }
-
-    ref.read(forgotPasswordControllerProvider.notifier).verifyResetOtp(otp);
   }
 
   @override
@@ -50,16 +51,12 @@ class _CheckEmailScreenState extends ConsumerState<CheckEmailScreen> {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
 
-    // Watch the global state for the email and loading/error status
-    final forgotPasswordState = ref.watch(forgotPasswordControllerProvider);
+    final loginState = ref.watch(loginControllerProvider);
+    final loginNotifier = ref.read(loginControllerProvider.notifier);
 
-    // Listen for success to navigate
-    ref.listen<ForgotPasswordState>(forgotPasswordControllerProvider, (
-      prev,
-      next,
-    ) {
-      if (next.isConfirmSuccess) {
-        context.go(AppRoutes.changePassword);
+    ref.listen<LoginState>(loginControllerProvider, (previous, next) {
+      if (next.isAuthenticated) {
+        context.go('/'); // Navigate to home
       }
       if (next.error != null) {
         ScaffoldMessenger.of(
@@ -71,13 +68,13 @@ class _CheckEmailScreenState extends ConsumerState<CheckEmailScreen> {
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.dark,
       child: Scaffold(
-        resizeToAvoidBottomInset: true,
         backgroundColor: DSColors.white,
+        resizeToAvoidBottomInset: true,
         body: Stack(
           children: [
             // Background Image (Top half)
             Image.asset(
-              'assets/images/email_registration_bg.png',
+              'assets/images/create_password_bg.png',
               width: screenWidth,
               height: screenHeight * 0.7,
               fit: BoxFit.cover,
@@ -99,8 +96,8 @@ class _CheckEmailScreenState extends ConsumerState<CheckEmailScreen> {
                   ),
                 ),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -110,45 +107,53 @@ class _CheckEmailScreenState extends ConsumerState<CheckEmailScreen> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Icon(Icons.email_rounded, color: DSColors.blue),
-                              SizedBox(width: 8),
-                              Text('Check your email', style: context.h2),
+                              SvgPicture.asset('assets/icons/login_blue.svg'),
+                              const SizedBox(width: 8),
+                              Text('Password changed!', style: context.h2),
                             ],
                           ),
 
-                          SizedBox(height: 14),
+                          const SizedBox(height: 14),
                           Text(
-                            'The password reset link has been sent to \n${forgotPasswordState.email}',
+                            'You can now login to app using your new password',
                             style: context.bodyL?.copyWith(
                               color: DSColors.gray70,
                             ),
                           ),
-                          SizedBox(height: 20),
 
-                          // 6-Digit Auth Number Input Blocks
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: List.generate(6, (index) {
-                              return AuthNumberBox(
-                                controller: _controllers[index],
-                                isLast: index == 5,
-                              );
-                            }),
+                          const SizedBox(height: 16),
+
+                          // Email Input
+                          CustomInput(
+                            label: 'Email',
+                            hintText: 'Enter your email',
+                            controller: _emailController,
+                            keyboardType: TextInputType.emailAddress,
                           ),
 
-                          const SizedBox(height: 40),
+                          const SizedBox(height: 16),
 
-                          // Continue Button
+                          // Password Input
+                          CustomInput(
+                            controller: _passwordController,
+                            label: 'Password',
+                            hintText: 'Enter your password',
+                            obscureText: true,
+                          ),
+                          const SizedBox(height: 25),
+
                           ElevatedButton.icon(
-                            onPressed: forgotPasswordState.isLoading
+                            onPressed: loginState.isLoading
                                 ? null
-                                : _onContinue,
-                            icon: Icon(
-                              Icons.arrow_forward,
-                              color: DSColors.lime,
-                            ),
+                                : () {
+                                    loginNotifier.login(
+                                      _emailController.text,
+                                      _passwordController.text,
+                                    );
+                                  },
+                            icon: SvgPicture.asset('assets/icons/login.svg'),
                             label: Text(
-                              'Continue',
+                              loginState.isLoading ? 'Processing...' : 'Log in',
                               style: context.subtitleLBold?.copyWith(
                                 color: DSColors.lime,
                               ),
@@ -163,8 +168,7 @@ class _CheckEmailScreenState extends ConsumerState<CheckEmailScreen> {
                               ),
                             ),
                           ),
-
-                          SizedBox(height: 100),
+                          const SizedBox(height: 20),
                         ],
                       ),
                     ),

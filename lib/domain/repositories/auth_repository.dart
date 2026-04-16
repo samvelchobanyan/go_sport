@@ -30,4 +30,14 @@ abstract interface class AuthRepository {
     required String name,
     required String surname,
   });
+
+  Future<({String resetToken})> forgotPasswordOtp({required String email});
+
+  Future<void> verifyResetOtp({required String token, required String otp});
+
+  Future<void> resetPasswordOtp({
+    required String token,
+    required String otp,
+    required String password,
+  });
 }

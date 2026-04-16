@@ -5,49 +5,51 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
-import 'package:go_sport/domain/state/registration_state.dart';
+import 'package:go_sport/domain/state/forgot_password_state.dart';
 import 'package:go_sport/features/shared_widgets/input.dart';
 import 'package:go_router/go_router.dart';
 
-class RestorePasswordScreen extends ConsumerStatefulWidget {
-  const RestorePasswordScreen({super.key});
+class ChangePasswordScreen extends ConsumerStatefulWidget {
+  const ChangePasswordScreen({super.key});
 
   @override
-  ConsumerState<RestorePasswordScreen> createState() =>
-      _RestorePasswordScreenState();
+  ConsumerState<ChangePasswordScreen> createState() =>
+      _ChangePasswordScreenState();
 }
 
-class _RestorePasswordScreenState extends ConsumerState<RestorePasswordScreen> {
-  // 1. Create the controller
-  final _emailController = TextEditingController();
+class _ChangePasswordScreenState extends ConsumerState<ChangePasswordScreen> {
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
 
   @override
   void dispose() {
-    _emailController.dispose();
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
     super.dispose();
   }
 
   void _onContinue() {
-    // todo change to actual api calls
-    final email = _emailController.text.trim();
+    final password = _passwordController.text;
+    final confirmPassword = _confirmPasswordController.text;
 
-    // 2. Simple Validation Logic
-    if (email.isEmpty) {
+    if (password.isEmpty) {
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(const SnackBar(content: Text('Email cannot be empty')));
+      ).showSnackBar(const SnackBar(content: Text('Please enter a password')));
       return;
     }
 
-    if (!email.contains('@')) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please enter a valid email address')),
-      );
+    if (password != confirmPassword) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Passwords do not match')));
       return;
     }
 
-    // 3. Trigger the controller
-    ref.read(registrationControllerProvider.notifier).registerEmail(email);
+    ref
+        .read(forgotPasswordControllerProvider.notifier)
+        .resetPasswordOtp(password);
   }
 
   @override
@@ -55,11 +57,12 @@ class _RestorePasswordScreenState extends ConsumerState<RestorePasswordScreen> {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
 
-    final state = ref.watch(registrationControllerProvider);
-
-    ref.listen<RegistrationState>(registrationControllerProvider, (prev, next) {
+    ref.listen<ForgotPasswordState>(forgotPasswordControllerProvider, (
+      prev,
+      next,
+    ) {
       if (next.isSuccess) {
-        context.go('/check-email');
+        context.go('/confirm-password-change');
       }
       if (next.error != null) {
         ScaffoldMessenger.of(
@@ -71,13 +74,13 @@ class _RestorePasswordScreenState extends ConsumerState<RestorePasswordScreen> {
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.dark,
       child: Scaffold(
-        resizeToAvoidBottomInset: true,
         backgroundColor: DSColors.white,
+        resizeToAvoidBottomInset: true,
         body: Stack(
           children: [
             // Background Image (Top half)
             Image.asset(
-              'assets/images/email_registration_bg.png',
+              'assets/images/create_password_bg.png',
               width: screenWidth,
               height: screenHeight * 0.7,
               fit: BoxFit.cover,
@@ -99,8 +102,8 @@ class _RestorePasswordScreenState extends ConsumerState<RestorePasswordScreen> {
                   ),
                 ),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -111,54 +114,52 @@ class _RestorePasswordScreenState extends ConsumerState<RestorePasswordScreen> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               SvgPicture.asset('assets/icons/lock.svg'),
-                              SizedBox(width: 8),
+                              const SizedBox(width: 8),
                               Text('Restore password', style: context.h2),
                             ],
                           ),
 
-                          SizedBox(height: 14),
+                          const SizedBox(height: 14),
                           Text(
-                            'We will send a password reset \nlink to your email',
+                            'Your password must contain at least one special character',
                             style: context.bodyL?.copyWith(
                               color: DSColors.gray70,
                             ),
                           ),
 
-                          SizedBox(height: 20),
+                          const SizedBox(height: 16),
 
-                          // Email Input
+                          // Password Input
                           CustomInput(
-                            controller: _emailController,
-                            label: 'Email',
-                            hintText: 'Enter your email',
-                            keyboardType: TextInputType.emailAddress,
+                            controller: _passwordController,
+                            label: 'Password',
+                            hintText: 'Enter your password',
+                            keyboardType: TextInputType.text,
+                            obscureText: true,
                           ),
 
-                          const SizedBox(height: 100),
+                          const SizedBox(height: 16),
+
+                          // Confirm Password Input
+                          CustomInput(
+                            controller: _confirmPasswordController,
+                            label: 'Repeat Password',
+                            hintText: 'Enter your password again',
+                            keyboardType: TextInputType.text,
+                            obscureText: true,
+                          ),
+
+                          const SizedBox(height: 25),
 
                           // Continue Button
                           ElevatedButton.icon(
-                            // Disable button if loading
-                            onPressed: () {
-                              context.go('/check-email');
-                              // todo change to actual api call
-                              // state.isLoading ? null : _onContinue;
-                            },
-                            icon: state.isLoading
-                                ? const SizedBox(
-                                    width: 20,
-                                    height: 20,
-                                    child: CircularProgressIndicator(
-                                      strokeWidth: 2,
-                                      color: Colors.white,
-                                    ),
-                                  )
-                                : Icon(
-                                    Icons.arrow_forward,
-                                    color: DSColors.lime,
-                                  ),
+                            onPressed: _onContinue,
+                            icon: const Icon(
+                              Icons.check_circle,
+                              color: DSColors.lime,
+                            ),
                             label: Text(
-                              state.isLoading ? 'Processing...' : 'Continue',
+                              'Change password',
                               style: context.subtitleLBold?.copyWith(
                                 color: DSColors.lime,
                               ),
@@ -173,7 +174,7 @@ class _RestorePasswordScreenState extends ConsumerState<RestorePasswordScreen> {
                               ),
                             ),
                           ),
-                          const SizedBox(height: 24),
+                          const SizedBox(height: 20),
                         ],
                       ),
                     ),
