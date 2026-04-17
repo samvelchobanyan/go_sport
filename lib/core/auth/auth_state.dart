@@ -36,8 +36,16 @@ class AuthNotifier extends Notifier<AuthState> {
     return const AuthState.unauthorized();
   }
 
-  void setUser({required String name, required String avatarUrl, required int userId}) {
-    state = AuthState.authenticated(name: name, avatarUrl: avatarUrl, userId: userId);
+  void setUser({
+    required String name,
+    required String avatarUrl,
+    required int userId,
+  }) {
+    state = AuthState.authenticated(
+      name: name,
+      avatarUrl: avatarUrl,
+      userId: userId,
+    );
   }
 
   void continueAsGuest() {
@@ -48,6 +56,7 @@ class AuthNotifier extends Notifier<AuthState> {
   Future<void> logout() async {
     await _tokenStorage.clearTokens();
     state = const AuthState.unauthorized();
+    // ref.invalidateSelf();
   }
 }
 

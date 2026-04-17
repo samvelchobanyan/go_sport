@@ -68,18 +68,19 @@ GoRouter createAppRouter(TokenStorage tokenStorage) {
       );
 
       final isAuthFlow =
+          // login
           state.matchedLocation == AppRoutes.login ||
+          // registration
           state.matchedLocation == AppRoutes.registrationEmail ||
           state.matchedLocation == AppRoutes.registrationPhone ||
           state.matchedLocation == AppRoutes.registrationName ||
           state.matchedLocation == AppRoutes.confirmEmail ||
           state.matchedLocation == AppRoutes.createPassword ||
-          state.matchedLocation == AppRoutes.confirmChangePassword ||
+          // forget password flow
           state.matchedLocation == AppRoutes.forgotPassword ||
           state.matchedLocation == AppRoutes.checkEmail ||
-          state.matchedLocation == AppRoutes.newPassword ||
-          state.matchedLocation == AppRoutes.passwordChanged ||
-          state.matchedLocation == AppRoutes.changePassword;
+          state.matchedLocation == AppRoutes.changePassword ||
+          state.matchedLocation == AppRoutes.confirmChangePassword;
 
       // unauthorized (первый запуск) — гоним на логин со всех маршрутов кроме самого логина
       if (!isAuthenticated && !isGuest && !isAuthFlow) {

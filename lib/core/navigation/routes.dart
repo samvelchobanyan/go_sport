@@ -30,8 +30,6 @@ class AppRoutes {
   static const String createPassword = '/create-password';
   static const String expiredGuest = '/expired-guest';
   static const String checkEmail = '/check-email';
-  static const String newPassword = '/new-password';
-  static const String passwordChanged = '/password-changed';
   static const String changePassword = '/change-password';
   static const String forgotPassword = '/forgot-password';
   static const String confirmChangePassword = '/confirm-password-change';
