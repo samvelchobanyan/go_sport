@@ -20,8 +20,10 @@ import '../../data/repositories/featured_playlist_repository_impl.dart';
 import '../../data/repositories/story_repository_mock.dart';
 import '../../data/repositories/tracks_repository_mock.dart';
 import '../../domain/repositories/news_repository.dart';
+import '../../data/repositories/search_repository_impl.dart';
 import '../../domain/repositories/custom_playlist_repository.dart';
 import '../../domain/repositories/featured_playlist_repository.dart';
+import '../../domain/repositories/search_repository.dart';
 import '../../domain/repositories/story_repository.dart';
 import '../../domain/repositories/track_repository.dart';
 import '../di/network_providers.dart';
@@ -72,4 +74,8 @@ final scheduleRepositoryProvider = Provider<ScheduleRepository>((ref) {
 
 final authRepositoryProvider = Provider<AuthRepository>((ref) {
   return AuthRepositoryImpl(ref.read(apiClientProvider));
+});
+
+final searchRepositoryProvider = Provider<SearchRepository>((ref) {
+  return SearchRepositoryImpl(ref.read(apiClientProvider));
 });

@@ -60,8 +60,8 @@ class MyPlaylistsScreen extends ConsumerWidget {
                   itemCount: playlists.length,
                   actionIcon: SvgPicture.asset(
                     'assets/icons/plus.svg',
-                    width: 32,
-                    height: 32,
+                    width: 20,
+                    height: 20,
                   ),
                   onActionIconTap: () => _onCreatePlaylist(context, ref),
                 ),

@@ -74,7 +74,15 @@ class _MyFavoritesScreenState extends ConsumerState<MyFavoritesScreen> {
                   title: 'My Favorites',
                   subtitle: 'Tracks',
                   itemCount: favorites.length,
-                  actionIcon: SvgPicture.asset('assets/icons/play_blue.svg'),
+                  actionIcon: SvgPicture.asset(
+                    'assets/icons/play.svg',
+                    width: 20,
+                    height: 20,
+                    colorFilter: const ColorFilter.mode(
+                      DSColors.lime,
+                      BlendMode.srcIn,
+                    ),
+                  ),
                   onActionIconTap: favorites.isEmpty
                       ? null
                       : () => _onPlayTap(ref, favorites, 'My Favorites', ''),

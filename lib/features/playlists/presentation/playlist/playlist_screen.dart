@@ -10,6 +10,7 @@ import 'package:go_sport/features/shared_widgets/dotted_divider.dart';
 
 import 'custom_playlist_controller.dart';
 import 'playlist_controller.dart';
+import '../bottom_sheets/add_tracks_bottom_sheet.dart';
 import '../widgets/playlist_hero.dart';
 import '../widgets/playlist_screen_skeleton.dart';
 import '../../../shared_widgets/track_tile.dart';
@@ -162,7 +163,15 @@ class PlaylistScreen extends ConsumerWidget {
             flexibleSpace: FlexibleSpaceBar(
               background: PlaylistHero(
                 playlist: currentPlaylist,
-                onLikeTap: () => _onLikeTap(ref, pl.likeId),
+                onActionTap: type == PlaylistType.custom
+                    ? () => showAddTracksBottomSheet(
+                          context: context,
+                          onSave: (tracks) => ref
+                              .read(customPlaylistControllerProvider(playlistId)
+                                  .notifier)
+                              .addTracks(tracks, name: pl.title),
+                        )
+                    : () => _onLikeTap(ref, pl.likeId),
                 onPlayTap: () {
                   final tracksValue = tracksState.mapOrNull(
                     data: (data) => data.tracks,

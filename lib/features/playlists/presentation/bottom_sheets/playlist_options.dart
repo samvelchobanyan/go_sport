@@ -24,7 +24,7 @@ void showPlaylistBottomSheet({required BuildContext context}) {
           children: [
             // Add to playlist
             ActionButton(
-              icon: 'assets/icons/plus.svg',
+              icon: 'assets/icons/plus_bg.svg',
               label: 'Add tracks',
               onTap: () {
                 Navigator.pop(context);

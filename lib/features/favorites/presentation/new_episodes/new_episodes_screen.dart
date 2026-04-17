@@ -74,7 +74,15 @@ class _NewEpisodesScreenState extends ConsumerState<NewEpisodesScreen> {
                   title: 'New Episodes',
                   subtitle: 'Episodes',
                   itemCount: episodes.length,
-                  actionIcon: SvgPicture.asset('assets/icons/play_blue.svg'),
+                  actionIcon: SvgPicture.asset(
+                    'assets/icons/play.svg',
+                    width: 20,
+                    height: 20,
+                    colorFilter: const ColorFilter.mode(
+                      DSColors.lime,
+                      BlendMode.srcIn,
+                    ),
+                  ),
                   onActionIconTap: () =>
                       _onPlayTap(ref, episodes, 'New Episodes', ''),
                 ),

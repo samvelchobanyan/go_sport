@@ -96,7 +96,7 @@ void showItemOptionsBottomSheet({
               children: [
                 // Add to playlist
                 _ActionButton(
-                  icon: 'assets/icons/plus.svg',
+                  icon: 'assets/icons/plus_bg.svg',
                   label: 'Add to playlist',
                   onTap: () {
                     Navigator.pop(context);
