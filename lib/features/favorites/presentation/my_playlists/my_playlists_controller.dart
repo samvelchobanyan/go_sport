@@ -47,6 +47,22 @@ class MyPlaylistsNotifier extends Notifier<MyPlaylistsState> {
     state = state.copyWith(playlists: []);
     await loadFavorites();
   }
+
+  void removePlaylist(String id) {
+    final updated = state.playlists.where((p) => p.id != id).toList();
+    state = state.copyWith(playlists: updated);
+  }
+
+  void addPlaylist(Playlist playlist) {
+    state = state.copyWith(playlists: [playlist, ...state.playlists]);
+  }
+
+  void updatePlaylist(Playlist playlist) {
+    final updated = state.playlists.map((p) {
+      return p.id == playlist.id ? playlist : p;
+    }).toList();
+    state = state.copyWith(playlists: updated);
+  }
 }
 
 final myPlaylistsStateProvider =

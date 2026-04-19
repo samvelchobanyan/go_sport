@@ -23,7 +23,7 @@ class MyPlaylistsScreen extends ConsumerWidget {
       onSave: (name) async {
         final repo = ref.read(customPlaylistRepositoryProvider);
         final playlist = await repo.createCustomPlaylist(name);
-        ref.read(myPlaylistsStateProvider.notifier).refresh();
+        ref.read(myPlaylistsStateProvider.notifier).addPlaylist(playlist);
         if (context.mounted) {
           context.push('/music/playlist/${playlist.id}?type=custom', extra: playlist);
         }
@@ -106,11 +106,7 @@ class MyPlaylistsScreen extends ConsumerWidget {
       itemBuilder: (context, index) {
         final playlist = playlists[index];
         return PlaylistTile(
-          id: playlist.id,
-          imageUrl: playlist.imageUrl,
-          title: playlist.title,
-          trackCount: playlist.trackCount,
-          type: playlist.type,
+          playlist: playlist,
         );
       },
     );

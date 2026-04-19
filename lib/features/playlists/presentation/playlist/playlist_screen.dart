@@ -1,21 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/domain/entities/playlist.dart';
 import 'package:go_sport/domain/entities/track.dart';
-import 'package:go_sport/domain/state/featured_playlists_state.dart';
 import 'package:go_sport/domain/state/player_state.dart';
 import 'package:go_sport/features/shared_widgets/dotted_divider.dart';
 
 import 'custom_playlist_controller.dart';
 import 'playlist_controller.dart';
+import '../bottom_sheets/add_to_playlist_bottom_sheet.dart';
 import '../bottom_sheets/add_tracks_bottom_sheet.dart';
+import '../bottom_sheets/playlist_options.dart';
+import '../../../shared_widgets/bottom_pop_ups/delete_confirm.dart';
+import '../bottom_sheets/rename_playlist.dart';
 import '../widgets/playlist_hero.dart';
 import '../widgets/playlist_screen_skeleton.dart';
+import '../../../shared_widgets/bottom_pop_ups/track_options.dart';
 import '../../../shared_widgets/track_tile.dart';
+import '../edit_playlist/edit_playlist_screen.dart';
 
-class PlaylistScreen extends ConsumerWidget {
+class PlaylistScreen extends ConsumerStatefulWidget {
   final String playlistId;
   final PlaylistType type;
   final Playlist? playlist;
@@ -26,6 +32,27 @@ class PlaylistScreen extends ConsumerWidget {
     this.type = PlaylistType.featured,
     this.playlist,
   });
+
+  @override
+  ConsumerState<PlaylistScreen> createState() => _PlaylistScreenState();
+}
+
+class _PlaylistScreenState extends ConsumerState<PlaylistScreen> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (widget.type == PlaylistType.featured) {
+        ref
+            .read(playlistControllerProvider(widget.playlistId).notifier)
+            .init(widget.playlist);
+      } else {
+        ref
+            .read(customPlaylistControllerProvider(widget.playlistId).notifier)
+            .init(widget.playlist);
+      }
+    });
+  }
 
   void _onTrackTap(
     WidgetRef ref,
@@ -39,7 +66,7 @@ class PlaylistScreen extends ConsumerWidget {
         .playQueue(
           tracks,
           source: QueueSource.playlist(
-            id: playlistId,
+            id: widget.playlistId,
             title: playlistTitle,
             imageUrl: playlistImageUrl,
           ),
@@ -47,9 +74,31 @@ class PlaylistScreen extends ConsumerWidget {
         );
   }
 
-  void _onTrackMenuTap(int index) {
-    // TODO: Show track menu
-    debugPrint('Track menu tapped at index: $index');
+  void _onTrackMenuTap(Track track) {
+    showTrackOptionsBottomSheet(
+      context: context,
+      imageUrl: track.imageUrl ?? '',
+      title: track.title,
+      subtitle: track.artistName,
+      onAddToPlaylist: () => showAddToPlaylistBottomSheet(
+        context: context,
+        track: track,
+      ),
+      onRemoveFromPlaylist: widget.type == PlaylistType.custom
+          ? () => showDeleteConfirmBottomSheet(
+                context: context,
+                text: 'Are you sure you want to delete this track from the playlist?',
+                onConfirm: () {
+                  ref
+                      .read(customPlaylistControllerProvider(widget.playlistId).notifier)
+                      .removeTrack(track.id);
+                  ref
+                      .read(customPlaylistControllerProvider(widget.playlistId).notifier)
+                      .save();
+                },
+              )
+          : null,
+    );
   }
 
   void _onPlayTap(
@@ -58,6 +107,7 @@ class PlaylistScreen extends ConsumerWidget {
     String playlistTitle,
     String playlistImageUrl,
   ) {
+    // skip if empty
     if (tracks.isEmpty) return;
 
     ref
@@ -65,7 +115,7 @@ class PlaylistScreen extends ConsumerWidget {
         .playQueue(
           tracks,
           source: QueueSource.playlist(
-            id: playlistId,
+            id: widget.playlistId,
             title: playlistTitle,
             imageUrl: playlistImageUrl,
           ),
@@ -74,23 +124,28 @@ class PlaylistScreen extends ConsumerWidget {
 
   void _onLikeTap(WidgetRef ref, String? likeId) {
     ref
-        .read(playlistControllerProvider(playlistId).notifier)
+        .read(playlistControllerProvider(widget.playlistId).notifier)
         .toggleLike(likeId);
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final Playlist? currentPlaylist;
-    if (type == PlaylistType.custom) {
-      currentPlaylist = playlist;
-    } else {
-      final playlistsState = ref.watch(featuredPlaylistsStateProvider);
-      currentPlaylist = playlistsState.getPlaylist(playlistId);
-    }
+  Widget build(BuildContext context) {
+    final tracksState = widget.type == PlaylistType.featured
+        ? ref.watch(playlistControllerProvider(widget.playlistId))
+        : ref.watch(customPlaylistControllerProvider(widget.playlistId));
 
-    debugPrint('PlaylistScreen: type=$type, id=$playlistId, playlist=$currentPlaylist');
+    final currentPlaylist = tracksState.mapOrNull(
+          data: (data) => data.playlist,
+        ) ??
+        widget.playlist;
 
     if (currentPlaylist == null) {
+      if (tracksState is PlaylistDetailsLoading) {
+        return const Scaffold(
+          backgroundColor: DSColors.white,
+          body: PlaylistScreenSkeleton(),
+        );
+      }
       return Scaffold(
         backgroundColor: DSColors.white,
         appBar: AppBar(
@@ -106,11 +161,6 @@ class PlaylistScreen extends ConsumerWidget {
     }
 
     final pl = currentPlaylist;
-
-    final tracksState = type == PlaylistType.featured
-        ? ref.watch(playlistControllerProvider(playlistId))
-        : ref.watch(customPlaylistControllerProvider(playlistId));
-
     final screenHeight = MediaQuery.of(context).size.height;
     final expandedHeight = screenHeight * 0.5;
 
@@ -141,35 +191,98 @@ class PlaylistScreen extends ConsumerWidget {
               onPressed: () => context.pop(),
             ),
             actions: [
-              IconButton(
-                icon: Container(
-                  width: 36,
-                  height: 36,
-                  decoration: BoxDecoration(
-                    color: DSColors.black.withOpacity(0.3),
-                    shape: BoxShape.circle,
+              if (widget.type == PlaylistType.custom)
+                IconButton(
+                  icon: Container(
+                    width: 36,
+                    height: 36,
+                    decoration: BoxDecoration(
+                      color: DSColors.black.withOpacity(0.3),
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(
+                      Icons.settings,
+                      color: DSColors.white,
+                      size: 20,
+                    ),
                   ),
-                  child: const Icon(
-                    Icons.share,
-                    color: DSColors.white,
-                    size: 20,
+                  onPressed: () {
+                    final pl = currentPlaylist;
+                    final currentTracks = tracksState.mapOrNull(data: (d) => d.tracks) ?? [];
+                    showPlaylistBottomSheet(
+                      context: context,
+                      onAddTracks: () => showAddTracksBottomSheet(
+                        context: context,
+                        onSave: (tracks) => ref
+                            .read(customPlaylistControllerProvider(widget.playlistId).notifier)
+                            .addTracks(tracks),
+                      ),
+                      onRename: () => showRenamePlaylistBottomSheet(
+                        context: context,
+                        initialName: pl.title,
+                        onSave: (newName) => ref
+                            .read(customPlaylistControllerProvider(widget.playlistId).notifier)
+                            .rename(newName),
+                      ),
+                      onEdit: () {
+                        context.pop();
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => EditPlaylistScreen(
+                              playlist: pl,
+                              tracks: currentTracks,
+                            ),
+                          ),
+                        );
+                      },
+                      onDelete: () => showDeleteConfirmBottomSheet(
+                        context: context,
+                        text: 'Are you sure you want to delete this playlist?',
+                        onConfirm: () async {
+                          await ref
+                              .read(customPlaylistControllerProvider(widget.playlistId).notifier)
+                              .delete();
+                          if (context.mounted) context.pop();
+                        },
+                      ),
+                    );
+                  },
+                )
+              else
+                IconButton(
+                  icon: Container(
+                    width: 36,
+                    height: 36,
+                    decoration: BoxDecoration(
+                      color: DSColors.black.withOpacity(0.3),
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(
+                      Icons.share,
+                      color: DSColors.white,
+                      size: 20,
+                    ),
                   ),
+                  onPressed: () {
+                    // TODO: Share playlist
+                  },
                 ),
-                onPressed: () {
-                  // TODO: Share playlist
-                },
-              ),
             ],
             flexibleSpace: FlexibleSpaceBar(
               background: PlaylistHero(
-                playlist: currentPlaylist,
-                onActionTap: type == PlaylistType.custom
+                playlist: pl,
+                showPlayButton: tracksState.mapOrNull(
+                      data: (data) => data.tracks.isNotEmpty,
+                    ) ??
+                    false,
+                onActionTap: widget.type == PlaylistType.custom
                     ? () => showAddTracksBottomSheet(
                           context: context,
                           onSave: (tracks) => ref
-                              .read(customPlaylistControllerProvider(playlistId)
+                              .read(customPlaylistControllerProvider(widget.playlistId)
                                   .notifier)
-                              .addTracks(tracks, name: pl.title),
+                              .addTracks(tracks),
                         )
                     : () => _onLikeTap(ref, pl.likeId),
                 onPlayTap: () {
@@ -199,7 +312,12 @@ class PlaylistScreen extends ConsumerWidget {
             ),
           ),
           tracksState.when(
-            loading: () => const PlaylistScreenSkeleton(),
+            loading: () => const SliverToBoxAdapter(
+              child: Padding(
+                padding: EdgeInsets.only(top: 24),
+                child: Center(child: CircularProgressIndicator()),
+              ),
+            ),
             error: (message) => SliverFillRemaining(
               hasScrollBody: false,
               child: Center(
@@ -213,14 +331,14 @@ class PlaylistScreen extends ConsumerWidget {
                     const SizedBox(height: 16),
                     ElevatedButton(
                       onPressed: () {
-                        if (type == PlaylistType.featured) {
+                        if (widget.type == PlaylistType.featured) {
                           ref
-                              .read(playlistControllerProvider(playlistId).notifier)
-                              .loadTracks();
+                              .read(playlistControllerProvider(widget.playlistId).notifier)
+                              .loadFull();
                         } else {
                           ref
-                              .read(customPlaylistControllerProvider(playlistId).notifier)
-                              .loadTracks();
+                              .read(customPlaylistControllerProvider(widget.playlistId).notifier)
+                              .loadFull();
                         }
                       },
                       child: const Text('Retry'),
@@ -229,7 +347,35 @@ class PlaylistScreen extends ConsumerWidget {
                 ),
               ),
             ),
-            data: (tracks) {
+            data: (playlistData, tracks) {
+              if (tracks.isEmpty && widget.type == PlaylistType.custom) {
+                return SliverFillRemaining(
+                  hasScrollBody: false,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Stack(
+                      fit: StackFit.expand,
+                      children: [
+                        Image.asset(
+                          'assets/images/empty_playlist.png',
+                          fit: BoxFit.cover,
+                        ),
+                        Positioned(
+                          top: 40,
+                          left: 0,
+                          right: 0,
+                          child: Text(
+                            'Start adding songs\nthey\'ll appear here.',
+                            textAlign: TextAlign.center,
+                            style: context.subtitleMBold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              }
+
               final playerState = ref.watch(playerStateProvider);
               final playingTrackId = playerState.currentTrack?.id;
 
@@ -257,7 +403,7 @@ class PlaylistScreen extends ConsumerWidget {
                             pl.title,
                             pl.imageUrl,
                           ),
-                          onMenuTap: () => _onTrackMenuTap(index),
+                          onMenuTap: _onTrackMenuTap,
                         ),
                         if (index < tracks.length - 1)
                           const Padding(

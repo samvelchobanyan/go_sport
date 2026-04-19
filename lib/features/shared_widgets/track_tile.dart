@@ -3,13 +3,12 @@ import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/domain/entities/track.dart';
-import 'package:go_sport/features/shared_widgets/bottom_pop_ups/track_options.dart';
 import 'package:go_sport/shared/widgets/equalizer_indicator.dart';
 
 class TrackTile extends StatelessWidget {
   final Track track;
   final VoidCallback onTap;
-  final VoidCallback onMenuTap;
+  final void Function(Track track) onMenuTap;
   final bool? isPlaying;
 
   const TrackTile({
@@ -62,15 +61,7 @@ class TrackTile extends StatelessWidget {
 
             // Menu button
             GestureDetector(
-              onTap: () {
-                onMenuTap(); //in case something different should happen
-                showTrackOptionsBottomSheet(
-                  context: context,
-                  imageUrl: track.imageUrl ?? '',
-                  title: track.title,
-                  subtitle: track.artistName,
-                );
-              },
+              onTap: () => onMenuTap(track),
               behavior: HitTestBehavior.opaque,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),

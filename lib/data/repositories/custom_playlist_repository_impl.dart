@@ -24,11 +24,13 @@ class CustomPlaylistRepositoryImpl implements CustomPlaylistRepository {
     return data.map((e) {
       final entry = e as Map<String, dynamic>;
       final tracks = entry['Tracks'] as List<dynamic>? ?? [];
+      final trackDocIds = tracks.map((t) => t['documentId'] as String).toList();
       return Playlist(
         id: entry['documentId'] as String,
         title: entry['Name'] as String,
         imageUrl: _customPlaylistCover,
         trackCount: tracks.length,
+        trackDocIds: trackDocIds,
         type: PlaylistType.custom,
       );
     }).toList();
@@ -93,6 +95,7 @@ class CustomPlaylistRepositoryImpl implements CustomPlaylistRepository {
       title: entry['Name'] as String,
       imageUrl: _customPlaylistCover,
       trackCount: trackDocIds.length,
+      trackDocIds: trackDocIds,
       type: PlaylistType.custom,
     );
   }

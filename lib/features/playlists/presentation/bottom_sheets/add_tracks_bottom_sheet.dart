@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
+import 'package:go_sport/features/shared_widgets/bottom_pop_ups/bottom_sheet_container.dart';
 import 'package:go_sport/domain/entities/track.dart';
 import 'package:go_sport/features/playlists/presentation/bottom_sheets/add_tracks_controller.dart';
 import 'package:go_sport/features/playlists/presentation/widgets/add_track_tile.dart';
@@ -15,6 +16,7 @@ void showAddTracksBottomSheet({
   showModalBottomSheet(
     context: context,
     isScrollControlled: true,
+    useSafeArea: true,
     backgroundColor: DSColors.transparent,
     builder: (context) => _AddTracksSheet(onSave: onSave),
   );
@@ -58,33 +60,15 @@ class _AddTracksSheetState extends ConsumerState<_AddTracksSheet> {
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(addTracksControllerProvider);
+    final topPadding = MediaQuery.paddingOf(context).top;
 
     return Padding(
       padding: EdgeInsets.only(bottom: MediaQuery.viewInsetsOf(context).bottom),
-      child: Container(
-        height: MediaQuery.of(context).size.height * 0.9,
-        decoration: const BoxDecoration(
-          color: DSColors.white,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(DSRadius.l),
-            topRight: Radius.circular(DSRadius.l),
-          ),
-        ),
+      child: BottomSheetContainer(
+        height: MediaQuery.of(context).size.height - topPadding - 24,
+        padding: EdgeInsets.zero,
         child: Column(
         children: [
-          // Drag handle
-          Padding(
-            padding: const EdgeInsets.only(top: 12, bottom: 8),
-            child: Container(
-              width: 40,
-              height: 4,
-              decoration: BoxDecoration(
-                color: DSColors.gray20,
-                borderRadius: BorderRadius.circular(2),
-              ),
-            ),
-          ),
-
           // Header
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -222,4 +206,5 @@ class _AddTracksSheetState extends ConsumerState<_AddTracksSheet> {
     ),
     );
   }
+
 }

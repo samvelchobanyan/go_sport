@@ -18,6 +18,7 @@ class SearchRepositoryImpl implements SearchRepository {
       '/api/tracks',
       queryParameters: {
         'filters[Name][\$containsi]': query,
+        'populate[File][populate]': '*',
         'populate[Album][populate][Cover][populate]': '*',
         'populate[Artists][fields][0]': 'Name',
         'pagination[page]': page,

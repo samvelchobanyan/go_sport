@@ -9,12 +9,14 @@ class PlaylistHero extends StatelessWidget {
   final Playlist playlist;
   final VoidCallback onActionTap;
   final VoidCallback onPlayTap;
+  final bool showPlayButton;
 
   const PlaylistHero({
     super.key,
     required this.playlist,
     required this.onActionTap,
     required this.onPlayTap,
+    this.showPlayButton = true,
   });
 
   @override
@@ -104,26 +106,28 @@ class PlaylistHero extends StatelessWidget {
                         ),
                       ),
                     ),
-                    const SizedBox(width: 16),
-                    // Play button
-                    GestureDetector(
-                      onTap: onPlayTap,
-                      child: Container(
-                        width: 48,
-                        height: 48,
-                        decoration: const BoxDecoration(
-                          color: DSColors.lime,
-                          shape: BoxShape.circle,
-                        ),
-                        child: const Center(
-                          child: Icon(
-                            Icons.play_arrow,
-                            color: DSColors.black,
-                            size: 32,
+                    if (showPlayButton) ...[
+                      const SizedBox(width: 16),
+                      // Play button
+                      GestureDetector(
+                        onTap: onPlayTap,
+                        child: Container(
+                          width: 48,
+                          height: 48,
+                          decoration: const BoxDecoration(
+                            color: DSColors.lime,
+                            shape: BoxShape.circle,
+                          ),
+                          child: const Center(
+                            child: Icon(
+                              Icons.play_arrow,
+                              color: DSColors.black,
+                              size: 32,
+                            ),
                           ),
                         ),
                       ),
-                    ),
+                    ],
                   ],
                 ),
               ],

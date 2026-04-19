@@ -85,12 +85,15 @@
   - `populate[Playlist][populate][Cover][populate]=*`.
   - Для каждой записи: взять вложенный `Playlist`, проставить `likeId = documentId` родителя, `isLiked = true`, `type = PlaylistType.featured`.
 
-### 3. Domain: `Playlist.type`
+### 3. Domain: `Playlist.type` + `trackDocIds`
 
 - В `lib/domain/entities/playlist.dart` добавить `enum PlaylistType { featured, custom }` (отдельный файл или inline).
-- В `Playlist` добавить `@Default(PlaylistType.featured) PlaylistType type`.
+- В `Playlist` добавить:
+  - `@Default(PlaylistType.featured) PlaylistType type`;
+  - `@Default(<String>[]) List<String> trackDocIds` — нужен для picker'а `AddToPlaylists` (проверка «трек уже внутри») и для PUT без дополнительных GET.
 - Перегенерировать freezed (`build_runner`).
-- В `PlaylistDto.toDomain()` — проставить `type: PlaylistType.featured`.
+- `PlaylistDto.toDomain()` — `type: PlaylistType.featured`, `trackDocIds: const []`.
+- `CustomPlaylistDto.toDomain()` — `type: PlaylistType.custom`, `trackDocIds: Tracks.map((t) => t.documentId).toList()`.
 
 ### 4. Новый: `CustomPlaylistRepository`
 
@@ -117,11 +120,16 @@
 - Файл: `lib/features/playlists/presentation/playlist/custom_playlist_controller.dart`.
 - State (sealed freezed): `loading | data(playlist, tracks) | error(message)`.
 - Методы: `loadTracks`, `addTracks(List<String> ids)`, `removeTrack(String id)`, `reorder(int from, int to)`, `rename(String newName)`, `delete()`, `save()`.
-- `rename` → сразу PUT. `delete` → сразу DELETE. `addTracks` из AddTracks sheet → сразу PUT.
-- `reorder` и `removeTrack` — накапливаются локально, PUT только на явный `save()` из `EditPlaylistScreen`.
+- API‑метод один и тот же (`PUT {Name, Tracks: [...]}`) — разница только в том, **когда** мы дёргаем `save()`:
+  - `rename` → меняет локальный name + сразу `save()`.
+  - `addTracks` (из AddTracks sheet) → добавляет в конец локально + сразу `save()`.
+  - `delete` → сразу DELETE (отдельный запрос).
+  - В `EditPlaylistScreen`: `reorder` / `removeTrack` мутируют только локальный state, `save()` вызывается один раз на Done.
+  - В `track_options → Remove from this playlist`: `removeTrack(id)` + сразу `save()` (без Done).
+- Дубликаты треков в Add Tracks разрешены — `+` всегда активен, ничего не проверяем.
 
 **5.3. `MyPlaylistsNotifier`** — переписать (`lib/features/favorites/presentation/my_playlists/my_playlists_controller.dart`).
-- `Future.wait([featuredRepo.getLikedFeaturedPlaylists(), customRepo.getCustomPlaylists()])`, мерж + сортировка по `updatedAt` descending.
+- `Future.wait([featuredRepo.getLikedFeaturedPlaylists(), customRepo.getCustomPlaylists()])`, мерж + сортировка по `createdAt` descending (не `updatedAt`, чтобы после add/remove track плейлист не «прыгал» наверх).
 - Рефреш после create/delete (`ref.invalidate` или `refresh()` метод).
 - Pagination пока убрать.
 
@@ -151,7 +159,7 @@
 - Аппбар: back + title + checkmark (Done).
 - `ReorderableListView` с трек‑тайлами без обложки (видно на скрине — только корзина, title/artist, ручка).
 - Done → `controller.save()` → `context.pop()`.
-- Back без сохранения откатывает локальные изменения (без discard‑диалога — его дизайн не оговорен).
+- Back: если есть локальные изменения (reorder / removed tracks) — показать confirm‑диалог «Discard changes?». Если изменений нет — выходим молча.
 
 **7.4. `MyPlaylistsScreen`** (`lib/features/favorites/presentation/my_playlists/my_playlists_screen.dart`)
 - Вставить `actionIcon` в `MyCategoriesHeader` — SVG `+`.
@@ -166,16 +174,18 @@
 - `playlist_options.dart`
 - `delete.dart`
 
-**Остаются в shared:**
-- `action_button.dart` (reusable).
-- `track_options.dart` (не наш случай).
+**Остаются в shared (с доработкой):**
+- `action_button.dart` (reusable, без изменений).
+- `track_options.dart` — добавить параметр `String? currentCustomPlaylistId` + коллбэк `VoidCallback? onRemoveFromPlaylist`. Когда `currentCustomPlaylistId != null` — показываем пункт `Remove from this playlist` и меняем `Add to playlist` на `Add to another playlist` (screens 5 vs 6). Один файл, параметризованный, без двух вариантов.
 
-**Новый:**
-- `add_tracks.dart` — поиск + список favorite tracks + "+" → Save.
+**Новые (в `lib/features/playlists/presentation/bottom_sheets/`):**
+- `add_tracks.dart` — поиск + список favorite tracks + "+" → Save. Новые треки дописываются в конец. Дубликаты разрешены.
+- `add_to_playlists.dart` — picker для `track_options → Add to (another) playlist` (screen 2). Мульти‑select чекбоксами, `+ Create a playlist` сверху. Плейлисты, которые уже содержат трек, приходят **пре‑отмеченными и disabled** (вариант a — picker только добавляет, не убирает). Save → параллельно по одному PUT на каждый выбранный плейлист с `Tracks: [...existingTrackDocIds, newTrackId]` (берём `trackDocIds` из `Playlist` entity, без дополнительных GET). `+ Create` внутри picker'а: открывается Create sheet → POST → picker остаётся открытым, новый плейлист появляется в списке **пре‑отмеченным**, пользователь жмёт Save общим действием.
+  - Контроллер: решим по ходу (возможно локальный state через `useState` / отдельный `addToPlaylistsControllerProvider(trackDocId)`).
 
 **Доработка всех переехавших:**
-- `create_playlist` — `TextEditingController`, `onSave(String name)`.
-- `rename_playlist` — `initialName`, `onSave(String newName)`, Cancel закрывает.
+- `create_playlist` — `TextEditingController`, `onSave(String name)`. Валидация: trim, пустая строка → кнопка Create disabled.
+- `rename_playlist` — `initialName`, `onSave(String newName)`, Cancel закрывает. Валидация та же.
 - `playlist_options` — 4 callbacks (`onAddTracks`, `onEdit`, `onRename`, `onDelete`).
 - `delete` — `onConfirm`, закрывать sheet на обеих кнопках.
 
@@ -189,17 +199,31 @@
 
 `docs/ARCHITECTURE_SPEC.md` — обновить упоминания `playlist_repository.dart` (строки 142, 181, 276). Опционально.
 
+## Решения (2026-04-16)
+
+- **`track_options`** — один файл с параметром `currentCustomPlaylistId` (см. секцию 8).
+- **Add to another playlist picker** — новый bottomsheet `add_to_playlists.dart`; мульти‑select; пре‑отмеченные disabled; `+ Create` не закрывает picker (см. секцию 8).
+- **`trackDocIds`** — поле в `Playlist` entity, заполняется из GET списка custom плейлистов (см. секцию 3).
+- **Дубликаты треков** — разрешены.
+- **Сортировка My Playlists** — `createdAt desc`.
+- **Discard confirm** в Edit — показываем только если есть локальные изменения.
+- **Empty state custom playlist** — Add Tracks открывается только через меню / hero `+`, без кнопки внутри empty state.
+- **Default cover** — дефолтный asset для всех custom плейлистов (коллаж не делаем).
+- **Добавление новых треков в Add Tracks** — в конец списка.
+- **После Create** — `/music/playlist/:id?type=custom` с empty state, Add Tracks автоматически не открываем.
+- **Share track** — вне scope текущей итерации, реализуем позже.
+
 ## Открытые вопросы (не блокируют старт)
 
 1. **Источник дефолтного списка в `AddTracksBottomSheet`** — ждём уточнение от дизайнеров (вероятно `/api/user-tracks` = favorite tracks).
-2. **Default cover для custom‑плейлиста** — asset уточнить; пока placeholder.
-3. **Поведение "+" при повторном тапе в Add Tracks** — превращается в checkmark/минус, или дизабл. Уточнить.
-4. **Обработка ошибок PUT/POST/DELETE** — повторить паттерн из `toggleLike`.
+2. **Default cover asset** — уточнить конкретный файл; пока placeholder.
+3. **Обработка ошибок PUT/POST/DELETE** — обсудить отдельно; базово повторяем паттерн из `toggleLike`.
+4. **Loading‑UX во время мутаций** (блокировка UI / тост / skeleton) — обсудить отдельно.
 
 ## Verification
 
 1. **Codegen/analyze:**
-   - `flutter pub run build_runner build --delete-conflicting-outputs` (после Playlist.type).
+   - `dart run build_runner build --delete-conflicting-outputs` (после Playlist.type).
    - `flutter analyze` — 0 ошибок по изменённым файлам.
 
 2. **Ручные сценарии:**
@@ -229,6 +253,7 @@
 7. Переписать `MyPlaylistsNotifier` + `MyPlaylistsScreen` + "+" + Create sheet.
 8. `PlaylistScreen` — ветвление по type, hero add‑кнопка, меню, empty state.
 9. `EditPlaylistScreen`.
-10. Переезд бот‑шитов + доработка callbacks + новый `add_tracks.dart`.
-11. `PlaylistTile` с type.
-12. Прогон сценариев.
+10. Переезд бот‑шитов + доработка callbacks + новые `add_tracks.dart` и `add_to_playlists.dart`.
+11. Доработка `track_options` (параметр `currentCustomPlaylistId` + `onRemoveFromPlaylist`), подключение к нужным экранам.
+12. `PlaylistTile` с type.
+13. Прогон сценариев.

@@ -8,18 +8,10 @@ import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/domain/entities/playlist.dart';
 
 class PlaylistTile extends StatelessWidget {
-  final String id;
-  final String imageUrl;
-  final String title;
-  final int trackCount;
-  final PlaylistType type;
+  final Playlist playlist;
 
   const PlaylistTile({
-    required this.id,
-    required this.imageUrl,
-    required this.title,
-    required this.trackCount,
-    this.type = PlaylistType.featured,
+    required this.playlist,
     super.key,
   });
 
@@ -27,14 +19,8 @@ class PlaylistTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => context.push(
-        '/music/playlist/$id?type=${type.name}',
-        extra: Playlist(
-          id: id,
-          title: title,
-          imageUrl: imageUrl,
-          trackCount: trackCount,
-          type: type,
-        ),
+        '/music/playlist/${playlist.id}?type=${playlist.type.name}',
+        extra: playlist,
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -55,24 +41,31 @@ class PlaylistTile extends StatelessWidget {
               ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(DSRadius.s),
-                child: CachedNetworkImage(
-                  imageUrl: imageUrl,
-                  width: 50,
-                  height: 50,
-                  fit: BoxFit.cover,
-                  placeholder: (context, url) =>
-                      Container(width: 50, height: 50, color: DSColors.divider),
-                  errorWidget: (context, url, error) => Container(
-                    width: 50,
-                    height: 50,
-                    color: DSColors.gray20,
-                    child: const Icon(
-                      Icons.error,
-                      color: DSColors.gray50,
-                      size: 28,
-                    ),
-                  ),
-                ),
+                child: playlist.type == PlaylistType.custom
+                    ? Image.asset(
+                        playlist.imageUrl,
+                        width: 50,
+                        height: 50,
+                        fit: BoxFit.cover,
+                      )
+                    : CachedNetworkImage(
+                        imageUrl: playlist.imageUrl,
+                        width: 50,
+                        height: 50,
+                        fit: BoxFit.cover,
+                        placeholder: (context, url) =>
+                            Container(width: 50, height: 50, color: DSColors.divider),
+                        errorWidget: (context, url, error) => Container(
+                          width: 50,
+                          height: 50,
+                          color: DSColors.gray20,
+                          child: const Icon(
+                            Icons.error,
+                            color: DSColors.gray50,
+                            size: 28,
+                          ),
+                        ),
+                      ),
               ),
             ),
             const SizedBox(width: 12),
@@ -83,7 +76,7 @@ class PlaylistTile extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    title,
+                    playlist.title,
                     style: context.subtitleM,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
@@ -103,7 +96,7 @@ class PlaylistTile extends StatelessWidget {
                       ),
                     ),
                     child: Text(
-                      '$trackCount track${trackCount != 1 ? 's' : ''}',
+                      '${playlist.trackCount} track${playlist.trackCount != 1 ? 's' : ''}',
                       style: context.fieldLabel?.copyWith(
                         color: DSColors.orange,
                       ),
