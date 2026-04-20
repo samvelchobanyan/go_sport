@@ -193,4 +193,5 @@ class AuthRepositoryImpl implements AuthRepository {
       options: Options(extra: {'public': true}),
     );
   }
+
 }

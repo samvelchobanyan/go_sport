@@ -11,6 +11,7 @@ import 'package:go_sport/features/profile/presentation/widgets/social_media_butt
 import 'package:go_sport/features/shared_widgets/dotted_divider.dart';
 import 'package:go_sport/features/shared_widgets/user_avatar_button.dart';
 import 'package:go_router/go_router.dart';
+import 'package:go_sport/core/navigation/routes.dart';
 
 class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({super.key});
@@ -95,7 +96,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                   children: [
                     // Clickable Banner
                     GestureDetector(
-                      onTap: () => context.push('/aaa'),
+                      onTap: () => context.push('profile/for-business'),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(DSRadius.s),
                         child: Stack(

@@ -1,6 +1,7 @@
 class AppRoutes {
   static const String login = '/login';
   static const String profile = '/profile';
+  static const String profileForBusiness = '/profile/for-business';
   static const String home = '/';
   static const String homeStory = '/story/:id';
   static const String homeNews = '/news';

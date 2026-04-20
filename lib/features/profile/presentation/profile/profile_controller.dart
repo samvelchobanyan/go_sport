@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:go_sport/core/auth/auth_state.dart';
 import 'package:go_sport/core/di/repository_providers.dart';
 import 'package:go_sport/domain/repositories/auth_repository.dart';
 
@@ -27,7 +28,7 @@ class ProfileController extends AutoDisposeNotifier<ProfileState> {
     state = state.copyWith(isLoading: true, error: null);
 
     try {
-      await _authRepository.logout();
+      await ref.read(authProvider.notifier).logout();
 
       state = state.copyWith(isLoading: false, isAuthenticated: false);
     } catch (e) {

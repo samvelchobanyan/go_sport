@@ -16,6 +16,7 @@ import 'package:go_sport/features/auth/forgot_password/presentation/forgot_passw
 import 'package:go_sport/features/favorites/presentation/my_albums/my_albums_screen.dart';
 import 'package:go_sport/features/favorites/presentation/my_artists/my_artists_screen.dart';
 import 'package:go_sport/features/favorites/presentation/my_playlists/my_playlists_screen.dart';
+import 'package:go_sport/features/for_business/for_business_screen.dart';
 import 'package:go_sport/features/home/presentation/home/home_screen.dart';
 import 'package:go_sport/features/auth/login/presentation/login/login_screen.dart';
 import 'package:go_sport/features/auth/registration_phone/presentation/registration_phone_screen.dart';
@@ -135,6 +136,12 @@ GoRouter createAppRouter(TokenStorage tokenStorage) {
         path: AppRoutes.profile,
         pageBuilder: (context, state) =>
             fadeSlidePage(state: state, child: const ProfileScreen()),
+        routes: [
+          GoRoute(
+            path: 'for-business',
+            builder: (context, state) => const ForBusinessScreen(),
+          ),
+        ],
       ),
 
       GoRoute(
