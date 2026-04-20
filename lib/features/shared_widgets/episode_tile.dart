@@ -59,7 +59,7 @@ class EpisodeTile extends StatelessWidget {
                 borderRadius: BorderRadius.circular(DSRadius.xs),
                 boxShadow: [
                   BoxShadow(
-                    color: DSColors.black.withOpacity(0.7),
+                    color: DSColors.black.withValues(alpha: 0.7),
                     blurRadius: 6,
                     spreadRadius: -2, // prevents shadow from appearing on sides
                     offset: const Offset(0, 4), // pushes shadow down

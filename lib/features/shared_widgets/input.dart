@@ -38,7 +38,7 @@ class CustomInput extends StatelessWidget {
         // Input Field Container
         Container(
           decoration: BoxDecoration(
-            color: DSColors.blue.withOpacity(0.07),
+            color: DSColors.blue.withValues(alpha: 0.07),
             borderRadius: BorderRadius.circular(DSRadius.s),
             border: Border.all(
               color: Colors.transparent,

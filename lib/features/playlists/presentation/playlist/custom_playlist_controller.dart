@@ -3,7 +3,7 @@ import 'package:go_sport/core/di/repository_providers.dart';
 import 'package:go_sport/domain/entities/playlist.dart';
 import 'package:go_sport/domain/entities/track.dart';
 import 'package:go_sport/domain/repositories/custom_playlist_repository.dart';
-import 'package:go_sport/features/favorites/presentation/my_playlists/my_playlists_controller.dart';
+import 'package:go_sport/domain/state/my_playlists_state.dart';
 
 import 'playlist_controller.dart';
 

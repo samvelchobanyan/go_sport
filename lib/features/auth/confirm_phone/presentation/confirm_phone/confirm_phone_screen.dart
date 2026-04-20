@@ -162,7 +162,7 @@ class _AuthNumberBox extends StatelessWidget {
           (MediaQuery.of(context).size.width - 80) / 5, // Auto-calculates width
       height: 56,
       decoration: BoxDecoration(
-        color: DSColors.blue.withOpacity(0.05),
+        color: DSColors.blue.withValues(alpha: 0.05),
         borderRadius: BorderRadius.circular(DSRadius.m),
       ),
       alignment: Alignment.center,

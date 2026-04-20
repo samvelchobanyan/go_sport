@@ -5,7 +5,7 @@ import 'package:go_sport/domain/entities/playlist.dart';
 import 'package:go_sport/domain/repositories/custom_playlist_repository.dart';
 import 'package:go_sport/domain/repositories/featured_playlist_repository.dart';
 
-part 'my_playlists_controller.freezed.dart';
+part 'my_playlists_state.freezed.dart';
 
 @freezed
 class MyPlaylistsState with _$MyPlaylistsState {
@@ -16,7 +16,7 @@ class MyPlaylistsState with _$MyPlaylistsState {
   }) = _MyPlaylistsState;
 }
 
-class MyPlaylistsNotifier extends Notifier<MyPlaylistsState> {
+class MyPlaylistsStateNotifier extends Notifier<MyPlaylistsState> {
   late final FeaturedPlaylistRepository _featuredRepo;
   late final CustomPlaylistRepository _customRepo;
 
@@ -66,6 +66,6 @@ class MyPlaylistsNotifier extends Notifier<MyPlaylistsState> {
 }
 
 final myPlaylistsStateProvider =
-    NotifierProvider<MyPlaylistsNotifier, MyPlaylistsState>(
-  MyPlaylistsNotifier.new,
+    NotifierProvider<MyPlaylistsStateNotifier, MyPlaylistsState>(
+  MyPlaylistsStateNotifier.new,
 );

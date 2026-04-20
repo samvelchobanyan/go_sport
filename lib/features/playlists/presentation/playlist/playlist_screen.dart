@@ -173,13 +173,13 @@ class _PlaylistScreenState extends ConsumerState<PlaylistScreen> {
             pinned: true,
             elevation: 0,
             scrolledUnderElevation: 0,
-            backgroundColor: DSColors.black.withOpacity(0.9),
+            backgroundColor: DSColors.black.withValues(alpha: 0.9),
             leading: IconButton(
               icon: Container(
                 width: 36,
                 height: 36,
                 decoration: BoxDecoration(
-                  color: DSColors.black.withOpacity(0.3),
+                  color: DSColors.black.withValues(alpha: 0.3),
                   shape: BoxShape.circle,
                 ),
                 child: const Icon(
@@ -197,7 +197,7 @@ class _PlaylistScreenState extends ConsumerState<PlaylistScreen> {
                     width: 36,
                     height: 36,
                     decoration: BoxDecoration(
-                      color: DSColors.black.withOpacity(0.3),
+                      color: DSColors.black.withValues(alpha: 0.3),
                       shape: BoxShape.circle,
                     ),
                     child: const Icon(
@@ -255,7 +255,7 @@ class _PlaylistScreenState extends ConsumerState<PlaylistScreen> {
                     width: 36,
                     height: 36,
                     decoration: BoxDecoration(
-                      color: DSColors.black.withOpacity(0.3),
+                      color: DSColors.black.withValues(alpha: 0.3),
                       shape: BoxShape.circle,
                     ),
                     child: const Icon(

@@ -27,7 +27,7 @@ class ArtistTile extends StatelessWidget {
                 shape: BoxShape.circle,
                 boxShadow: [
                   BoxShadow(
-                    color: DSColors.black.withOpacity(0.7),
+                    color: DSColors.black.withValues(alpha: 0.7),
                     blurRadius: 6,
                     spreadRadius: -2,
                     offset: const Offset(0, 4),

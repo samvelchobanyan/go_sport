@@ -125,9 +125,7 @@ class _MusicScreenState extends ConsumerState<MusicScreen> {
                     slivers: [
                       /// 🔹 AppBar
                       SliverAppBar(
-                        backgroundColor: Colors.white.withOpacity(
-                          appBarOpacity,
-                        ),
+                        backgroundColor: Colors.white.withValues(alpha: appBarOpacity),
                         elevation: 0,
                         pinned: true,
                         floating: true,

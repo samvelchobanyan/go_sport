@@ -49,42 +49,49 @@ class _AddToPlaylistBottomSheet extends ConsumerWidget {
         children: [
           // Шапка: Cancel - My Playlists - Save
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            padding: const EdgeInsets.fromLTRB(16, 0, 16, 14),
+            child: Stack(
+              alignment: Alignment.center,
               children: [
-                GestureDetector(
-                  onTap: state.isSaving ? null : () => Navigator.pop(context),
-                  child: Text(
-                    'Cancel',
-                    style: context.h3?.copyWith(
-                      color: state.isSaving ? DSColors.gray40 : DSColors.black,
-                    ),
-                  ),
-                ),
                 Text('My Playlists', style: context.h2),
-                GestureDetector(
-                  onTap: canSave
-                      ? () async {
-                          final success = await notifier.save();
-                          if (success && context.mounted) {
-                            Navigator.pop(context);
-                          }
-                        }
-                      : null,
-                  child: state.isSaving
-                      ? const SizedBox(
-                          width: 20,
-                          height: 20,
-                          child: CircularProgressIndicator(
-                              strokeWidth: 2, color: DSColors.blue),
-                        )
-                      : Text(
-                          'Save',
-                          style: context.h3?.copyWith(
-                            color: canSave ? DSColors.blue : DSColors.gray40,
-                          ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    GestureDetector(
+                      onTap: state.isSaving ? null : () => Navigator.pop(context),
+                      child: Text(
+                        'Cancel',
+                        style: context.subtitleM?.copyWith(
+                          color: state.isSaving ? DSColors.gray40 : DSColors.black,
                         ),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: canSave
+                          ? () async {
+                              final success = await notifier.save();
+                              if (success && context.mounted) {
+                                Navigator.pop(context);
+                              }
+                            }
+                          : null,
+                      child: state.isSaving
+                          ? const SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                color: DSColors.blue,
+                              ),
+                            )
+                          : Text(
+                              'Save',
+                              style: context.subtitleM?.copyWith(
+                                color: canSave ? DSColors.blue : DSColors.gray40,
+                              ),
+                            ),
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -92,7 +99,7 @@ class _AddToPlaylistBottomSheet extends ConsumerWidget {
 
           // Кнопка "+ Create a playlist"
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             child: SizedBox(
               width: double.infinity,
               height: 48,
@@ -102,7 +109,7 @@ class _AddToPlaylistBottomSheet extends ConsumerWidget {
                   debugPrint('Create playlist stub');
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: DSColors.blue.withOpacity(0.05),
+                  backgroundColor: DSColors.blue.withValues(alpha: 0.05),
                   elevation: 0,
                   shadowColor: Colors.transparent,
                   shape: RoundedRectangleBorder(
@@ -117,6 +124,8 @@ class _AddToPlaylistBottomSheet extends ConsumerWidget {
               ),
             ),
           ),
+
+          const SizedBox(height: 24),
 
           // Показываем ошибку, если есть
           if (state.error != null)
@@ -142,7 +151,7 @@ class _AddToPlaylistBottomSheet extends ConsumerWidget {
                       )
                     : ListView.builder(
                         itemCount: state.playlists.length,
-                        padding: const EdgeInsets.only(bottom: 24, top: 8),
+                        padding: const EdgeInsets.only(bottom: 24),
                         itemBuilder: (context, index) {
                           final playlist = state.playlists[index];
                           final isSelected = state.selectedIds.contains(playlist.id);

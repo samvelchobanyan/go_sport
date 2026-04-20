@@ -7,7 +7,7 @@ import 'package:go_sport/core/di/repository_providers.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/domain/entities/playlist.dart';
-import 'package:go_sport/features/favorites/presentation/my_playlists/my_playlists_controller.dart';
+import 'package:go_sport/domain/state/my_playlists_state.dart';
 import 'package:go_sport/features/playlists/presentation/bottom_sheets/create_playlist.dart';
 import 'package:go_sport/features/shared_widgets/dotted_divider.dart';
 import 'package:go_sport/features/shared_widgets/my_categories_top.dart';

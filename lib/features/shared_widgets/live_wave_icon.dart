@@ -76,7 +76,7 @@ class _PlayWavesPainter extends CustomPainter {
 
       final rect = Rect.fromCircle(center: center, radius: radius);
       final paint = Paint()
-        ..color = color.withOpacity(0.3 + 0.7 * (1 - i / waveCount))
+        ..color = color.withValues(alpha: 0.3 + 0.7 * (1 - i / waveCount))
         ..style = PaintingStyle.stroke
         ..strokeWidth = 1.5
         ..strokeCap = StrokeCap.round;
