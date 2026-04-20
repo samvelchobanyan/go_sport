@@ -460,7 +460,8 @@ class PlayerNotifier extends Notifier<PlayerState> {
   // === Radio ===
 
   /// Radio stream constants
-  static const _radioStreamUrl = 'https://ice1.somafm.com/groovesalad-128-mp3';
+  // static const _radioStreamUrl = 'https://ice1.somafm.com/groovesalad-128-mp3';
+  static const _radioStreamUrl = 'https://gosport.webcaramba.com/gosport128.mp3';
   static const _radioTitle = 'Go Sport Radio';
   static const _radioImageUrl =
       'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=300&q=80';
