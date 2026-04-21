@@ -16,13 +16,14 @@ import 'package:go_sport/features/auth/forgot_password/presentation/forgot_passw
 import 'package:go_sport/features/favorites/presentation/my_albums/my_albums_screen.dart';
 import 'package:go_sport/features/favorites/presentation/my_artists/my_artists_screen.dart';
 import 'package:go_sport/features/favorites/presentation/my_playlists/my_playlists_screen.dart';
-import 'package:go_sport/features/for_business/for_business_screen.dart';
+import 'package:go_sport/features/user_profile/edit_profile/presentation/edit_profile/edit_profile_screen.dart';
+import 'package:go_sport/features/user_profile/for_business/for_business_screen.dart';
 import 'package:go_sport/features/home/presentation/home/home_screen.dart';
 import 'package:go_sport/features/auth/login/presentation/login/login_screen.dart';
 import 'package:go_sport/features/auth/registration_phone/presentation/registration_phone_screen.dart';
 import 'package:go_sport/features/auth/registration_email/presentation/registration_email_screen.dart';
 import 'package:go_sport/features/music/presentation/music/music_screen.dart';
-import 'package:go_sport/features/profile/presentation/profile/profile_screen.dart';
+import 'package:go_sport/features/user_profile/profile/presentation/profile/profile_screen.dart';
 import 'package:go_sport/features/news/presentation/news_list/news_list_screen.dart';
 import 'package:go_sport/features/news/presentation/news_detail/news_detail_screen.dart';
 import 'package:go_sport/features/favorites/presentation/my_favorites/my_favorites_screen.dart';
@@ -138,8 +139,15 @@ GoRouter createAppRouter(TokenStorage tokenStorage) {
             fadeSlidePage(state: state, child: const ProfileScreen()),
         routes: [
           GoRoute(
-            path: 'for-business',
-            builder: (context, state) => const ForBusinessScreen(),
+            path: AppRoutes.profileForBusiness,
+            pageBuilder: (context, state) =>
+                fadeSlidePage(state: state, child: const ForBusinessScreen()),
+          ),
+
+          GoRoute(
+            path: AppRoutes.editProfile,
+            pageBuilder: (context, state) =>
+                fadeSlidePage(state: state, child: const EditProfileScreen()),
           ),
         ],
       ),

@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_sport/data/repositories/auth_repository_impl.dart';
 import 'package:go_sport/data/repositories/albums_repository_impl.dart';
+import 'package:go_sport/data/repositories/profile_repository_impl%20copy.dart';
 import 'package:go_sport/domain/repositories/auth_repository.dart';
 import 'package:go_sport/data/repositories/artists_repository_impl.dart';
 import 'package:go_sport/data/repositories/episodes_repository_impl.dart';
@@ -11,6 +12,7 @@ import 'package:go_sport/domain/repositories/albums_repository.dart';
 import 'package:go_sport/domain/repositories/artists_repository.dart';
 import 'package:go_sport/domain/repositories/episodes_repository.dart';
 import 'package:go_sport/domain/repositories/music_repository.dart';
+import 'package:go_sport/domain/repositories/profile_repository.dart';
 import 'package:go_sport/domain/repositories/programs_repository.dart';
 import 'package:go_sport/domain/repositories/schedule_repository.dart';
 
@@ -66,4 +68,8 @@ final scheduleRepositoryProvider = Provider<ScheduleRepository>((ref) {
 
 final authRepositoryProvider = Provider<AuthRepository>((ref) {
   return AuthRepositoryImpl(ref.read(apiClientProvider));
+});
+
+final profileRepositoryProvider = Provider<ProfileRepository>((ref) {
+  return ProfileRepositoryImpl(ref.read(apiClientProvider));
 });

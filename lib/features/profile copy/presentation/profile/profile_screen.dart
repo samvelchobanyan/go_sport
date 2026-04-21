@@ -4,14 +4,13 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
-import 'package:go_sport/features/profile/presentation/profile/profile_controller.dart';
-import 'package:go_sport/features/profile/presentation/widgets/action_row.dart';
-import 'package:go_sport/features/profile/presentation/widgets/contact_info.dart';
-import 'package:go_sport/features/profile/presentation/widgets/social_media_button.dart';
+import 'package:go_sport/features/user_profile/profile/presentation/profile/profile_controller.dart';
+import 'package:go_sport/features/user_profile/profile/presentation/widgets/action_row.dart';
+import 'package:go_sport/features/user_profile/profile/presentation/widgets/contact_info.dart';
+import 'package:go_sport/features/user_profile/profile/presentation/widgets/social_media_button.dart';
 import 'package:go_sport/features/shared_widgets/dotted_divider.dart';
 import 'package:go_sport/features/shared_widgets/user_avatar_button.dart';
 import 'package:go_router/go_router.dart';
-import 'package:go_sport/core/navigation/routes.dart';
 
 class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({super.key});
@@ -96,7 +95,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                   children: [
                     // Clickable Banner
                     GestureDetector(
-                      onTap: () => context.push('profile/for-business'),
+                      onTap: () => context.push('/profile/for-business'),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(DSRadius.s),
                         child: Stack(
