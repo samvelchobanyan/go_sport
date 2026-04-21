@@ -36,10 +36,7 @@ class FeaturedPlaylistsSection extends StatelessWidget {
                     return Padding(
                       padding: const EdgeInsets.only(right: 12),
                       child: PlaylistCard(
-                        id: playlist.id,
-                        title: playlist.title,
-                        imageUrl: playlist.imageUrl,
-                        trackCount: playlist.trackCount,
+                        playlist: playlist,
                       ),
                     );
                   },

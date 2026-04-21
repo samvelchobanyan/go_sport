@@ -56,7 +56,7 @@ class StoryOverlay extends StatelessWidget {
                 width: 44,
                 height: 44,
                 decoration: BoxDecoration(
-                  color: DSColors.white.withOpacity(0.9),
+                  color: DSColors.white.withValues(alpha: 0.9),
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
@@ -80,7 +80,7 @@ class StoryOverlay extends StatelessWidget {
                   end: Alignment.bottomCenter,
                   colors: [
                     DSColors.transparent,
-                    DSColors.black.withOpacity(0.8),
+                    DSColors.black.withValues(alpha: 0.8),
                   ],
                 ),
               ),
@@ -110,7 +110,7 @@ class StoryOverlay extends StatelessWidget {
                       Text(
                         story.text,
                         style: context.bodyL?.copyWith(
-                          color: DSColors.white.withOpacity(0.85),
+                          color: DSColors.white.withValues(alpha: 0.85),
                         ),
                       ),
 

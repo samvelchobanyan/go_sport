@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/components/icons/ds_heart_icon.dart';
@@ -6,29 +7,38 @@ import 'package:go_sport/domain/entities/playlist.dart';
 
 class PlaylistHero extends StatelessWidget {
   final Playlist playlist;
-  final VoidCallback onLikeTap;
+  final VoidCallback onActionTap;
   final VoidCallback onPlayTap;
+  final bool showPlayButton;
 
   const PlaylistHero({
     super.key,
     required this.playlist,
-    required this.onLikeTap,
+    required this.onActionTap,
     required this.onPlayTap,
+    this.showPlayButton = true,
   });
 
   @override
   Widget build(BuildContext context) {
+    final isCustom = playlist.type == PlaylistType.custom;
+
     return Stack(
       fit: StackFit.expand,
       children: [
         // Background image
         Hero(
           tag: 'playlist-image-${playlist.id}',
-          child: Image.network(
-            playlist.imageUrl,
-            fit: BoxFit.cover,
-            errorBuilder: (_, __, ___) => Container(color: DSColors.gray40),
-          ),
+          child: isCustom
+              ? Image.asset(
+                  'assets/images/custom_playlist_cover.png',
+                  fit: BoxFit.cover,
+                )
+              : Image.network(
+                  playlist.imageUrl,
+                  fit: BoxFit.cover,
+                  errorBuilder: (_, __, ___) => Container(color: DSColors.gray40),
+                ),
         ),
 
         // Gradient overlay
@@ -67,45 +77,57 @@ class PlaylistHero extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    // Like button
+                    // Action button
                     GestureDetector(
-                      onTap: onLikeTap,
+                      onTap: onActionTap,
                       child: Container(
                         width: 48,
                         height: 48,
                         decoration: BoxDecoration(
-                          color: DSColors.white.withOpacity(0.2),
+                          color: DSColors.white.withValues(alpha: 0.25),
                           shape: BoxShape.circle,
                         ),
                         child: Center(
-                          child: DSHeartIcon(
-                            color: DSColors.white,
-                            size: 24,
-                            isFilled: playlist.isLiked,
-                          ),
+                          child: isCustom
+                              ? SvgPicture.asset(
+                                  'assets/icons/plus.svg',
+                                  width: 18,
+                                  height: 18,
+                                  colorFilter: const ColorFilter.mode(
+                                    DSColors.lime,
+                                    BlendMode.srcIn,
+                                  ),
+                                )
+                              : DSHeartIcon(
+                                  color: DSColors.white,
+                                  size: 32,
+                                  isFilled: playlist.isLiked,
+                                ),
                         ),
                       ),
                     ),
-                    const SizedBox(width: 16),
-                    // Play button
-                    GestureDetector(
-                      onTap: onPlayTap,
-                      child: Container(
-                        width: 56,
-                        height: 56,
-                        decoration: const BoxDecoration(
-                          color: DSColors.lime,
-                          shape: BoxShape.circle,
-                        ),
-                        child: const Center(
-                          child: Icon(
-                            Icons.play_arrow,
-                            color: DSColors.black,
-                            size: 32,
+                    if (showPlayButton) ...[
+                      const SizedBox(width: 16),
+                      // Play button
+                      GestureDetector(
+                        onTap: onPlayTap,
+                        child: Container(
+                          width: 48,
+                          height: 48,
+                          decoration: const BoxDecoration(
+                            color: DSColors.lime,
+                            shape: BoxShape.circle,
+                          ),
+                          child: const Center(
+                            child: Icon(
+                              Icons.play_arrow,
+                              color: DSColors.black,
+                              size: 32,
+                            ),
                           ),
                         ),
                       ),
-                    ),
+                    ],
                   ],
                 ),
               ],

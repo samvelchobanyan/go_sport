@@ -168,7 +168,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             onPressed: () {},
                             style: TextButton.styleFrom(
                               padding: const EdgeInsets.symmetric(vertical: 14),
-                              backgroundColor: DSColors.blue.withOpacity(0.05),
+                              backgroundColor: DSColors.blue.withValues(alpha: 0.05),
                               // This ensures no border is drawn
                               side: BorderSide.none,
                               shape: RoundedRectangleBorder(
@@ -249,7 +249,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           context.go('/');
                         },
                         style: TextButton.styleFrom(
-                          backgroundColor: DSColors.blue.withOpacity(0.05),
+                          backgroundColor: DSColors.blue.withValues(alpha: 0.05),
                           shape: const RoundedRectangleBorder(
                             borderRadius: BorderRadius.zero,
                           ),

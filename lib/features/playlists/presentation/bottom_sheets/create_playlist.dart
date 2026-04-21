@@ -3,24 +3,25 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
+import 'package:go_sport/features/shared_widgets/bottom_pop_ups/bottom_sheet_container.dart';
 
-void showCreatePlaylistBottomSheet({required BuildContext context}) {
+void showCreatePlaylistBottomSheet({
+  required BuildContext context,
+  required Future<void> Function(String name) onSave,
+}) {
+  final controller = TextEditingController();
+
   showModalBottomSheet(
     context: context,
     isScrollControlled: true,
     backgroundColor: DSColors.transparent,
-    builder: (context) => Container(
-      height: MediaQuery.of(context).size.height * 0.35,
-      decoration: const BoxDecoration(
-        color: DSColors.white,
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(DSRadius.l),
-          topRight: Radius.circular(DSRadius.l),
-        ),
+    builder: (context) => Padding(
+      padding: EdgeInsets.only(
+        bottom: MediaQuery.of(context).viewInsets.bottom,
       ),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
+      child: BottomSheetContainer(
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
@@ -28,8 +29,10 @@ void showCreatePlaylistBottomSheet({required BuildContext context}) {
               style: context.h2,
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             TextField(
+              controller: controller,
+              autofocus: true,
               style: Theme.of(context).textTheme.bodyMedium,
               decoration: InputDecoration(
                 filled: true,
@@ -52,20 +55,23 @@ void showCreatePlaylistBottomSheet({required BuildContext context}) {
                 ),
               ),
             ),
-            SizedBox(height: 20),
-
+            const SizedBox(height: 20),
             SizedBox(
               width: double.infinity,
               height: 48,
               child: ElevatedButton.icon(
                 onPressed: () {
+                  final name = controller.text.trim();
+                  if (name.isEmpty) return;
                   Navigator.pop(context);
-                  debugPrint('No keep tapped');
+                  onSave(name);
                 },
-                style: ElevatedButton.styleFrom(backgroundColor: DSColors.blue),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: DSColors.blue,
+                ),
                 icon: SvgPicture.asset('assets/icons/check_lime.svg'),
                 label: Text(
-                  'Save',
+                  'Create',
                   style: context.subtitleLBold?.copyWith(color: DSColors.lime),
                 ),
               ),

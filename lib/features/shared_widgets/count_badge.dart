@@ -36,11 +36,11 @@ class CountBadge extends StatelessWidget {
   }
 
   Color get _borderColor {
-    return _textColor.withOpacity(0.3);
+    return _textColor.withValues(alpha: 0.3);
   }
 
   Color get _backgroundColor {
-    return _textColor.withOpacity(0.05);
+    return _textColor.withValues(alpha: 0.05);
   }
 
   @override

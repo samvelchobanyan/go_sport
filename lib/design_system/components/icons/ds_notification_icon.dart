@@ -17,7 +17,7 @@ class DSNotificationIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     return SvgPicture.asset(
       isFilled ? 'assets/icons/bell_fill.svg' : 'assets/icons/bell_stroke.svg',
-      colorFilter: ColorFilter.mode(color.withOpacity(0.6), BlendMode.srcIn),
+      colorFilter: ColorFilter.mode(color.withValues(alpha: 0.6), BlendMode.srcIn),
       width: size,
       height: size,
     );

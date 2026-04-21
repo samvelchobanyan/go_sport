@@ -3,6 +3,7 @@ import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/features/shared_widgets/bottom_pop_ups/action_button.dart';
+import 'package:go_sport/features/shared_widgets/bottom_pop_ups/bottom_sheet_container.dart';
 import 'package:go_sport/features/shared_widgets/dotted_divider.dart';
 
 void showTrackOptionsBottomSheet({
@@ -10,22 +11,14 @@ void showTrackOptionsBottomSheet({
   required String imageUrl,
   required String title,
   String? subtitle,
+  VoidCallback? onRemoveFromPlaylist,
+  VoidCallback? onAddToPlaylist,
 }) {
   showModalBottomSheet(
     context: context,
     isScrollControlled: true,
     backgroundColor: DSColors.transparent,
-    builder: (context) => Container(
-      height: MediaQuery.of(context).size.height * 0.35,
-      decoration: const BoxDecoration(
-        color: DSColors.white,
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(DSRadius.l),
-          topRight: Radius.circular(DSRadius.l),
-        ),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
+    builder: (context) => BottomSheetContainer(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -37,7 +30,7 @@ void showTrackOptionsBottomSheet({
                     borderRadius: BorderRadius.circular(DSRadius.xs),
                     boxShadow: [
                       BoxShadow(
-                        color: DSColors.black.withOpacity(0.7),
+                        color: DSColors.black.withValues(alpha: 0.7),
                         blurRadius: 6,
                         spreadRadius:
                             -2, // prevents shadow from appearing on sides
@@ -96,11 +89,17 @@ void showTrackOptionsBottomSheet({
               children: [
                 // Add to playlist
                 ActionButton(
-                  icon: 'assets/icons/plus.svg',
-                  label: 'Add to playlist',
+                  icon: 'assets/icons/plus_bg.svg',
+                  label: onRemoveFromPlaylist != null
+                      ? 'Add to another playlist'
+                      : 'Add to playlist',
                   onTap: () {
                     Navigator.pop(context);
-                    debugPrint('Add to playlist tapped');
+                    if (onAddToPlaylist != null) {
+                      onAddToPlaylist();
+                    } else {
+                      debugPrint('Add to playlist tapped');
+                    }
                   },
                 ),
                 const SizedBox(height: 10),
@@ -114,6 +113,19 @@ void showTrackOptionsBottomSheet({
                     debugPrint('Like tapped');
                   },
                 ),
+
+                // Remove from this playlist
+                if (onRemoveFromPlaylist != null) ...[
+                  const SizedBox(height: 10),
+                  ActionButton(
+                    icon: 'assets/icons/delete_bg.svg',
+                    label: 'Remove from this playlist',
+                    onTap: () {
+                      Navigator.pop(context);
+                      onRemoveFromPlaylist();
+                    },
+                  ),
+                ],
                 const SizedBox(height: 10),
 
                 // Share
@@ -129,7 +141,6 @@ void showTrackOptionsBottomSheet({
             ),
           ],
         ),
-      ),
     ),
   );
 }

@@ -37,7 +37,7 @@ void showItemOptionsBottomSheet({
                     borderRadius: BorderRadius.circular(DSRadius.xs),
                     boxShadow: [
                       BoxShadow(
-                        color: DSColors.black.withOpacity(0.7),
+                        color: DSColors.black.withValues(alpha: 0.7),
                         blurRadius: 6,
                         spreadRadius:
                             -2, // prevents shadow from appearing on sides
@@ -96,7 +96,7 @@ void showItemOptionsBottomSheet({
               children: [
                 // Add to playlist
                 _ActionButton(
-                  icon: 'assets/icons/plus.svg',
+                  icon: 'assets/icons/plus_bg.svg',
                   label: 'Add to playlist',
                   onTap: () {
                     Navigator.pop(context);

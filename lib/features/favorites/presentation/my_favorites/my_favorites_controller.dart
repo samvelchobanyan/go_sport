@@ -2,7 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../../../domain/entities/track.dart';
-import '../../../../domain/repositories/playlist_repository.dart';
+import '../../../../domain/repositories/featured_playlist_repository.dart';
 import '../../../../core/di/repository_providers.dart';
 
 part 'my_favorites_controller.freezed.dart';
@@ -20,11 +20,11 @@ class MyFavoritesState with _$MyFavoritesState {
 }
 
 class MyFavoritesNotifier extends Notifier<MyFavoritesState> {
-  late final PlaylistRepository _repository;
+  late final FeaturedPlaylistRepository _repository;
 
   @override
   MyFavoritesState build() {
-    _repository = ref.watch(playlistRepositoryProvider);
+    _repository = ref.watch(featuredPlaylistRepositoryProvider);
     Future.microtask(() => loadFavorites());
     return const MyFavoritesState();
   }

@@ -110,7 +110,18 @@ class _MyCategoriesHeaderContent extends StatelessWidget {
         ),
         if (actionIcon != null) ...[
           const SizedBox(width: 12),
-          GestureDetector(onTap: onActionIconTap, child: actionIcon),
+          GestureDetector(
+            onTap: onActionIconTap,
+            child: Container(
+              width: 40,
+              height: 40,
+              decoration: const BoxDecoration(
+                color: DSColors.blue,
+                shape: BoxShape.circle,
+              ),
+              child: Center(child: actionIcon),
+            ),
+          ),
         ],
       ],
     );

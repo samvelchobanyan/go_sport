@@ -32,7 +32,7 @@ class CustomInput extends StatelessWidget {
         SizedBox(height: 4),
         Container(
           decoration: BoxDecoration(
-            color: DSColors.blue.withOpacity(0.07),
+            color: DSColors.blue.withValues(alpha: 0.07),
             borderRadius: BorderRadius.circular(DSRadius.s),
           ),
           child: Row(

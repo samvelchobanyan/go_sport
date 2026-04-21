@@ -2,53 +2,96 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../../../core/di/repository_providers.dart';
+import '../../../../domain/entities/playlist.dart';
 import '../../../../domain/entities/track.dart';
 import '../../../../domain/state/featured_playlists_state.dart';
 
 part 'playlist_controller.freezed.dart';
 
 @freezed
-sealed class PlaylistTracksState with _$PlaylistTracksState {
-  const factory PlaylistTracksState.loading() = _PlaylistTracksLoading;
+sealed class PlaylistDetailsState with _$PlaylistDetailsState {
+  const factory PlaylistDetailsState.loading() = PlaylistDetailsLoading;
 
-  const factory PlaylistTracksState.data({
+  const factory PlaylistDetailsState.data({
+    required Playlist playlist,
     required List<Track> tracks,
-  }) = _PlaylistTracksData;
+  }) = PlaylistDetailsData;
 
-  const factory PlaylistTracksState.error({
+  const factory PlaylistDetailsState.error({
     required String message,
-  }) = _PlaylistTracksError;
+  }) = PlaylistDetailsError;
 }
 
-class PlaylistController extends AutoDisposeFamilyNotifier<PlaylistTracksState, String> {
+class PlaylistController extends AutoDisposeFamilyNotifier<PlaylistDetailsState, String> {
   @override
-  PlaylistTracksState build(String playlistId) {
-    Future.microtask(() => loadTracks());
-    return const PlaylistTracksState.loading();
+  PlaylistDetailsState build(String playlistId) {
+    return const PlaylistDetailsState.loading();
   }
 
-  Future<void> loadTracks() async {
-    state = const PlaylistTracksState.loading();
+  Future<void> init(Playlist? initialPlaylist) async {
+    // Prevent re-initialization if already loaded (e.g. during rebuilds)
+    if (state is PlaylistDetailsData) return;
 
+    if (initialPlaylist != null) {
+      state = PlaylistDetailsState.data(playlist: initialPlaylist, tracks: []);
+      await loadTracks(initialPlaylist);
+    } else {
+      await loadFull();
+    }
+  }
+
+  Future<void> loadFull() async {
+    state = const PlaylistDetailsState.loading();
     try {
-      final tracks = await ref.read(playlistRepositoryProvider).getPlaylistTracks(arg);
-      state = PlaylistTracksState.data(tracks: tracks);
+      final playlistsState = ref.read(featuredPlaylistsStateProvider);
+      Playlist? playlist = playlistsState.getPlaylist(arg);
+      
+      if (playlist == null) {
+        await ref.read(featuredPlaylistsStateProvider.notifier).loadPlaylists();
+        playlist = ref.read(featuredPlaylistsStateProvider).getPlaylist(arg);
+      }
+      
+      if (playlist == null) throw Exception('Playlist not found');
+      
+      final tracks = await ref.read(featuredPlaylistRepositoryProvider).getPlaylistTracks(arg);
+      state = PlaylistDetailsState.data(playlist: playlist, tracks: tracks);
     } catch (e) {
-      state = PlaylistTracksState.error(message: e.toString());
+      state = PlaylistDetailsState.error(message: e.toString());
+    }
+  }
+
+  Future<void> loadTracks(Playlist playlist) async {
+    try {
+      final tracks = await ref.read(featuredPlaylistRepositoryProvider).getPlaylistTracks(arg);
+      state = PlaylistDetailsState.data(playlist: playlist, tracks: tracks);
+    } catch (e) {
+      state = PlaylistDetailsState.error(message: e.toString());
     }
   }
 
   Future<void> toggleLike(String? likeId) async {
+    final currentState = state;
+    if (currentState is! PlaylistDetailsData) return;
+
     try {
-      final newLikeId = await ref.read(playlistRepositoryProvider).toggleLike(arg, likeId);
+      final newLikeId = await ref.read(featuredPlaylistRepositoryProvider).toggleLike(arg, likeId);
+      
+      // Update local state instantly so UI reacts
+      final updatedPlaylist = currentState.playlist.copyWith(
+        isLiked: newLikeId != null,
+        likeId: newLikeId,
+      );
+      state = PlaylistDetailsState.data(playlist: updatedPlaylist, tracks: currentState.tracks);
+      
+      // Sync global state
       ref.read(featuredPlaylistsStateProvider.notifier).updateLike(arg, newLikeId);
     } catch (e) {
-      // Можно добавить обработку ошибки
+      // Error handling can be added here
     }
   }
 }
 
 final playlistControllerProvider = NotifierProvider.autoDispose
-    .family<PlaylistController, PlaylistTracksState, String>(
+    .family<PlaylistController, PlaylistDetailsState, String>(
   PlaylistController.new,
 );

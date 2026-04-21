@@ -61,7 +61,7 @@ class HomeScreen extends ConsumerWidget {
       isScrollControlled: true,
       useRootNavigator: true,
       backgroundColor: DSColors.transparent,
-      barrierColor: DSColors.black.withOpacity(0.9),
+      barrierColor: DSColors.black.withValues(alpha: 0.9),
       enableDrag: true,
       builder: (modalContext) => MediaQuery(
         data: MediaQuery.of(context),

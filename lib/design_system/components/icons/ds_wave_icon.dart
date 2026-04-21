@@ -237,15 +237,15 @@ class _WaveIconPainter extends CustomPainter {
     path7.close();
 
     // Path 1 (outermost left): phase = 0.0
-    paint.color = color.withOpacity(_getWaveOpacity(0.0));
+    paint.color = color.withValues(alpha: _getWaveOpacity(0.0));
     canvas.drawPath(path1, paint);
 
     // Path 2 (second left): phase = 0.15
-    paint.color = color.withOpacity(_getWaveOpacity(0.15));
+    paint.color = color.withValues(alpha: _getWaveOpacity(0.15));
     canvas.drawPath(path2, paint);
 
     // Path 3 (third left): phase = 0.3
-    paint.color = color.withOpacity(_getWaveOpacity(0.3));
+    paint.color = color.withValues(alpha: _getWaveOpacity(0.3));
     canvas.drawPath(path3, paint);
 
     // Path 4 (center speaker): NO animation
@@ -253,15 +253,15 @@ class _WaveIconPainter extends CustomPainter {
     canvas.drawPath(path4, paint);
 
     // Path 5 (third right): phase = 0.3
-    paint.color = color.withOpacity(_getWaveOpacity(0.3));
+    paint.color = color.withValues(alpha: _getWaveOpacity(0.3));
     canvas.drawPath(path5, paint);
 
     // Path 6 (second right): phase = 0.15
-    paint.color = color.withOpacity(_getWaveOpacity(0.15));
+    paint.color = color.withValues(alpha: _getWaveOpacity(0.15));
     canvas.drawPath(path6, paint);
 
     // Path 7 (outermost right): phase = 0.0
-    paint.color = color.withOpacity(_getWaveOpacity(0.0));
+    paint.color = color.withValues(alpha: _getWaveOpacity(0.0));
     canvas.drawPath(path7, paint);
 
     canvas.restore();

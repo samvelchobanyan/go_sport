@@ -106,7 +106,7 @@ class ExpiredGuestScreen extends StatelessWidget {
                             },
                             style: TextButton.styleFrom(
                               padding: const EdgeInsets.symmetric(vertical: 14),
-                              backgroundColor: DSColors.blue.withOpacity(0.05),
+                              backgroundColor: DSColors.blue.withValues(alpha: 0.05),
                               // This ensures no border is drawn
                               side: BorderSide.none,
                               shape: RoundedRectangleBorder(

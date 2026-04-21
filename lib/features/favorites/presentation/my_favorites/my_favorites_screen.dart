@@ -12,6 +12,8 @@ import 'package:go_sport/features/favorites/presentation/my_favorites/my_favorit
 import 'package:go_sport/domain/state/player_state.dart';
 import 'package:go_sport/features/shared_widgets/dotted_divider.dart';
 import 'package:go_sport/features/shared_widgets/my_categories_top.dart';
+import 'package:go_sport/features/shared_widgets/bottom_pop_ups/track_options.dart';
+import 'package:go_sport/features/playlists/presentation/bottom_sheets/add_to_playlist_bottom_sheet.dart';
 import 'package:go_sport/features/shared_widgets/track_tile.dart';
 
 class MyFavoritesScreen extends ConsumerStatefulWidget {
@@ -74,7 +76,15 @@ class _MyFavoritesScreenState extends ConsumerState<MyFavoritesScreen> {
                   title: 'My Favorites',
                   subtitle: 'Tracks',
                   itemCount: favorites.length,
-                  actionIcon: SvgPicture.asset('assets/icons/play_blue.svg'),
+                  actionIcon: SvgPicture.asset(
+                    'assets/icons/play.svg',
+                    width: 20,
+                    height: 20,
+                    colorFilter: const ColorFilter.mode(
+                      DSColors.lime,
+                      BlendMode.srcIn,
+                    ),
+                  ),
                   onActionIconTap: favorites.isEmpty
                       ? null
                       : () => _onPlayTap(ref, favorites, 'My Favorites', ''),
@@ -159,7 +169,16 @@ class _MyFavoritesScreenState extends ConsumerState<MyFavoritesScreen> {
           track: track,
           isPlaying: trackPlayingState,
           onTap: () => _onTrackTap(ref, songs, index),
-          onMenuTap: () => _onTrackMenuTap(index),
+          onMenuTap: (track) => showTrackOptionsBottomSheet(
+            context: context,
+            imageUrl: track.imageUrl ?? '',
+            title: track.title,
+            subtitle: track.artistName,
+            onAddToPlaylist: () => showAddToPlaylistBottomSheet(
+              context: context,
+              track: track,
+            ),
+          ),
         );
       },
       ),
@@ -217,7 +236,4 @@ class _MyFavoritesScreenState extends ConsumerState<MyFavoritesScreen> {
         );
   }
 
-  void _onTrackMenuTap(int index) {
-    debugPrint('Track menu tapped at index: $index');
-  }
 }

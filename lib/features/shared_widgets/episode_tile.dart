@@ -4,6 +4,7 @@ import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/domain/entities/track.dart';
 import 'package:go_sport/features/shared_widgets/bottom_pop_ups/track_options.dart';
+import 'package:go_sport/features/playlists/presentation/bottom_sheets/add_to_playlist_bottom_sheet.dart';
 import 'package:go_sport/shared/widgets/equalizer_indicator.dart';
 
 class EpisodeTile extends StatelessWidget {
@@ -58,7 +59,7 @@ class EpisodeTile extends StatelessWidget {
                 borderRadius: BorderRadius.circular(DSRadius.xs),
                 boxShadow: [
                   BoxShadow(
-                    color: DSColors.black.withOpacity(0.7),
+                    color: DSColors.black.withValues(alpha: 0.7),
                     blurRadius: 6,
                     spreadRadius: -2, // prevents shadow from appearing on sides
                     offset: const Offset(0, 4), // pushes shadow down
@@ -93,6 +94,10 @@ class EpisodeTile extends StatelessWidget {
                   imageUrl: episode.imageUrl ?? '',
                   title: episode.title,
                   subtitle: episode.artistName,
+                  onAddToPlaylist: () => showAddToPlaylistBottomSheet(
+                    context: context,
+                    track: episode,
+                  ),
                 );
               },
               behavior: HitTestBehavior.opaque,

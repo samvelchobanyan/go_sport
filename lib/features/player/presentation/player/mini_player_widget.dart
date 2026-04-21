@@ -232,7 +232,7 @@ class _MiniPlayerWidgetState extends ConsumerState<MiniPlayerWidget>
                             .read(episodesRepositoryProvider)
                             .toggleLikeEpisode(track.id, prevLikeId)
                         : await ref
-                            .read(playlistRepositoryProvider)
+                            .read(featuredPlaylistRepositoryProvider)
                             .toggleLikeTrack(track.id, prevLikeId);
                     notifier.updateTrackLike(track.id, isLiked: !wasLiked, likeId: newLikeId);
                   } catch (e) {
@@ -457,7 +457,7 @@ class _MiniPlayerWidgetState extends ConsumerState<MiniPlayerWidget>
                                     .read(episodesRepositoryProvider)
                                     .toggleLikeEpisode(track.id, prevLikeId)
                                 : await ref
-                                    .read(playlistRepositoryProvider)
+                                    .read(featuredPlaylistRepositoryProvider)
                                     .toggleLikeTrack(track.id, prevLikeId);
                             notifier.updateTrackLike(track.id, isLiked: !wasLiked, likeId: newLikeId);
                           } catch (e) {

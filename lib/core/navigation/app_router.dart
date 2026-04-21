@@ -29,6 +29,7 @@ import 'package:go_sport/features/favorites/presentation/new_episodes/new_episod
 import 'package:go_sport/features/favorites/presentation/my_programs/my_programs_screen.dart';
 import 'package:go_sport/domain/entities/album.dart';
 import 'package:go_sport/domain/entities/artist.dart';
+import 'package:go_sport/domain/entities/playlist.dart';
 import 'package:go_sport/domain/entities/program.dart';
 import 'package:go_sport/features/albums/presentation/album/album_screen.dart';
 import 'package:go_sport/features/artists/presentation/artist/artist_screen.dart';
@@ -213,9 +214,18 @@ GoRouter createAppRouter(TokenStorage tokenStorage) {
                     path: 'playlist/:id',
                     pageBuilder: (context, state) {
                       final id = state.pathParameters['id']!;
+                      final typeStr = state.uri.queryParameters['type'];
+                      final type = typeStr == 'custom'
+                          ? PlaylistType.custom
+                          : PlaylistType.featured;
+                      final playlist = state.extra as Playlist?;
                       return fadeSlidePage(
                         state: state,
-                        child: PlaylistScreen(playlistId: id),
+                        child: PlaylistScreen(
+                          playlistId: id,
+                          type: type,
+                          playlist: playlist,
+                        ),
                       );
                     },
                   ),

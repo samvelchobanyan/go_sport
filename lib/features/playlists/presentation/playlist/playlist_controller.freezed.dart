@@ -16,105 +16,109 @@ final _privateConstructorUsedError = UnsupportedError(
 );
 
 /// @nodoc
-mixin _$PlaylistTracksState {
+mixin _$PlaylistDetailsState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(List<Track> tracks) data,
+    required TResult Function(Playlist playlist, List<Track> tracks) data,
     required TResult Function(String message) error,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function(List<Track> tracks)? data,
+    TResult? Function(Playlist playlist, List<Track> tracks)? data,
     TResult? Function(String message)? error,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(List<Track> tracks)? data,
+    TResult Function(Playlist playlist, List<Track> tracks)? data,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_PlaylistTracksLoading value) loading,
-    required TResult Function(_PlaylistTracksData value) data,
-    required TResult Function(_PlaylistTracksError value) error,
+    required TResult Function(PlaylistDetailsLoading value) loading,
+    required TResult Function(PlaylistDetailsData value) data,
+    required TResult Function(PlaylistDetailsError value) error,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_PlaylistTracksLoading value)? loading,
-    TResult? Function(_PlaylistTracksData value)? data,
-    TResult? Function(_PlaylistTracksError value)? error,
+    TResult? Function(PlaylistDetailsLoading value)? loading,
+    TResult? Function(PlaylistDetailsData value)? data,
+    TResult? Function(PlaylistDetailsError value)? error,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_PlaylistTracksLoading value)? loading,
-    TResult Function(_PlaylistTracksData value)? data,
-    TResult Function(_PlaylistTracksError value)? error,
+    TResult Function(PlaylistDetailsLoading value)? loading,
+    TResult Function(PlaylistDetailsData value)? data,
+    TResult Function(PlaylistDetailsError value)? error,
     required TResult orElse(),
   }) => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $PlaylistTracksStateCopyWith<$Res> {
-  factory $PlaylistTracksStateCopyWith(
-    PlaylistTracksState value,
-    $Res Function(PlaylistTracksState) then,
-  ) = _$PlaylistTracksStateCopyWithImpl<$Res, PlaylistTracksState>;
+abstract class $PlaylistDetailsStateCopyWith<$Res> {
+  factory $PlaylistDetailsStateCopyWith(
+    PlaylistDetailsState value,
+    $Res Function(PlaylistDetailsState) then,
+  ) = _$PlaylistDetailsStateCopyWithImpl<$Res, PlaylistDetailsState>;
 }
 
 /// @nodoc
-class _$PlaylistTracksStateCopyWithImpl<$Res, $Val extends PlaylistTracksState>
-    implements $PlaylistTracksStateCopyWith<$Res> {
-  _$PlaylistTracksStateCopyWithImpl(this._value, this._then);
+class _$PlaylistDetailsStateCopyWithImpl<
+  $Res,
+  $Val extends PlaylistDetailsState
+>
+    implements $PlaylistDetailsStateCopyWith<$Res> {
+  _$PlaylistDetailsStateCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of PlaylistTracksState
+  /// Create a copy of PlaylistDetailsState
   /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
-abstract class _$$PlaylistTracksLoadingImplCopyWith<$Res> {
-  factory _$$PlaylistTracksLoadingImplCopyWith(
-    _$PlaylistTracksLoadingImpl value,
-    $Res Function(_$PlaylistTracksLoadingImpl) then,
-  ) = __$$PlaylistTracksLoadingImplCopyWithImpl<$Res>;
+abstract class _$$PlaylistDetailsLoadingImplCopyWith<$Res> {
+  factory _$$PlaylistDetailsLoadingImplCopyWith(
+    _$PlaylistDetailsLoadingImpl value,
+    $Res Function(_$PlaylistDetailsLoadingImpl) then,
+  ) = __$$PlaylistDetailsLoadingImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$PlaylistTracksLoadingImplCopyWithImpl<$Res>
-    extends _$PlaylistTracksStateCopyWithImpl<$Res, _$PlaylistTracksLoadingImpl>
-    implements _$$PlaylistTracksLoadingImplCopyWith<$Res> {
-  __$$PlaylistTracksLoadingImplCopyWithImpl(
-    _$PlaylistTracksLoadingImpl _value,
-    $Res Function(_$PlaylistTracksLoadingImpl) _then,
+class __$$PlaylistDetailsLoadingImplCopyWithImpl<$Res>
+    extends
+        _$PlaylistDetailsStateCopyWithImpl<$Res, _$PlaylistDetailsLoadingImpl>
+    implements _$$PlaylistDetailsLoadingImplCopyWith<$Res> {
+  __$$PlaylistDetailsLoadingImplCopyWithImpl(
+    _$PlaylistDetailsLoadingImpl _value,
+    $Res Function(_$PlaylistDetailsLoadingImpl) _then,
   ) : super(_value, _then);
 
-  /// Create a copy of PlaylistTracksState
+  /// Create a copy of PlaylistDetailsState
   /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
 
-class _$PlaylistTracksLoadingImpl implements _PlaylistTracksLoading {
-  const _$PlaylistTracksLoadingImpl();
+class _$PlaylistDetailsLoadingImpl implements PlaylistDetailsLoading {
+  const _$PlaylistDetailsLoadingImpl();
 
   @override
   String toString() {
-    return 'PlaylistTracksState.loading()';
+    return 'PlaylistDetailsState.loading()';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$PlaylistTracksLoadingImpl);
+            other is _$PlaylistDetailsLoadingImpl);
   }
 
   @override
@@ -124,7 +128,7 @@ class _$PlaylistTracksLoadingImpl implements _PlaylistTracksLoading {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(List<Track> tracks) data,
+    required TResult Function(Playlist playlist, List<Track> tracks) data,
     required TResult Function(String message) error,
   }) {
     return loading();
@@ -134,7 +138,7 @@ class _$PlaylistTracksLoadingImpl implements _PlaylistTracksLoading {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function(List<Track> tracks)? data,
+    TResult? Function(Playlist playlist, List<Track> tracks)? data,
     TResult? Function(String message)? error,
   }) {
     return loading?.call();
@@ -144,7 +148,7 @@ class _$PlaylistTracksLoadingImpl implements _PlaylistTracksLoading {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(List<Track> tracks)? data,
+    TResult Function(Playlist playlist, List<Track> tracks)? data,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -157,9 +161,9 @@ class _$PlaylistTracksLoadingImpl implements _PlaylistTracksLoading {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_PlaylistTracksLoading value) loading,
-    required TResult Function(_PlaylistTracksData value) data,
-    required TResult Function(_PlaylistTracksError value) error,
+    required TResult Function(PlaylistDetailsLoading value) loading,
+    required TResult Function(PlaylistDetailsData value) data,
+    required TResult Function(PlaylistDetailsError value) error,
   }) {
     return loading(this);
   }
@@ -167,9 +171,9 @@ class _$PlaylistTracksLoadingImpl implements _PlaylistTracksLoading {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_PlaylistTracksLoading value)? loading,
-    TResult? Function(_PlaylistTracksData value)? data,
-    TResult? Function(_PlaylistTracksError value)? error,
+    TResult? Function(PlaylistDetailsLoading value)? loading,
+    TResult? Function(PlaylistDetailsData value)? data,
+    TResult? Function(PlaylistDetailsError value)? error,
   }) {
     return loading?.call(this);
   }
@@ -177,9 +181,9 @@ class _$PlaylistTracksLoadingImpl implements _PlaylistTracksLoading {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_PlaylistTracksLoading value)? loading,
-    TResult Function(_PlaylistTracksData value)? data,
-    TResult Function(_PlaylistTracksError value)? error,
+    TResult Function(PlaylistDetailsLoading value)? loading,
+    TResult Function(PlaylistDetailsData value)? data,
+    TResult Function(PlaylistDetailsError value)? error,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -189,36 +193,42 @@ class _$PlaylistTracksLoadingImpl implements _PlaylistTracksLoading {
   }
 }
 
-abstract class _PlaylistTracksLoading implements PlaylistTracksState {
-  const factory _PlaylistTracksLoading() = _$PlaylistTracksLoadingImpl;
+abstract class PlaylistDetailsLoading implements PlaylistDetailsState {
+  const factory PlaylistDetailsLoading() = _$PlaylistDetailsLoadingImpl;
 }
 
 /// @nodoc
-abstract class _$$PlaylistTracksDataImplCopyWith<$Res> {
-  factory _$$PlaylistTracksDataImplCopyWith(
-    _$PlaylistTracksDataImpl value,
-    $Res Function(_$PlaylistTracksDataImpl) then,
-  ) = __$$PlaylistTracksDataImplCopyWithImpl<$Res>;
+abstract class _$$PlaylistDetailsDataImplCopyWith<$Res> {
+  factory _$$PlaylistDetailsDataImplCopyWith(
+    _$PlaylistDetailsDataImpl value,
+    $Res Function(_$PlaylistDetailsDataImpl) then,
+  ) = __$$PlaylistDetailsDataImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({List<Track> tracks});
+  $Res call({Playlist playlist, List<Track> tracks});
+
+  $PlaylistCopyWith<$Res> get playlist;
 }
 
 /// @nodoc
-class __$$PlaylistTracksDataImplCopyWithImpl<$Res>
-    extends _$PlaylistTracksStateCopyWithImpl<$Res, _$PlaylistTracksDataImpl>
-    implements _$$PlaylistTracksDataImplCopyWith<$Res> {
-  __$$PlaylistTracksDataImplCopyWithImpl(
-    _$PlaylistTracksDataImpl _value,
-    $Res Function(_$PlaylistTracksDataImpl) _then,
+class __$$PlaylistDetailsDataImplCopyWithImpl<$Res>
+    extends _$PlaylistDetailsStateCopyWithImpl<$Res, _$PlaylistDetailsDataImpl>
+    implements _$$PlaylistDetailsDataImplCopyWith<$Res> {
+  __$$PlaylistDetailsDataImplCopyWithImpl(
+    _$PlaylistDetailsDataImpl _value,
+    $Res Function(_$PlaylistDetailsDataImpl) _then,
   ) : super(_value, _then);
 
-  /// Create a copy of PlaylistTracksState
+  /// Create a copy of PlaylistDetailsState
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({Object? tracks = null}) {
+  $Res call({Object? playlist = null, Object? tracks = null}) {
     return _then(
-      _$PlaylistTracksDataImpl(
+      _$PlaylistDetailsDataImpl(
+        playlist: null == playlist
+            ? _value.playlist
+            : playlist // ignore: cast_nullable_to_non_nullable
+                  as Playlist,
         tracks: null == tracks
             ? _value._tracks
             : tracks // ignore: cast_nullable_to_non_nullable
@@ -226,14 +236,28 @@ class __$$PlaylistTracksDataImplCopyWithImpl<$Res>
       ),
     );
   }
+
+  /// Create a copy of PlaylistDetailsState
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $PlaylistCopyWith<$Res> get playlist {
+    return $PlaylistCopyWith<$Res>(_value.playlist, (value) {
+      return _then(_value.copyWith(playlist: value));
+    });
+  }
 }
 
 /// @nodoc
 
-class _$PlaylistTracksDataImpl implements _PlaylistTracksData {
-  const _$PlaylistTracksDataImpl({required final List<Track> tracks})
-    : _tracks = tracks;
+class _$PlaylistDetailsDataImpl implements PlaylistDetailsData {
+  const _$PlaylistDetailsDataImpl({
+    required this.playlist,
+    required final List<Track> tracks,
+  }) : _tracks = tracks;
 
+  @override
+  final Playlist playlist;
   final List<Track> _tracks;
   @override
   List<Track> get tracks {
@@ -244,28 +268,33 @@ class _$PlaylistTracksDataImpl implements _PlaylistTracksData {
 
   @override
   String toString() {
-    return 'PlaylistTracksState.data(tracks: $tracks)';
+    return 'PlaylistDetailsState.data(playlist: $playlist, tracks: $tracks)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$PlaylistTracksDataImpl &&
+            other is _$PlaylistDetailsDataImpl &&
+            (identical(other.playlist, playlist) ||
+                other.playlist == playlist) &&
             const DeepCollectionEquality().equals(other._tracks, _tracks));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(_tracks));
+  int get hashCode => Object.hash(
+    runtimeType,
+    playlist,
+    const DeepCollectionEquality().hash(_tracks),
+  );
 
-  /// Create a copy of PlaylistTracksState
+  /// Create a copy of PlaylistDetailsState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$PlaylistTracksDataImplCopyWith<_$PlaylistTracksDataImpl> get copyWith =>
-      __$$PlaylistTracksDataImplCopyWithImpl<_$PlaylistTracksDataImpl>(
+  _$$PlaylistDetailsDataImplCopyWith<_$PlaylistDetailsDataImpl> get copyWith =>
+      __$$PlaylistDetailsDataImplCopyWithImpl<_$PlaylistDetailsDataImpl>(
         this,
         _$identity,
       );
@@ -274,32 +303,32 @@ class _$PlaylistTracksDataImpl implements _PlaylistTracksData {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(List<Track> tracks) data,
+    required TResult Function(Playlist playlist, List<Track> tracks) data,
     required TResult Function(String message) error,
   }) {
-    return data(tracks);
+    return data(playlist, tracks);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function(List<Track> tracks)? data,
+    TResult? Function(Playlist playlist, List<Track> tracks)? data,
     TResult? Function(String message)? error,
   }) {
-    return data?.call(tracks);
+    return data?.call(playlist, tracks);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(List<Track> tracks)? data,
+    TResult Function(Playlist playlist, List<Track> tracks)? data,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
     if (data != null) {
-      return data(tracks);
+      return data(playlist, tracks);
     }
     return orElse();
   }
@@ -307,9 +336,9 @@ class _$PlaylistTracksDataImpl implements _PlaylistTracksData {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_PlaylistTracksLoading value) loading,
-    required TResult Function(_PlaylistTracksData value) data,
-    required TResult Function(_PlaylistTracksError value) error,
+    required TResult Function(PlaylistDetailsLoading value) loading,
+    required TResult Function(PlaylistDetailsData value) data,
+    required TResult Function(PlaylistDetailsError value) error,
   }) {
     return data(this);
   }
@@ -317,9 +346,9 @@ class _$PlaylistTracksDataImpl implements _PlaylistTracksData {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_PlaylistTracksLoading value)? loading,
-    TResult? Function(_PlaylistTracksData value)? data,
-    TResult? Function(_PlaylistTracksError value)? error,
+    TResult? Function(PlaylistDetailsLoading value)? loading,
+    TResult? Function(PlaylistDetailsData value)? data,
+    TResult? Function(PlaylistDetailsError value)? error,
   }) {
     return data?.call(this);
   }
@@ -327,9 +356,9 @@ class _$PlaylistTracksDataImpl implements _PlaylistTracksData {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_PlaylistTracksLoading value)? loading,
-    TResult Function(_PlaylistTracksData value)? data,
-    TResult Function(_PlaylistTracksError value)? error,
+    TResult Function(PlaylistDetailsLoading value)? loading,
+    TResult Function(PlaylistDetailsData value)? data,
+    TResult Function(PlaylistDetailsError value)? error,
     required TResult orElse(),
   }) {
     if (data != null) {
@@ -339,45 +368,48 @@ class _$PlaylistTracksDataImpl implements _PlaylistTracksData {
   }
 }
 
-abstract class _PlaylistTracksData implements PlaylistTracksState {
-  const factory _PlaylistTracksData({required final List<Track> tracks}) =
-      _$PlaylistTracksDataImpl;
+abstract class PlaylistDetailsData implements PlaylistDetailsState {
+  const factory PlaylistDetailsData({
+    required final Playlist playlist,
+    required final List<Track> tracks,
+  }) = _$PlaylistDetailsDataImpl;
 
+  Playlist get playlist;
   List<Track> get tracks;
 
-  /// Create a copy of PlaylistTracksState
+  /// Create a copy of PlaylistDetailsState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$PlaylistTracksDataImplCopyWith<_$PlaylistTracksDataImpl> get copyWith =>
+  _$$PlaylistDetailsDataImplCopyWith<_$PlaylistDetailsDataImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$PlaylistTracksErrorImplCopyWith<$Res> {
-  factory _$$PlaylistTracksErrorImplCopyWith(
-    _$PlaylistTracksErrorImpl value,
-    $Res Function(_$PlaylistTracksErrorImpl) then,
-  ) = __$$PlaylistTracksErrorImplCopyWithImpl<$Res>;
+abstract class _$$PlaylistDetailsErrorImplCopyWith<$Res> {
+  factory _$$PlaylistDetailsErrorImplCopyWith(
+    _$PlaylistDetailsErrorImpl value,
+    $Res Function(_$PlaylistDetailsErrorImpl) then,
+  ) = __$$PlaylistDetailsErrorImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String message});
 }
 
 /// @nodoc
-class __$$PlaylistTracksErrorImplCopyWithImpl<$Res>
-    extends _$PlaylistTracksStateCopyWithImpl<$Res, _$PlaylistTracksErrorImpl>
-    implements _$$PlaylistTracksErrorImplCopyWith<$Res> {
-  __$$PlaylistTracksErrorImplCopyWithImpl(
-    _$PlaylistTracksErrorImpl _value,
-    $Res Function(_$PlaylistTracksErrorImpl) _then,
+class __$$PlaylistDetailsErrorImplCopyWithImpl<$Res>
+    extends _$PlaylistDetailsStateCopyWithImpl<$Res, _$PlaylistDetailsErrorImpl>
+    implements _$$PlaylistDetailsErrorImplCopyWith<$Res> {
+  __$$PlaylistDetailsErrorImplCopyWithImpl(
+    _$PlaylistDetailsErrorImpl _value,
+    $Res Function(_$PlaylistDetailsErrorImpl) _then,
   ) : super(_value, _then);
 
-  /// Create a copy of PlaylistTracksState
+  /// Create a copy of PlaylistDetailsState
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({Object? message = null}) {
     return _then(
-      _$PlaylistTracksErrorImpl(
+      _$PlaylistDetailsErrorImpl(
         message: null == message
             ? _value.message
             : message // ignore: cast_nullable_to_non_nullable
@@ -389,35 +421,36 @@ class __$$PlaylistTracksErrorImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$PlaylistTracksErrorImpl implements _PlaylistTracksError {
-  const _$PlaylistTracksErrorImpl({required this.message});
+class _$PlaylistDetailsErrorImpl implements PlaylistDetailsError {
+  const _$PlaylistDetailsErrorImpl({required this.message});
 
   @override
   final String message;
 
   @override
   String toString() {
-    return 'PlaylistTracksState.error(message: $message)';
+    return 'PlaylistDetailsState.error(message: $message)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$PlaylistTracksErrorImpl &&
+            other is _$PlaylistDetailsErrorImpl &&
             (identical(other.message, message) || other.message == message));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, message);
 
-  /// Create a copy of PlaylistTracksState
+  /// Create a copy of PlaylistDetailsState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$PlaylistTracksErrorImplCopyWith<_$PlaylistTracksErrorImpl> get copyWith =>
-      __$$PlaylistTracksErrorImplCopyWithImpl<_$PlaylistTracksErrorImpl>(
+  _$$PlaylistDetailsErrorImplCopyWith<_$PlaylistDetailsErrorImpl>
+  get copyWith =>
+      __$$PlaylistDetailsErrorImplCopyWithImpl<_$PlaylistDetailsErrorImpl>(
         this,
         _$identity,
       );
@@ -426,7 +459,7 @@ class _$PlaylistTracksErrorImpl implements _PlaylistTracksError {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(List<Track> tracks) data,
+    required TResult Function(Playlist playlist, List<Track> tracks) data,
     required TResult Function(String message) error,
   }) {
     return error(message);
@@ -436,7 +469,7 @@ class _$PlaylistTracksErrorImpl implements _PlaylistTracksError {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function(List<Track> tracks)? data,
+    TResult? Function(Playlist playlist, List<Track> tracks)? data,
     TResult? Function(String message)? error,
   }) {
     return error?.call(message);
@@ -446,7 +479,7 @@ class _$PlaylistTracksErrorImpl implements _PlaylistTracksError {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(List<Track> tracks)? data,
+    TResult Function(Playlist playlist, List<Track> tracks)? data,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -459,9 +492,9 @@ class _$PlaylistTracksErrorImpl implements _PlaylistTracksError {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_PlaylistTracksLoading value) loading,
-    required TResult Function(_PlaylistTracksData value) data,
-    required TResult Function(_PlaylistTracksError value) error,
+    required TResult Function(PlaylistDetailsLoading value) loading,
+    required TResult Function(PlaylistDetailsData value) data,
+    required TResult Function(PlaylistDetailsError value) error,
   }) {
     return error(this);
   }
@@ -469,9 +502,9 @@ class _$PlaylistTracksErrorImpl implements _PlaylistTracksError {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_PlaylistTracksLoading value)? loading,
-    TResult? Function(_PlaylistTracksData value)? data,
-    TResult? Function(_PlaylistTracksError value)? error,
+    TResult? Function(PlaylistDetailsLoading value)? loading,
+    TResult? Function(PlaylistDetailsData value)? data,
+    TResult? Function(PlaylistDetailsError value)? error,
   }) {
     return error?.call(this);
   }
@@ -479,9 +512,9 @@ class _$PlaylistTracksErrorImpl implements _PlaylistTracksError {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_PlaylistTracksLoading value)? loading,
-    TResult Function(_PlaylistTracksData value)? data,
-    TResult Function(_PlaylistTracksError value)? error,
+    TResult Function(PlaylistDetailsLoading value)? loading,
+    TResult Function(PlaylistDetailsData value)? data,
+    TResult Function(PlaylistDetailsError value)? error,
     required TResult orElse(),
   }) {
     if (error != null) {
@@ -491,15 +524,15 @@ class _$PlaylistTracksErrorImpl implements _PlaylistTracksError {
   }
 }
 
-abstract class _PlaylistTracksError implements PlaylistTracksState {
-  const factory _PlaylistTracksError({required final String message}) =
-      _$PlaylistTracksErrorImpl;
+abstract class PlaylistDetailsError implements PlaylistDetailsState {
+  const factory PlaylistDetailsError({required final String message}) =
+      _$PlaylistDetailsErrorImpl;
 
   String get message;
 
-  /// Create a copy of PlaylistTracksState
+  /// Create a copy of PlaylistDetailsState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$PlaylistTracksErrorImplCopyWith<_$PlaylistTracksErrorImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$PlaylistDetailsErrorImplCopyWith<_$PlaylistDetailsErrorImpl>
+  get copyWith => throw _privateConstructorUsedError;
 }

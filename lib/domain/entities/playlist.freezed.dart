@@ -21,6 +21,8 @@ mixin _$Playlist {
   String get title => throw _privateConstructorUsedError;
   String get imageUrl => throw _privateConstructorUsedError;
   int get trackCount => throw _privateConstructorUsedError;
+  List<String> get trackDocIds => throw _privateConstructorUsedError;
+  PlaylistType get type => throw _privateConstructorUsedError;
   bool get isLiked => throw _privateConstructorUsedError;
   String? get likeId => throw _privateConstructorUsedError;
 
@@ -41,6 +43,8 @@ abstract class $PlaylistCopyWith<$Res> {
     String title,
     String imageUrl,
     int trackCount,
+    List<String> trackDocIds,
+    PlaylistType type,
     bool isLiked,
     String? likeId,
   });
@@ -65,6 +69,8 @@ class _$PlaylistCopyWithImpl<$Res, $Val extends Playlist>
     Object? title = null,
     Object? imageUrl = null,
     Object? trackCount = null,
+    Object? trackDocIds = null,
+    Object? type = null,
     Object? isLiked = null,
     Object? likeId = freezed,
   }) {
@@ -86,6 +92,14 @@ class _$PlaylistCopyWithImpl<$Res, $Val extends Playlist>
                 ? _value.trackCount
                 : trackCount // ignore: cast_nullable_to_non_nullable
                       as int,
+            trackDocIds: null == trackDocIds
+                ? _value.trackDocIds
+                : trackDocIds // ignore: cast_nullable_to_non_nullable
+                      as List<String>,
+            type: null == type
+                ? _value.type
+                : type // ignore: cast_nullable_to_non_nullable
+                      as PlaylistType,
             isLiked: null == isLiked
                 ? _value.isLiked
                 : isLiked // ignore: cast_nullable_to_non_nullable
@@ -114,6 +128,8 @@ abstract class _$$PlaylistImplCopyWith<$Res>
     String title,
     String imageUrl,
     int trackCount,
+    List<String> trackDocIds,
+    PlaylistType type,
     bool isLiked,
     String? likeId,
   });
@@ -137,6 +153,8 @@ class __$$PlaylistImplCopyWithImpl<$Res>
     Object? title = null,
     Object? imageUrl = null,
     Object? trackCount = null,
+    Object? trackDocIds = null,
+    Object? type = null,
     Object? isLiked = null,
     Object? likeId = freezed,
   }) {
@@ -158,6 +176,14 @@ class __$$PlaylistImplCopyWithImpl<$Res>
             ? _value.trackCount
             : trackCount // ignore: cast_nullable_to_non_nullable
                   as int,
+        trackDocIds: null == trackDocIds
+            ? _value._trackDocIds
+            : trackDocIds // ignore: cast_nullable_to_non_nullable
+                  as List<String>,
+        type: null == type
+            ? _value.type
+            : type // ignore: cast_nullable_to_non_nullable
+                  as PlaylistType,
         isLiked: null == isLiked
             ? _value.isLiked
             : isLiked // ignore: cast_nullable_to_non_nullable
@@ -179,9 +205,11 @@ class _$PlaylistImpl implements _Playlist {
     required this.title,
     required this.imageUrl,
     required this.trackCount,
+    final List<String> trackDocIds = const [],
+    this.type = PlaylistType.featured,
     this.isLiked = false,
     this.likeId,
-  });
+  }) : _trackDocIds = trackDocIds;
 
   @override
   final String id;
@@ -191,6 +219,18 @@ class _$PlaylistImpl implements _Playlist {
   final String imageUrl;
   @override
   final int trackCount;
+  final List<String> _trackDocIds;
+  @override
+  @JsonKey()
+  List<String> get trackDocIds {
+    if (_trackDocIds is EqualUnmodifiableListView) return _trackDocIds;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_trackDocIds);
+  }
+
+  @override
+  @JsonKey()
+  final PlaylistType type;
   @override
   @JsonKey()
   final bool isLiked;
@@ -199,7 +239,7 @@ class _$PlaylistImpl implements _Playlist {
 
   @override
   String toString() {
-    return 'Playlist(id: $id, title: $title, imageUrl: $imageUrl, trackCount: $trackCount, isLiked: $isLiked, likeId: $likeId)';
+    return 'Playlist(id: $id, title: $title, imageUrl: $imageUrl, trackCount: $trackCount, trackDocIds: $trackDocIds, type: $type, isLiked: $isLiked, likeId: $likeId)';
   }
 
   @override
@@ -213,6 +253,11 @@ class _$PlaylistImpl implements _Playlist {
                 other.imageUrl == imageUrl) &&
             (identical(other.trackCount, trackCount) ||
                 other.trackCount == trackCount) &&
+            const DeepCollectionEquality().equals(
+              other._trackDocIds,
+              _trackDocIds,
+            ) &&
+            (identical(other.type, type) || other.type == type) &&
             (identical(other.isLiked, isLiked) || other.isLiked == isLiked) &&
             (identical(other.likeId, likeId) || other.likeId == likeId));
   }
@@ -224,6 +269,8 @@ class _$PlaylistImpl implements _Playlist {
     title,
     imageUrl,
     trackCount,
+    const DeepCollectionEquality().hash(_trackDocIds),
+    type,
     isLiked,
     likeId,
   );
@@ -243,6 +290,8 @@ abstract class _Playlist implements Playlist {
     required final String title,
     required final String imageUrl,
     required final int trackCount,
+    final List<String> trackDocIds,
+    final PlaylistType type,
     final bool isLiked,
     final String? likeId,
   }) = _$PlaylistImpl;
@@ -255,6 +304,10 @@ abstract class _Playlist implements Playlist {
   String get imageUrl;
   @override
   int get trackCount;
+  @override
+  List<String> get trackDocIds;
+  @override
+  PlaylistType get type;
   @override
   bool get isLiked;
   @override

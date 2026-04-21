@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'my_playlists_controller.dart';
+part of 'my_playlists_state.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -19,7 +19,6 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$MyPlaylistsState {
   List<Playlist> get playlists => throw _privateConstructorUsedError;
   bool get isLoading => throw _privateConstructorUsedError;
-  bool get isLoadingMore => throw _privateConstructorUsedError;
   String? get error => throw _privateConstructorUsedError;
 
   /// Create a copy of MyPlaylistsState
@@ -36,12 +35,7 @@ abstract class $MyPlaylistsStateCopyWith<$Res> {
     $Res Function(MyPlaylistsState) then,
   ) = _$MyPlaylistsStateCopyWithImpl<$Res, MyPlaylistsState>;
   @useResult
-  $Res call({
-    List<Playlist> playlists,
-    bool isLoading,
-    bool isLoadingMore,
-    String? error,
-  });
+  $Res call({List<Playlist> playlists, bool isLoading, String? error});
 }
 
 /// @nodoc
@@ -61,7 +55,6 @@ class _$MyPlaylistsStateCopyWithImpl<$Res, $Val extends MyPlaylistsState>
   $Res call({
     Object? playlists = null,
     Object? isLoading = null,
-    Object? isLoadingMore = null,
     Object? error = freezed,
   }) {
     return _then(
@@ -73,10 +66,6 @@ class _$MyPlaylistsStateCopyWithImpl<$Res, $Val extends MyPlaylistsState>
             isLoading: null == isLoading
                 ? _value.isLoading
                 : isLoading // ignore: cast_nullable_to_non_nullable
-                      as bool,
-            isLoadingMore: null == isLoadingMore
-                ? _value.isLoadingMore
-                : isLoadingMore // ignore: cast_nullable_to_non_nullable
                       as bool,
             error: freezed == error
                 ? _value.error
@@ -97,12 +86,7 @@ abstract class _$$MyPlaylistsStateImplCopyWith<$Res>
   ) = __$$MyPlaylistsStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({
-    List<Playlist> playlists,
-    bool isLoading,
-    bool isLoadingMore,
-    String? error,
-  });
+  $Res call({List<Playlist> playlists, bool isLoading, String? error});
 }
 
 /// @nodoc
@@ -121,7 +105,6 @@ class __$$MyPlaylistsStateImplCopyWithImpl<$Res>
   $Res call({
     Object? playlists = null,
     Object? isLoading = null,
-    Object? isLoadingMore = null,
     Object? error = freezed,
   }) {
     return _then(
@@ -133,10 +116,6 @@ class __$$MyPlaylistsStateImplCopyWithImpl<$Res>
         isLoading: null == isLoading
             ? _value.isLoading
             : isLoading // ignore: cast_nullable_to_non_nullable
-                  as bool,
-        isLoadingMore: null == isLoadingMore
-            ? _value.isLoadingMore
-            : isLoadingMore // ignore: cast_nullable_to_non_nullable
                   as bool,
         error: freezed == error
             ? _value.error
@@ -153,7 +132,6 @@ class _$MyPlaylistsStateImpl implements _MyPlaylistsState {
   const _$MyPlaylistsStateImpl({
     final List<Playlist> playlists = const [],
     this.isLoading = false,
-    this.isLoadingMore = false,
     this.error,
   }) : _playlists = playlists;
 
@@ -170,14 +148,11 @@ class _$MyPlaylistsStateImpl implements _MyPlaylistsState {
   @JsonKey()
   final bool isLoading;
   @override
-  @JsonKey()
-  final bool isLoadingMore;
-  @override
   final String? error;
 
   @override
   String toString() {
-    return 'MyPlaylistsState(playlists: $playlists, isLoading: $isLoading, isLoadingMore: $isLoadingMore, error: $error)';
+    return 'MyPlaylistsState(playlists: $playlists, isLoading: $isLoading, error: $error)';
   }
 
   @override
@@ -191,8 +166,6 @@ class _$MyPlaylistsStateImpl implements _MyPlaylistsState {
             ) &&
             (identical(other.isLoading, isLoading) ||
                 other.isLoading == isLoading) &&
-            (identical(other.isLoadingMore, isLoadingMore) ||
-                other.isLoadingMore == isLoadingMore) &&
             (identical(other.error, error) || other.error == error));
   }
 
@@ -201,7 +174,6 @@ class _$MyPlaylistsStateImpl implements _MyPlaylistsState {
     runtimeType,
     const DeepCollectionEquality().hash(_playlists),
     isLoading,
-    isLoadingMore,
     error,
   );
 
@@ -221,7 +193,6 @@ abstract class _MyPlaylistsState implements MyPlaylistsState {
   const factory _MyPlaylistsState({
     final List<Playlist> playlists,
     final bool isLoading,
-    final bool isLoadingMore,
     final String? error,
   }) = _$MyPlaylistsStateImpl;
 
@@ -229,8 +200,6 @@ abstract class _MyPlaylistsState implements MyPlaylistsState {
   List<Playlist> get playlists;
   @override
   bool get isLoading;
-  @override
-  bool get isLoadingMore;
   @override
   String? get error;
 
