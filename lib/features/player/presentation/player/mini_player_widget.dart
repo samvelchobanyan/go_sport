@@ -13,7 +13,6 @@ import 'package:go_sport/domain/state/player_state.dart';
 import 'package:go_sport/domain/state/player_state_selectors.dart';
 import 'package:go_sport/core/di/repository_providers.dart';
 
-
 const double _kMiniPlayerHeight = 72.0;
 const double _kActivePanelWidthRatio = 0.8;
 const double _kInactivePanelWidthRatio = 0.2;
@@ -24,10 +23,7 @@ const double _kProgressBarInset = 8.0;
 class MiniPlayerWidget extends ConsumerStatefulWidget {
   final VoidCallback onOpenFullPlayer;
 
-  const MiniPlayerWidget({
-    super.key,
-    required this.onOpenFullPlayer,
-  });
+  const MiniPlayerWidget({super.key, required this.onOpenFullPlayer});
 
   @override
   ConsumerState<MiniPlayerWidget> createState() => _MiniPlayerWidgetState();
@@ -36,7 +32,7 @@ class MiniPlayerWidget extends ConsumerStatefulWidget {
 class _MiniPlayerWidgetState extends ConsumerState<MiniPlayerWidget>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
-  late final PageController _pageController; 
+  late final PageController _pageController;
 
   bool _isMusicMode = true; // UI mode: which panel is expanded
 
@@ -47,7 +43,7 @@ class _MiniPlayerWidgetState extends ConsumerState<MiniPlayerWidget>
       duration: _kAnimationDuration,
       vsync: this,
     );
-    _pageController = PageController(initialPage: 1); 
+    _pageController = PageController(initialPage: 1);
   }
 
   /// Toggle between music and radio UI panels (does NOT affect playback)
@@ -104,17 +100,37 @@ class _MiniPlayerWidgetState extends ConsumerState<MiniPlayerWidget>
     required bool isActive,
     required VoidCallback? onTap,
   }) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final availableWidth = screenWidth - 32 - 8; // minus horizontal padding (16*2) and gap (8)
+    // final screenWidth = MediaQuery.of(context).size.width;
+    // final availableWidth =
+    //     screenWidth - 32 - 8; // minus horizontal padding (16*2) and gap (8)
 
-    // Calculate target widths
-    final activeWidth = availableWidth * _kActivePanelWidthRatio;
-    final inactiveWidth = availableWidth * _kInactivePanelWidthRatio;
+    // // Calculate target widths
+    // final activeWidth = availableWidth * _kActivePanelWidthRatio;
+    // final inactiveWidth = availableWidth * _kInactivePanelWidthRatio;
 
-    // Interpolate width based on animation
-    final animatedWidth = isMusicPanel
-        ? lerpDouble(activeWidth, inactiveWidth, _animationController.value)!
-        : lerpDouble(inactiveWidth, activeWidth, _animationController.value)!;
+    // // Interpolate width based on animation
+    // final animatedWidth = isMusicPanel
+    //     ? lerpDouble(activeWidth, inactiveWidth, _animationController.value)!
+    //     : lerpDouble(inactiveWidth, activeWidth, _animationController.value)!;
+
+final screenWidth = MediaQuery.of(context).size.width;
+  final totalHorizontalPadding = 16 * 2; // Left and right of the main container
+  final gapBetweenPanels = 8;
+  final totalAvailableWidth = screenWidth - totalHorizontalPadding - gapBetweenPanels;
+
+  // 1. Calculate the FIXED height of the panel
+  final double panelHeight = _kMiniPlayerHeight - (7 * 1.8); // 72 - 14 = 58.0
+
+  // 2. Define the square state width to match the height
+  final double squareWidth = panelHeight; 
+
+  // 3. Define the expanded state width as whatever is left over
+  final double expandedWidth = totalAvailableWidth - squareWidth;
+
+  // 4. Interpolate between these two fixed values
+  final double animatedWidth = isMusicPanel
+      ? lerpDouble(expandedWidth, squareWidth, _animationController.value)!
+      : lerpDouble(squareWidth, expandedWidth, _animationController.value)!;
 
     return GestureDetector(
       onTap: onTap,
@@ -126,7 +142,9 @@ class _MiniPlayerWidgetState extends ConsumerState<MiniPlayerWidget>
           borderRadius: BorderRadius.circular(DSRadius.s),
         ),
         child: isActive
-            ? (isMusicPanel ? _buildSwipableMusicContent() : _buildRadioContent())
+            ? (isMusicPanel
+                  ? _buildSwipableMusicContent()
+                  : _buildRadioContent())
             : Center(
                 child: isMusicPanel
                     ? const DSBitIcon(
@@ -224,19 +242,31 @@ class _MiniPlayerWidgetState extends ConsumerState<MiniPlayerWidget>
                   final notifier = ref.read(playerStateProvider.notifier);
                   final isEpisode = track.releaseDate != null;
 
-                  notifier.updateTrackLike(track.id, isLiked: !wasLiked, likeId: prevLikeId);
+                  notifier.updateTrackLike(
+                    track.id,
+                    isLiked: !wasLiked,
+                    likeId: prevLikeId,
+                  );
 
                   try {
                     final newLikeId = isEpisode
                         ? await ref
-                            .read(episodesRepositoryProvider)
-                            .toggleLikeEpisode(track.id, prevLikeId)
+                              .read(episodesRepositoryProvider)
+                              .toggleLikeEpisode(track.id, prevLikeId)
                         : await ref
-                            .read(playlistRepositoryProvider)
-                            .toggleLikeTrack(track.id, prevLikeId);
-                    notifier.updateTrackLike(track.id, isLiked: !wasLiked, likeId: newLikeId);
+                              .read(playlistRepositoryProvider)
+                              .toggleLikeTrack(track.id, prevLikeId);
+                    notifier.updateTrackLike(
+                      track.id,
+                      isLiked: !wasLiked,
+                      likeId: newLikeId,
+                    );
                   } catch (e) {
-                    notifier.updateTrackLike(track.id, isLiked: wasLiked, likeId: prevLikeId);
+                    notifier.updateTrackLike(
+                      track.id,
+                      isLiked: wasLiked,
+                      likeId: prevLikeId,
+                    );
                   }
                 },
                 child: Padding(
@@ -263,10 +293,7 @@ class _MiniPlayerWidgetState extends ConsumerState<MiniPlayerWidget>
                   child: AnimatedSwitcher(
                     duration: const Duration(milliseconds: 200),
                     transitionBuilder: (child, animation) {
-                      return FadeTransition(
-                        opacity: animation,
-                        child: child,
-                      );
+                      return FadeTransition(opacity: animation, child: child);
                     },
                     child: isMusicLoading
                         ? SizedBox(
@@ -307,22 +334,23 @@ class _MiniPlayerWidgetState extends ConsumerState<MiniPlayerWidget>
           bottom: 0,
           left: _kProgressBarInset,
           right: _kProgressBarInset,
-          child: Consumer(builder: (context, ref, _) {
-            final progress = ref.watch(playerProgressProvider);
-            return LinearProgressIndicator(
-              value: progress,
-              minHeight: _kProgressBarHeight,
-              backgroundColor: DSColors.lime,
-              valueColor: const AlwaysStoppedAnimation(DSColors.blue),
-            );
-          }),
+          child: Consumer(
+            builder: (context, ref, _) {
+              final progress = ref.watch(playerProgressProvider);
+              return LinearProgressIndicator(
+                value: progress,
+                minHeight: _kProgressBarHeight,
+                backgroundColor: DSColors.lime,
+                valueColor: const AlwaysStoppedAnimation(DSColors.blue),
+              );
+            },
+          ),
         ),
       ],
     );
   }
 
-  Widget _buildSwipableMusicContent(){
-
+  Widget _buildSwipableMusicContent() {
     final info = ref.watch(playerInfoProvider);
     // final track = info.track;
     final isRadioMode = info.isRadioMode;
@@ -330,22 +358,23 @@ class _MiniPlayerWidgetState extends ConsumerState<MiniPlayerWidget>
     final isMusicLoading = !isRadioMode && info.status == PlayerStatus.loading;
     // final imageUrl = info.displayImageUrl;
 
-    
-
     final swipeData = ref.watch(
-      playerStateProvider.select((s) =>(
-        currentTrack: s.currentTrack,
-        prevTrack: s.prevTrack,
-        nextTrack: s.nextTrack,
+      playerStateProvider.select(
+        (s) => (
+          currentTrack: s.currentTrack,
+          prevTrack: s.prevTrack,
+          nextTrack: s.nextTrack,
 
-        sourceImageUrl: s.source?.when(
-          album: (_, __, img) => img,
-          playlist: (_, __, img) => img,
-          program: (_, __, img) => img,
-          favorites: (_, __, img) => img,
-          episodes: (_, __, img) => img,
+          sourceImageUrl: s.source?.when(
+            album: (_, __, img) => img,
+            playlist: (_, __, img) => img,
+            program: (_, __, img) => img,
+            favorites: (_, __, img) => img,
+            episodes: (_, __, img) => img,
+          ),
         ),
-    )));
+      ),
+    );
 
     return Stack(
       children: [
@@ -354,7 +383,7 @@ class _MiniPlayerWidgetState extends ConsumerState<MiniPlayerWidget>
             final page = _pageController?.page?.round();
             if (page == null || page == 1) return false;
 
-            if(page == 2) {
+            if (page == 2) {
               ref.read(playerStateProvider.notifier).next();
             } else if (page == 0) {
               ref.read(playerStateProvider.notifier).previous();
@@ -369,185 +398,199 @@ class _MiniPlayerWidgetState extends ConsumerState<MiniPlayerWidget>
             return false;
           },
           child: PageView.builder(
-              controller: _pageController,
-              itemCount: 3,
-              itemBuilder: (contect, index){
-                final track = switch(index) {
-                  0 => swipeData.prevTrack,
-                  1 => swipeData.currentTrack,
-                  2 => swipeData.nextTrack,
-                  _ => null,
-                };  
-                final trackTitle = track?.title ?? 'No track';
-                final artistName = track?.artistName ?? '';
-                final imageUrl = track?.imageUrl ?? swipeData.sourceImageUrl;
-                
-                return Padding(
-                  padding: const EdgeInsets.only(left: 7, right: 6),
-                  child: Row(
-                    children: [
-                      // Album cover
-                      Container(
-                        width: 44,
-                        height: 44,
-                        decoration: BoxDecoration(
-                          color: DSColors.white,
-                          borderRadius: BorderRadius.circular(4.25),
-                          image: imageUrl != null
-                              ? DecorationImage(
-                                  image: CachedNetworkImageProvider(imageUrl),
-                                  fit: BoxFit.cover,
-                                )
-                              : null,
-                        ),
-                        child: imageUrl == null
-                            ? const Icon(Icons.music_note, color: DSColors.gray40)
+            controller: _pageController,
+            itemCount: 3,
+            itemBuilder: (contect, index) {
+              final track = switch (index) {
+                0 => swipeData.prevTrack,
+                1 => swipeData.currentTrack,
+                2 => swipeData.nextTrack,
+                _ => null,
+              };
+              final trackTitle = track?.title ?? 'No track';
+              final artistName = track?.artistName ?? '';
+              final imageUrl = track?.imageUrl ?? swipeData.sourceImageUrl;
+
+              return Padding(
+                padding: const EdgeInsets.only(left: 7, right: 6),
+                child: Row(
+                  children: [
+                    // Album cover
+                    Container(
+                      width: 44,
+                      height: 44,
+                      decoration: BoxDecoration(
+                        color: DSColors.white,
+                        borderRadius: BorderRadius.circular(4.25),
+                        image: imageUrl != null
+                            ? DecorationImage(
+                                image: CachedNetworkImageProvider(imageUrl),
+                                fit: BoxFit.cover,
+                              )
                             : null,
                       ),
-                      const SizedBox(width: 7),
-                      // Text block
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 7),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
+                      child: imageUrl == null
+                          ? const Icon(Icons.music_note, color: DSColors.gray40)
+                          : null,
+                    ),
+                    const SizedBox(width: 7),
+                    // Text block
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 7),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              trackTitle,
+                              style: context.subtitleM?.copyWith(
+                                fontWeight: FontWeight.bold,
+                                color: DSColors.black,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            if (artistName.isNotEmpty) ...[
+                              const SizedBox(height: 2),
                               Text(
-                                trackTitle,
-                                style: context.subtitleM?.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                  color: DSColors.black,
+                                artistName,
+                                style: context.textL?.copyWith(
+                                  color: DSColors.gray70,
                                 ),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                               ),
-                              if (artistName.isNotEmpty) ...[
-                                const SizedBox(height: 2),
-                                Text(
-                                  artistName,
-                                  style: context.textL?.copyWith(
-                                    color: DSColors.gray70,
-                                  ),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ],
                             ],
-                          ),
+                          ],
                         ),
                       ),
-                      const SizedBox(width: 8),
-                      // Like icon
-                      GestureDetector(
-                        onTap: () async {
-                          final track = swipeData.currentTrack;
-                          if (track == null) return;
+                    ),
+                    const SizedBox(width: 8),
+                    // Like icon
+                    GestureDetector(
+                      onTap: () async {
+                        final track = swipeData.currentTrack;
+                        if (track == null) return;
 
-                          final wasLiked = track.isLiked;
-                          final prevLikeId = track.likeId;
-                          final notifier = ref.read(playerStateProvider.notifier);
-                          final isEpisode = track.releaseDate != null;
+                        final wasLiked = track.isLiked;
+                        final prevLikeId = track.likeId;
+                        final notifier = ref.read(playerStateProvider.notifier);
+                        final isEpisode = track.releaseDate != null;
 
-                          notifier.updateTrackLike(track.id, isLiked: !wasLiked, likeId: prevLikeId);
+                        notifier.updateTrackLike(
+                          track.id,
+                          isLiked: !wasLiked,
+                          likeId: prevLikeId,
+                        );
 
-                          try {
-                            final newLikeId = isEpisode
-                                ? await ref
+                        try {
+                          final newLikeId = isEpisode
+                              ? await ref
                                     .read(episodesRepositoryProvider)
                                     .toggleLikeEpisode(track.id, prevLikeId)
-                                : await ref
+                              : await ref
                                     .read(playlistRepositoryProvider)
                                     .toggleLikeTrack(track.id, prevLikeId);
-                            notifier.updateTrackLike(track.id, isLiked: !wasLiked, likeId: newLikeId);
-                          } catch (e) {
-                            // Revert UI change on error
-                            notifier.updateTrackLike(track.id, isLiked: wasLiked, likeId: prevLikeId);
-                          }
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 7),
-                          child: DSHeartIcon(
-                            color: DSColors.blue,
-                            size: 32,
-                            isFilled: swipeData.currentTrack?.isLiked ?? false,
-                          ),
+                          notifier.updateTrackLike(
+                            track.id,
+                            isLiked: !wasLiked,
+                            likeId: newLikeId,
+                          );
+                        } catch (e) {
+                          // Revert UI change on error
+                          notifier.updateTrackLike(
+                            track.id,
+                            isLiked: wasLiked,
+                            likeId: prevLikeId,
+                          );
+                        }
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 7),
+                        child: DSHeartIcon(
+                          color: DSColors.blue,
+                          size: 32,
+                          isFilled: swipeData.currentTrack?.isLiked ?? false,
                         ),
                       ),
-                      const SizedBox(width: 8),
-                      // Play/Pause icon
-                      GestureDetector(
-                        onTap: () {
-                          if (isRadioMode) {
-                            ref.read(playerStateProvider.notifier).resumeMusic();
-                          } else {
-                            ref.read(playerStateProvider.notifier).togglePlayPause();
-                          }
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8),
-                          child: AnimatedSwitcher(
-                            duration: const Duration(milliseconds: 200),
-                            transitionBuilder: (child, animation) {
-                              return FadeTransition(
-                                opacity: animation,
-                                child: child,
-                              );
-                            },
-                            child: isMusicLoading
-                                ? SizedBox(
-                                    key: const ValueKey('music-loading'),
-                                    width: 32,
-                                    height: 32,
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8),
-                                      child: CircularProgressIndicator(
-                                        color: DSColors.blue,
-                                        strokeWidth: 2,
-                                      ),
-                                    ),
-                                  )
-                                : SizedBox(
-                                    width: 32,
-                                    height: 32,
-                                    child: SvgPicture.asset(
-                                      isMusicPlaying
-                                          ? 'assets/icons/pause.svg'
-                                          : 'assets/icons/play.svg',
-                                      key: ValueKey(isMusicPlaying),
-                                      colorFilter: const ColorFilter.mode(
-                                        DSColors.blue,
-                                        BlendMode.srcIn,
-                                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    // Play/Pause icon
+                    GestureDetector(
+                      onTap: () {
+                        if (isRadioMode) {
+                          ref.read(playerStateProvider.notifier).resumeMusic();
+                        } else {
+                          ref
+                              .read(playerStateProvider.notifier)
+                              .togglePlayPause();
+                        }
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8),
+                        child: AnimatedSwitcher(
+                          duration: const Duration(milliseconds: 200),
+                          transitionBuilder: (child, animation) {
+                            return FadeTransition(
+                              opacity: animation,
+                              child: child,
+                            );
+                          },
+                          child: isMusicLoading
+                              ? SizedBox(
+                                  key: const ValueKey('music-loading'),
+                                  width: 32,
+                                  height: 32,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8),
+                                    child: CircularProgressIndicator(
+                                      color: DSColors.blue,
+                                      strokeWidth: 2,
                                     ),
                                   ),
-                          ),
+                                )
+                              : SizedBox(
+                                  width: 32,
+                                  height: 32,
+                                  child: SvgPicture.asset(
+                                    isMusicPlaying
+                                        ? 'assets/icons/pause.svg'
+                                        : 'assets/icons/play.svg',
+                                    key: ValueKey(isMusicPlaying),
+                                    colorFilter: const ColorFilter.mode(
+                                      DSColors.blue,
+                                      BlendMode.srcIn,
+                                    ),
+                                  ),
+                                ),
                         ),
                       ),
-                    ],
-            ),
-                );
-              },
+                    ),
+                  ],
+                ),
+              );
+            },
           ),
         ),
         Positioned(
           bottom: 0,
           left: _kProgressBarInset,
           right: _kProgressBarInset,
-          child: Consumer(builder: (context, ref, _) {
-            final progress = ref.watch(playerProgressProvider);
-            return LinearProgressIndicator(
-              value: progress,
-              minHeight: _kProgressBarHeight,
-              backgroundColor: DSColors.lime,
-              valueColor: const AlwaysStoppedAnimation(DSColors.blue),
-            );
-          }),
+          child: Consumer(
+            builder: (context, ref, _) {
+              final progress = ref.watch(playerProgressProvider);
+              return LinearProgressIndicator(
+                value: progress,
+                minHeight: _kProgressBarHeight,
+                backgroundColor: DSColors.lime,
+                valueColor: const AlwaysStoppedAnimation(DSColors.blue),
+              );
+            },
+          ),
         ),
-      ]
-        
+      ],
     );
-
   }
 
   Widget _buildRadioContent() {
@@ -557,7 +600,8 @@ class _MiniPlayerWidgetState extends ConsumerState<MiniPlayerWidget>
     final isRadioLoading = isRadioMode && info.status == PlayerStatus.loading;
 
     final radioTitle = info.radioTitle ?? 'Go Sport Radio';
-    final radioImageUrl = info.radioImageUrl ??
+    final radioImageUrl =
+        info.radioImageUrl ??
         'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=300&q=80';
 
     return Padding(
@@ -623,10 +667,7 @@ class _MiniPlayerWidgetState extends ConsumerState<MiniPlayerWidget>
               child: AnimatedSwitcher(
                 duration: const Duration(milliseconds: 200),
                 transitionBuilder: (child, animation) {
-                  return FadeTransition(
-                    opacity: animation,
-                    child: child,
-                  );
+                  return FadeTransition(opacity: animation, child: child);
                 },
                 child: isRadioLoading
                     ? SizedBox(

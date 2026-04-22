@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:go_sport/domain/entities/user.dart';
 
 abstract interface class ProfileRepository {
@@ -5,7 +7,7 @@ abstract interface class ProfileRepository {
 
   Future<void> deleteUser();
 
-  Future<User> updateUser({String? name, String? surname, String? avatar});
+  Future<void> updateUser({String? name, String? surname, File? avatar});
 
   Future<void> deleteAvatar();
 

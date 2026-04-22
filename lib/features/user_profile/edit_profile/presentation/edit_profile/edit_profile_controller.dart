@@ -1,10 +1,7 @@
-import 'dart:ui';
-
+import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:go_sport/core/auth/auth_state.dart';
 import 'package:go_sport/core/di/repository_providers.dart';
-import 'package:go_sport/domain/repositories/auth_repository.dart';
 import 'package:go_sport/domain/repositories/profile_repository.dart';
 
 part 'edit_profile_controller.freezed.dart';
@@ -19,42 +16,25 @@ class EditProfileState with _$EditProfileState {
 }
 
 class EditProfileController extends AutoDisposeNotifier<EditProfileState> {
-  // We need both repositories now
-  late final AuthRepository _authRepository;
   late final ProfileRepository _profileRepository;
 
   @override
   EditProfileState build() {
-    _authRepository = ref.watch(authRepositoryProvider);
-    _profileRepository = ref.watch(profileRepositoryProvider); // Added this
+    _profileRepository = ref.watch(profileRepositoryProvider);
     return const EditProfileState();
   }
 
-  Future<void> updateProfile({
-    String? imagePath,
-    String? name,
-    String? surname,
-  }) async {
+  Future<void> updateUser({String? name, String? surname, File? avatar}) async {
     state = state.copyWith(isLoading: true, error: null);
-
     try {
-      // Use the profile repository to update the user
       await _profileRepository.updateUser(
         name: name,
         surname: surname,
-        avatar: imagePath,
+        avatar: avatar,
       );
-
-      // Usually, you'd want to update your global user state here
-      // so the rest of the app sees the new name/image immediately
-      // ref.read(userProvider.notifier).state = updatedUser;
-
       state = state.copyWith(isLoading: false);
     } catch (e) {
-      state = state.copyWith(
-        isLoading: false,
-        error: "Failed to update profile. Please try again.",
-      );
+      state = state.copyWith(isLoading: false, error: e.toString());
     }
   }
 }

@@ -26,6 +26,25 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     final profileState = ref.watch(profileControllerProvider);
     final profileNotifier = ref.read(profileControllerProvider.notifier);
 
+    ref.listen<ProfileState>(profileControllerProvider, (previous, next) {
+      // this works when logout and delete account
+      if (!next.isLoading && next.isAuthenticated == false) {
+        context.go('/login');
+      }
+
+      if (next.error != null && previous?.error != next.error) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(next.error!)));
+      }
+    });
+
+    if (profileState.isLoading && profileState.user == null) {
+      return const Scaffold(
+        body: Center(child: CircularProgressIndicator(color: DSColors.blue)),
+      );
+    }
+
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.dark,
       child: Scaffold(
@@ -40,6 +59,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               onPressed: () => {},
               icon: SvgPicture.asset('assets/icons/bell_blue.svg'),
             ),
+            const SizedBox(width: 8),
           ],
         ),
         body: CustomScrollView(
@@ -55,23 +75,28 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                       shape: BoxShape.circle,
                       border: Border.all(color: DSColors.white, width: 12),
                     ),
-                    child: const UserAvatarButton(imageUrl: null, size: 100),
+                    child: UserAvatarButton(
+                      imageUrl: profileState.user!.avatar,
+                      size: 100,
+                    ),
                   ),
                   const SizedBox(height: 12),
                   Text(
-                    'Alexandr Hovhannisyan',
+                    '${profileState.user!.name} ${profileState.user!.surname}',
                     style: context.bodyL,
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'alexandr.hovhannisyan@gmail.com',
+                    profileState.user!.email,
                     style: context.textL,
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    '+98522365622',
+                    profileState.user?.phone != null
+                        ? '+${profileState.user!.phone}'
+                        : 'Phone not available',
                     style: context.textL,
                     textAlign: TextAlign.center,
                   ),
@@ -191,25 +216,25 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                             const SizedBox(height: 12),
                             ContactInfoItem(
                               icon: Icons.location_on_sharp,
-                              text: '123 Sport Ave, Yerevan',
+                              text: '0002 Yrevan, Hanrapetutyan street 4',
                             ),
                             const SizedBox(height: 12),
 
                             ContactInfoItem(
                               icon: Icons.phone_in_talk_rounded,
-                              text: '+374 00 000 000',
+                              text: '+010 96 456 456',
                             ),
                             const SizedBox(height: 12),
 
                             ContactInfoItem(
                               icon: Icons.email_rounded,
-                              text: 'support@gosport.com',
+                              text: 'Info@gosport.fm',
                             ),
                             const SizedBox(height: 12),
 
                             ContactInfoItem(
                               icon: Icons.language,
-                              text: 'www.gosport.am',
+                              text: 'gosport.fm',
                             ),
                             const SizedBox(height: 24),
 
@@ -257,7 +282,11 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                           'assets/icons/delete_orange_bg.svg',
                         ),
                         text: 'Delete Account',
-                        onTap: () => {},
+                        onTap: () => {
+                          ref
+                              .read(profileControllerProvider.notifier)
+                              .deleteUser(),
+                        },
                       ),
 
                       const SizedBox(height: 24),

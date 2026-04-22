@@ -20,6 +20,7 @@ mixin _$ProfileState {
   bool get isLoading => throw _privateConstructorUsedError;
   String? get error => throw _privateConstructorUsedError;
   bool get isAuthenticated => throw _privateConstructorUsedError;
+  User? get user => throw _privateConstructorUsedError;
 
   /// Create a copy of ProfileState
   /// with the given fields replaced by the non-null parameter values.
@@ -35,7 +36,9 @@ abstract class $ProfileStateCopyWith<$Res> {
     $Res Function(ProfileState) then,
   ) = _$ProfileStateCopyWithImpl<$Res, ProfileState>;
   @useResult
-  $Res call({bool isLoading, String? error, bool isAuthenticated});
+  $Res call({bool isLoading, String? error, bool isAuthenticated, User? user});
+
+  $UserCopyWith<$Res>? get user;
 }
 
 /// @nodoc
@@ -56,6 +59,7 @@ class _$ProfileStateCopyWithImpl<$Res, $Val extends ProfileState>
     Object? isLoading = null,
     Object? error = freezed,
     Object? isAuthenticated = null,
+    Object? user = freezed,
   }) {
     return _then(
       _value.copyWith(
@@ -71,9 +75,27 @@ class _$ProfileStateCopyWithImpl<$Res, $Val extends ProfileState>
                 ? _value.isAuthenticated
                 : isAuthenticated // ignore: cast_nullable_to_non_nullable
                       as bool,
+            user: freezed == user
+                ? _value.user
+                : user // ignore: cast_nullable_to_non_nullable
+                      as User?,
           )
           as $Val,
     );
+  }
+
+  /// Create a copy of ProfileState
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $UserCopyWith<$Res>? get user {
+    if (_value.user == null) {
+      return null;
+    }
+
+    return $UserCopyWith<$Res>(_value.user!, (value) {
+      return _then(_value.copyWith(user: value) as $Val);
+    });
   }
 }
 
@@ -86,7 +108,10 @@ abstract class _$$ProfileStateImplCopyWith<$Res>
   ) = __$$ProfileStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({bool isLoading, String? error, bool isAuthenticated});
+  $Res call({bool isLoading, String? error, bool isAuthenticated, User? user});
+
+  @override
+  $UserCopyWith<$Res>? get user;
 }
 
 /// @nodoc
@@ -106,6 +131,7 @@ class __$$ProfileStateImplCopyWithImpl<$Res>
     Object? isLoading = null,
     Object? error = freezed,
     Object? isAuthenticated = null,
+    Object? user = freezed,
   }) {
     return _then(
       _$ProfileStateImpl(
@@ -121,6 +147,10 @@ class __$$ProfileStateImplCopyWithImpl<$Res>
             ? _value.isAuthenticated
             : isAuthenticated // ignore: cast_nullable_to_non_nullable
                   as bool,
+        user: freezed == user
+            ? _value.user
+            : user // ignore: cast_nullable_to_non_nullable
+                  as User?,
       ),
     );
   }
@@ -133,6 +163,7 @@ class _$ProfileStateImpl implements _ProfileState {
     this.isLoading = false,
     this.error,
     this.isAuthenticated = false,
+    this.user,
   });
 
   @override
@@ -143,10 +174,12 @@ class _$ProfileStateImpl implements _ProfileState {
   @override
   @JsonKey()
   final bool isAuthenticated;
+  @override
+  final User? user;
 
   @override
   String toString() {
-    return 'ProfileState(isLoading: $isLoading, error: $error, isAuthenticated: $isAuthenticated)';
+    return 'ProfileState(isLoading: $isLoading, error: $error, isAuthenticated: $isAuthenticated, user: $user)';
   }
 
   @override
@@ -158,12 +191,13 @@ class _$ProfileStateImpl implements _ProfileState {
                 other.isLoading == isLoading) &&
             (identical(other.error, error) || other.error == error) &&
             (identical(other.isAuthenticated, isAuthenticated) ||
-                other.isAuthenticated == isAuthenticated));
+                other.isAuthenticated == isAuthenticated) &&
+            (identical(other.user, user) || other.user == user));
   }
 
   @override
   int get hashCode =>
-      Object.hash(runtimeType, isLoading, error, isAuthenticated);
+      Object.hash(runtimeType, isLoading, error, isAuthenticated, user);
 
   /// Create a copy of ProfileState
   /// with the given fields replaced by the non-null parameter values.
@@ -179,6 +213,7 @@ abstract class _ProfileState implements ProfileState {
     final bool isLoading,
     final String? error,
     final bool isAuthenticated,
+    final User? user,
   }) = _$ProfileStateImpl;
 
   @override
@@ -187,6 +222,8 @@ abstract class _ProfileState implements ProfileState {
   String? get error;
   @override
   bool get isAuthenticated;
+  @override
+  User? get user;
 
   /// Create a copy of ProfileState
   /// with the given fields replaced by the non-null parameter values.

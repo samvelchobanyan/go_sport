@@ -11,6 +11,7 @@ class User with _$User {
     required String email,
     required String name,
     required String surname,
-    String? phone,
+     String? phone,
+     String? avatar,
   }) = _User;
 }

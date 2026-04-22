@@ -1,4 +1,8 @@
+import 'dart:io';
+
+import 'package:dio/dio.dart';
 import 'package:go_sport/core/network/api_client.dart';
+import 'package:go_sport/data/dto/user_dto.dart';
 import 'package:go_sport/domain/entities/user.dart';
 import 'package:go_sport/domain/repositories/profile_repository.dart';
 
@@ -14,25 +18,26 @@ class ProfileRepositoryImpl implements ProfileRepository {
       queryParameters: {'populate': '*'},
     );
 
-    return response.data as User;
+    return UserDto.fromJson(response.data as Map<String, dynamic>).toDomain();
   }
 
   @override
-  Future<User> updateUser({
-    String? name,
-    String? surname,
-    String? avatar,
-  }) async {
-    final response = await _apiClient.put(
-      '/api/users/me',
-      data: {
-        if (name != null) 'name': name,
-        if (surname != null) 'surname': surname,
-        if (avatar != null) 'avatar': avatar,
-      },
-    );
+  Future<void> updateUser({String? name, String? surname, File? avatar}) async {
+    final Map<String, dynamic> data = {
+      if (name != null) 'name': name,
+      if (surname != null) 'surname': surname,
+    };
 
-    return response.data as User;
+    if (avatar != null) {
+      data['avatar'] = await MultipartFile.fromFile(
+        avatar.path,
+        filename: avatar.path.split('/').last,
+      );
+    }
+
+    final formData = FormData.fromMap(data);
+
+    await _apiClient.put('/api/users/me', data: formData);
   }
 
   @override
@@ -49,6 +54,6 @@ class ProfileRepositoryImpl implements ProfileRepository {
   @override
   Future<User> changePassword() async {
     final response = await _apiClient.post('/api/users/change-password');
-    return response.data as User;
+    return UserDto.fromJson(response.data as Map<String, dynamic>).toDomain();
   }
 }

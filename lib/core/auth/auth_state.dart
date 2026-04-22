@@ -56,7 +56,7 @@ class AuthNotifier extends Notifier<AuthState> {
   Future<void> logout() async {
     await _tokenStorage.clearTokens();
     state = const AuthState.unauthorized();
-    // ref.invalidateSelf();
+    ref.invalidateSelf();
   }
 }
 
