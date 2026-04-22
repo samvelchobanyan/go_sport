@@ -21,12 +21,10 @@ class ForgotPasswordState with _$ForgotPasswordState {
 
 class ForgotPasswordController extends Notifier<ForgotPasswordState> {
   late final AuthRepository _authRepository;
-  late final TokenStorage _tokenStorage;
 
   @override
   ForgotPasswordState build() {
     _authRepository = ref.watch(authRepositoryProvider);
-    _tokenStorage = ref.watch(tokenStorageProvider);
     return const ForgotPasswordState();
   }
 
@@ -34,7 +32,9 @@ class ForgotPasswordController extends Notifier<ForgotPasswordState> {
     _prepareAction();
     try {
       final result = await _authRepository.forgotPasswordOtp(email: email);
-      _tokenStorage.saveResetToken(result.resetToken);
+      final tokenStorage = ref.watch(tokenStorageProvider);
+
+      tokenStorage.saveResetToken(result.resetToken);
       state = state.copyWith(isLoading: false, isSuccess: true, email: email);
     } catch (e) {
       _handleError('Failed to send reset code.');
@@ -43,7 +43,9 @@ class ForgotPasswordController extends Notifier<ForgotPasswordState> {
 
   Future<void> verifyResetOtp(String otp) async {
     _prepareAction();
-    final resetToken = _tokenStorage.resetToken;
+    final tokenStorage = ref.watch(tokenStorageProvider);
+
+    final resetToken = tokenStorage.resetToken;
     if (resetToken == null) return _handleError('Session expired.');
 
     try {
@@ -60,7 +62,9 @@ class ForgotPasswordController extends Notifier<ForgotPasswordState> {
 
   Future<void> resetPasswordOtp(String newPassword) async {
     _prepareAction();
-    final resetToken = _tokenStorage.resetToken;
+    final tokenStorage = ref.watch(tokenStorageProvider);
+
+    final resetToken = tokenStorage.resetToken;
     final savedOtp = state.resetOtp;
 
     if (resetToken == null || savedOtp == null) {
@@ -78,10 +82,12 @@ class ForgotPasswordController extends Notifier<ForgotPasswordState> {
         isLoading: false,
         isSuccess: true,
         isConfirmSuccess: false,
-        newPassword:newPassword
+        newPassword: newPassword,
       );
 
-      _tokenStorage.clearResetToken();
+      final tokenStorage = ref.watch(tokenStorageProvider);
+
+      tokenStorage.clearResetToken();
     } catch (e) {
       _handleError('Failed to reset password.');
     }
@@ -107,7 +113,9 @@ class ForgotPasswordController extends Notifier<ForgotPasswordState> {
 
   void clearFlow() {
     state = const ForgotPasswordState();
-    _tokenStorage.clearResetToken();
+    final tokenStorage = ref.watch(tokenStorageProvider);
+
+    tokenStorage.clearResetToken();
   }
 }
 

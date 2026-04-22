@@ -21,16 +21,15 @@ sealed class AuthState with _$AuthState {
 // === Notifier ===
 
 class AuthNotifier extends Notifier<AuthState> {
-  late final TokenStorage _tokenStorage;
 
   @override
   AuthState build() {
-    _tokenStorage = ref.watch(tokenStorageProvider);
+    final tokenStorage = ref.watch(tokenStorageProvider);
 
-    if (_tokenStorage.accessToken != null) {
+    if (tokenStorage.accessToken != null) {
       return const AuthState.authenticated(name: '', avatarUrl: '', userId: 0);
     }
-    if (_tokenStorage.choseGuest) {
+    if (tokenStorage.choseGuest) {
       return const AuthState.guest();
     }
     return const AuthState.unauthorized();
@@ -49,12 +48,14 @@ class AuthNotifier extends Notifier<AuthState> {
   }
 
   void continueAsGuest() {
-    _tokenStorage.setChoseGuest();
+    final tokenStorage = ref.watch(tokenStorageProvider);
+    tokenStorage.setChoseGuest();
     state = const AuthState.guest();
   }
 
   Future<void> logout() async {
-    await _tokenStorage.clearTokens();
+    final tokenStorage = ref.watch(tokenStorageProvider);
+    await tokenStorage.clearTokens();
     state = const AuthState.unauthorized();
     ref.invalidateSelf();
   }

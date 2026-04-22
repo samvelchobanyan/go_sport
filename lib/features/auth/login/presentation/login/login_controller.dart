@@ -19,12 +19,16 @@ class LoginState with _$LoginState {
 
 class LoginController extends AutoDisposeNotifier<LoginState> {
   late final AuthRepository _authRepository;
-  late final TokenStorage _tokenStorage;
 
+  // do not initialize token storage here,
+  //as it causes problem after logout and login again,
+  //because late variables can be initialized only once per instance,
+  //and after logout the same instance is used for login again,
+  //so it tries to initialize token storage again and throws error
+  
   @override
   LoginState build() {
     _authRepository = ref.watch(authRepositoryProvider);
-    _tokenStorage = ref.watch(tokenStorageProvider);
     return const LoginState();
   }
 
@@ -38,7 +42,8 @@ class LoginController extends AutoDisposeNotifier<LoginState> {
         password: password,
       );
 
-      await _tokenStorage.saveTokens(accessToken: result.jwt, refreshToken: '');
+      final tokenStorage = ref.watch(tokenStorageProvider);
+      await tokenStorage.saveTokens(accessToken: result.jwt, refreshToken: '');
 
       state = state.copyWith(isLoading: false, isAuthenticated: true);
     } catch (e) {

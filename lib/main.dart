@@ -18,6 +18,7 @@ Future<void> main() async {
   final config = env == 'prod' ? AppConfig.prod : AppConfig.dev;
 
   final tokenStorage = TokenStorage();
+  
   await tokenStorage.init();
 
   final apiClient = ApiClient(config, [AuthInterceptor(tokenStorage)]);
