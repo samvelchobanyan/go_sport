@@ -6,26 +6,22 @@ import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/domain/entities/scheduled_program.dart';
 
-class ScheduleTile extends StatefulWidget {
+class ScheduleTile extends StatelessWidget {
   final ScheduledProgram program;
   final bool isLive;
+  final bool isSubscribed;
+  final VoidCallback onSubscribeToggle;
 
   const ScheduleTile({
     super.key,
     required this.program,
+    required this.isSubscribed,
+    required this.onSubscribeToggle,
     this.isLive = false,
   });
 
   @override
-  State<ScheduleTile> createState() => _ScheduleTileState();
-}
-
-class _ScheduleTileState extends State<ScheduleTile> {
-  bool _isSubscribed = false;
-
-  @override
   Widget build(BuildContext context) {
-    final program = widget.program;
     final String startTime =
         "${program.startDate.hour}:${program.startDate.minute.toString().padLeft(2, '0')}";
     final String endTime =
@@ -69,7 +65,7 @@ class _ScheduleTileState extends State<ScheduleTile> {
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
-                if (widget.isLive) ...[
+                if (isLive) ...[
                   const SizedBox(width: 6),
                   Container(
                     width: 6,
@@ -92,13 +88,13 @@ class _ScheduleTileState extends State<ScheduleTile> {
           ),
           const SizedBox(width: 4),
           GestureDetector(
-            onTap: () => setState(() => _isSubscribed = !_isSubscribed),
+            onTap: onSubscribeToggle,
             behavior: HitTestBehavior.opaque,
             child: Padding(
               padding: const EdgeInsets.all(4),
               child: DSNotificationIcon(
                 color: DSColors.blue,
-                isFilled: _isSubscribed,
+                isFilled: isSubscribed,
               ),
             ),
           ),

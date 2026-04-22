@@ -13,7 +13,9 @@
       "Bash(adb devices:*)",
       "Bash(adb install:*)",
       "Bash(dart analyze *)",
-      "Bash(where flutter *)"
+      "Bash(where flutter *)",
+      "Bash(flutter pub *)",
+      "PowerShell(flutter pub get 2>&1)"
     ]
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/domain/entities/scheduled_program.dart';
+import 'package:go_sport/domain/state/program_reminders_state.dart';
 import 'package:go_sport/features/shared_widgets/dotted_divider.dart';
 import 'package:go_sport/features/shared_widgets/schedule_tile.dart';
 
@@ -19,6 +20,8 @@ class ScheduleList extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final subscribedIds = ref.watch(programRemindersProvider);
+
     return SliverPadding(
       padding: const EdgeInsets.only(top: 22, bottom: 22, left: 16, right: 16),
       sliver: SliverList(
@@ -41,6 +44,10 @@ class ScheduleList extends ConsumerWidget {
                   program: program,
                   isLive: currentProgramId != null &&
                       program.id == currentProgramId,
+                  isSubscribed: subscribedIds.contains(program.id),
+                  onSubscribeToggle: () => ref
+                      .read(programRemindersProvider.notifier)
+                      .toggle(program),
                 ),
                 if (programIndex < programs.length - 1) DottedDivider(),
               ],
