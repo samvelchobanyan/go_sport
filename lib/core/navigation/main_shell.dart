@@ -7,6 +7,7 @@ import 'package:go_sport/core/navigation/widgets/bottom_nav_bar.dart';
 import 'package:go_sport/features/auth/guest_timeout_bar/widgets/guest_timer_bar.dart';
 import 'package:go_sport/features/player/presentation/player/full_player_screen.dart';
 import 'package:go_sport/features/player/presentation/player/mini_player_widget.dart';
+import 'package:go_sport/features/player/presentation/player/radio_full_player_screen.dart';
 
 typedef BranchNavigatorKeyResolver = GlobalKey<NavigatorState>? Function(
   int branchIndex,
@@ -38,6 +39,8 @@ class MainShell extends ConsumerWidget {
         children: [
           MiniPlayerWidget(
             onOpenFullPlayer: () => FullPlayerScreen.show(activeBranchContext),
+            onOpenRadioPlayer: () =>
+                RadioFullPlayerScreen.show(activeBranchContext),
           ),
           BottomNavBar(
             currentIndex: navigationShell.currentIndex,

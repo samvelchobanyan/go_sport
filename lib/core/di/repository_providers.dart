@@ -6,7 +6,7 @@ import 'package:go_sport/data/repositories/artists_repository_impl.dart';
 import 'package:go_sport/data/repositories/episodes_repository_impl.dart';
 import 'package:go_sport/data/repositories/music_repository_mock.dart';
 import 'package:go_sport/data/repositories/programs_repository_impl.dart';
-import 'package:go_sport/data/repositories/schedule_repository_mock.dart';
+import 'package:go_sport/data/repositories/schedule_repository_impl.dart';
 import 'package:go_sport/domain/repositories/albums_repository.dart';
 import 'package:go_sport/domain/repositories/artists_repository.dart';
 import 'package:go_sport/domain/repositories/episodes_repository.dart';
@@ -69,7 +69,7 @@ final albumsRepositoryProvider = Provider<AlbumsRepository>((ref) {
 });
 
 final scheduleRepositoryProvider = Provider<ScheduleRepository>((ref) {
-  return ScheduleRepositoryMock();
+  return ScheduleRepositoryImpl(ref.read(apiClientProvider));
 });
 
 final authRepositoryProvider = Provider<AuthRepository>((ref) {

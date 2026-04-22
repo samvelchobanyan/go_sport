@@ -6,13 +6,26 @@ import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/domain/entities/scheduled_program.dart';
 
-class ScheduleTile extends StatelessWidget {
+class ScheduleTile extends StatefulWidget {
   final ScheduledProgram program;
-  const ScheduleTile({super.key, required this.program});
+  final bool isLive;
+
+  const ScheduleTile({
+    super.key,
+    required this.program,
+    this.isLive = false,
+  });
+
+  @override
+  State<ScheduleTile> createState() => _ScheduleTileState();
+}
+
+class _ScheduleTileState extends State<ScheduleTile> {
+  bool _isSubscribed = false;
 
   @override
   Widget build(BuildContext context) {
-    // Format your dates here or via a helper extension
+    final program = widget.program;
     final String startTime =
         "${program.startDate.hour}:${program.startDate.minute.toString().padLeft(2, '0')}";
     final String endTime =
@@ -46,11 +59,28 @@ class ScheduleTile extends StatelessWidget {
           const SizedBox(width: 12),
 
           Expanded(
-            child: Text(
-              program.title,
-              style: context.subtitleMBold,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
+            child: Row(
+              children: [
+                Flexible(
+                  child: Text(
+                    program.title,
+                    style: context.subtitleMBold,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                if (widget.isLive) ...[
+                  const SizedBox(width: 6),
+                  Container(
+                    width: 6,
+                    height: 6,
+                    decoration: const BoxDecoration(
+                      color: DSColors.orange,
+                      shape: BoxShape.circle,
+                    ),
+                  ),
+                ],
+              ],
             ),
           ),
 
@@ -61,7 +91,17 @@ class ScheduleTile extends StatelessWidget {
             style: context.bodyL?.copyWith(color: DSColors.gray50),
           ),
           const SizedBox(width: 4),
-          DSNotificationIcon(color: DSColors.blue),
+          GestureDetector(
+            onTap: () => setState(() => _isSubscribed = !_isSubscribed),
+            behavior: HitTestBehavior.opaque,
+            child: Padding(
+              padding: const EdgeInsets.all(4),
+              child: DSNotificationIcon(
+                color: DSColors.blue,
+                isFilled: _isSubscribed,
+              ),
+            ),
+          ),
         ],
       ),
     );

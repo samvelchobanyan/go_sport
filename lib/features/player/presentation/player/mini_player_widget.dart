@@ -23,10 +23,12 @@ const double _kProgressBarInset = 8.0;
 
 class MiniPlayerWidget extends ConsumerStatefulWidget {
   final VoidCallback onOpenFullPlayer;
+  final VoidCallback onOpenRadioPlayer;
 
   const MiniPlayerWidget({
     super.key,
     required this.onOpenFullPlayer,
+    required this.onOpenRadioPlayer,
   });
 
   @override
@@ -83,7 +85,7 @@ class _MiniPlayerWidgetState extends ConsumerState<MiniPlayerWidget>
               _buildPanel(
                 isMusicPanel: false,
                 isActive: !_isMusicMode,
-                onTap: !_isMusicMode ? null : _toggleMode,
+                onTap: !_isMusicMode ? widget.onOpenRadioPlayer : _toggleMode,
               ),
               const SizedBox(width: 8),
               // Right panel (Music)

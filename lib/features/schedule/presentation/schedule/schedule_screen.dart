@@ -6,6 +6,7 @@ import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/features/program_details/presentation/widgets/youtube_banner.dart';
 import 'package:go_sport/features/schedule/presentation/widgets/dates_carousel.dart';
+import 'package:go_sport/domain/state/schedule_state.dart';
 import 'package:go_sport/features/shared_widgets/schedule_list.dart';
 import 'schedule_controller.dart';
 

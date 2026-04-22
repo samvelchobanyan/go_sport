@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'schedule_controller.dart';
+part of 'schedule_state.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -38,21 +38,21 @@ mixin _$ScheduleState {
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_Loading value) loading,
-    required TResult Function(_Data value) data,
-    required TResult Function(_Error value) error,
+    required TResult Function(ScheduleStateLoading value) loading,
+    required TResult Function(ScheduleStateData value) data,
+    required TResult Function(ScheduleStateError value) error,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Loading value)? loading,
-    TResult? Function(_Data value)? data,
-    TResult? Function(_Error value)? error,
+    TResult? Function(ScheduleStateLoading value)? loading,
+    TResult? Function(ScheduleStateData value)? data,
+    TResult? Function(ScheduleStateError value)? error,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Loading value)? loading,
-    TResult Function(_Data value)? data,
-    TResult Function(_Error value)? error,
+    TResult Function(ScheduleStateLoading value)? loading,
+    TResult Function(ScheduleStateData value)? data,
+    TResult Function(ScheduleStateError value)? error,
     required TResult orElse(),
   }) => throw _privateConstructorUsedError;
 }
@@ -80,20 +80,20 @@ class _$ScheduleStateCopyWithImpl<$Res, $Val extends ScheduleState>
 }
 
 /// @nodoc
-abstract class _$$LoadingImplCopyWith<$Res> {
-  factory _$$LoadingImplCopyWith(
-    _$LoadingImpl value,
-    $Res Function(_$LoadingImpl) then,
-  ) = __$$LoadingImplCopyWithImpl<$Res>;
+abstract class _$$ScheduleStateLoadingImplCopyWith<$Res> {
+  factory _$$ScheduleStateLoadingImplCopyWith(
+    _$ScheduleStateLoadingImpl value,
+    $Res Function(_$ScheduleStateLoadingImpl) then,
+  ) = __$$ScheduleStateLoadingImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$LoadingImplCopyWithImpl<$Res>
-    extends _$ScheduleStateCopyWithImpl<$Res, _$LoadingImpl>
-    implements _$$LoadingImplCopyWith<$Res> {
-  __$$LoadingImplCopyWithImpl(
-    _$LoadingImpl _value,
-    $Res Function(_$LoadingImpl) _then,
+class __$$ScheduleStateLoadingImplCopyWithImpl<$Res>
+    extends _$ScheduleStateCopyWithImpl<$Res, _$ScheduleStateLoadingImpl>
+    implements _$$ScheduleStateLoadingImplCopyWith<$Res> {
+  __$$ScheduleStateLoadingImplCopyWithImpl(
+    _$ScheduleStateLoadingImpl _value,
+    $Res Function(_$ScheduleStateLoadingImpl) _then,
   ) : super(_value, _then);
 
   /// Create a copy of ScheduleState
@@ -102,8 +102,8 @@ class __$$LoadingImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$LoadingImpl implements _Loading {
-  const _$LoadingImpl();
+class _$ScheduleStateLoadingImpl implements ScheduleStateLoading {
+  const _$ScheduleStateLoadingImpl();
 
   @override
   String toString() {
@@ -113,7 +113,8 @@ class _$LoadingImpl implements _Loading {
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$LoadingImpl);
+        (other.runtimeType == runtimeType &&
+            other is _$ScheduleStateLoadingImpl);
   }
 
   @override
@@ -156,9 +157,9 @@ class _$LoadingImpl implements _Loading {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_Loading value) loading,
-    required TResult Function(_Data value) data,
-    required TResult Function(_Error value) error,
+    required TResult Function(ScheduleStateLoading value) loading,
+    required TResult Function(ScheduleStateData value) data,
+    required TResult Function(ScheduleStateError value) error,
   }) {
     return loading(this);
   }
@@ -166,9 +167,9 @@ class _$LoadingImpl implements _Loading {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Loading value)? loading,
-    TResult? Function(_Data value)? data,
-    TResult? Function(_Error value)? error,
+    TResult? Function(ScheduleStateLoading value)? loading,
+    TResult? Function(ScheduleStateData value)? data,
+    TResult? Function(ScheduleStateError value)? error,
   }) {
     return loading?.call(this);
   }
@@ -176,9 +177,9 @@ class _$LoadingImpl implements _Loading {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Loading value)? loading,
-    TResult Function(_Data value)? data,
-    TResult Function(_Error value)? error,
+    TResult Function(ScheduleStateLoading value)? loading,
+    TResult Function(ScheduleStateData value)? data,
+    TResult Function(ScheduleStateError value)? error,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -188,26 +189,28 @@ class _$LoadingImpl implements _Loading {
   }
 }
 
-abstract class _Loading implements ScheduleState {
-  const factory _Loading() = _$LoadingImpl;
+abstract class ScheduleStateLoading implements ScheduleState {
+  const factory ScheduleStateLoading() = _$ScheduleStateLoadingImpl;
 }
 
 /// @nodoc
-abstract class _$$DataImplCopyWith<$Res> {
-  factory _$$DataImplCopyWith(
-    _$DataImpl value,
-    $Res Function(_$DataImpl) then,
-  ) = __$$DataImplCopyWithImpl<$Res>;
+abstract class _$$ScheduleStateDataImplCopyWith<$Res> {
+  factory _$$ScheduleStateDataImplCopyWith(
+    _$ScheduleStateDataImpl value,
+    $Res Function(_$ScheduleStateDataImpl) then,
+  ) = __$$ScheduleStateDataImplCopyWithImpl<$Res>;
   @useResult
   $Res call({List<ScheduledProgram> programs});
 }
 
 /// @nodoc
-class __$$DataImplCopyWithImpl<$Res>
-    extends _$ScheduleStateCopyWithImpl<$Res, _$DataImpl>
-    implements _$$DataImplCopyWith<$Res> {
-  __$$DataImplCopyWithImpl(_$DataImpl _value, $Res Function(_$DataImpl) _then)
-    : super(_value, _then);
+class __$$ScheduleStateDataImplCopyWithImpl<$Res>
+    extends _$ScheduleStateCopyWithImpl<$Res, _$ScheduleStateDataImpl>
+    implements _$$ScheduleStateDataImplCopyWith<$Res> {
+  __$$ScheduleStateDataImplCopyWithImpl(
+    _$ScheduleStateDataImpl _value,
+    $Res Function(_$ScheduleStateDataImpl) _then,
+  ) : super(_value, _then);
 
   /// Create a copy of ScheduleState
   /// with the given fields replaced by the non-null parameter values.
@@ -215,7 +218,7 @@ class __$$DataImplCopyWithImpl<$Res>
   @override
   $Res call({Object? programs = null}) {
     return _then(
-      _$DataImpl(
+      _$ScheduleStateDataImpl(
         programs: null == programs
             ? _value._programs
             : programs // ignore: cast_nullable_to_non_nullable
@@ -227,9 +230,10 @@ class __$$DataImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$DataImpl implements _Data {
-  const _$DataImpl({required final List<ScheduledProgram> programs})
-    : _programs = programs;
+class _$ScheduleStateDataImpl implements ScheduleStateData {
+  const _$ScheduleStateDataImpl({
+    required final List<ScheduledProgram> programs,
+  }) : _programs = programs;
 
   final List<ScheduledProgram> _programs;
   @override
@@ -248,7 +252,7 @@ class _$DataImpl implements _Data {
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$DataImpl &&
+            other is _$ScheduleStateDataImpl &&
             const DeepCollectionEquality().equals(other._programs, _programs));
   }
 
@@ -261,8 +265,11 @@ class _$DataImpl implements _Data {
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$DataImplCopyWith<_$DataImpl> get copyWith =>
-      __$$DataImplCopyWithImpl<_$DataImpl>(this, _$identity);
+  _$$ScheduleStateDataImplCopyWith<_$ScheduleStateDataImpl> get copyWith =>
+      __$$ScheduleStateDataImplCopyWithImpl<_$ScheduleStateDataImpl>(
+        this,
+        _$identity,
+      );
 
   @override
   @optionalTypeArgs
@@ -301,9 +308,9 @@ class _$DataImpl implements _Data {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_Loading value) loading,
-    required TResult Function(_Data value) data,
-    required TResult Function(_Error value) error,
+    required TResult Function(ScheduleStateLoading value) loading,
+    required TResult Function(ScheduleStateData value) data,
+    required TResult Function(ScheduleStateError value) error,
   }) {
     return data(this);
   }
@@ -311,9 +318,9 @@ class _$DataImpl implements _Data {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Loading value)? loading,
-    TResult? Function(_Data value)? data,
-    TResult? Function(_Error value)? error,
+    TResult? Function(ScheduleStateLoading value)? loading,
+    TResult? Function(ScheduleStateData value)? data,
+    TResult? Function(ScheduleStateError value)? error,
   }) {
     return data?.call(this);
   }
@@ -321,9 +328,9 @@ class _$DataImpl implements _Data {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Loading value)? loading,
-    TResult Function(_Data value)? data,
-    TResult Function(_Error value)? error,
+    TResult Function(ScheduleStateLoading value)? loading,
+    TResult Function(ScheduleStateData value)? data,
+    TResult Function(ScheduleStateError value)? error,
     required TResult orElse(),
   }) {
     if (data != null) {
@@ -333,36 +340,37 @@ class _$DataImpl implements _Data {
   }
 }
 
-abstract class _Data implements ScheduleState {
-  const factory _Data({required final List<ScheduledProgram> programs}) =
-      _$DataImpl;
+abstract class ScheduleStateData implements ScheduleState {
+  const factory ScheduleStateData({
+    required final List<ScheduledProgram> programs,
+  }) = _$ScheduleStateDataImpl;
 
   List<ScheduledProgram> get programs;
 
   /// Create a copy of ScheduleState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$DataImplCopyWith<_$DataImpl> get copyWith =>
+  _$$ScheduleStateDataImplCopyWith<_$ScheduleStateDataImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$ErrorImplCopyWith<$Res> {
-  factory _$$ErrorImplCopyWith(
-    _$ErrorImpl value,
-    $Res Function(_$ErrorImpl) then,
-  ) = __$$ErrorImplCopyWithImpl<$Res>;
+abstract class _$$ScheduleStateErrorImplCopyWith<$Res> {
+  factory _$$ScheduleStateErrorImplCopyWith(
+    _$ScheduleStateErrorImpl value,
+    $Res Function(_$ScheduleStateErrorImpl) then,
+  ) = __$$ScheduleStateErrorImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String message});
 }
 
 /// @nodoc
-class __$$ErrorImplCopyWithImpl<$Res>
-    extends _$ScheduleStateCopyWithImpl<$Res, _$ErrorImpl>
-    implements _$$ErrorImplCopyWith<$Res> {
-  __$$ErrorImplCopyWithImpl(
-    _$ErrorImpl _value,
-    $Res Function(_$ErrorImpl) _then,
+class __$$ScheduleStateErrorImplCopyWithImpl<$Res>
+    extends _$ScheduleStateCopyWithImpl<$Res, _$ScheduleStateErrorImpl>
+    implements _$$ScheduleStateErrorImplCopyWith<$Res> {
+  __$$ScheduleStateErrorImplCopyWithImpl(
+    _$ScheduleStateErrorImpl _value,
+    $Res Function(_$ScheduleStateErrorImpl) _then,
   ) : super(_value, _then);
 
   /// Create a copy of ScheduleState
@@ -371,7 +379,7 @@ class __$$ErrorImplCopyWithImpl<$Res>
   @override
   $Res call({Object? message = null}) {
     return _then(
-      _$ErrorImpl(
+      _$ScheduleStateErrorImpl(
         message: null == message
             ? _value.message
             : message // ignore: cast_nullable_to_non_nullable
@@ -383,8 +391,8 @@ class __$$ErrorImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$ErrorImpl implements _Error {
-  const _$ErrorImpl({required this.message});
+class _$ScheduleStateErrorImpl implements ScheduleStateError {
+  const _$ScheduleStateErrorImpl({required this.message});
 
   @override
   final String message;
@@ -398,7 +406,7 @@ class _$ErrorImpl implements _Error {
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$ErrorImpl &&
+            other is _$ScheduleStateErrorImpl &&
             (identical(other.message, message) || other.message == message));
   }
 
@@ -410,8 +418,11 @@ class _$ErrorImpl implements _Error {
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$ErrorImplCopyWith<_$ErrorImpl> get copyWith =>
-      __$$ErrorImplCopyWithImpl<_$ErrorImpl>(this, _$identity);
+  _$$ScheduleStateErrorImplCopyWith<_$ScheduleStateErrorImpl> get copyWith =>
+      __$$ScheduleStateErrorImplCopyWithImpl<_$ScheduleStateErrorImpl>(
+        this,
+        _$identity,
+      );
 
   @override
   @optionalTypeArgs
@@ -450,9 +461,9 @@ class _$ErrorImpl implements _Error {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_Loading value) loading,
-    required TResult Function(_Data value) data,
-    required TResult Function(_Error value) error,
+    required TResult Function(ScheduleStateLoading value) loading,
+    required TResult Function(ScheduleStateData value) data,
+    required TResult Function(ScheduleStateError value) error,
   }) {
     return error(this);
   }
@@ -460,9 +471,9 @@ class _$ErrorImpl implements _Error {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Loading value)? loading,
-    TResult? Function(_Data value)? data,
-    TResult? Function(_Error value)? error,
+    TResult? Function(ScheduleStateLoading value)? loading,
+    TResult? Function(ScheduleStateData value)? data,
+    TResult? Function(ScheduleStateError value)? error,
   }) {
     return error?.call(this);
   }
@@ -470,9 +481,9 @@ class _$ErrorImpl implements _Error {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Loading value)? loading,
-    TResult Function(_Data value)? data,
-    TResult Function(_Error value)? error,
+    TResult Function(ScheduleStateLoading value)? loading,
+    TResult Function(ScheduleStateData value)? data,
+    TResult Function(ScheduleStateError value)? error,
     required TResult orElse(),
   }) {
     if (error != null) {
@@ -482,14 +493,15 @@ class _$ErrorImpl implements _Error {
   }
 }
 
-abstract class _Error implements ScheduleState {
-  const factory _Error({required final String message}) = _$ErrorImpl;
+abstract class ScheduleStateError implements ScheduleState {
+  const factory ScheduleStateError({required final String message}) =
+      _$ScheduleStateErrorImpl;
 
   String get message;
 
   /// Create a copy of ScheduleState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$ErrorImplCopyWith<_$ErrorImpl> get copyWith =>
+  _$$ScheduleStateErrorImplCopyWith<_$ScheduleStateErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
