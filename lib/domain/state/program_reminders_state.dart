@@ -5,24 +5,16 @@ import 'package:go_sport/domain/entities/scheduled_program.dart';
 
 const Duration _reminderLeadTime = Duration(minutes: 10);
 
-final programRemindersProvider =
-    StateNotifierProvider<ProgramRemindersNotifier, Set<String>>((ref) {
-  return ProgramRemindersNotifier(
-    storage: ref.watch(reminderStorageProvider),
-    notifications: ref.watch(notificationServiceProvider),
-  );
-});
+class ProgramRemindersNotifier extends Notifier<Set<String>> {
+  late final ReminderStorage _storage;
+  late final NotificationService _notifications;
 
-class ProgramRemindersNotifier extends StateNotifier<Set<String>> {
-  ProgramRemindersNotifier({
-    required ReminderStorage storage,
-    required NotificationService notifications,
-  })  : _storage = storage,
-        _notifications = notifications,
-        super(Set<String>.from(storage.subscribedIds));
-
-  final ReminderStorage _storage;
-  final NotificationService _notifications;
+  @override
+  Set<String> build() {
+    _storage = ref.watch(reminderStorageProvider);
+    _notifications = ref.watch(notificationServiceProvider);
+    return Set<String>.from(_storage.subscribedIds);
+  }
 
   Future<void> toggle(ScheduledProgram program) async {
     if (state.contains(program.id)) {
@@ -44,14 +36,19 @@ class ProgramRemindersNotifier extends StateNotifier<Set<String>> {
         payload: kRadioSchedulePayload,
       );
     }
-    state = Set<String>.from(_storage.subscribedIds);
+    state = {...state, program.id};
   }
 
   Future<void> _unsubscribe(ScheduledProgram program) async {
     await _storage.remove(program.id);
     await _notifications.cancel(_notificationId(program.id));
-    state = Set<String>.from(_storage.subscribedIds);
+    state = state.difference({program.id});
   }
 
   int _notificationId(String slotId) => slotId.hashCode;
 }
+
+final programRemindersProvider =
+    NotifierProvider<ProgramRemindersNotifier, Set<String>>(
+      ProgramRemindersNotifier.new,
+    );

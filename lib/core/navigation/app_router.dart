@@ -45,19 +45,6 @@ final GlobalKey<NavigatorState> _musicBranchNavigatorKey =
 final GlobalKey<NavigatorState> _radioBranchNavigatorKey =
     GlobalKey<NavigatorState>(debugLabel: 'radioBranchNavigator');
 
-GlobalKey<NavigatorState>? _branchNavigatorKeyResolver(int branchIndex) {
-  switch (branchIndex) {
-    case 0:
-      return _homeBranchNavigatorKey;
-    case 1:
-      return _musicBranchNavigatorKey;
-    case 2:
-      return _radioBranchNavigatorKey;
-    default:
-      return null;
-  }
-}
-
 GoRouter createAppRouter(TokenStorage tokenStorage) {
   return GoRouter(
     initialLocation: AppRoutes.home,
@@ -166,7 +153,6 @@ GoRouter createAppRouter(TokenStorage tokenStorage) {
         builder: (context, state, navigationShell) {
           return MainShell(
             navigationShell: navigationShell,
-            branchNavigatorKeyResolver: _branchNavigatorKeyResolver,
           );
         },
         branches: [

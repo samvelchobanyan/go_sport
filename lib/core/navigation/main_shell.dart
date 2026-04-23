@@ -9,28 +9,17 @@ import 'package:go_sport/features/player/presentation/player/full_player_screen.
 import 'package:go_sport/features/player/presentation/player/mini_player_widget.dart';
 import 'package:go_sport/features/player/presentation/player/radio_full_player_screen.dart';
 
-typedef BranchNavigatorKeyResolver = GlobalKey<NavigatorState>? Function(
-  int branchIndex,
-);
-
 class MainShell extends ConsumerWidget {
   final StatefulNavigationShell navigationShell;
-  final BranchNavigatorKeyResolver branchNavigatorKeyResolver;
 
   const MainShell({
     super.key,
     required this.navigationShell,
-    required this.branchNavigatorKeyResolver,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isGuest = ref.watch(authProvider) is AuthGuest;
-    final activeBranchNavigatorKey = branchNavigatorKeyResolver(
-      navigationShell.currentIndex,
-    );
-    final activeBranchContext = activeBranchNavigatorKey?.currentContext ??
-        context;
 
     return Scaffold(
       body: navigationShell,
@@ -38,9 +27,8 @@ class MainShell extends ConsumerWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           MiniPlayerWidget(
-            onOpenFullPlayer: () => FullPlayerScreen.show(activeBranchContext),
-            onOpenRadioPlayer: () =>
-                RadioFullPlayerScreen.show(activeBranchContext),
+            onOpenFullPlayer: () => FullPlayerScreen.show(context),
+            onOpenRadioPlayer: () => RadioFullPlayerScreen.show(context),
           ),
           BottomNavBar(
             currentIndex: navigationShell.currentIndex,
