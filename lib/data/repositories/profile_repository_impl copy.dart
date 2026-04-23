@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:dio/dio.dart';
 import 'package:go_sport/core/network/api_client.dart';
 import 'package:go_sport/data/dto/user_dto.dart';
@@ -37,23 +36,32 @@ class ProfileRepositoryImpl implements ProfileRepository {
 
     final formData = FormData.fromMap(data);
 
-    await _apiClient.put('/api/users/me', data: formData);
+    await _apiClient.put('/api/users/me/update', data: formData);
   }
 
   @override
-  Future<void> deleteUser() async {
-    await _apiClient.delete('/api/users/me');
+  Future<void> changePassword({
+    required String currentPassword,
+    required String password,
+    required String passwordConfirmation,
+  }) async {
+    final Map<String, dynamic> data = {
+      "currentPassword": currentPassword,
+      "password": password,
+      "passwordConfirmation": passwordConfirmation,
+    };
+
+    await _apiClient.post('/api/auth/change-password', data: data);
+  }
+
+  @override
+  Future<void> deleteUser({required String password}) async {
+    await _apiClient.post('/api/users/me/delete', data: {"password": password});
   }
 
   @override
   Future<void> deleteAvatar() async {
     // Using DELETE method as requested
     await _apiClient.delete('/api/users/me/avatar');
-  }
-
-  @override
-  Future<User> changePassword() async {
-    final response = await _apiClient.post('/api/users/change-password');
-    return UserDto.fromJson(response.data as Map<String, dynamic>).toDomain();
   }
 }

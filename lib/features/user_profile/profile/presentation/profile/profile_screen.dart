@@ -179,7 +179,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                       ActionRow(
                         icon: SvgPicture.asset('assets/icons/lock_bg.svg'),
                         text: 'Change Password',
-                        onTap: () => {},
+                        onTap: () => {context.push('/profile/change-password')},
                       ),
 
                       const SizedBox(height: 12),
@@ -283,9 +283,10 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                         ),
                         text: 'Delete Account',
                         onTap: () => {
-                          ref
-                              .read(profileControllerProvider.notifier)
-                              .deleteUser(),
+                          // redirect to delete page with input
+                          // ref
+                          //     .read(profileControllerProvider.notifier)
+                          //     .deleteUser(),
                         },
                       ),
 

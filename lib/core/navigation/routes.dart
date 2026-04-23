@@ -1,15 +1,20 @@
 class AppRoutes {
   static const String login = '/login';
 
+  // Profile screens
   static const String profile = '/profile';
   static const String profileForBusiness = '/for-business';
   static const String editProfile = '/edit-profile';
+  static const String profileChangePassword =
+      '/change-password'; //profile change password
 
+  // Home screen
   static const String home = '/';
   static const String homeStory = '/story/:id';
   static const String homeNews = '/news';
   static const String homeNewsArticle = '/news/:id';
 
+  // Music screens
   static const String music = '/music';
   static const String musicArtist = '/music/artist/:id';
   static const String musicAlbum = '/music/album/:id';
@@ -22,10 +27,11 @@ class AppRoutes {
   static const String musicMyEpisodes = '/music/myepisodes';
   static const String musicMyPrograms = '/music/myprograms';
 
+  // Radio screens
   static const String radio = '/radio';
   static const String radioSchedule = '/radio/schedule';
 
-  // static const String login = '/login';
+  // Login and registration flows
   static const String registrationEmail = '/registration-email';
   static const String registrationPhone = '/registration-phone';
   static const String registrationName = '/registration-name';
@@ -41,6 +47,7 @@ class AppRoutes {
   static const List<String> privateRoutes = [
     profile,
     editProfile,
+    profileChangePassword,
     profileForBusiness,
     musicMyFavorites,
     musicMyPlaylists,

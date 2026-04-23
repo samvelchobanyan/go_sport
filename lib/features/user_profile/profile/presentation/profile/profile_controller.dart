@@ -65,17 +65,17 @@ class ProfileController extends AutoDisposeNotifier<ProfileState> {
     }
   }
 
-  Future<void> deleteUser() async {
+  Future<void> deleteUser({required String password}) async {
     state = state.copyWith(isLoading: true, error: null);
 
     try {
-      await _profileRepository.deleteUser();
+      await _profileRepository.deleteUser(password: password);
 
       state = state.copyWith(isLoading: false, isAuthenticated: false);
     } catch (e) {
       state = state.copyWith(
         isLoading: false,
-        error: "Failed to load profile data.",
+        error: "Failed to delete user.",
       );
     }
   }
