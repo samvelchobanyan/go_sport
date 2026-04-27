@@ -7,6 +7,9 @@ class AppRoutes {
   static const String editProfile = '/edit-profile';
   static const String profileChangePassword =
       '/change-password'; //profile change password
+  static const String confirmDeleteAccount = '/confirm-delete'; 
+  static const String deleteAccount = '/delete-account';
+  static const String deleteSuccess = '/delete-success';
 
   // Home screen
   static const String home = '/';

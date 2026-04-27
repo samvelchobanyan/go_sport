@@ -42,6 +42,14 @@ class _ProfileChangePasswordScreenState
 
   Future<void> _onSave() async {
     // Calling the function with the specific JSON structure required
+
+    // if (_newPasswordController.text != _confirmPasswordController.text) {
+    //   ScaffoldMessenger.of(context).showSnackBar(
+    //     const SnackBar(content: Text('New passwords do not match')),
+    //   );
+    //   return;
+    // }
+
     await ref
         .read(changePasswordControllerProvider.notifier)
         .changePassword(
@@ -50,9 +58,9 @@ class _ProfileChangePasswordScreenState
           passwordConfirmation: _confirmPasswordController.text,
         );
 
-    if (mounted && ref.read(changePasswordControllerProvider).error == null) {
-      context.pop();
-    }
+    // if (mounted && ref.read(changePasswordControllerProvider).error == null) {
+    //   context.pop();
+    // }
   }
 
   @override
@@ -60,6 +68,23 @@ class _ProfileChangePasswordScreenState
     final state = ref.watch(changePasswordControllerProvider);
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
+
+    ref.listen<ChangePasswordState>(changePasswordControllerProvider, (
+      previous,
+      next,
+    ) {
+      // Handle Errors from the controller/API
+      if (next.error != null && next.error != previous?.error) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(next.error!)));
+      }
+
+      // Handle Success
+      if (next.isSuccess && !previous!.isSuccess) {
+        context.pop();
+      }
+    });
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.dark,

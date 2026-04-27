@@ -137,9 +137,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                               ),
 
                               Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 16,
-                                ),
+                                padding: const EdgeInsets.all(10),
                                 child: Row(
                                   children: [
                                     SvgPicture.asset(
@@ -282,12 +280,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                           'assets/icons/delete_orange_bg.svg',
                         ),
                         text: 'Delete Account',
-                        onTap: () => {
-                          // redirect to delete page with input
-                          // ref
-                          //     .read(profileControllerProvider.notifier)
-                          //     .deleteUser(),
-                        },
+                        onTap: () => {context.push('/profile/delete-account')},
                       ),
 
                       const SizedBox(height: 24),

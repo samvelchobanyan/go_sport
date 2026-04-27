@@ -4,39 +4,30 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:go_sport/core/di/repository_providers.dart';
 import 'package:go_sport/domain/repositories/profile_repository.dart';
 
-part 'change_password_controller.freezed.dart';
+part 'delete_success_controller.freezed.dart';
 
 @freezed
-class ChangePasswordState with _$ChangePasswordState {
-  const factory ChangePasswordState({
+class ConfirmDeleteState with _$ConfirmDeleteState {
+  const factory ConfirmDeleteState({
     @Default(false) bool isLoading,
     String? error,
-    @Default(false) bool isSuccess, // Changed from isAuthenticated to isSuccess
-  }) = _ChangePasswordState;
+    @Default(false) bool isSuccess,
+  }) = _ConfirmDeleteState;
 }
 
-class ChangePasswordController
-    extends AutoDisposeNotifier<ChangePasswordState> {
+class ConfirmDeleteController extends AutoDisposeNotifier<ConfirmDeleteState> {
   late final ProfileRepository _profileRepository;
 
   @override
-  ChangePasswordState build() {
+  ConfirmDeleteState build() {
     _profileRepository = ref.watch(profileRepositoryProvider);
-    return const ChangePasswordState();
+    return const ConfirmDeleteState();
   }
 
-  Future<void> changePassword({
-    required String currentPassword,
-    required String password,
-    required String passwordConfirmation,
-  }) async {
+  Future<void> deleteUser({required String password}) async {
     state = state.copyWith(isLoading: true, error: null, isSuccess: false);
     try {
-      await _profileRepository.changePassword(
-        currentPassword: currentPassword,
-        password: password,
-        passwordConfirmation: passwordConfirmation,
-      );
+      await _profileRepository.deleteUser(password: password);
 
       state = state.copyWith(isLoading: false, isSuccess: true);
     } catch (e) {
@@ -49,7 +40,6 @@ class ChangePasswordController
           errorMessage = errorData['error']['message'];
         }
       }
-      print(e);
 
       state = state.copyWith(
         isLoading: false,
@@ -60,7 +50,7 @@ class ChangePasswordController
   }
 }
 
-final changePasswordControllerProvider =
-    NotifierProvider.autoDispose<ChangePasswordController, ChangePasswordState>(
-      ChangePasswordController.new,
+final deleteUserControllerProvider =
+    NotifierProvider.autoDispose<ConfirmDeleteController, ConfirmDeleteState>(
+      ConfirmDeleteController.new,
     );

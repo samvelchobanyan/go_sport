@@ -52,7 +52,7 @@ class ForBusinessScreen extends StatelessWidget {
                         ),
 
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          padding: const EdgeInsets.all(10),
                           child: Row(
                             children: [
                               SvgPicture.asset('assets/icons/phone_lime.svg'),
