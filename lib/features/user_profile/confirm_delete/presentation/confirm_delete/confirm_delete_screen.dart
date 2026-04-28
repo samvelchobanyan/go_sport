@@ -89,7 +89,10 @@ class _ConfirmDeleteScreenState extends ConsumerState<ConfirmDeleteScreen> {
               child: Container(
                 height: screenHeight * 0.6,
                 width: screenWidth,
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 36,
+                  vertical: 33,
+                ),
                 decoration: BoxDecoration(
                   color: DSColors.white,
                   borderRadius: const BorderRadius.only(
@@ -104,7 +107,6 @@ class _ConfirmDeleteScreenState extends ConsumerState<ConfirmDeleteScreen> {
                       'Please enter your password \nto delete your account',
                       style: context.subtitleLBold?.copyWith(fontSize: 18),
                       textAlign: TextAlign.center,
-
                     ),
                     const SizedBox(height: 13),
 
@@ -127,7 +129,11 @@ class _ConfirmDeleteScreenState extends ConsumerState<ConfirmDeleteScreen> {
                             borderRadius: BorderRadius.circular(DSRadius.xl),
                           ),
                         ),
-                        onPressed: state.isLoading ? null : () => deleteUser(),
+
+                        onPressed: state.isLoading
+                            ? null
+                            : () => context.push('/profile/delete-success'),
+                        // onPressed: state.isLoading ? null : () => deleteUser(),
                         child: state.isLoading
                             ? const SizedBox(
                                 height: 20,

@@ -179,7 +179,10 @@ class DeleteSuccessScreen extends ConsumerWidget {
               child: Container(
                 height: screenHeight * 0.6,
                 width: screenWidth,
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 36,
+                  vertical: 33,
+                ),
                 decoration: BoxDecoration(
                   color: DSColors.white,
                   borderRadius: const BorderRadius.only(
@@ -189,7 +192,6 @@ class DeleteSuccessScreen extends ConsumerWidget {
                 ),
                 child: Column(
                   children: [
-                    const SizedBox(height: 40),
                     Text('Account Deleted', style: context.h2),
                     const SizedBox(height: 12),
                     Text(

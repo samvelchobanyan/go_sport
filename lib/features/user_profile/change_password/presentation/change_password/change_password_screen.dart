@@ -102,18 +102,18 @@ class _ProfileChangePasswordScreenState
         body: Stack(
           children: [
             Image.asset(
-              'assets/images/change-password.png',
+              'assets/images/change_password.png',
               width: screenWidth,
-              height: screenHeight * 0.4,
+              height: screenHeight * 0.5,
               fit: BoxFit.cover,
-              cacheHeight: (screenHeight * 0.3).toInt(),
+              cacheHeight: (screenHeight * 0.5).toInt(),
               cacheWidth: screenWidth.toInt(),
             ),
 
             Align(
               alignment: Alignment.bottomCenter,
               child: Container(
-                height: screenHeight * 0.7,
+                height: screenHeight * 0.6,
                 width: screenWidth,
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(

@@ -43,7 +43,10 @@ class DeleteScreen extends StatelessWidget {
               child: Container(
                 height: screenHeight * 0.6,
                 width: screenWidth,
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 36,
+                  vertical: 33,
+                ),
                 decoration: BoxDecoration(
                   color: DSColors.white,
                   borderRadius: const BorderRadius.only(
