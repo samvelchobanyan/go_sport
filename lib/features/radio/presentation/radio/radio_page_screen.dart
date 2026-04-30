@@ -27,15 +27,15 @@ class RadioPageScreen extends ConsumerWidget {
     final featuredEpisodes = radioDashboardState.featuredEpisodes;
 
     final isLoading = radioDashboardState.isLoading;
-  final showInitialSkeleton =
-    isLoading && featuredPrograms.isEmpty && featuredEpisodes.isEmpty;
+    final showInitialSkeleton =
+        isLoading && featuredPrograms.isEmpty && featuredEpisodes.isEmpty;
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.dark,
       child: Scaffold(
         backgroundColor: DSColors.white,
-    body: showInitialSkeleton
-      ? const RadioPageSkeleton()
+        body: showInitialSkeleton
+            ? const RadioPageSkeleton()
             : CustomScrollView(
                 slivers: [
                   SliverAppBar(
@@ -53,7 +53,7 @@ class RadioPageScreen extends ConsumerWidget {
                       child: UserAvatarButton(
                         imageUrl: null,
                         onTap: () {
-                          // TODO: navigate to profile
+                          context.push('/profile');
                         },
                       ),
                     ),
@@ -144,7 +144,11 @@ class RadioPageScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildEpisodesList(WidgetRef ref, List<Track> episodes, BuildContext  context) {
+  Widget _buildEpisodesList(
+    WidgetRef ref,
+    List<Track> episodes,
+    BuildContext context,
+  ) {
     final playerState = ref.watch(playerStateProvider);
     final playingTrackId = playerState.currentTrack?.id;
 

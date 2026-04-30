@@ -7,6 +7,7 @@ class UserDto {
   final String email;
   final String name;
   final String surname;
+  final String provider;
   final String? phone;
 
   UserDto({
@@ -16,6 +17,7 @@ class UserDto {
     required this.email,
     required this.name,
     required this.surname,
+    required this.provider,
     this.phone,
   });
 
@@ -27,6 +29,7 @@ class UserDto {
       email: json['email'] as String,
       name: json['name'] as String? ?? '',
       surname: json['surname'] as String? ?? '',
+      provider: json['provider'] as String? ?? '',
       phone: json['phone'] as String?,
     );
   }
@@ -40,6 +43,7 @@ class UserDto {
       name: name,
       surname: surname,
       phone: phone,
+      provider: provider,
     );
   }
 }

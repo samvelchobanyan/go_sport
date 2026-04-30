@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:go_sport/core/auth/auth_state.dart';
 import 'package:go_sport/core/auth/token_storage.dart';
 import 'package:go_sport/core/di/repository_providers.dart';
 import 'package:go_sport/domain/repositories/auth_repository.dart';
@@ -186,6 +187,7 @@ class RegistrationController extends Notifier<RegistrationState> {
       // Save REAL tokens - this marks the end of the registration flow
       final tokenStorage = ref.watch(tokenStorageProvider);
       await tokenStorage.saveTokens(accessToken: result.jwt, refreshToken: '');
+      ref.invalidate(authProvider);
 
       state = state.copyWith(
         isLoading: false,

@@ -34,13 +34,7 @@ class TokenStorage {
 
     final guestFlag = await _secureStorage.read(key: _choseGuestKey);
     _choseGuest = guestFlag == 'true';
-    // _choseGuest = await _secureStorage.read(key: _choseGuestKey) == 'true';
   }
-
-  // void setChoseGuest() {
-  //   _choseGuest = true;
-  //   // await _secureStorage.write(key: _choseGuestKey, value: 'true');
-  // }
 
   Future<void> setChoseGuest() async {
     _choseGuest = true;
@@ -61,6 +55,7 @@ class TokenStorage {
     await Future.wait([
       _secureStorage.write(key: _accessTokenKey, value: accessToken),
       _secureStorage.write(key: _refreshTokenKey, value: refreshToken),
+      _secureStorage.delete(key: _choseGuestKey),
     ]);
   }
 

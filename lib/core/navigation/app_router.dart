@@ -27,6 +27,7 @@ import 'package:go_sport/features/auth/login/presentation/login/login_screen.dar
 import 'package:go_sport/features/auth/registration_phone/presentation/registration_phone_screen.dart';
 import 'package:go_sport/features/auth/registration_email/presentation/registration_email_screen.dart';
 import 'package:go_sport/features/music/presentation/music/music_screen.dart';
+import 'package:go_sport/features/user_profile/notifications/notifications.dart';
 import 'package:go_sport/features/user_profile/profile/presentation/profile/profile_screen.dart';
 import 'package:go_sport/features/news/presentation/news_list/news_list_screen.dart';
 import 'package:go_sport/features/news/presentation/news_detail/news_detail_screen.dart';
@@ -181,6 +182,11 @@ GoRouter createAppRouter(TokenStorage tokenStorage) {
             path: AppRoutes.deleteSuccess,
             pageBuilder: (context, state) =>
                 fadeSlidePage(state: state, child: const DeleteSuccessScreen()),
+          ),
+            GoRoute(
+            path: AppRoutes.notifications,
+            pageBuilder: (context, state) =>
+                fadeSlidePage(state: state, child: const Notifications()),
           ),
         ],
       ),

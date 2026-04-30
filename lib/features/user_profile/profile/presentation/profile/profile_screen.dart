@@ -56,7 +56,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           elevation: 0,
           actions: [
             IconButton(
-              onPressed: () => {},
+              onPressed: () => {context.push('/profile/notifications')},
               icon: SvgPicture.asset('assets/icons/bell_blue.svg'),
             ),
             const SizedBox(width: 8),
@@ -163,7 +163,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 24),
+                      const SizedBox(height: 20),
 
                       // Menu of actions
                       ActionRow(
@@ -173,22 +173,30 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                       ),
 
                       const SizedBox(height: 12),
+                      if (profileState.user?.provider != 'google')
+                        Column(
+                          children: [
+                            ActionRow(
+                              icon: SvgPicture.asset(
+                                'assets/icons/lock_bg.svg',
+                              ),
+                              text: 'Change Password',
+                              onTap: () => {
+                                context.push('/profile/change-password'),
+                              },
+                            ),
 
-                      ActionRow(
-                        icon: SvgPicture.asset('assets/icons/lock_bg.svg'),
-                        text: 'Change Password',
-                        onTap: () => {context.push('/profile/change-password')},
-                      ),
-
-                      const SizedBox(height: 12),
+                            const SizedBox(height: 12),
+                          ],
+                        ),
 
                       ActionRow(
                         icon: SvgPicture.asset('assets/icons/logout_bg.svg'),
                         text: 'Logout',
                         onTap: () => {profileNotifier.logout()},
                       ),
-                      const SizedBox(height: 24),
 
+                      const SizedBox(height: 24),
                       const DottedDivider(),
                       const SizedBox(height: 24),
 

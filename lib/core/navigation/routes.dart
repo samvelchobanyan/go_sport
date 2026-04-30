@@ -10,6 +10,7 @@ class AppRoutes {
   static const String confirmDeleteAccount = '/confirm-delete'; 
   static const String deleteAccount = '/delete-account';
   static const String deleteSuccess = '/delete-success';
+  static const String notifications = '/notifications';
 
   // Home screen
   static const String home = '/';

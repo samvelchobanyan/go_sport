@@ -139,6 +139,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             onPressed: loginState.isLoading
                                 ? null
                                 : () {
+                                    FocusScope.of(context).unfocus();
+
                                     loginNotifier.login(
                                       _emailController.text,
                                       _passwordController.text,
@@ -165,7 +167,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
                           // Google Login Button
                           TextButton(
-                            onPressed: () {},
+                            onPressed: () => loginNotifier.loginWithGoogle(),
                             style: TextButton.styleFrom(
                               padding: const EdgeInsets.symmetric(vertical: 14),
                               backgroundColor: DSColors.blue.withOpacity(0.05),
