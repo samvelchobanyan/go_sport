@@ -11,7 +11,10 @@
       "Bash(where dart:*)",
       "Read(//c/flutter-projects//**)",
       "Bash(adb devices:*)",
-      "Bash(adb install:*)"
+      "Bash(adb install:*)",
+      "Bash(git ls-tree *)",
+      "Bash(grep -E \"_controller\\\\.dart$\")",
+      "PowerShell(Get-ChildItem \"C:\\\\knowledge\\\\flutter-kb\\\\\" | Select-Object Name, @{Name='Type';Expression={if\\($_.PSIsContainer\\){'dir'}else{'file'}}})"
     ]
   }
 }
