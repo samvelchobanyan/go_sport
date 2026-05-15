@@ -72,7 +72,7 @@ class DeleteScreen extends StatelessWidget {
 
                     const Spacer(),
 
-                    // Action Buttons
+                    // If user.provider=google then redirect to google login, if its local then redirect to confirm delete screen
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton.icon(
