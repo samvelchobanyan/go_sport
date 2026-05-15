@@ -7,16 +7,16 @@ class DeviceService {
   DeviceService(this._firebaseMessaging);
 
   String getPlatform() {
-    if (Platform.isIOS) return 'ios';
-    if (Platform.isAndroid) return 'android';
+    if (Platform.isIOS) return 'iOS';
+    if (Platform.isAndroid) return 'Android';
     return 'unknown';
   }
 
   Future<String?> getDeviceToken() async {
     try {
       // Once Firebase is setup, use this:
-      // return await _firebaseMessaging.getToken();
-      return 'test_device_token_12345';
+      return await _firebaseMessaging.getToken(); 
+      // return 'test_device_token_12345';
     } catch (e) {
       print('Error getting device token: $e');
       return null;

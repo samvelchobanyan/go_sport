@@ -47,7 +47,10 @@ class LoginController extends AutoDisposeNotifier<LoginState> {
       await tokenStorage.saveTokens(accessToken: result.jwt, refreshToken: '');
       ref.invalidate(authProvider);
 
+
       state = state.copyWith(isLoading: false, isAuthenticated: true);
+
+      await _authRepository.registerDevice();
     } catch (e) {
       // Dio errors or parsing errors caught here
       state = state.copyWith(

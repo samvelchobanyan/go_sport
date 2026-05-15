@@ -11,9 +11,11 @@ class AuthRepositoryImpl implements AuthRepository {
 
   AuthRepositoryImpl(this._apiClient, this._deviceService);
 
-  Future<void> _registerDevice() async {
+  Future<void> registerDevice() async {
     try {
       final deviceInfo = await _deviceService.getDeviceInfo();
+
+      print('Registering device with info: $deviceInfo');
 
       if (deviceInfo['deviceToken']!.isEmpty) return;
 
@@ -33,12 +35,15 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<void> logout() async {
+    // TODO CHECK THIS FUNC, DIOESNT DO CORRECT JOB
     try {
       final token = await _deviceService.getDeviceToken();
 
       if (token != null && token.isNotEmpty) {
         // Backend call to delete device association
-        await _apiClient.delete('/api/devices/$token');
+        await _apiClient.delete(
+          '/api/devices/$token',
+        ); //TODO DELETE DEVICE VIA DOCUMENTID  NOT TOKEN, (SHOULD BE SAVED IN LOCALSTORAGE AFTER REGISTER DEVICE. ASK ARMAN)
       }
     } catch (e) {
       // Don't block the user from logging out locally if the API fails
@@ -63,7 +68,7 @@ class AuthRepositoryImpl implements AuthRepository {
     ).toDomain();
 
     // Register device after successful login
-    await _registerDevice();
+    // await _registerDevice();
 
     return (jwt: jwt, user: user);
   }
@@ -167,7 +172,7 @@ class AuthRepositoryImpl implements AuthRepository {
     ).toDomain();
 
     // Register device after successful registration
-    await _registerDevice();
+    // await _registerDevice();
 
     return (jwt: jwt, user: user);
   }
@@ -227,7 +232,7 @@ class AuthRepositoryImpl implements AuthRepository {
     ).toDomain();
 
     // Register device after successful Google login
-    await _registerDevice();
+    // await _registerDevice();
 
     return (jwt: jwt, user: user);
   }
