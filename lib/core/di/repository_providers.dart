@@ -25,6 +25,7 @@ import '../../domain/repositories/playlist_repository.dart';
 import '../../domain/repositories/story_repository.dart';
 import '../../domain/repositories/track_repository.dart';
 import '../di/network_providers.dart';
+import '../di/device_providers.dart';
 
 final storyRepositoryProvider = Provider<StoryRepository>((ref) {
   return StoryRepositoryMock();
@@ -67,7 +68,10 @@ final scheduleRepositoryProvider = Provider<ScheduleRepository>((ref) {
 });
 
 final authRepositoryProvider = Provider<AuthRepository>((ref) {
-  return AuthRepositoryImpl(ref.read(apiClientProvider));
+  return AuthRepositoryImpl(
+    ref.read(apiClientProvider),
+    ref.read(deviceServiceProvider),
+  );
 });
 
 final profileRepositoryProvider = Provider<ProfileRepository>((ref) {

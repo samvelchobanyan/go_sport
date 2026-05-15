@@ -10,15 +10,20 @@ import 'core/di/audio_providers.dart';
 import 'core/navigation/app_router.dart';
 import 'core/network/interceptors/auth_interceptor.dart';
 import 'design_system/theme/ds_theme_data.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // TODO: Initialize Firebase - temporarily commented out
+  await Firebase.initializeApp();
+  // await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   const env = String.fromEnvironment('ENV', defaultValue: 'dev');
   final config = env == 'prod' ? AppConfig.prod : AppConfig.dev;
 
   final tokenStorage = TokenStorage();
-  
+
   await tokenStorage.init();
 
   final apiClient = ApiClient(config, [AuthInterceptor(tokenStorage)]);

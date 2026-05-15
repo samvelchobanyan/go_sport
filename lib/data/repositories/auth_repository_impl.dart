@@ -1,39 +1,50 @@
 import 'package:dio/dio.dart';
+import 'package:go_sport/core/device/device_service.dart';
 import 'package:go_sport/core/network/api_client.dart';
 import 'package:go_sport/data/dto/user_dto.dart';
 import 'package:go_sport/domain/entities/user.dart';
 import 'package:go_sport/domain/repositories/auth_repository.dart';
 
-// class AuthRepositoryImpl implements AuthRepository {
-//   final ApiClient _apiClient;
-
-//   AuthRepositoryImpl(this._apiClient);
-
-//   @override
-//   Future<({String jwt, User user})> login({
-//     required String identifier,
-//     required String password,
-//   }) async {
-//     final response = await _apiClient.post(
-//       '/api/auth/local',
-//       data: {
-//         'identifier': identifier,
-//         'password': password,
-//       },
-//       options: Options(extra: {'public': true}),
-//     );
-
-//     final jwt = response.data['jwt'] as String;
-//     final user = UserDto.fromJson(response.data['user'] as Map<String, dynamic>).toDomain();
-
-//     return (jwt: jwt, user: user);
-//   }
-// }
-
 class AuthRepositoryImpl implements AuthRepository {
   final ApiClient _apiClient;
+  final DeviceService _deviceService;
 
-  AuthRepositoryImpl(this._apiClient);
+  AuthRepositoryImpl(this._apiClient, this._deviceService);
+
+  Future<void> _registerDevice() async {
+    try {
+      final deviceInfo = await _deviceService.getDeviceInfo();
+
+      if (deviceInfo['deviceToken']!.isEmpty) return;
+
+      await _apiClient.post(
+        '/api/devices',
+        data: {
+          'data': {
+            'Token': deviceInfo['deviceToken'],
+            'Platform': deviceInfo['platform'],
+          },
+        },
+      );
+    } catch (e) {
+      print('Silent failure: Device registration failed: $e');
+    }
+  }
+
+  @override
+  Future<void> logout() async {
+    try {
+      final token = await _deviceService.getDeviceToken();
+
+      if (token != null && token.isNotEmpty) {
+        // Backend call to delete device association
+        await _apiClient.delete('/api/devices/$token');
+      }
+    } catch (e) {
+      // Don't block the user from logging out locally if the API fails
+      print('Failed to delete device on backend: $e');
+    }
+  }
 
   @override
   Future<({String jwt, User user})> login({
@@ -50,6 +61,9 @@ class AuthRepositoryImpl implements AuthRepository {
     final user = UserDto.fromJson(
       response.data['user'] as Map<String, dynamic>,
     ).toDomain();
+
+    // Register device after successful login
+    await _registerDevice();
 
     return (jwt: jwt, user: user);
   }
@@ -152,6 +166,9 @@ class AuthRepositoryImpl implements AuthRepository {
       response.data['user'] as Map<String, dynamic>,
     ).toDomain();
 
+    // Register device after successful registration
+    await _registerDevice();
+
     return (jwt: jwt, user: user);
   }
 
@@ -208,6 +225,9 @@ class AuthRepositoryImpl implements AuthRepository {
     final user = UserDto.fromJson(
       response.data['user'] as Map<String, dynamic>,
     ).toDomain();
+
+    // Register device after successful Google login
+    await _registerDevice();
 
     return (jwt: jwt, user: user);
   }

@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../di/repository_providers.dart';
 import 'token_storage.dart';
 
 part 'auth_state.freezed.dart';
@@ -21,11 +22,10 @@ sealed class AuthState with _$AuthState {
 // === Notifier ===
 
 class AuthNotifier extends Notifier<AuthState> {
-
   @override
   AuthState build() {
     final tokenStorage = ref.watch(tokenStorageProvider);
-
+    print('tokenStorage.accessToken: ${tokenStorage.accessToken}');
     if (tokenStorage.accessToken != null) {
       return const AuthState.authenticated(name: '', avatarUrl: '', userId: 0);
     }
@@ -55,9 +55,18 @@ class AuthNotifier extends Notifier<AuthState> {
 
   Future<void> logout() async {
     final tokenStorage = ref.watch(tokenStorageProvider);
-    await tokenStorage.clearTokens();
-    state = const AuthState.unauthorized();
-    ref.invalidateSelf();
+    final authRepository = ref.watch(authRepositoryProvider);
+    try {
+      // 1. Call the repository to handle backend cleanup (including device delete)
+      await authRepository.logout();
+    } finally {
+      // Delete device from backend before clearing local tokens
+      await authRepository.logout();
+
+      await tokenStorage.clearTokens();
+      state = const AuthState.unauthorized();
+      ref.invalidateSelf();
+    }
   }
 }
 

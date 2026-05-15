@@ -42,4 +42,6 @@ abstract interface class AuthRepository {
   });
 
   Future<({String jwt, User user})> loginWithGoogle({required String token});
+
+  Future<void> logout();
 }

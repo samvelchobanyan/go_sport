@@ -1,0 +1,29 @@
+{
+    "project_info": {
+        "project_number": "442164065269",
+        "project_id": "gosportfcm",
+        "storage_bucket": "gosportfcm.firebasestorage.app"
+    },
+    "client": [
+        {
+            "client_info": {
+                "mobilesdk_app_id": "1:442164065269:android:d95c46bc3203ff5371a6bc",
+                "android_client_info": {
+                    "package_name": "fm.gosport.am"
+                }
+            },
+            "oauth_client": [],
+            "api_key": [
+                {
+                    "current_key": "AIzaSyBNtEJge5Ni0HqK9f-BlI9FKGsUTjFkj8k"
+                }
+            ],
+            "services": {
+                "appinvite_service": {
+                    "other_platform_oauth_client": []
+                }
+            }
+        }
+    ],
+    "configuration_version": "1"
+}
