@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_sport/design_system/foundations/ds_colors.dart';
 
 class SocialMediaButton extends StatelessWidget {
   final Widget icon;
@@ -13,7 +14,7 @@ class SocialMediaButton extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(12),
         decoration: const BoxDecoration(
-          color: Colors.white,
+          color: DSColors.white,
           shape: BoxShape.circle,
         ),
         child: SizedBox(width: 24, height: 24, child: Center(child: icon)),

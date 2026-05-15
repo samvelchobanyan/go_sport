@@ -38,7 +38,7 @@ class DatesCarousel extends ConsumerWidget {
                 width: 64,
                 margin: const EdgeInsets.only(right: 12),
                 decoration: BoxDecoration(
-                  color: isSelected ? DSColors.lime : Colors.white,
+                  color: isSelected ? DSColors.lime : DSColors.white,
                   border: Border.all(
                     color: isSelected
                         ? DSColors.lime

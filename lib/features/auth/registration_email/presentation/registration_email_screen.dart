@@ -158,7 +158,7 @@ class _RegistrationEmailScreenState
                                     height: 20,
                                     child: CircularProgressIndicator(
                                       strokeWidth: 2,
-                                      color: Colors.white,
+                                      color: DSColors.white,
                                     ),
                                   )
                                 : Icon(

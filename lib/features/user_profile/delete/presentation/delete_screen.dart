@@ -1,18 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_router/go_router.dart';
+import 'package:go_sport/features/user_profile/profile/presentation/profile/profile_controller.dart';
 
-class DeleteScreen extends StatelessWidget {
+class DeleteScreen extends ConsumerStatefulWidget {
   const DeleteScreen({super.key});
 
+  @override
+  ConsumerState<DeleteScreen> createState() => _DeleteScreenState();
+}
+
+class _DeleteScreenState extends ConsumerState<DeleteScreen> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
+
+    final profileState = ref.watch(profileControllerProvider);
+
+    confirmDelete() {
+      if (profileState.user?.provider == 'local') {
+        context.push('/profile/confirm-delete');
+      } else {
+        // For google users, redirect to google login for re-authentication before deletion
+      }
+    }
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.dark,
@@ -23,7 +40,7 @@ class DeleteScreen extends StatelessWidget {
           elevation: 0,
           title: Text('Delete Account', style: context.h2),
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back, color: Colors.black),
+            icon: const Icon(Icons.arrow_back, color: DSColors.black),
             onPressed: () => context.pop(),
           ),
         ),
@@ -90,8 +107,7 @@ class DeleteScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(DSRadius.xl),
                           ),
                         ),
-                        onPressed: () =>
-                            context.push('/profile/confirm-delete'),
+                        onPressed: () => confirmDelete(),
                       ),
                     ),
                     SizedBox(height: 14),

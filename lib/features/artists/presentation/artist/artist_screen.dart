@@ -36,16 +36,21 @@ class _ArtistScreenState extends ConsumerState<ArtistScreen> {
 
     setState(() => _isLiked = !_isLiked);
 
-    final notifier = ref.read(artistControllerProvider(widget.artist.id).notifier);
+    final notifier = ref.read(
+      artistControllerProvider(widget.artist.id).notifier,
+    );
 
-    notifier.toggleLike(widget.artist.id, previousIsLiked ? previousLikeId : null).then((newLikeId) {
-      setState(() => _likeId = newLikeId);
-    }).catchError((_) {
-      setState(() {
-        _isLiked = previousIsLiked;
-        _likeId = previousLikeId;
-      });
-    });
+    notifier
+        .toggleLike(widget.artist.id, previousIsLiked ? previousLikeId : null)
+        .then((newLikeId) {
+          setState(() => _likeId = newLikeId);
+        })
+        .catchError((_) {
+          setState(() {
+            _isLiked = previousIsLiked;
+            _likeId = previousLikeId;
+          });
+        });
   }
 
   @override
@@ -72,7 +77,11 @@ class _ArtistScreenState extends ConsumerState<ArtistScreen> {
                   color: DSColors.black.withValues(alpha: 0.3),
                   shape: BoxShape.circle,
                 ),
-                child: const Icon(Icons.arrow_back, color: DSColors.white, size: 20),
+                child: const Icon(
+                  Icons.arrow_back,
+                  color: DSColors.white,
+                  size: 20,
+                ),
               ),
               onPressed: () => context.pop(),
             ),
@@ -85,7 +94,11 @@ class _ArtistScreenState extends ConsumerState<ArtistScreen> {
                     color: DSColors.black.withValues(alpha: 0.3),
                     shape: BoxShape.circle,
                   ),
-                  child: const Icon(Icons.share, color: DSColors.white, size: 20),
+                  child: const Icon(
+                    Icons.share,
+                    color: DSColors.white,
+                    size: 20,
+                  ),
                 ),
                 onPressed: () {},
               ),
@@ -97,7 +110,11 @@ class _ArtistScreenState extends ConsumerState<ArtistScreen> {
                     color: DSColors.black.withValues(alpha: 0.3),
                     shape: BoxShape.circle,
                   ),
-                  child: const Icon(Icons.search, color: DSColors.white, size: 20),
+                  child: const Icon(
+                    Icons.search,
+                    color: DSColors.white,
+                    size: 20,
+                  ),
                 ),
                 onPressed: () {},
               ),
@@ -137,14 +154,13 @@ class _ArtistScreenState extends ConsumerState<ArtistScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      'Error: $message',
-                      style: const TextStyle(color: DSColors.black),
-                    ),
+                    Text('Error: $message'),
                     const SizedBox(height: 16),
                     ElevatedButton(
                       onPressed: () => ref
-                          .read(artistControllerProvider(widget.artist.id).notifier)
+                          .read(
+                            artistControllerProvider(widget.artist.id).notifier,
+                          )
                           .loadAlbums(),
                       child: const Text('Retry'),
                     ),
@@ -163,33 +179,30 @@ class _ArtistScreenState extends ConsumerState<ArtistScreen> {
                 SliverPadding(
                   padding: const EdgeInsets.only(bottom: 100),
                   sliver: SliverList(
-                    delegate: SliverChildBuilderDelegate(
-                      (context, index) {
-                        final album = albums[index];
+                    delegate: SliverChildBuilderDelegate((context, index) {
+                      final album = albums[index];
 
-                        return Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            AlbumTile(
-                              imageUrl: album.imageUrl,
-                              albumName: album.title,
-                              artistName: album.artist,
-                              releaseYear: album.releaseYear,
-                              onTap: () => context.push(
-                                '/music/album/${album.id}',
-                                extra: album,
-                              ),
+                      return Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          AlbumTile(
+                            imageUrl: album.imageUrl,
+                            albumName: album.title,
+                            artistName: album.artist,
+                            releaseYear: album.releaseYear,
+                            onTap: () => context.push(
+                              '/music/album/${album.id}',
+                              extra: album,
                             ),
-                            if (index < albums.length - 1)
-                              const Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 24),
-                                child: DottedDivider(),
-                              ),
-                          ],
-                        );
-                      },
-                      childCount: albums.length,
-                    ),
+                          ),
+                          if (index < albums.length - 1)
+                            const Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 24),
+                              child: DottedDivider(),
+                            ),
+                        ],
+                      );
+                    }, childCount: albums.length),
                   ),
                 ),
               ],

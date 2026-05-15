@@ -176,10 +176,7 @@ class PlaylistScreen extends ConsumerWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      'Error: $message',
-                      style: const TextStyle(color: DSColors.black),
-                    ),
+                    Text('Error: $message'),
                     const SizedBox(height: 16),
                     ElevatedButton(
                       onPressed: () => ref

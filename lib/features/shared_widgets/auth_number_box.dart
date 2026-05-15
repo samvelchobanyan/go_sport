@@ -53,7 +53,7 @@ class AuthNumberBox extends StatelessWidget {
           contentPadding: EdgeInsets
               .zero, // Use zero to avoid vertical jumping in small boxes
           border: InputBorder.none,
-          hintStyle: TextStyle(color: Colors.grey),
+          hintStyle: TextStyle(color: DSColors.gray50),
         ),
       ),
     );

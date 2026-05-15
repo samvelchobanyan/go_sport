@@ -39,7 +39,7 @@ class RadioPageScreen extends ConsumerWidget {
             : CustomScrollView(
                 slivers: [
                   SliverAppBar(
-                    backgroundColor: Colors.white,
+                    backgroundColor: DSColors.white,
                     elevation: 0,
                     pinned: true,
                     floating: true,

@@ -68,7 +68,7 @@ class _ConfirmDeleteScreenState extends ConsumerState<ConfirmDeleteScreen> {
           elevation: 0,
           title: Text('Delete Account', style: context.h2),
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back, color: Colors.black),
+            icon: const Icon(Icons.arrow_back, color: DSColors.black),
             onPressed: () => context.pop(),
           ),
         ),

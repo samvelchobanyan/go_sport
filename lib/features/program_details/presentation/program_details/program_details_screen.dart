@@ -78,10 +78,7 @@ class _ProgramDetailsScreenState extends ConsumerState<ProgramDetailsScreen> {
     );
 
     notifier
-        .toggleLike(
-          widget.program.id,
-          previousIsLiked ? previousLikeId : null,
-        )
+        .toggleLike(widget.program.id, previousIsLiked ? previousLikeId : null)
         .then((newLikeId) {
           setState(() => _likeId = newLikeId);
         })
@@ -184,10 +181,7 @@ class _ProgramDetailsScreenState extends ConsumerState<ProgramDetailsScreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
-                        'Error: $message',
-                        style: const TextStyle(color: DSColors.black),
-                      ),
+                      Text('Error: $message'),
                       const SizedBox(height: 16),
                       ElevatedButton(
                         onPressed: () => ref

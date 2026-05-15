@@ -45,6 +45,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       );
     }
 
+
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.dark,
       child: Scaffold(
@@ -147,7 +148,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                                     Text(
                                       'Services for\nbusiness',
                                       style: context.h1?.copyWith(
-                                        color: Colors.white,
+                                        color: DSColors.white,
                                         fontSize: 16,
                                       ),
                                     ),

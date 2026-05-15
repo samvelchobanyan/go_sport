@@ -1,125 +1,3 @@
-// import 'package:flutter/material.dart';
-// import 'package:flutter/services.dart';
-// import 'package:flutter_riverpod/flutter_riverpod.dart';
-// import 'package:flutter_svg/flutter_svg.dart';
-// import 'package:go_sport/design_system/ds_extensions.dart';
-// import 'package:go_sport/design_system/foundations/ds_colors.dart';
-// import 'package:go_sport/design_system/foundations/ds_radius.dart';
-// import 'package:go_router/go_router.dart';
-// import 'package:go_sport/features/user_profile/profile/presentation/profile/profile_controller.dart';
-
-// class DeleteSuccessScreen extends ConsumerWidget {
-//   const DeleteSuccessScreen({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     final screenWidth = MediaQuery.of(context).size.width;
-//     final screenHeight = MediaQuery.of(context).size.height;
-//     final profileState = ref.watch(profileControllerProvider);
-
-//     final profileNotifier = ref.read(profileControllerProvider.notifier);
-
-//     ref.listen<ProfileState>(profileControllerProvider, (previous, next) {
-//       // this works when logout and delete account
-//       if (!next.isLoading && next.isAuthenticated == false) {
-//         context.go('/login');
-//       }
-
-//       if (next.error != null && previous?.error != next.error) {
-//         ScaffoldMessenger.of(
-//           context,
-//         ).showSnackBar(SnackBar(content: Text(next.error!)));
-//       }
-//     });
-
-//     if (profileState.isLoading && profileState.user == null) {
-//       return const Scaffold(
-//         body: Center(child: CircularProgressIndicator(color: DSColors.blue)),
-//       );
-//     }
-
-//     return AnnotatedRegion<SystemUiOverlayStyle>(
-//       value: SystemUiOverlayStyle.dark,
-//       child: Scaffold(
-//         extendBodyBehindAppBar: true,
-//         appBar: AppBar(
-//           backgroundColor: Colors.transparent,
-//           elevation: 0,
-//           title: SvgPicture.asset('assets/icons/app_logo.svg', height: 36),
-//           leading: IconButton(
-//             icon: const Icon(Icons.arrow_back, color: Colors.black),
-//             onPressed: () => context.pop(),
-//           ),
-//         ),
-//         body: Stack(
-//           children: [
-//             Image.asset(
-//               'assets/images/delete_success.png',
-//               width: screenWidth,
-//               height: screenHeight * 0.5,
-//               fit: BoxFit.cover,
-//               cacheHeight: (screenHeight * 0.5).toInt(),
-//               cacheWidth: screenWidth.toInt(),
-//             ),
-
-//             Align(
-//               alignment: Alignment.bottomCenter,
-//               child: Container(
-//                 height: screenHeight * 0.6,
-//                 width: screenWidth,
-//                 padding: const EdgeInsets.all(16),
-//                 decoration: BoxDecoration(
-//                   color: DSColors.white,
-//                   borderRadius: const BorderRadius.only(
-//                     topLeft: Radius.circular(DSRadius.m),
-//                     topRight: Radius.circular(DSRadius.m),
-//                   ),
-//                 ),
-//                 child: Column(
-//                   mainAxisAlignment: MainAxisAlignment.center,
-//                   children: [
-//                     Text(
-//                       'Your account has been deleted.\nWe will miss you.',
-//                       style: context.subtitleLBold?.copyWith(fontSize: 18),
-//                     ),
-//                     const SizedBox(height: 13),
-
-//                     const Spacer(),
-
-//                     // Action Button
-//                     SizedBox(
-//                       width: double.infinity,
-//                       child: ElevatedButton.icon(
-//                         icon: SvgPicture.asset('assets/icons/login.svg'),
-//                         style: ElevatedButton.styleFrom(
-//                           backgroundColor: DSColors.blue,
-//                           padding: const EdgeInsets.symmetric(vertical: 16),
-//                           shape: RoundedRectangleBorder(
-//                             borderRadius: BorderRadius.circular(DSRadius.xl),
-//                           ),
-//                         ),
-
-//                         onPressed: () => {profileNotifier.logout()},
-//                         label: Text(
-//                           "Login",
-//                           style: context.subtitleLBold?.copyWith(
-//                             color: DSColors.lime,
-//                           ),
-//                         ),
-//                       ),
-//                     ),
-
-//                     const SizedBox(height: 20),
-//                   ],
-//                 ),
-//               ),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -149,7 +27,10 @@ class DeleteSuccessScreen extends ConsumerWidget {
 
       if (next.error != null && previous?.error != next.error) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(next.error!), backgroundColor: Colors.red),
+          SnackBar(
+            content: Text(next.error!),
+            backgroundColor: DSColors.errorColor,
+          ),
         );
       }
     });

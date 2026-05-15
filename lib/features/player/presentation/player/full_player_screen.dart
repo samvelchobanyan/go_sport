@@ -39,7 +39,7 @@ class FullPlayerScreen extends ConsumerWidget {
         backgroundColor: DSColors.transparent,
         body: Stack(
           children: [
-            Container(color: Colors.white),
+            Container(color: DSColors.white),
             const PlayerFluidBackground(scale: 1.7, opacity: 0.65),
       
             // Content (respects safe area)

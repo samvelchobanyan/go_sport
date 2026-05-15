@@ -98,7 +98,7 @@ class _ConfirmPhoneScreenState extends ConsumerState<ConfirmPhoneScreen> {
                           color: DSColors.white,
                           shape: BoxShape.circle,
                           boxShadow: [
-                            BoxShadow(color: Colors.black12, blurRadius: 8),
+                            BoxShadow(color: DSColors.gray10, blurRadius: 8),
                           ],
                         ),
                         child: const Icon(

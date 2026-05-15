@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_sport/core/di/network_providers.dart';
 import 'package:go_sport/core/network/api_client.dart';
+import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'core/audio/app_audio_handler.dart';
 import 'core/auth/token_storage.dart';
 import 'core/config/app_config.dart';
@@ -62,7 +63,7 @@ Future<void> main() async {
               child: Text(
                 'Initialization Error:\n$e',
                 textAlign: TextAlign.center,
-                style: const TextStyle(color: Colors.red),
+                style: const TextStyle(color: DSColors.errorColor),
               ),
             ),
           ),

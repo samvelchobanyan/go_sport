@@ -157,7 +157,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                             height: 100,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              color: Colors.black.withOpacity(0.3),
+                              color: DSColors.gray30,
                             ),
                           ),
 

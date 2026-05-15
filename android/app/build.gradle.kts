@@ -5,7 +5,7 @@ plugins {
     id("com.google.gms.google-services") 
 }
 android {
-    namespace = "fm.gosport.am"
+    namespace = "fm.go.app"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
@@ -20,7 +20,7 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId = "fm.gosport.am"
+        applicationId = "fm.go.app"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = flutter.minSdkVersion

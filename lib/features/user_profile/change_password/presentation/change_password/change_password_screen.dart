@@ -95,7 +95,7 @@ class _ProfileChangePasswordScreenState
           elevation: 0,
           title: Text('Change Password', style: context.h2),
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back, color: Colors.black),
+            icon: const Icon(Icons.arrow_back, color: DSColors.black),
             onPressed: () => context.pop(),
           ),
         ),

@@ -60,7 +60,7 @@ class ForBusinessScreen extends StatelessWidget {
                               Text(
                                 'How can we \nreach you ?',
                                 style: context.h1?.copyWith(
-                                  color: Colors.white,
+                                  color: DSColors.white,
                                   fontSize: 16,
                                 ),
                               ),

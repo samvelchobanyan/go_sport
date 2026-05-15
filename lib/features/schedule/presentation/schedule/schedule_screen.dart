@@ -34,7 +34,7 @@ class ScheduleScreen extends ConsumerWidget {
               leading: IconButton(
                 icon: Icon(
                   Icons.keyboard_arrow_down_rounded,
-                  color: Colors.black,
+                  color: DSColors.black,
                 ),
                 onPressed: () => context.pop(),
               ),
