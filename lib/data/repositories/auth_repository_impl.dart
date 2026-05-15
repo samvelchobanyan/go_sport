@@ -216,24 +216,5 @@ class AuthRepositoryImpl implements AuthRepository {
     );
   }
 
-  @override
-  Future<({String jwt, User user})> loginWithGoogle({
-    required String token,
-  }) async {
-    final response = await _apiClient.get(
-      '/api/auth/google/callback',
-      queryParameters: {'access_token': token},
-      options: Options(extra: {'public': true}),
-    );
-
-    final jwt = response.data['jwt'] as String;
-    final user = UserDto.fromJson(
-      response.data['user'] as Map<String, dynamic>,
-    ).toDomain();
-
-    // Register device after successful Google login
-    // await _registerDevice();
-
-    return (jwt: jwt, user: user);
-  }
+  
 }

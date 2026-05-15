@@ -41,8 +41,6 @@ abstract interface class AuthRepository {
     required String password,
   });
 
-  Future<({String jwt, User user})> loginWithGoogle({required String token});
-
   Future<void> logout();
   Future<void>
   registerDevice(); //TODO CALL THIS FUNC AFTER REGISTRATION GOOGLE OR LOCAL

@@ -185,9 +185,7 @@ class _RegistrationEmailScreenState
 
                           // Google Login Button
                           TextButton(
-                            onPressed: () {
-                              ref.read(loginControllerProvider.notifier).loginWithGoogle();
-                            },
+                            onPressed: () {},
                             style: TextButton.styleFrom(
                               padding: const EdgeInsets.symmetric(vertical: 14),
                               backgroundColor: DSColors.blue.withOpacity(0.05),

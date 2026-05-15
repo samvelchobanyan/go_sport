@@ -167,7 +167,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
                           // Google Login Button
                           TextButton(
-                            onPressed: () => loginNotifier.loginWithGoogle(),
+                            onPressed: () => {},
                             style: TextButton.styleFrom(
                               padding: const EdgeInsets.symmetric(vertical: 14),
                               backgroundColor: DSColors.blue.withOpacity(0.05),
