@@ -15,7 +15,12 @@
       "Bash(dart analyze *)",
       "Bash(where flutter *)",
       "Bash(flutter pub *)",
-      "PowerShell(flutter pub get 2>&1)"
+      "PowerShell(flutter pub get 2>&1)",
+      "Bash(git ls-tree *)",
+      "Bash(findstr /n \".\")",
+      "Bash(more +0)",
+      "Bash(git config *)",
+      "Bash(git check-attr *)"
     ]
   }
 }
