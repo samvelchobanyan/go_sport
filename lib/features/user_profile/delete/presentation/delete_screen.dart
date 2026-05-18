@@ -6,7 +6,7 @@ import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_router/go_router.dart';
-import 'package:go_sport/features/user_profile/profile/presentation/profile/profile_controller.dart';
+import 'package:go_sport/domain/state/user_state.dart';
 
 class DeleteScreen extends ConsumerStatefulWidget {
   const DeleteScreen({super.key});
@@ -21,10 +21,10 @@ class _DeleteScreenState extends ConsumerState<DeleteScreen> {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
 
-    final profileState = ref.watch(profileControllerProvider);
+    final userState = ref.watch(userStateProvider);
 
     confirmDelete() {
-      if (profileState.user?.provider == 'local') {
+      if (userState.user?.provider == 'local') {
         context.push('/profile/confirm-delete');
       } else {
         // For google users, redirect to google login for re-authentication before deletion

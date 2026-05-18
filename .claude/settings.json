@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git mv *)",
+      "Bash(awk -F/ '{print $1\"/\"$2\"/\"$3}')",
+      "Read(//c/knowledge/flutter-kb/**)",
+      "PowerShell($flutter = \\(Get-Command flutter -ErrorAction SilentlyContinue\\).Source; if \\($flutter\\) { Write-Host \"flutter: $flutter\"; $flutterDir = Split-Path $flutter; $dartCandidates = @\\(\"$flutterDir\\\\dart.bat\", \"$flutterDir\\\\dart\", \"$flutterDir\\\\cache\\\\dart-sdk\\\\bin\\\\dart.exe\"\\); foreach \\($d in $dartCandidates\\) { if \\(Test-Path $d\\) { Write-Host \"dart found: $d\" } } } else { Write-Host \"flutter NOT in PATH\" })",
+      "PowerShell($paths = @\\(\"C:\\\\flutter\", \"C:\\\\src\\\\flutter\", \"C:\\\\tools\\\\flutter\", \"C:\\\\dev\\\\flutter\", \"$env:USERPROFILE\\\\flutter\", \"$env:USERPROFILE\\\\fvm\\\\default\", \"C:\\\\flutter-projects\\\\flutter\"\\); foreach \\($p in $paths\\) { $dart = \"$p\\\\bin\\\\dart.bat\"; if \\(Test-Path $dart\\) { Write-Host \"FOUND: $dart\" } }; Write-Host \"--- env FLUTTER_ROOT ---\"; $env:FLUTTER_ROOT; Write-Host \"--- pubspec dart sdk hint ---\")"
+    ]
+  }
+}

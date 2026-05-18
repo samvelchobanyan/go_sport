@@ -48,25 +48,21 @@ class AuthNotifier extends Notifier<AuthState> {
   }
 
   void continueAsGuest() {
-    final tokenStorage = ref.watch(tokenStorageProvider);
+    final tokenStorage = ref.read(tokenStorageProvider);
     tokenStorage.setChoseGuest();
     state = const AuthState.guest();
   }
 
   Future<void> logout() async {
-    final tokenStorage = ref.watch(tokenStorageProvider);
-    final authRepository = ref.watch(authRepositoryProvider);
-    try {
-      // 1. Call the repository to handle backend cleanup (including device delete)
-      await authRepository.logout();
-    } finally {
-      // Delete device from backend before clearing local tokens
-      await authRepository.logout();
+    final tokenStorage = ref.read(tokenStorageProvider);
+    final authRepository = ref.read(authRepositoryProvider);
 
-      await tokenStorage.clearTokens();
-      state = const AuthState.unauthorized();
-      ref.invalidateSelf();
-    }
+    // Backend cleanup (device delete) — fire-and-forget, doesn't block logout
+    authRepository.logout().ignore();
+
+    // Local logout
+    await tokenStorage.clearTokens();
+    state = const AuthState.unauthorized();
   }
 }
 

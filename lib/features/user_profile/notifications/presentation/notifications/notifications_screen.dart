@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/features/shared_widgets/dotted_divider.dart';
-import 'package:go_sport/features/user_profile/notifications/widgets/notification_tile.dart';
+import 'package:go_sport/features/user_profile/notifications/presentation/notifications/widgets/notification_tile.dart';
 
 class NotificationModel {
   final String title;
@@ -18,8 +18,8 @@ class NotificationModel {
   });
 }
 
-class Notifications extends StatelessWidget {
-  const Notifications({super.key});
+class NotificationsScreen extends StatelessWidget {
+  const NotificationsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -8,7 +8,7 @@ import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/design_system/foundations/ds_typography.dart';
-import 'package:go_sport/features/user_profile/for_business/widgets/service_card.dart';
+import 'package:go_sport/features/user_profile/for_business/presentation/widgets/service_card.dart';
 
 class ForBusinessScreen extends StatelessWidget {
   const ForBusinessScreen({super.key});

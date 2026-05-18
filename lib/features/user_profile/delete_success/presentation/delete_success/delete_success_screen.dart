@@ -6,7 +6,7 @@ import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_router/go_router.dart';
-import 'package:go_sport/features/user_profile/profile/presentation/profile/profile_controller.dart';
+import 'package:go_sport/core/auth/auth_state.dart';
 
 class DeleteSuccessScreen extends ConsumerWidget {
   const DeleteSuccessScreen({super.key});
@@ -16,24 +16,6 @@ class DeleteSuccessScreen extends ConsumerWidget {
     // Added WidgetRef here
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
-    final profileState = ref.watch(profileControllerProvider);
-    final profileNotifier = ref.read(profileControllerProvider.notifier);
-
-    ref.listen<ProfileState>(profileControllerProvider, (previous, next) {
-      // If logout succeeds and user is no longer authenticated, redirect to login
-      if (!next.isLoading && next.isAuthenticated == false) {
-        context.go('/login');
-      }
-
-      if (next.error != null && previous?.error != next.error) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(next.error!),
-            backgroundColor: DSColors.errorColor,
-          ),
-        );
-      }
-    });
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.dark,
@@ -87,16 +69,7 @@ class DeleteSuccessScreen extends ConsumerWidget {
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton.icon(
-                        icon: profileState.isLoading
-                            ? const SizedBox(
-                                width: 20,
-                                height: 20,
-                                child: CircularProgressIndicator(
-                                  color: DSColors.lime,
-                                  strokeWidth: 2,
-                                ),
-                              )
-                            : SvgPicture.asset('assets/icons/login.svg'),
+                        icon: SvgPicture.asset('assets/icons/login.svg'),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: DSColors.blue,
                           padding: const EdgeInsets.symmetric(vertical: 16),
@@ -104,10 +77,10 @@ class DeleteSuccessScreen extends ConsumerWidget {
                             borderRadius: BorderRadius.circular(DSRadius.xl),
                           ),
                         ),
-                        // Disable if loading
-                        onPressed: profileState.isLoading
-                            ? null
-                            : () => profileNotifier.logout(),
+                        onPressed: () async {
+                          await ref.read(authProvider.notifier).logout();
+                          if (context.mounted) context.go('/login');
+                        },
                         label: Text(
                           "Back to Login",
                           style: context.subtitleLBold?.copyWith(

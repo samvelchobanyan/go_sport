@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_sport/data/repositories/auth_repository_impl.dart';
 import 'package:go_sport/data/repositories/albums_repository_impl.dart';
-import 'package:go_sport/data/repositories/profile_repository_impl%20copy.dart';
+import 'package:go_sport/data/repositories/profile_repository_impl.dart';
 import 'package:go_sport/domain/repositories/auth_repository.dart';
 import 'package:go_sport/data/repositories/artists_repository_impl.dart';
 import 'package:go_sport/data/repositories/episodes_repository_impl.dart';

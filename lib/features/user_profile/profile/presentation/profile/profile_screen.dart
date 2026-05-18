@@ -5,7 +5,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
-import 'package:go_sport/features/user_profile/profile/presentation/profile/profile_controller.dart';
+import 'package:go_sport/core/auth/auth_state.dart';
+import 'package:go_sport/domain/state/user_state.dart';
 import 'package:go_sport/features/user_profile/profile/presentation/widgets/action_row.dart';
 import 'package:go_sport/features/user_profile/profile/presentation/widgets/contact_info.dart';
 import 'package:go_sport/features/user_profile/profile/presentation/widgets/social_media_button.dart';
@@ -23,15 +24,9 @@ class ProfileScreen extends ConsumerStatefulWidget {
 class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
-    final profileState = ref.watch(profileControllerProvider);
-    final profileNotifier = ref.read(profileControllerProvider.notifier);
+    final userState = ref.watch(userStateProvider);
 
-    ref.listen<ProfileState>(profileControllerProvider, (previous, next) {
-      // this works when logout and delete account
-      if (!next.isLoading && next.isAuthenticated == false) {
-        context.go('/login');
-      }
-
+    ref.listen<UserState>(userStateProvider, (previous, next) {
       if (next.error != null && previous?.error != next.error) {
         ScaffoldMessenger.of(
           context,
@@ -39,12 +34,38 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       }
     });
 
-    if (profileState.isLoading && profileState.user == null) {
+    final user = userState.user;
+
+    // Error and no data — show error with retry
+    if (userState.error != null && user == null) {
+      return Scaffold(
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text('Failed to load profile', style: context.subtitleLSemi),
+              const SizedBox(height: 8),
+              Text(
+                userState.error!,
+                style: context.textL?.copyWith(color: DSColors.gray60),
+              ),
+              const SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: () => ref.read(userStateProvider.notifier).getUser(),
+                child: const Text('Retry'),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
+    // No data yet — initial frame or first load in progress
+    if (user == null) {
       return const Scaffold(
         body: Center(child: CircularProgressIndicator(color: DSColors.blue)),
       );
     }
-
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.dark,
@@ -77,26 +98,26 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                       border: Border.all(color: DSColors.white, width: 12),
                     ),
                     child: UserAvatarButton(
-                      imageUrl: profileState.user!.avatar,
+                      imageUrl: user.avatar,
                       size: 100,
                     ),
                   ),
                   const SizedBox(height: 12),
                   Text(
-                    '${profileState.user!.name} ${profileState.user!.surname}',
+                    '${user.name} ${user.surname}',
                     style: context.bodyL,
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    profileState.user!.email,
+                    user.email,
                     style: context.textL,
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    profileState.user?.phone != null
-                        ? '+${profileState.user!.phone}'
+                    user.phone != null
+                        ? '+${user.phone}'
                         : 'Phone not available',
                     style: context.textL,
                     textAlign: TextAlign.center,
@@ -174,7 +195,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                       ),
 
                       const SizedBox(height: 12),
-                      if (profileState.user?.provider != 'google')
+                      if (user.provider != 'google')
                         Column(
                           children: [
                             ActionRow(
@@ -194,7 +215,10 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                       ActionRow(
                         icon: SvgPicture.asset('assets/icons/logout_bg.svg'),
                         text: 'Logout',
-                        onTap: () => {profileNotifier.logout()},
+                        onTap: () async {
+                          await ref.read(authProvider.notifier).logout();
+                          if (context.mounted) context.go('/login');
+                        },
                       ),
 
                       const SizedBox(height: 24),

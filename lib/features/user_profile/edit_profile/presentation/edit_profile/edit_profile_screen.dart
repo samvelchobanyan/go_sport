@@ -11,7 +11,7 @@ import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/features/shared_widgets/input.dart';
 import 'package:go_router/go_router.dart';
 import 'package:go_sport/features/user_profile/edit_profile/presentation/edit_profile/edit_profile_controller.dart';
-import 'package:go_sport/features/user_profile/profile/presentation/profile/profile_controller.dart';
+import 'package:go_sport/domain/state/user_state.dart';
 import 'package:image_picker/image_picker.dart';
 
 class EditProfileScreen extends ConsumerStatefulWidget {
@@ -53,8 +53,8 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
   @override
   void initState() {
     super.initState();
-    // Get current data from the ProfileController if available
-    final currentUser = ref.read(profileControllerProvider).user;
+    // Get current data from the global user state if available
+    final currentUser = ref.read(userStateProvider).user;
     _nameController = TextEditingController(text: currentUser?.name);
     _surnameController = TextEditingController(text: currentUser?.surname);
   }
@@ -75,8 +75,8 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
           avatar: _selectedImageFile,
         );
 
-    // After updating, refresh the main profile data
-    await ref.read(profileControllerProvider.notifier).getUser();
+    // After updating, refresh the global user data
+    await ref.read(userStateProvider.notifier).getUser();
 
     if (mounted) context.pop();
   }
@@ -84,7 +84,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
   @override
   Widget build(BuildContext context) {
     final editState = ref.watch(editProfileControllerProvider);
-    final profileState = ref.watch(profileControllerProvider);
+    final userState = ref.watch(userStateProvider);
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.dark,
@@ -137,10 +137,10 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                                       _selectedImageFile!,
                                       fit: BoxFit.cover,
                                     )
-                                  : (profileState.user?.avatar != null
+                                  : (userState.user?.avatar != null
                                         ? CachedNetworkImage(
                                             imageUrl:
-                                                profileState.user!.avatar!,
+                                                userState.user!.avatar!,
                                             fit: BoxFit.cover,
                                             placeholder: (context, url) =>
                                                 _buildPlaceholder(),

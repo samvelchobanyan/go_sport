@@ -14,7 +14,11 @@
       "Bash(adb install:*)",
       "Bash(git ls-tree *)",
       "Bash(grep -E \"_controller\\\\.dart$\")",
-      "PowerShell(Get-ChildItem \"C:\\\\knowledge\\\\flutter-kb\\\\\" | Select-Object Name, @{Name='Type';Expression={if\\($_.PSIsContainer\\){'dir'}else{'file'}}})"
+      "PowerShell(Get-ChildItem \"C:\\\\knowledge\\\\flutter-kb\\\\\" | Select-Object Name, @{Name='Type';Expression={if\\($_.PSIsContainer\\){'dir'}else{'file'}}})",
+      "Bash(dart analyze *)",
+      "PowerShell(dart analyze lib/features/user_profile/profile/presentation/profile/profile_screen.dart)",
+      "Bash(where flutter *)",
+      "Read(//c/src/flutter/bin/**)"
     ]
   }
 }

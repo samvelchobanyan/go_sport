@@ -21,13 +21,13 @@ import 'package:go_sport/features/user_profile/confirm_delete/presentation/confi
 import 'package:go_sport/features/user_profile/delete/presentation/delete_screen.dart';
 import 'package:go_sport/features/user_profile/delete_success/presentation/delete_success/delete_success_screen.dart';
 import 'package:go_sport/features/user_profile/edit_profile/presentation/edit_profile/edit_profile_screen.dart';
-import 'package:go_sport/features/user_profile/for_business/for_business_screen.dart';
+import 'package:go_sport/features/user_profile/for_business/presentation/for_business_screen.dart';
 import 'package:go_sport/features/home/presentation/home/home_screen.dart';
 import 'package:go_sport/features/auth/login/presentation/login/login_screen.dart';
 import 'package:go_sport/features/auth/registration_phone/presentation/registration_phone_screen.dart';
 import 'package:go_sport/features/auth/registration_email/presentation/registration_email_screen.dart';
 import 'package:go_sport/features/music/presentation/music/music_screen.dart';
-import 'package:go_sport/features/user_profile/notifications/notifications.dart';
+import 'package:go_sport/features/user_profile/notifications/presentation/notifications/notifications_screen.dart';
 import 'package:go_sport/features/user_profile/profile/presentation/profile/profile_screen.dart';
 import 'package:go_sport/features/news/presentation/news_list/news_list_screen.dart';
 import 'package:go_sport/features/news/presentation/news_detail/news_detail_screen.dart';
@@ -154,12 +154,6 @@ GoRouter createAppRouter(TokenStorage tokenStorage) {
             pageBuilder: (context, state) =>
                 fadeSlidePage(state: state, child: const EditProfileScreen()),
           ),
-
-          GoRoute(
-            path: AppRoutes.editProfile,
-            pageBuilder: (context, state) =>
-                fadeSlidePage(state: state, child: const EditProfileScreen()),
-          ),
           GoRoute(
             path: AppRoutes.profileChangePassword,
             pageBuilder: (context, state) => fadeSlidePage(
@@ -186,7 +180,7 @@ GoRouter createAppRouter(TokenStorage tokenStorage) {
             GoRoute(
             path: AppRoutes.notifications,
             pageBuilder: (context, state) =>
-                fadeSlidePage(state: state, child: const Notifications()),
+                fadeSlidePage(state: state, child: const NotificationsScreen()),
           ),
         ],
       ),
