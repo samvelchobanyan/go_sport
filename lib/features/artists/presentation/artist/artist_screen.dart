@@ -8,6 +8,7 @@ import 'package:go_sport/features/artists/presentation/widgets/artist_screen_ske
 import 'package:go_sport/features/artists/presentation/widgets/artist_hero.dart';
 import 'package:go_sport/features/shared_widgets/album_tile.dart';
 import 'package:go_sport/features/shared_widgets/dotted_divider.dart';
+import 'package:go_sport/features/shared_widgets/search_button.dart';
 import 'package:go_sport/features/shared_widgets/wave_section_header.dart';
 
 class ArtistScreen extends ConsumerStatefulWidget {
@@ -102,21 +103,11 @@ class _ArtistScreenState extends ConsumerState<ArtistScreen> {
                 ),
                 onPressed: () {},
               ),
-              IconButton(
-                icon: Container(
-                  width: 36,
-                  height: 36,
-                  decoration: BoxDecoration(
-                    color: DSColors.black.withValues(alpha: 0.3),
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Icon(
-                    Icons.search,
-                    color: DSColors.white,
-                    size: 20,
-                  ),
-                ),
-                onPressed: () {},
+              SearchButton(
+                decoration: true,
+                onTap: () {
+                  // TODO: открыть поиск
+                },
               ),
             ],
             flexibleSpace: FlexibleSpaceBar(

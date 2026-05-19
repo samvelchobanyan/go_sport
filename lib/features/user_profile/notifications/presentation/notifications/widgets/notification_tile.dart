@@ -30,7 +30,7 @@ class NotificationTile extends StatelessWidget {
               decoration: BoxDecoration(
                 boxShadow: [
                   BoxShadow(
-                    color: DSColors.black.withOpacity(0.15),
+                    color: DSColors.gray10,
                     blurRadius: 8,
                     spreadRadius: 0,
                     offset: const Offset(0, 4),
@@ -47,7 +47,7 @@ class NotificationTile extends StatelessWidget {
                   errorBuilder: (context, error, stackTrace) => Container(
                     width: 52,
                     height: 52,
-                    color: DSColors.blue.withOpacity(0.1),
+                    color: DSColors.blue10,
                     child: const Icon(
                       Icons.notifications,
                       color: DSColors.blue,
@@ -86,13 +86,13 @@ class NotificationTile extends StatelessWidget {
             Container(
               padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 8),
               decoration: BoxDecoration(
-                color: DSColors.blue.withOpacity(0.1),
+                color: DSColors.blue10,
                 shape: BoxShape.circle,
               ),
               child: const Icon(
                 Icons.arrow_forward_ios_rounded,
                 size: 12,
-                color: DSColors.white,
+                color: DSColors.blue,
               ),
             ),
           ],

@@ -21,7 +21,7 @@ class FullPlayerScreen extends ConsumerWidget {
       isScrollControlled: true,
       useRootNavigator: false,
       backgroundColor: DSColors.transparent,
-      barrierColor: DSColors.black.withOpacity(0.3),
+      barrierColor: DSColors.gray30,
       enableDrag: true,
       builder: (_) => MediaQuery(
         data: mq,

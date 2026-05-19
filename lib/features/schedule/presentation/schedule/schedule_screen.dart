@@ -43,9 +43,10 @@ class ScheduleScreen extends ConsumerWidget {
               centerTitle: true,
             ),
 
+            SizedBox(height: 10),
             DatesCarousel(today: today),
 
-            const SliverToBoxAdapter(child: SizedBox(height: 26)),
+            SizedBox(height: 26),
             // orange youtube banner
             YoutubeBanner(),
 

@@ -4,6 +4,7 @@ import 'package:go_sport/core/network/api_client.dart';
 import 'package:go_sport/data/dto/user_dto.dart';
 import 'package:go_sport/domain/entities/user.dart';
 import 'package:go_sport/domain/repositories/auth_repository.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
   final ApiClient _apiClient;
@@ -11,6 +12,7 @@ class AuthRepositoryImpl implements AuthRepository {
 
   AuthRepositoryImpl(this._apiClient, this._deviceService);
 
+  @override
   Future<void> registerDevice() async {
     try {
       final deviceInfo = await _deviceService.getDeviceInfo();
@@ -19,7 +21,7 @@ class AuthRepositoryImpl implements AuthRepository {
 
       if (deviceInfo['deviceToken']!.isEmpty) return;
 
-      await _apiClient.post(
+      final response = await _apiClient.post(
         '/api/devices',
         data: {
           'data': {
@@ -28,6 +30,13 @@ class AuthRepositoryImpl implements AuthRepository {
           },
         },
       );
+
+      final documentId = response.data['data']['documentId'];
+
+      if (documentId != null) {
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('documentId', documentId.toString());
+      }
     } catch (e) {
       print('Silent failure: Device registration failed: $e');
     }
@@ -35,18 +44,16 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<void> logout() async {
-    // TODO CHECK THIS FUNC, DIOESNT DO CORRECT JOB
     try {
       final token = await _deviceService.getDeviceToken();
 
       if (token != null && token.isNotEmpty) {
-        // Backend call to delete device association
-        await _apiClient.delete(
-          '/api/devices/$token',
-        ); //TODO DELETE DEVICE VIA DOCUMENTID  NOT TOKEN, (SHOULD BE SAVED IN LOCALSTORAGE AFTER REGISTER DEVICE. ASK ARMAN)
+        final prefs = await SharedPreferences.getInstance();
+        final documentId = prefs.getString('documentId');
+        await _apiClient.delete('/api/devices/$documentId');
+        //TODO CHECK IF ARMAN FIXED THIS CALL - SENT 403
       }
     } catch (e) {
-      // Don't block the user from logging out locally if the API fails
       print('Failed to delete device on backend: $e');
     }
   }
@@ -66,9 +73,6 @@ class AuthRepositoryImpl implements AuthRepository {
     final user = UserDto.fromJson(
       response.data['user'] as Map<String, dynamic>,
     ).toDomain();
-
-    // Register device after successful login
-    // await _registerDevice();
 
     return (jwt: jwt, user: user);
   }
@@ -171,9 +175,6 @@ class AuthRepositoryImpl implements AuthRepository {
       response.data['user'] as Map<String, dynamic>,
     ).toDomain();
 
-    // Register device after successful registration
-    // await _registerDevice();
-
     return (jwt: jwt, user: user);
   }
 
@@ -215,6 +216,4 @@ class AuthRepositoryImpl implements AuthRepository {
       options: Options(extra: {'public': true}),
     );
   }
-
-  
 }

@@ -101,13 +101,13 @@ class PlaylistScreen extends ConsumerWidget {
             pinned: true,
             elevation: 0,
             scrolledUnderElevation: 0,
-            backgroundColor: DSColors.black.withOpacity(0.9),
+            backgroundColor: DSColors.gray90,
             leading: IconButton(
               icon: Container(
                 width: 36,
                 height: 36,
                 decoration: BoxDecoration(
-                  color: DSColors.black.withOpacity(0.3),
+                  color: DSColors.gray30,
                   shape: BoxShape.circle,
                 ),
                 child: const Icon(
@@ -124,7 +124,7 @@ class PlaylistScreen extends ConsumerWidget {
                   width: 36,
                   height: 36,
                   decoration: BoxDecoration(
-                    color: DSColors.black.withOpacity(0.3),
+                    color: DSColors.gray30,
                     shape: BoxShape.circle,
                   ),
                   child: const Icon(

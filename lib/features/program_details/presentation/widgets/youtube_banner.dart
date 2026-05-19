@@ -11,7 +11,7 @@ class YoutubeBanner extends StatelessWidget {
   Widget build(BuildContext context) {
     return SliverToBoxAdapter(
       child: Padding(
-        padding: EdgeInsets.only(right: 16, left: 16, top: 18),
+        padding: EdgeInsets.only(right: 16, left: 16),
         child: Container(
           height: 64,
           decoration: BoxDecoration(

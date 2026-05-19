@@ -47,12 +47,11 @@ class UserNotifier extends Notifier<UserState> {
       await _repository.deleteUser(password: password);
       state = state.copyWith(isLoading: false);
     } catch (e) {
-      state = state.copyWith(
-        isLoading: false,
-        error: 'Failed to delete user.',
-      );
+      state = state.copyWith(isLoading: false, error: 'Failed to delete user.');
     }
   }
+
+  // todo add deletegoogleuser with access_token instead of password
 }
 
 final userStateProvider = NotifierProvider<UserNotifier, UserState>(

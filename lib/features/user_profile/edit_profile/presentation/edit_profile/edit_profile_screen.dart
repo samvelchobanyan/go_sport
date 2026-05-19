@@ -89,7 +89,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.dark,
       child: Scaffold(
-        backgroundColor: DSColors.blue.withOpacity(0.1),
+        backgroundColor: DSColors.blue10,
         appBar: AppBar(
           leading: IconButton(
             icon: const Icon(Icons.arrow_back, color: DSColors.black),
@@ -139,8 +139,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                                     )
                                   : (userState.user?.avatar != null
                                         ? CachedNetworkImage(
-                                            imageUrl:
-                                                userState.user!.avatar!,
+                                            imageUrl: userState.user!.avatar!,
                                             fit: BoxFit.cover,
                                             placeholder: (context, url) =>
                                                 _buildPlaceholder(),

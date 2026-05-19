@@ -70,7 +70,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.dark,
       child: Scaffold(
-        backgroundColor: DSColors.blue.withOpacity(0.1),
+        backgroundColor: DSColors.blue10,
         appBar: AppBar(
           title: Text('Profile', style: context.h2),
           centerTitle: true,
@@ -232,7 +232,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                           vertical: 22,
                         ),
                         decoration: BoxDecoration(
-                          color: DSColors.blue.withOpacity(0.05),
+                          color: DSColors.blue5,
                           borderRadius: BorderRadius.circular(DSRadius.m),
                         ),
                         child: Column(

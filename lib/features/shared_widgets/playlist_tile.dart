@@ -34,7 +34,7 @@ class PlaylistTile extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8),
                 boxShadow: [
                   BoxShadow(
-                    color: DSColors.black.withOpacity(0.7),
+                    color: DSColors.gray70,
                     blurRadius: 6,
                     spreadRadius: -2, // reduces shadow spread on sides
                     offset: const Offset(0, 4),
@@ -84,11 +84,9 @@ class PlaylistTile extends StatelessWidget {
                       vertical: 2,
                     ),
                     decoration: BoxDecoration(
-                      color: DSColors.orange.withOpacity(0.05),
+                      color: DSColors.orange5,
                       borderRadius: BorderRadius.circular(DSRadius.m),
-                      border: Border.all(
-                        color: DSColors.orange.withOpacity(0.3),
-                      ),
+                      border: Border.all(color: DSColors.orange30),
                     ),
                     child: Text(
                       '$trackCount track${trackCount != 1 ? 's' : ''}',

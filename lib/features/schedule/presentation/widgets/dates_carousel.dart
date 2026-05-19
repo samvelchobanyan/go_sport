@@ -42,7 +42,7 @@ class DatesCarousel extends ConsumerWidget {
                   border: Border.all(
                     color: isSelected
                         ? DSColors.lime
-                        : DSColors.blue.withOpacity(0.3),
+                        : DSColors.blue30,
                     width: 1,
                   ),
                   borderRadius: BorderRadius.circular(DSRadius.s),

@@ -14,7 +14,7 @@ class ScheduleList extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return SliverPadding(
-      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 20),
+      padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 20),
       sliver: SliverList(
         delegate: SliverChildBuilderDelegate(
           (context, index) {

@@ -10,6 +10,7 @@ import 'package:go_sport/features/albums/presentation/widgets/album_hero.dart';
 import 'package:go_sport/features/albums/presentation/widgets/album_screen_skeleton.dart';
 import 'package:go_sport/features/albums/presentation/widgets/album_track_tile.dart';
 import 'package:go_sport/features/shared_widgets/dotted_divider.dart';
+import 'package:go_sport/features/shared_widgets/search_button.dart';
 
 class AlbumScreen extends ConsumerStatefulWidget {
   final Album album;
@@ -131,21 +132,11 @@ class _AlbumScreenState extends ConsumerState<AlbumScreen> {
                 ),
                 onPressed: () {},
               ),
-              IconButton(
-                icon: Container(
-                  width: 36,
-                  height: 36,
-                  decoration: BoxDecoration(
-                    color: DSColors.black.withValues(alpha: 0.3),
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Icon(
-                    Icons.search,
-                    color: DSColors.white,
-                    size: 20,
-                  ),
-                ),
-                onPressed: () {},
+              SearchButton(
+                decoration: true,
+                onTap: () {
+                  // TODO: открыть поиск
+                },
               ),
             ],
             flexibleSpace: FlexibleSpaceBar(

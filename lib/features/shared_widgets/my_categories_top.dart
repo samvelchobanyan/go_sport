@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/features/shared_widgets/search_button.dart';
 
 class MyCategoriesHeader extends StatelessWidget {
   final String iconPath;
@@ -40,9 +41,11 @@ class MyCategoriesHeader extends StatelessWidget {
                     onPressed: () => context.pop(),
                   ),
                   const Spacer(),
-                  IconButton(
-                    icon: const Icon(Icons.search, color: DSColors.black),
-                    onPressed: () {},
+
+                  SearchButton(
+                    onTap: () {
+                      // TODO: открыть поиск
+                    },
                   ),
                 ],
               ),
@@ -64,7 +67,6 @@ class MyCategoriesHeader extends StatelessWidget {
     );
   }
 }
-
 
 class _MyCategoriesHeaderContent extends StatelessWidget {
   final String iconPath;

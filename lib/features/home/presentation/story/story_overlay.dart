@@ -31,9 +31,7 @@ class StoryOverlay extends StatelessWidget {
               fit: BoxFit.cover,
               placeholder: (context, url) => Container(
                 color: DSColors.gray20,
-                child: const Center(
-                  child: CircularProgressIndicator(),
-                ),
+                child: const Center(child: CircularProgressIndicator()),
               ),
               errorWidget: (context, url, error) => Container(
                 color: DSColors.gray20,
@@ -56,14 +54,10 @@ class StoryOverlay extends StatelessWidget {
                 width: 44,
                 height: 44,
                 decoration: BoxDecoration(
-                  color: DSColors.white.withOpacity(0.9),
+                  color: DSColors.white90,
                   shape: BoxShape.circle,
                 ),
-                child: Icon(
-                  Icons.close,
-                  size: 24,
-                  color: DSColors.black,
-                ),
+                child: Icon(Icons.close, size: 24, color: DSColors.black),
               ),
             ),
           ),
@@ -78,18 +72,13 @@ class StoryOverlay extends StatelessWidget {
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
-                  colors: [
-                    DSColors.transparent,
-                    DSColors.black.withOpacity(0.8),
-                  ],
+                  colors: [DSColors.transparent, DSColors.gray80],
                 ),
               ),
               child: SafeArea(
                 top: false,
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: DSSpacing.l,
-                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: DSSpacing.l),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -99,9 +88,7 @@ class StoryOverlay extends StatelessWidget {
                       // Title
                       Text(
                         story.title,
-                        style: context.h2?.copyWith(
-                          color: DSColors.white,
-                        ),
+                        style: context.h2?.copyWith(color: DSColors.white),
                       ),
 
                       const SizedBox(height: 10),
@@ -109,9 +96,7 @@ class StoryOverlay extends StatelessWidget {
                       // Description
                       Text(
                         story.text,
-                        style: context.bodyL?.copyWith(
-                          color: DSColors.white.withOpacity(0.85),
-                        ),
+                        style: context.bodyL?.copyWith(color: DSColors.white80),
                       ),
 
                       const SizedBox(height: DSSpacing.l),
@@ -119,38 +104,47 @@ class StoryOverlay extends StatelessWidget {
                       // CTA Button
                       Padding(
                         padding: const EdgeInsets.all(24),
-                        child: GestureDetector(
-                          onTap: () => onAction(story.ctaTargetType, story.ctaTargetId),
-                          child: Container(
+                        child: SizedBox(
                           width: double.infinity,
-                          height: 56,
-                          decoration: BoxDecoration(
-                            color: DSColors.lime,
-                            borderRadius: BorderRadius.circular(DSRadius.xl),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.campaign,
-                                size: 20,
-                                color: DSColors.black,
-                              ),
-                              const SizedBox(width: 8),
-                              Text(
-                                story.ctaLabel,
-                                style: context.subtitleLBold?.copyWith(
-                                  color: DSColors.black,
+                          child: GestureDetector(
+                            onTap: () => onAction(
+                              story.ctaTargetType,
+                              story.ctaTargetId,
+                            ),
+                            child: Container(
+                              width: double.infinity,
+                              height: 56,
+                              decoration: BoxDecoration(
+                                color: DSColors.lime,
+                                borderRadius: BorderRadius.circular(
+                                  DSRadius.xl,
                                 ),
                               ),
-                            ],
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.campaign,
+                                    size: 20,
+                                    color: DSColors.black,
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Text(
+                                    story.ctaLabel,
+                                    style: context.subtitleLBold?.copyWith(
+                                      color: DSColors.black,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
-                        ),
                         ),
                       ),
 
                       SizedBox(
-                        height: MediaQuery.of(context).padding.bottom + DSSpacing.l,
+                        height:
+                            MediaQuery.of(context).padding.bottom + DSSpacing.l,
                       ),
                     ],
                   ),

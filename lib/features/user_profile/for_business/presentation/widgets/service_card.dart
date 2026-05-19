@@ -25,9 +25,9 @@ class ServiceCard extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
         decoration: BoxDecoration(
           // Using a subtle background with your DS Blue
-          color: DSColors.blue.withOpacity(0.08),
+          color: DSColors.blue10,
           borderRadius: BorderRadius.circular(DSRadius.s),
-          border: Border.all(color: DSColors.blue.withOpacity(0.2)),
+          border: Border.all(color: DSColors.blue20),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -50,11 +50,11 @@ class ServiceCard extends StatelessWidget {
             Text(
               description,
               style: context.bodyL?.copyWith(
-                color: DSColors.black.withOpacity(0.7),
+                color: DSColors.gray70,
               ),
             ),
             const SizedBox(height: 12),
-            Divider(color: DSColors.blue.withOpacity(0.1), height: 1),
+            Divider(color: DSColors.blue10, height: 1),
             const SizedBox(height: 12),
             Row(
               children: [

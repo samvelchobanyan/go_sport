@@ -9,6 +9,7 @@ import 'package:go_sport/domain/state/player_state.dart';
 import 'package:go_sport/features/program_details/presentation/widgets/program_episode_tile.dart';
 import 'package:go_sport/features/program_details/presentation/widgets/program_screen_skeleton.dart';
 import 'package:go_sport/features/program_details/presentation/widgets/youtube_banner.dart';
+import 'package:go_sport/features/shared_widgets/search_button.dart';
 import 'program_details_controller.dart';
 import '../widgets/program_hero.dart';
 import 'package:go_sport/features/shared_widgets/dotted_divider.dart';
@@ -143,6 +144,7 @@ class _ProgramDetailsScreenState extends ConsumerState<ProgramDetailsScreen> {
                   ),
                   onPressed: () {},
                 ),
+                SearchButton(decoration: true, onTap: () {}),
               ],
               flexibleSpace: FlexibleSpaceBar(
                 background: ProgramHero(
@@ -170,6 +172,7 @@ class _ProgramDetailsScreenState extends ConsumerState<ProgramDetailsScreen> {
               ),
             ),
 
+            SizedBox(height: 18),
             // orange youtube banner
             const YoutubeBanner(),
 

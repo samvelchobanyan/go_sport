@@ -54,6 +54,7 @@ class _ConfirmDeleteScreenState extends ConsumerState<ConfirmDeleteScreen> {
           context,
         ).showSnackBar(SnackBar(content: Text(next.error!)));
       }
+      print('next $next');
 
       if (next.isSuccess && !(previous?.isSuccess ?? false)) {
         context.push('/profile/delete-success');
@@ -129,10 +130,10 @@ class _ConfirmDeleteScreenState extends ConsumerState<ConfirmDeleteScreen> {
                           ),
                         ),
 
-                        onPressed: state.isLoading
-                            ? null
-                            : () => context.push('/profile/delete-success'),
-                        // onPressed: state.isLoading ? null : () => deleteUser(),
+                        // onPressed: state.isLoading
+                        //     ? null
+                        //     : () => context.push('/profile/delete-success'),
+                        onPressed: state.isLoading ? null : () => deleteUser(),
                         child: state.isLoading
                             ? const SizedBox(
                                 height: 20,

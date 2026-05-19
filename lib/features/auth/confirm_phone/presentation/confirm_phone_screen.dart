@@ -182,7 +182,7 @@ class _ConfirmPhoneScreenState extends ConsumerState<ConfirmPhoneScreen> {
                                   context.go('/create-password');
                                 },
 
-                                // uncomment later
+                                // todo uncomment later (doesnt work api yet)
                                 // registrationState.isLoading
                                 //     ? null
                                 //     : _onContinue,

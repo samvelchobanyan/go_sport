@@ -67,7 +67,7 @@ class RadioPageScreen extends ConsumerWidget {
                         ),
                         child: GestureDetector(
                           onTap: () => {context.push('/radio/schedule')},
-                          child: SvgPicture.asset('assets/icons/calendar.svg'),
+                          child: SvgPicture.asset('assets/icons/calendar.svg', width: 24, height: 24),
                         ),
                       ),
                     ],

@@ -6,6 +6,7 @@ import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/domain/state/news_state.dart';
 import 'package:go_sport/features/home/presentation/home/widgets/news_item.dart';
 import 'package:go_sport/features/shared_widgets/dotted_divider.dart';
+import 'package:go_sport/features/shared_widgets/search_button.dart';
 import 'widgets/news_list_screen_skeleton.dart';
 
 class NewsListScreen extends ConsumerWidget {
@@ -27,10 +28,9 @@ class NewsListScreen extends ConsumerWidget {
         title: Text('News', style: context.h2),
         centerTitle: true,
         actions: [
-          IconButton(
-            icon: Icon(Icons.search, color: DSColors.black),
-            onPressed: () {
-              // Search functionality - заглушка
+          SearchButton(
+            onTap: () {
+              // TODO: открыть поиск
             },
           ),
         ],

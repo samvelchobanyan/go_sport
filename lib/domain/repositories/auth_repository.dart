@@ -42,6 +42,5 @@ abstract interface class AuthRepository {
   });
 
   Future<void> logout();
-  Future<void>
-  registerDevice(); //TODO CALL THIS FUNC AFTER REGISTRATION GOOGLE OR LOCAL
+  Future<void> registerDevice(); //TODO CALL THIS FUNC AFTER REGISTRATION GOOGLE
 }

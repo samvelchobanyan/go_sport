@@ -37,7 +37,7 @@ void showTrackOptionsBottomSheet({
                     borderRadius: BorderRadius.circular(DSRadius.xs),
                     boxShadow: [
                       BoxShadow(
-                        color: DSColors.black.withOpacity(0.7),
+                        color: DSColors.gray70,
                         blurRadius: 6,
                         spreadRadius:
                             -2, // prevents shadow from appearing on sides

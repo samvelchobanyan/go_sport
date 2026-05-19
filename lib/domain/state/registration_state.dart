@@ -195,6 +195,8 @@ class RegistrationController extends Notifier<RegistrationState> {
         name: name,
         surname: surname,
       );
+
+      await _authRepository.registerDevice();
     } catch (e) {
       _handleError("Failed to save profile.");
     }
