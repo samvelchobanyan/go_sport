@@ -1,63 +1,15 @@
 import 'package:dio/dio.dart';
-import 'package:go_sport/core/device/device_service.dart';
 import 'package:go_sport/core/network/api_client.dart';
 import 'package:go_sport/data/dto/user_dto.dart';
+import 'package:go_sport/data/repositories/device_repository.dart';
 import 'package:go_sport/domain/entities/user.dart';
 import 'package:go_sport/domain/repositories/auth_repository.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
   final ApiClient _apiClient;
-  final DeviceService _deviceService;
+  final DeviceRepository _deviceRepository;
 
-  AuthRepositoryImpl(this._apiClient, this._deviceService);
-
-  @override
-  Future<void> registerDevice() async {
-    try {
-      final deviceInfo = await _deviceService.getDeviceInfo();
-
-      print('Registering device with info: $deviceInfo');
-
-      if (deviceInfo['deviceToken']!.isEmpty) return;
-
-      final response = await _apiClient.post(
-        '/api/devices',
-        data: {
-          'data': {
-            'Token': deviceInfo['deviceToken'],
-            'Platform': deviceInfo['platform'],
-          },
-        },
-      );
-
-      final documentId = response.data['data']['documentId'];
-
-      if (documentId != null) {
-        final prefs = await SharedPreferences.getInstance();
-        await prefs.setString('documentId', documentId.toString());
-      }
-    } catch (e) {
-      print('Silent failure: Device registration failed: $e');
-    }
-  }
-
-  @override
-  Future<void> logout() async {
-    try {
-      final token = await _deviceService.getDeviceToken();
-
-      if (token != null && token.isNotEmpty) {
-        final prefs = await SharedPreferences.getInstance();
-        final documentId = prefs.getString('documentId');
-        await _apiClient.delete('/api/devices/$documentId');
-        //TODO CHECK IF ARMAN FIXED THIS CALL - SENT 403
-      }
-    } catch (e) {
-      print('Failed to delete device on backend: $e');
-    }
-  }
-
+  AuthRepositoryImpl(this._apiClient, this._deviceRepository);
   @override
   Future<({String jwt, User user})> login({
     required String identifier,

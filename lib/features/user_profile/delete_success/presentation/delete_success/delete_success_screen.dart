@@ -8,11 +8,36 @@ import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_router/go_router.dart';
 import 'package:go_sport/core/auth/auth_state.dart';
 
-class DeleteSuccessScreen extends ConsumerWidget {
+class DeleteSuccessScreen extends ConsumerStatefulWidget {
   const DeleteSuccessScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<DeleteSuccessScreen> createState() =>
+      _DeleteSuccessScreenState();
+}
+
+class _DeleteSuccessScreenState extends ConsumerState<DeleteSuccessScreen> {
+  @override
+  void initState() {
+    super.initState();
+    _startAutoRedirect();
+  }
+
+  void _startAutoRedirect() {
+    Future.delayed(const Duration(seconds: 10), () async {
+      if (!mounted) return;
+
+      // Clean up auth state and redirect
+      await ref.read(authProvider.notifier).logout();
+      if (mounted) {
+        context.go('/login');
+      }
+    });
+  }
+
+  // todo check if timeout works fine
+  @override
+  Widget build(BuildContext context) {
     // Added WidgetRef here
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;

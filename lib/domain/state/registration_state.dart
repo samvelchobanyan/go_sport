@@ -3,6 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:go_sport/core/auth/auth_state.dart';
 import 'package:go_sport/core/auth/token_storage.dart';
 import 'package:go_sport/core/di/repository_providers.dart';
+import 'package:go_sport/data/repositories/device_repository.dart';
 import 'package:go_sport/domain/repositories/auth_repository.dart';
 
 part 'registration_state.freezed.dart';
@@ -27,10 +28,12 @@ class RegistrationState with _$RegistrationState {
 
 class RegistrationController extends Notifier<RegistrationState> {
   late final AuthRepository _authRepository;
+  late final DeviceRepository _deviceRepository;
 
   @override
   RegistrationState build() {
     _authRepository = ref.watch(authRepositoryProvider);
+    _deviceRepository = ref.watch(deviceRepositoryProvider);
     return const RegistrationState();
   }
 
@@ -196,7 +199,7 @@ class RegistrationController extends Notifier<RegistrationState> {
         surname: surname,
       );
 
-      await _authRepository.registerDevice();
+      await _deviceRepository.registerDevice();
     } catch (e) {
       _handleError("Failed to save profile.");
     }

@@ -3,6 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:go_sport/core/auth/auth_state.dart';
 import 'package:go_sport/core/auth/token_storage.dart';
 import 'package:go_sport/core/di/repository_providers.dart';
+import 'package:go_sport/data/repositories/device_repository.dart';
 import 'package:go_sport/domain/repositories/auth_repository.dart';
 
 part 'login_controller.freezed.dart';
@@ -19,6 +20,7 @@ class LoginState with _$LoginState {
 
 class LoginController extends AutoDisposeNotifier<LoginState> {
   late final AuthRepository _authRepository;
+  late final DeviceRepository _deviceRepository;
 
   // do not initialize token storage here,
   //as it causes problem after logout and login again,
@@ -29,6 +31,7 @@ class LoginController extends AutoDisposeNotifier<LoginState> {
   @override
   LoginState build() {
     _authRepository = ref.watch(authRepositoryProvider);
+    _deviceRepository = ref.watch(deviceRepositoryProvider);
     return const LoginState();
   }
 
@@ -49,7 +52,7 @@ class LoginController extends AutoDisposeNotifier<LoginState> {
 
       state = state.copyWith(isLoading: false, isAuthenticated: true);
 
-      await _authRepository.registerDevice();
+      await _deviceRepository.registerDevice();
     } catch (e) {
       // Dio errors or parsing errors caught here
       state = state.copyWith(

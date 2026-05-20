@@ -41,6 +41,4 @@ abstract interface class AuthRepository {
     required String password,
   });
 
-  Future<void> logout();
-  Future<void> registerDevice(); //TODO CALL THIS FUNC AFTER REGISTRATION GOOGLE
 }

@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_sport/data/repositories/auth_repository_impl.dart';
 import 'package:go_sport/data/repositories/albums_repository_impl.dart';
+import 'package:go_sport/data/repositories/device_repository.dart';
 import 'package:go_sport/data/repositories/profile_repository_impl.dart';
 import 'package:go_sport/domain/repositories/auth_repository.dart';
 import 'package:go_sport/data/repositories/artists_repository_impl.dart';
@@ -70,10 +71,17 @@ final scheduleRepositoryProvider = Provider<ScheduleRepository>((ref) {
 final authRepositoryProvider = Provider<AuthRepository>((ref) {
   return AuthRepositoryImpl(
     ref.read(apiClientProvider),
-    ref.read(deviceServiceProvider),
+    ref.read(deviceRepositoryProvider),
   );
 });
 
 final profileRepositoryProvider = Provider<ProfileRepository>((ref) {
   return ProfileRepositoryImpl(ref.read(apiClientProvider));
+});
+
+final deviceRepositoryProvider = Provider<DeviceRepository>((ref) {
+  return DeviceRepository(
+    ref.read(deviceServiceProvider),
+    ref.read(apiClientProvider),
+  );
 });

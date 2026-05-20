@@ -55,10 +55,10 @@ class AuthNotifier extends Notifier<AuthState> {
 
   Future<void> logout() async {
     final tokenStorage = ref.read(tokenStorageProvider);
-    final authRepository = ref.read(authRepositoryProvider);
+    final deviceRepository = ref.read(deviceRepositoryProvider);
 
     // Backend cleanup (device delete) — fire-and-forget, doesn't block logout
-    authRepository.logout().ignore();
+    deviceRepository.deleteDevice().ignore();
 
     // Local logout
     await tokenStorage.clearTokens();
