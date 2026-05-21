@@ -1,15 +1,13 @@
 import 'package:dio/dio.dart';
 import 'package:go_sport/core/network/api_client.dart';
 import 'package:go_sport/data/dto/user_dto.dart';
-import 'package:go_sport/data/repositories/device_repository.dart';
 import 'package:go_sport/domain/entities/user.dart';
 import 'package:go_sport/domain/repositories/auth_repository.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
   final ApiClient _apiClient;
-  final DeviceRepository _deviceRepository;
 
-  AuthRepositoryImpl(this._apiClient, this._deviceRepository);
+  AuthRepositoryImpl(this._apiClient);
   @override
   Future<({String jwt, User user})> login({
     required String identifier,

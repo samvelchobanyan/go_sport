@@ -127,6 +127,8 @@ class _ProgramDetailsScreenState extends ConsumerState<ProgramDetailsScreen> {
                 ),
                 onPressed: () => context.pop(),
               ),
+
+              // todo check why page doesnt work
               actions: [
                 IconButton(
                   icon: Container(

@@ -69,10 +69,7 @@ final scheduleRepositoryProvider = Provider<ScheduleRepository>((ref) {
 });
 
 final authRepositoryProvider = Provider<AuthRepository>((ref) {
-  return AuthRepositoryImpl(
-    ref.read(apiClientProvider),
-    ref.read(deviceRepositoryProvider),
-  );
+  return AuthRepositoryImpl(ref.read(apiClientProvider));
 });
 
 final profileRepositoryProvider = Provider<ProfileRepository>((ref) {
