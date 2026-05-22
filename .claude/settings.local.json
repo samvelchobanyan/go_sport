@@ -18,7 +18,8 @@
       "Bash(dart analyze *)",
       "PowerShell(dart analyze lib/features/user_profile/profile/presentation/profile/profile_screen.dart)",
       "Bash(where flutter *)",
-      "Read(//c/src/flutter/bin/**)"
+      "Read(//c/src/flutter/bin/**)",
+      "Bash(git fetch *)"
     ]
   }
 }
