@@ -144,41 +144,39 @@ GoRouter createAppRouter(TokenStorage tokenStorage) {
             fadeSlidePage(state: state, child: const ProfileScreen()),
         routes: [
           GoRoute(
-            path: AppRoutes.profileForBusiness,
+            path: 'for-business',
             pageBuilder: (context, state) =>
                 fadeSlidePage(state: state, child: const ForBusinessScreen()),
           ),
-
           GoRoute(
-            path: AppRoutes.editProfile,
+            path: 'edit-profile',
             pageBuilder: (context, state) =>
                 fadeSlidePage(state: state, child: const EditProfileScreen()),
           ),
           GoRoute(
-            path: AppRoutes.profileChangePassword,
+            path: 'change-password',
             pageBuilder: (context, state) => fadeSlidePage(
               state: state,
               child: const ProfileChangePasswordScreen(),
             ),
           ),
           GoRoute(
-            path: AppRoutes.deleteAccount,
+            path: 'delete-account',
             pageBuilder: (context, state) =>
                 fadeSlidePage(state: state, child: const DeleteScreen()),
           ),
           GoRoute(
-            path: AppRoutes.confirmDeleteAccount,
+            path: 'confirm-delete',
             pageBuilder: (context, state) =>
                 fadeSlidePage(state: state, child: const ConfirmDeleteScreen()),
           ),
-
           GoRoute(
-            path: AppRoutes.deleteSuccess,
+            path: 'delete-success',
             pageBuilder: (context, state) =>
                 fadeSlidePage(state: state, child: const DeleteSuccessScreen()),
           ),
-            GoRoute(
-            path: AppRoutes.notifications,
+          GoRoute(
+            path: 'notifications',
             pageBuilder: (context, state) =>
                 fadeSlidePage(state: state, child: const NotificationsScreen()),
           ),

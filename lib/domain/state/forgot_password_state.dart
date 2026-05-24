@@ -32,7 +32,7 @@ class ForgotPasswordController extends Notifier<ForgotPasswordState> {
     _prepareAction();
     try {
       final result = await _authRepository.forgotPasswordOtp(email: email);
-      final tokenStorage = ref.watch(tokenStorageProvider);
+      final tokenStorage = ref.read(tokenStorageProvider);
 
       tokenStorage.saveResetToken(result.resetToken);
       state = state.copyWith(isLoading: false, isSuccess: true, email: email);
@@ -43,7 +43,7 @@ class ForgotPasswordController extends Notifier<ForgotPasswordState> {
 
   Future<void> verifyResetOtp(String otp) async {
     _prepareAction();
-    final tokenStorage = ref.watch(tokenStorageProvider);
+    final tokenStorage = ref.read(tokenStorageProvider);
 
     final resetToken = tokenStorage.resetToken;
     if (resetToken == null) return _handleError('Session expired.');
@@ -62,7 +62,7 @@ class ForgotPasswordController extends Notifier<ForgotPasswordState> {
 
   Future<void> resetPasswordOtp(String newPassword) async {
     _prepareAction();
-    final tokenStorage = ref.watch(tokenStorageProvider);
+    final tokenStorage = ref.read(tokenStorageProvider);
 
     final resetToken = tokenStorage.resetToken;
     final savedOtp = state.resetOtp;
@@ -85,7 +85,7 @@ class ForgotPasswordController extends Notifier<ForgotPasswordState> {
         newPassword: newPassword,
       );
 
-      final tokenStorage = ref.watch(tokenStorageProvider);
+      final tokenStorage = ref.read(tokenStorageProvider);
 
       tokenStorage.clearResetToken();
     } catch (e) {
@@ -113,7 +113,7 @@ class ForgotPasswordController extends Notifier<ForgotPasswordState> {
 
   void clearFlow() {
     state = const ForgotPasswordState();
-    final tokenStorage = ref.watch(tokenStorageProvider);
+    final tokenStorage = ref.read(tokenStorageProvider);
 
     tokenStorage.clearResetToken();
   }

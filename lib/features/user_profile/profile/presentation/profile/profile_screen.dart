@@ -6,6 +6,7 @@ import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/core/auth/auth_state.dart';
+import 'package:go_sport/core/navigation/routes.dart';
 import 'package:go_sport/domain/state/user_state.dart';
 import 'package:go_sport/features/user_profile/profile/presentation/widgets/action_row.dart';
 import 'package:go_sport/features/user_profile/profile/presentation/widgets/contact_info.dart';
@@ -78,7 +79,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           elevation: 0,
           actions: [
             IconButton(
-              onPressed: () => {context.push('/profile/notifications')},
+              onPressed: () => context.push(AppRoutes.notifications),
               icon: SvgPicture.asset('assets/icons/bell_blue.svg'),
             ),
             const SizedBox(width: 8),
@@ -145,7 +146,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                     children: [
                       // Clickable Banner
                       GestureDetector(
-                        onTap: () => context.push('/profile/for-business'),
+                        onTap: () => context.push(AppRoutes.profileForBusiness),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(DSRadius.s),
                           child: Stack(
@@ -191,7 +192,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                       ActionRow(
                         icon: SvgPicture.asset('assets/icons/edit.svg'),
                         text: 'Edit Profile',
-                        onTap: () => context.push('/profile/edit-profile'),
+                        onTap: () => context.push(AppRoutes.editProfile),
                       ),
 
                       const SizedBox(height: 12),
@@ -203,9 +204,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                                 'assets/icons/lock_bg.svg',
                               ),
                               text: 'Change Password',
-                              onTap: () => {
-                                context.push('/profile/change-password'),
-                              },
+                              onTap: () =>
+                                  context.push(AppRoutes.profileChangePassword),
                             ),
 
                             const SizedBox(height: 12),
@@ -313,7 +313,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                           'assets/icons/delete_orange_bg.svg',
                         ),
                         text: 'Delete Account',
-                        onTap: () => {context.push('/profile/delete-account')},
+                        onTap: () => context.push(AppRoutes.deleteAccount),
                       ),
 
                       const SizedBox(height: 24),

@@ -2,8 +2,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:go_sport/core/auth/auth_state.dart';
 import 'package:go_sport/core/auth/token_storage.dart';
+import 'package:go_sport/core/di/push_providers.dart';
 import 'package:go_sport/core/di/repository_providers.dart';
-import 'package:go_sport/data/repositories/device_repository.dart';
+import 'package:go_sport/core/push/push_service.dart';
 import 'package:go_sport/domain/repositories/auth_repository.dart';
 
 part 'registration_state.freezed.dart';
@@ -28,12 +29,12 @@ class RegistrationState with _$RegistrationState {
 
 class RegistrationController extends Notifier<RegistrationState> {
   late final AuthRepository _authRepository;
-  late final DeviceRepository _deviceRepository;
+  late final PushService _pushService;
 
   @override
   RegistrationState build() {
     _authRepository = ref.watch(authRepositoryProvider);
-    _deviceRepository = ref.watch(deviceRepositoryProvider);
+    _pushService = ref.watch(pushServiceProvider);
     return const RegistrationState();
   }
 
@@ -43,7 +44,7 @@ class RegistrationController extends Notifier<RegistrationState> {
     try {
       final result = await _authRepository.registerEmail(email: email);
 
-      final tokenStorage = ref.watch(tokenStorageProvider);
+      final tokenStorage = ref.read(tokenStorageProvider);
       tokenStorage.saveRegistrationToken(result.registrationToken);
       state = state.copyWith(isLoading: false, isSuccess: true, email: email);
     } catch (e) {
@@ -54,7 +55,7 @@ class RegistrationController extends Notifier<RegistrationState> {
   // --- STEP 2: Verify Email OTP ---
   Future<void> verifyEmailOtp(String otp) async {
     _prepareAction();
-    final tokenStorage = ref.watch(tokenStorageProvider);
+    final tokenStorage = ref.read(tokenStorageProvider);
 
     final token = tokenStorage.registrationToken;
     if (token == null) return _handleError("Session expired.");
@@ -70,7 +71,7 @@ class RegistrationController extends Notifier<RegistrationState> {
   // --- STEP 3: Phone Registration (Optional) ---
   Future<void> registerPhone(String phone) async {
     _prepareAction();
-    final tokenStorage = ref.watch(tokenStorageProvider);
+    final tokenStorage = ref.read(tokenStorageProvider);
 
     final token = tokenStorage.registrationToken;
     try {
@@ -87,7 +88,7 @@ class RegistrationController extends Notifier<RegistrationState> {
 
   Future<void> verifyPhoneOtp(String otp) async {
     _prepareAction();
-    final tokenStorage = ref.watch(tokenStorageProvider);
+    final tokenStorage = ref.read(tokenStorageProvider);
 
     final token = tokenStorage.registrationToken;
     if (token == null) return _handleError("Session expired.");
@@ -102,7 +103,7 @@ class RegistrationController extends Notifier<RegistrationState> {
 
   Future<void> skipPhone() async {
     _prepareAction();
-    final tokenStorage = ref.watch(tokenStorageProvider);
+    final tokenStorage = ref.read(tokenStorageProvider);
 
     final token = tokenStorage.registrationToken;
     if (token == null) return _handleError("Session expired.");
@@ -121,7 +122,7 @@ class RegistrationController extends Notifier<RegistrationState> {
 
   Future<void> resendPhoneOtp() async {
     _prepareAction();
-    final tokenStorage = ref.watch(tokenStorageProvider);
+    final tokenStorage = ref.read(tokenStorageProvider);
 
     final token = tokenStorage.registrationToken;
     if (token == null) return _handleError("Session expired.");
@@ -135,7 +136,7 @@ class RegistrationController extends Notifier<RegistrationState> {
 
   Future<void> resendEmailOtp() async {
     _prepareAction();
-    final tokenStorage = ref.watch(tokenStorageProvider);
+    final tokenStorage = ref.read(tokenStorageProvider);
 
     final token = tokenStorage.registrationToken;
     if (token == null) return _handleError("Session expired.");
@@ -150,7 +151,7 @@ class RegistrationController extends Notifier<RegistrationState> {
   // --- STEP 4: Set Password ---
   Future<void> setPassword(String password) async {
     _prepareAction();
-    final tokenStorage = ref.watch(tokenStorageProvider);
+    final tokenStorage = ref.read(tokenStorageProvider);
 
     final token = tokenStorage.registrationToken;
     if (token == null) return _handleError("Session expired.");
@@ -177,7 +178,7 @@ class RegistrationController extends Notifier<RegistrationState> {
     required String surname,
   }) async {
     _prepareAction();
-    final tokenStorage = ref.watch(tokenStorageProvider);
+    final tokenStorage = ref.read(tokenStorageProvider);
 
     final token = tokenStorage.registrationToken;
     try {
@@ -187,10 +188,7 @@ class RegistrationController extends Notifier<RegistrationState> {
         surname: surname,
       );
 
-      // Save REAL tokens - this marks the end of the registration flow
-      final tokenStorage = ref.watch(tokenStorageProvider);
-      await tokenStorage.saveTokens(accessToken: result.jwt, refreshToken: '');
-      ref.invalidate(authProvider);
+      await ref.read(authProvider.notifier).login(result.jwt);
 
       state = state.copyWith(
         isLoading: false,
@@ -199,7 +197,7 @@ class RegistrationController extends Notifier<RegistrationState> {
         surname: surname,
       );
 
-      await _deviceRepository.registerDevice();
+      _pushService.register().ignore();
     } catch (e) {
       _handleError("Failed to save profile.");
     }
@@ -229,7 +227,7 @@ class RegistrationController extends Notifier<RegistrationState> {
 
   void clearFlow() {
     state = const RegistrationState();
-    final tokenStorage = ref.watch(tokenStorageProvider);
+    final tokenStorage = ref.read(tokenStorageProvider);
 
     tokenStorage.clearRegistrationToken();
   }

@@ -17,8 +17,14 @@ import 'package:firebase_core/firebase_core.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await Firebase.initializeApp();
-  FirebaseMessaging.instance.subscribeToTopic('all_users');
+  // todo pass options: DefaultFirebaseOptions.currentPlatform after running `flutterfire configure`
+  try {
+    await Firebase.initializeApp();
+    FirebaseMessaging.instance.subscribeToTopic('all_users');
+  } catch (e, stackTrace) {
+    debugPrint('Firebase Init Error: $e');
+    debugPrintStack(stackTrace: stackTrace);
+  }
 
   const env = String.fromEnvironment('ENV', defaultValue: 'dev');
   final config = env == 'prod' ? AppConfig.prod : AppConfig.dev;

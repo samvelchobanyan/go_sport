@@ -3,14 +3,13 @@ class AppRoutes {
 
   // Profile screens
   static const String profile = '/profile';
-  static const String profileForBusiness = '/for-business';
-  static const String editProfile = '/edit-profile';
-  static const String profileChangePassword =
-      '/change-password'; //profile change password
-  static const String confirmDeleteAccount = '/confirm-delete'; 
-  static const String deleteAccount = '/delete-account';
-  static const String deleteSuccess = '/delete-success';
-  static const String notifications = '/notifications';
+  static const String profileForBusiness = '/profile/for-business';
+  static const String editProfile = '/profile/edit-profile';
+  static const String profileChangePassword = '/profile/change-password';
+  static const String confirmDeleteAccount = '/profile/confirm-delete';
+  static const String deleteAccount = '/profile/delete-account';
+  static const String deleteSuccess = '/profile/delete-success';
+  static const String notifications = '/profile/notifications';
 
   // Home screen
   static const String home = '/';

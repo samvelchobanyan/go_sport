@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -6,7 +8,6 @@ import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_router/go_router.dart';
-import 'package:go_sport/core/auth/auth_state.dart';
 
 class DeleteSuccessScreen extends ConsumerStatefulWidget {
   const DeleteSuccessScreen({super.key});
@@ -17,25 +18,23 @@ class DeleteSuccessScreen extends ConsumerStatefulWidget {
 }
 
 class _DeleteSuccessScreenState extends ConsumerState<DeleteSuccessScreen> {
+  Timer? _redirectTimer;
+
   @override
   void initState() {
     super.initState();
-    _startAutoRedirect();
-  }
-
-  void _startAutoRedirect() {
-    Future.delayed(const Duration(seconds: 10), () async {
+    _redirectTimer = Timer(const Duration(seconds: 10), () {
       if (!mounted) return;
-
-      // Clean up auth state and redirect
-      await ref.read(authProvider.notifier).logout();
-      if (mounted) {
-        context.go('/login');
-      }
+      context.go('/login');
     });
   }
 
-  // todo check if timeout works fine
+  @override
+  void dispose() {
+    _redirectTimer?.cancel();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     // Added WidgetRef here
@@ -102,10 +101,7 @@ class _DeleteSuccessScreenState extends ConsumerState<DeleteSuccessScreen> {
                             borderRadius: BorderRadius.circular(DSRadius.xl),
                           ),
                         ),
-                        onPressed: () async {
-                          await ref.read(authProvider.notifier).logout();
-                          if (context.mounted) context.go('/login');
-                        },
+                        onPressed: () => context.go('/login'),
                         label: Text(
                           "Back to Login",
                           style: context.subtitleLBold?.copyWith(

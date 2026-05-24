@@ -41,7 +41,7 @@ class ChangePasswordController
       state = state.copyWith(isLoading: false, isSuccess: true);
     } catch (e) {
       String errorMessage = 'Something went wrong';
-      if (e is DioError && e.response != null) {
+      if (e is DioException && e.response != null) {
         final errorData = e.response!.data;
         if (errorData != null &&
             errorData['error'] != null &&

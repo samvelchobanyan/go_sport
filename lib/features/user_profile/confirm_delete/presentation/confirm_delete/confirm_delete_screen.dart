@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_sport/core/navigation/routes.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
@@ -57,7 +58,7 @@ class _ConfirmDeleteScreenState extends ConsumerState<ConfirmDeleteScreen> {
       print('next $next');
 
       if (next.isSuccess && !(previous?.isSuccess ?? false)) {
-        context.push('/profile/delete-success');
+        context.push(AppRoutes.deleteSuccess);
       }
     });
     return AnnotatedRegion<SystemUiOverlayStyle>(

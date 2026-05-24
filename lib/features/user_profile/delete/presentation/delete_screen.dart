@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_sport/core/navigation/routes.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
@@ -25,7 +26,7 @@ class _DeleteScreenState extends ConsumerState<DeleteScreen> {
 
     confirmDelete() {
       if (userState.user?.provider == 'local') {
-        context.push('/profile/confirm-delete');
+        context.push(AppRoutes.confirmDeleteAccount);
       } else {
         // For google users, redirect to google login for re-authentication before deletion
       }

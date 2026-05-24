@@ -41,14 +41,12 @@ class _ProfileChangePasswordScreenState
   }
 
   Future<void> _onSave() async {
-    // Calling the function with the specific JSON structure required
-
-    // if (_newPasswordController.text != _confirmPasswordController.text) {
-    //   ScaffoldMessenger.of(context).showSnackBar(
-    //     const SnackBar(content: Text('New passwords do not match')),
-    //   );
-    //   return;
-    // }
+    if (_newPasswordController.text != _confirmPasswordController.text) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('New passwords do not match')),
+      );
+      return;
+    }
 
     await ref
         .read(changePasswordControllerProvider.notifier)
@@ -81,7 +79,7 @@ class _ProfileChangePasswordScreenState
       }
 
       // Handle Success
-      if (next.isSuccess && !previous!.isSuccess) {
+      if (next.isSuccess && next.isSuccess != previous?.isSuccess) {
         context.pop();
       }
     });
