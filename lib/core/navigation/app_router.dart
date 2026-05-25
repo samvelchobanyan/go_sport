@@ -16,12 +16,19 @@ import 'package:go_sport/features/auth/forgot_password/presentation/forgot_passw
 import 'package:go_sport/features/favorites/presentation/my_albums/my_albums_screen.dart';
 import 'package:go_sport/features/favorites/presentation/my_artists/my_artists_screen.dart';
 import 'package:go_sport/features/favorites/presentation/my_playlists/my_playlists_screen.dart';
+import 'package:go_sport/features/user_profile/change_password/presentation/change_password/change_password_screen.dart';
+import 'package:go_sport/features/user_profile/confirm_delete/presentation/confirm_delete/confirm_delete_screen.dart';
+import 'package:go_sport/features/user_profile/delete/presentation/delete_screen.dart';
+import 'package:go_sport/features/user_profile/delete_success/presentation/delete_success/delete_success_screen.dart';
+import 'package:go_sport/features/user_profile/edit_profile/presentation/edit_profile/edit_profile_screen.dart';
+import 'package:go_sport/features/user_profile/for_business/presentation/for_business_screen.dart';
 import 'package:go_sport/features/home/presentation/home/home_screen.dart';
 import 'package:go_sport/features/auth/login/presentation/login/login_screen.dart';
 import 'package:go_sport/features/auth/registration_phone/presentation/registration_phone_screen.dart';
 import 'package:go_sport/features/auth/registration_email/presentation/registration_email_screen.dart';
 import 'package:go_sport/features/music/presentation/music/music_screen.dart';
-import 'package:go_sport/features/profile/presentation/profile/profile_screen.dart';
+import 'package:go_sport/features/user_profile/notifications/presentation/notifications/notifications_screen.dart';
+import 'package:go_sport/features/user_profile/profile/presentation/profile/profile_screen.dart';
 import 'package:go_sport/features/news/presentation/news_list/news_list_screen.dart';
 import 'package:go_sport/features/news/presentation/news_detail/news_detail_screen.dart';
 import 'package:go_sport/features/favorites/presentation/my_favorites/my_favorites_screen.dart';
@@ -56,18 +63,19 @@ GoRouter createAppRouter(TokenStorage tokenStorage) {
       );
 
       final isAuthFlow =
+          // login
           state.matchedLocation == AppRoutes.login ||
+          // registration
           state.matchedLocation == AppRoutes.registrationEmail ||
           state.matchedLocation == AppRoutes.registrationPhone ||
           state.matchedLocation == AppRoutes.registrationName ||
           state.matchedLocation == AppRoutes.confirmEmail ||
           state.matchedLocation == AppRoutes.createPassword ||
-          state.matchedLocation == AppRoutes.confirmChangePassword ||
+          // forget password flow
           state.matchedLocation == AppRoutes.forgotPassword ||
           state.matchedLocation == AppRoutes.checkEmail ||
-          state.matchedLocation == AppRoutes.newPassword ||
-          state.matchedLocation == AppRoutes.passwordChanged ||
-          state.matchedLocation == AppRoutes.changePassword;
+          state.matchedLocation == AppRoutes.changePassword ||
+          state.matchedLocation == AppRoutes.confirmChangePassword;
 
       // unauthorized (первый запуск) — гоним на логин со всех маршрутов кроме самого логина
       if (!isAuthenticated && !isGuest && !isAuthFlow) {
@@ -122,6 +130,45 @@ GoRouter createAppRouter(TokenStorage tokenStorage) {
         path: AppRoutes.profile,
         pageBuilder: (context, state) =>
             fadeSlidePage(state: state, child: const ProfileScreen()),
+        routes: [
+          GoRoute(
+            path: 'for-business',
+            pageBuilder: (context, state) =>
+                fadeSlidePage(state: state, child: const ForBusinessScreen()),
+          ),
+          GoRoute(
+            path: 'edit-profile',
+            pageBuilder: (context, state) =>
+                fadeSlidePage(state: state, child: const EditProfileScreen()),
+          ),
+          GoRoute(
+            path: 'change-password',
+            pageBuilder: (context, state) => fadeSlidePage(
+              state: state,
+              child: const ProfileChangePasswordScreen(),
+            ),
+          ),
+          GoRoute(
+            path: 'delete-account',
+            pageBuilder: (context, state) =>
+                fadeSlidePage(state: state, child: const DeleteScreen()),
+          ),
+          GoRoute(
+            path: 'confirm-delete',
+            pageBuilder: (context, state) =>
+                fadeSlidePage(state: state, child: const ConfirmDeleteScreen()),
+          ),
+          GoRoute(
+            path: 'delete-success',
+            pageBuilder: (context, state) =>
+                fadeSlidePage(state: state, child: const DeleteSuccessScreen()),
+          ),
+          GoRoute(
+            path: 'notifications',
+            pageBuilder: (context, state) =>
+                fadeSlidePage(state: state, child: const NotificationsScreen()),
+          ),
+        ],
       ),
 
       GoRoute(

@@ -35,7 +35,7 @@ class AlbumTile extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8),
                 boxShadow: [
                   BoxShadow(
-                    color: DSColors.black.withValues(alpha: 0.7),
+                    color: DSColors.gray70,
                     blurRadius: 6,
                     spreadRadius: -2, // reduces shadow spread on sides
                     offset: const Offset(0, 4),

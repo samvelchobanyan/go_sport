@@ -14,10 +14,7 @@ class ArtistTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => context.push(
-        '/music/artist/${artist.id}',
-        extra: artist,
-      ),
+      onTap: () => context.push('/music/artist/${artist.id}', extra: artist),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         child: Row(
@@ -27,7 +24,7 @@ class ArtistTile extends StatelessWidget {
                 shape: BoxShape.circle,
                 boxShadow: [
                   BoxShadow(
-                    color: DSColors.black.withValues(alpha: 0.7),
+                    color: DSColors.gray70,
                     blurRadius: 6,
                     spreadRadius: -2,
                     offset: const Offset(0, 4),

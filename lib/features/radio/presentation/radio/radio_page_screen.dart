@@ -27,19 +27,19 @@ class RadioPageScreen extends ConsumerWidget {
     final featuredEpisodes = radioDashboardState.featuredEpisodes;
 
     final isLoading = radioDashboardState.isLoading;
-  final showInitialSkeleton =
-    isLoading && featuredPrograms.isEmpty && featuredEpisodes.isEmpty;
+    final showInitialSkeleton =
+        isLoading && featuredPrograms.isEmpty && featuredEpisodes.isEmpty;
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.dark,
       child: Scaffold(
         backgroundColor: DSColors.white,
-    body: showInitialSkeleton
-      ? const RadioPageSkeleton()
+        body: showInitialSkeleton
+            ? const RadioPageSkeleton()
             : CustomScrollView(
                 slivers: [
                   SliverAppBar(
-                    backgroundColor: Colors.white,
+                    backgroundColor: DSColors.white,
                     elevation: 0,
                     pinned: true,
                     floating: true,
@@ -53,7 +53,7 @@ class RadioPageScreen extends ConsumerWidget {
                       child: UserAvatarButton(
                         imageUrl: null,
                         onTap: () {
-                          // TODO: navigate to profile
+                          context.push('/profile');
                         },
                       ),
                     ),
@@ -67,7 +67,7 @@ class RadioPageScreen extends ConsumerWidget {
                         ),
                         child: GestureDetector(
                           onTap: () => {context.push('/radio/schedule')},
-                          child: SvgPicture.asset('assets/icons/calendar.svg'),
+                          child: SvgPicture.asset('assets/icons/calendar.svg', width: 24, height: 24),
                         ),
                       ),
                     ],
@@ -144,7 +144,11 @@ class RadioPageScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildEpisodesList(WidgetRef ref, List<Track> episodes, BuildContext  context) {
+  Widget _buildEpisodesList(
+    WidgetRef ref,
+    List<Track> episodes,
+    BuildContext context,
+  ) {
     final playerState = ref.watch(playerStateProvider);
     final playingTrackId = playerState.currentTrack?.id;
 

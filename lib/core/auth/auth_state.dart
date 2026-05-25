@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../di/push_providers.dart';
 import 'token_storage.dart';
 
 part 'auth_state.freezed.dart';
@@ -11,42 +12,45 @@ part 'auth_state.freezed.dart';
 sealed class AuthState with _$AuthState {
   const factory AuthState.unauthorized() = AuthUnauthorized;
   const factory AuthState.guest() = AuthGuest;
-  const factory AuthState.authenticated({
-    required String name,
-    required String avatarUrl,
-    required int userId,
-  }) = AuthAuthenticated;
+  const factory AuthState.authenticated() = AuthAuthenticated;
 }
 
 // === Notifier ===
 
 class AuthNotifier extends Notifier<AuthState> {
-  late final TokenStorage _tokenStorage;
-
   @override
   AuthState build() {
-    _tokenStorage = ref.watch(tokenStorageProvider);
-
-    if (_tokenStorage.accessToken != null) {
-      return const AuthState.authenticated(name: '', avatarUrl: '', userId: 0);
+    final tokenStorage = ref.watch(tokenStorageProvider);
+    if (tokenStorage.accessToken != null) {
+      return const AuthState.authenticated();
     }
-    if (_tokenStorage.choseGuest) {
+    if (tokenStorage.choseGuest) {
       return const AuthState.guest();
     }
     return const AuthState.unauthorized();
   }
 
-  void setUser({required String name, required String avatarUrl, required int userId}) {
-    state = AuthState.authenticated(name: name, avatarUrl: avatarUrl, userId: userId);
-  }
-
   void continueAsGuest() {
-    _tokenStorage.setChoseGuest();
+    final tokenStorage = ref.read(tokenStorageProvider);
+    tokenStorage.setChoseGuest();
     state = const AuthState.guest();
   }
 
+  Future<void> login(String jwt) async {
+    final tokenStorage = ref.read(tokenStorageProvider);
+    await tokenStorage.saveTokens(accessToken: jwt, refreshToken: '');
+    state = const AuthState.authenticated();
+  }
+
   Future<void> logout() async {
-    await _tokenStorage.clearTokens();
+    final tokenStorage = ref.read(tokenStorageProvider);
+    final pushService = ref.read(pushServiceProvider);
+
+    // Backend cleanup (device delete) — fire-and-forget, doesn't block logout
+    pushService.unregister().ignore();
+
+    // Local logout
+    await tokenStorage.clearTokens();
     state = const AuthState.unauthorized();
   }
 }

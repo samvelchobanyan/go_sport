@@ -1,4 +1,4 @@
-package com.example.go_sport
+package fm.go.app
 
 import com.ryanheise.audioservice.AudioServiceActivity
 

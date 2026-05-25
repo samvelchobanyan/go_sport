@@ -1,5 +1,15 @@
 import 'package:go_sport/domain/entities/user.dart';
 
+class _AvatarDto {
+  final String url;
+
+  _AvatarDto({required this.url});
+
+  factory _AvatarDto.fromJson(Map<String, dynamic> json) {
+    return _AvatarDto(url: json['url'] as String);
+  }
+}
+
 class UserDto {
   final int id;
   final String documentId;
@@ -7,7 +17,9 @@ class UserDto {
   final String email;
   final String name;
   final String surname;
+  final String provider;
   final String? phone;
+  final _AvatarDto? avatar;
 
   UserDto({
     required this.id,
@@ -16,7 +28,9 @@ class UserDto {
     required this.email,
     required this.name,
     required this.surname,
+    required this.provider,
     this.phone,
+    this.avatar,
   });
 
   factory UserDto.fromJson(Map<String, dynamic> json) {
@@ -27,7 +41,11 @@ class UserDto {
       email: json['email'] as String,
       name: json['name'] as String? ?? '',
       surname: json['surname'] as String? ?? '',
+      provider: json['provider'] as String? ?? '',
       phone: json['phone'] as String?,
+      avatar: json['avatar'] != null
+          ? _AvatarDto.fromJson(json['avatar'] as Map<String, dynamic>)
+          : null,
     );
   }
 
@@ -40,6 +58,8 @@ class UserDto {
       name: name,
       surname: surname,
       phone: phone,
+      provider: provider,
+      avatar: avatar?.url,
     );
   }
 }

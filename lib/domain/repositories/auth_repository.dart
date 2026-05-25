@@ -40,4 +40,5 @@ abstract interface class AuthRepository {
     required String otp,
     required String password,
   });
+
 }

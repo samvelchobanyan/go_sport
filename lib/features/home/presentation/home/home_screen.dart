@@ -61,7 +61,7 @@ class HomeScreen extends ConsumerWidget {
       isScrollControlled: true,
       useRootNavigator: true,
       backgroundColor: DSColors.transparent,
-      barrierColor: DSColors.black.withValues(alpha: 0.9),
+      barrierColor: DSColors.gray90,
       enableDrag: true,
       builder: (modalContext) => MediaQuery(
         data: MediaQuery.of(context),
@@ -196,13 +196,10 @@ class HomeScreen extends ConsumerWidget {
             title: SvgPicture.asset('assets/icons/app_logo.svg', height: 40),
             centerTitle: true,
             actions: [
-              Padding(
-                padding: const EdgeInsets.only(top: 8, bottom: 8, right: 16),
-                child: SearchButton(
-                  onTap: () {
-                    // TODO: открыть поиск
-                  },
-                ),
+              SearchButton(
+                onTap: () {
+                  // TODO: открыть поиск
+                },
               ),
             ],
           ),
@@ -233,7 +230,7 @@ class HomeScreen extends ConsumerWidget {
 
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.only(top: 32, bottom: 16),
+              padding: const EdgeInsets.only(top: 24, bottom: 32),
               child: PodcastBanner(
                 onTap: () {
                   // TODO: навигация
@@ -289,10 +286,9 @@ class HomeScreen extends ConsumerWidget {
                     ),
                     if (!isLast) ...[
                       const SizedBox(height: 10),
-                      const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 16),
-                        child: DottedDivider(),
-                      ),
+
+                      const DottedDivider(),
+
                       const SizedBox(height: 10),
                     ],
                   ],

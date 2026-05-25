@@ -32,7 +32,7 @@ class CustomInput extends StatelessWidget {
         SizedBox(height: 4),
         Container(
           decoration: BoxDecoration(
-            color: DSColors.blue.withValues(alpha: 0.07),
+            color: DSColors.blue10,
             borderRadius: BorderRadius.circular(DSRadius.s),
           ),
           child: Row(
@@ -44,7 +44,7 @@ class CustomInput extends StatelessWidget {
                   child: Text(
                     '+374',
                     style: context.subtitleM?.copyWith(
-                      color: DSColors.blue.withOpacity(0.5),
+                      color: DSColors.blue50,
                       fontWeight: FontWeight.bold,
                     ),
                   ),

@@ -23,7 +23,7 @@ class PlayerControlPanel extends ConsumerWidget {
 
     return Container(
       decoration: BoxDecoration(
-        color: DSColors.white.withValues(alpha: 0.5),
+        color: DSColors.white50,
         borderRadius: const BorderRadius.vertical(
           top: Radius.circular(DSRadius.l),
         ),

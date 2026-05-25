@@ -1,6 +1,4 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:go_sport/domain/entities/album.dart';
-
 part 'artist.freezed.dart';
 
 @freezed

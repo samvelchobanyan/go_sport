@@ -8,9 +8,8 @@ class DSColors {
   static const white = Color(0xFFFFFFFF); // rgba(255,255,255,1)
 
   // Brand
-  static const blue = Color(0xFF404AC3); // rgba(64,74,195,1)
+  // static const blue = Color(0xFF404AC3); // rgba(64,74,195,1)
   static const lime = Color(0xFFCFDC28); // rgba(207,220,40,1)
-  static const orange = Color(0xFFF55F2A); // rgba(245,95,42,1)
 
   static const errorColor = Color(0xFFFF3B30); // rgba(255,59,48,1)
   static const transparent = Colors.transparent;
@@ -27,6 +26,25 @@ class DSColors {
   static const gray20 = Color(0x33000000); // 20%
   static const gray10 = Color(0x1A000000); // 10%
   static const gray5 = Color(0xFFF2F2F2); // 5%
+
+  // Bluescale (Solid / Opaque against White)
+  static const blue = Color(0xFF404AC3); // Base Blue (100%)
+  static const blue50 = Color(0xFF9FA5E1); // 50% Opaque Tint
+  static const blue30 = Color(0xFFC6C9ED); // 30% Opaque Tint
+  static const blue20 = Color(0xFFD9DBF3); // 20% Opaque Tint
+  static const blue10 = Color(0xFFECECFA); // 10% Opaque Tint
+  static const blue5 = Color(0xFFF5F5FD); // 5% Opaque Tint
+
+  // Orange scale
+  static const orange = Color(0xFFF55F2A); // rgba(245,95,42,1)
+  static const orange30 = Color(0xFFFCD3C5); // 30% Opaque Tint
+  static const orange5 = Color(0xFFFEF0EB); // 5% Opaque Tint
+
+  // White scale
+  static const white90 = Color(0xE6FFFFFF); // 90% Transparency (0.9)
+  static const white80 = Color(0xCCFFFFFF); // 80% Transparency (0.8)
+  static const white50 = Color(0x80FFFFFF); // 50% Transparency (0.5)
+  static const white20 = Color(0x33FFFFFF); // 20% Transparency (0.2)
 
   static const divider = gray20; // rgba(245,245,247,1)
 

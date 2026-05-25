@@ -9,6 +9,7 @@ import 'package:go_sport/domain/state/player_state.dart';
 import 'package:go_sport/features/program_details/presentation/widgets/program_episode_tile.dart';
 import 'package:go_sport/features/program_details/presentation/widgets/program_screen_skeleton.dart';
 import 'package:go_sport/features/program_details/presentation/widgets/youtube_banner.dart';
+import 'package:go_sport/features/shared_widgets/search_button.dart';
 import 'program_details_controller.dart';
 import '../widgets/program_hero.dart';
 import 'package:go_sport/features/shared_widgets/dotted_divider.dart';
@@ -78,10 +79,7 @@ class _ProgramDetailsScreenState extends ConsumerState<ProgramDetailsScreen> {
     );
 
     notifier
-        .toggleLike(
-          widget.program.id,
-          previousIsLiked ? previousLikeId : null,
-        )
+        .toggleLike(widget.program.id, previousIsLiked ? previousLikeId : null)
         .then((newLikeId) {
           setState(() => _likeId = newLikeId);
         })
@@ -129,6 +127,8 @@ class _ProgramDetailsScreenState extends ConsumerState<ProgramDetailsScreen> {
                 ),
                 onPressed: () => context.pop(),
               ),
+
+              // todo check why page doesnt work
               actions: [
                 IconButton(
                   icon: Container(
@@ -146,6 +146,7 @@ class _ProgramDetailsScreenState extends ConsumerState<ProgramDetailsScreen> {
                   ),
                   onPressed: () {},
                 ),
+                SearchButton(decoration: true, onTap: () {}),
               ],
               flexibleSpace: FlexibleSpaceBar(
                 background: ProgramHero(
@@ -173,6 +174,7 @@ class _ProgramDetailsScreenState extends ConsumerState<ProgramDetailsScreen> {
               ),
             ),
 
+            SizedBox(height: 18),
             // orange youtube banner
             const YoutubeBanner(),
 
@@ -184,10 +186,7 @@ class _ProgramDetailsScreenState extends ConsumerState<ProgramDetailsScreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
-                        'Error: $message',
-                        style: const TextStyle(color: DSColors.black),
-                      ),
+                      Text('Error: $message'),
                       const SizedBox(height: 16),
                       ElevatedButton(
                         onPressed: () => ref

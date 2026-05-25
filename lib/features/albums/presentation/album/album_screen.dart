@@ -10,6 +10,7 @@ import 'package:go_sport/features/albums/presentation/widgets/album_hero.dart';
 import 'package:go_sport/features/albums/presentation/widgets/album_screen_skeleton.dart';
 import 'package:go_sport/features/albums/presentation/widgets/album_track_tile.dart';
 import 'package:go_sport/features/shared_widgets/dotted_divider.dart';
+import 'package:go_sport/features/shared_widgets/search_button.dart';
 
 class AlbumScreen extends ConsumerStatefulWidget {
   final Album album;
@@ -32,7 +33,9 @@ class _AlbumScreenState extends ConsumerState<AlbumScreen> {
   }
 
   void _onTrackTap(List<Track> tracks, int index) {
-    ref.read(playerStateProvider.notifier).playQueue(
+    ref
+        .read(playerStateProvider.notifier)
+        .playQueue(
           tracks,
           source: QueueSource.album(
             id: widget.album.id,
@@ -45,7 +48,9 @@ class _AlbumScreenState extends ConsumerState<AlbumScreen> {
 
   void _onPlayTap(List<Track> tracks) {
     if (tracks.isEmpty) return;
-    ref.read(playerStateProvider.notifier).playQueue(
+    ref
+        .read(playerStateProvider.notifier)
+        .playQueue(
           tracks,
           source: QueueSource.album(
             id: widget.album.id,
@@ -61,16 +66,21 @@ class _AlbumScreenState extends ConsumerState<AlbumScreen> {
 
     setState(() => _isLiked = !_isLiked);
 
-    final notifier = ref.read(albumControllerProvider(widget.album.id).notifier);
+    final notifier = ref.read(
+      albumControllerProvider(widget.album.id).notifier,
+    );
 
-    notifier.toggleLike(widget.album.id, previousIsLiked ? previousLikeId : null).then((newLikeId) {
-      setState(() => _likeId = newLikeId);
-    }).catchError((_) {
-      setState(() {
-        _isLiked = previousIsLiked;
-        _likeId = previousLikeId;
-      });
-    });
+    notifier
+        .toggleLike(widget.album.id, previousIsLiked ? previousLikeId : null)
+        .then((newLikeId) {
+          setState(() => _likeId = newLikeId);
+        })
+        .catchError((_) {
+          setState(() {
+            _isLiked = previousIsLiked;
+            _likeId = previousLikeId;
+          });
+        });
   }
 
   @override
@@ -97,7 +107,11 @@ class _AlbumScreenState extends ConsumerState<AlbumScreen> {
                   color: DSColors.black.withValues(alpha: 0.3),
                   shape: BoxShape.circle,
                 ),
-                child: const Icon(Icons.arrow_back, color: DSColors.white, size: 20),
+                child: const Icon(
+                  Icons.arrow_back,
+                  color: DSColors.white,
+                  size: 20,
+                ),
               ),
               onPressed: () => context.pop(),
             ),
@@ -110,21 +124,19 @@ class _AlbumScreenState extends ConsumerState<AlbumScreen> {
                     color: DSColors.black.withValues(alpha: 0.3),
                     shape: BoxShape.circle,
                   ),
-                  child: const Icon(Icons.share, color: DSColors.white, size: 20),
+                  child: const Icon(
+                    Icons.share,
+                    color: DSColors.white,
+                    size: 20,
+                  ),
                 ),
                 onPressed: () {},
               ),
-              IconButton(
-                icon: Container(
-                  width: 36,
-                  height: 36,
-                  decoration: BoxDecoration(
-                    color: DSColors.black.withValues(alpha: 0.3),
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Icon(Icons.search, color: DSColors.white, size: 20),
-                ),
-                onPressed: () {},
+              SearchButton(
+                decoration: true,
+                onTap: () {
+                  // TODO: открыть поиск
+                },
               ),
             ],
             flexibleSpace: FlexibleSpaceBar(
@@ -158,14 +170,13 @@ class _AlbumScreenState extends ConsumerState<AlbumScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      'Error: $message',
-                      style: const TextStyle(color: DSColors.black),
-                    ),
+                    Text('Error: $message'),
                     const SizedBox(height: 16),
                     ElevatedButton(
                       onPressed: () => ref
-                          .read(albumControllerProvider(widget.album.id).notifier)
+                          .read(
+                            albumControllerProvider(widget.album.id).notifier,
+                          )
                           .loadTracks(),
                       child: const Text('Retry'),
                     ),
@@ -184,7 +195,8 @@ class _AlbumScreenState extends ConsumerState<AlbumScreen> {
                     final track = tracks[index];
                     final isCurrentTrack = track.id == playingTrackId;
                     final bool? trackPlayingState = isCurrentTrack
-                        ? playerState.isPlaying && playerState.isRadioMode == false
+                        ? playerState.isPlaying &&
+                              playerState.isRadioMode == false
                         : null;
 
                     return Column(

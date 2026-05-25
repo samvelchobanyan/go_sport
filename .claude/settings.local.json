@@ -20,7 +20,12 @@
       "Bash(findstr /n \".\")",
       "Bash(more +0)",
       "Bash(git config *)",
-      "Bash(git check-attr *)"
+      "Bash(git check-attr *)",
+      "Bash(grep -E \"_controller\\\\.dart$\")",
+      "PowerShell(Get-ChildItem \"C:\\\\knowledge\\\\flutter-kb\\\\\" | Select-Object Name, @{Name='Type';Expression={if\\($_.PSIsContainer\\){'dir'}else{'file'}}})",
+      "PowerShell(dart analyze lib/features/user_profile/profile/presentation/profile/profile_screen.dart)",
+      "Read(//c/src/flutter/bin/**)",
+      "Bash(git fetch *)"
     ]
   }
 }

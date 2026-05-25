@@ -24,7 +24,7 @@ class AuthNumberBox extends StatelessWidget {
       width: boxWidth,
       height: 56,
       decoration: BoxDecoration(
-        color: DSColors.blue.withOpacity(0.05),
+        color: DSColors.blue5,
         borderRadius: BorderRadius.circular(DSRadius.m),
       ),
       alignment: Alignment.center,
@@ -53,7 +53,7 @@ class AuthNumberBox extends StatelessWidget {
           contentPadding: EdgeInsets
               .zero, // Use zero to avoid vertical jumping in small boxes
           border: InputBorder.none,
-          hintStyle: TextStyle(color: Colors.grey),
+          hintStyle: TextStyle(color: DSColors.gray50),
         ),
       ),
     );

@@ -21,7 +21,7 @@ class FullPlayerScreen extends ConsumerWidget {
       isScrollControlled: true,
       useRootNavigator: true,
       backgroundColor: DSColors.transparent,
-      barrierColor: DSColors.black.withValues(alpha: 0.3),
+      barrierColor: DSColors.gray30,
       enableDrag: true,
       builder: (_) => MediaQuery(
         data: mq,
@@ -39,7 +39,7 @@ class FullPlayerScreen extends ConsumerWidget {
         backgroundColor: DSColors.transparent,
         body: Stack(
           children: [
-            Container(color: Colors.white),
+            Container(color: DSColors.white),
             const PlayerFluidBackground(scale: 1.7, opacity: 0.65),
       
             // Content (respects safe area)

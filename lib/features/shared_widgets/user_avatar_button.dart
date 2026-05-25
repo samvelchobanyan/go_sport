@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 
 class UserAvatarButton extends StatelessWidget {
@@ -11,7 +12,7 @@ class UserAvatarButton extends StatelessWidget {
     super.key,
     this.imageUrl,
     this.onTap,
-    this.size = 40,
+    this.size = 32,
   });
 
   @override
@@ -39,7 +40,7 @@ class UserAvatarButton extends StatelessWidget {
   Widget _buildPlaceholder() {
     return Container(
       color: DSColors.gray20,
-      child: Icon(Icons.person, color: DSColors.gray50, size: size * 0.6),
+      child: SvgPicture.asset('assets/icons/avatar.svg', width: size * 0.6, height: size * 0.6),
     );
   }
 }

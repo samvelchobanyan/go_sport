@@ -84,7 +84,7 @@ class PlaylistHero extends StatelessWidget {
                         width: 48,
                         height: 48,
                         decoration: BoxDecoration(
-                          color: DSColors.white.withValues(alpha: 0.25),
+                          color: DSColors.white20,
                           shape: BoxShape.circle,
                         ),
                         child: Center(

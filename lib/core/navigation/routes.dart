@@ -1,11 +1,23 @@
 class AppRoutes {
   static const String login = '/login';
+
+  // Profile screens
   static const String profile = '/profile';
+  static const String profileForBusiness = '/profile/for-business';
+  static const String editProfile = '/profile/edit-profile';
+  static const String profileChangePassword = '/profile/change-password';
+  static const String confirmDeleteAccount = '/profile/confirm-delete';
+  static const String deleteAccount = '/profile/delete-account';
+  static const String deleteSuccess = '/profile/delete-success';
+  static const String notifications = '/profile/notifications';
+
+  // Home screen
   static const String home = '/';
   static const String homeStory = '/story/:id';
   static const String homeNews = '/news';
   static const String homeNewsArticle = '/news/:id';
 
+  // Music screens
   static const String music = '/music';
   static const String musicArtist = '/music/artist/:id';
   static const String musicAlbum = '/music/album/:id';
@@ -18,10 +30,11 @@ class AppRoutes {
   static const String musicMyEpisodes = '/music/myepisodes';
   static const String musicMyPrograms = '/music/myprograms';
 
+  // Radio screens
   static const String radio = '/radio';
   static const String radioSchedule = '/radio/schedule';
 
-  // static const String login = '/login';
+  // Login and registration flows
   static const String registrationEmail = '/registration-email';
   static const String registrationPhone = '/registration-phone';
   static const String registrationName = '/registration-name';
@@ -30,14 +43,15 @@ class AppRoutes {
   static const String createPassword = '/create-password';
   static const String expiredGuest = '/expired-guest';
   static const String checkEmail = '/check-email';
-  static const String newPassword = '/new-password';
-  static const String passwordChanged = '/password-changed';
   static const String changePassword = '/change-password';
   static const String forgotPassword = '/forgot-password';
   static const String confirmChangePassword = '/confirm-password-change';
 
   static const List<String> privateRoutes = [
     profile,
+    editProfile,
+    profileChangePassword,
+    profileForBusiness,
     musicMyFavorites,
     musicMyPlaylists,
     musicMyAlbums,

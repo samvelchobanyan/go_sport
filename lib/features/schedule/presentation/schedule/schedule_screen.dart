@@ -35,7 +35,7 @@ class ScheduleScreen extends ConsumerWidget {
               leading: IconButton(
                 icon: Icon(
                   Icons.keyboard_arrow_down_rounded,
-                  color: Colors.black,
+                  color: DSColors.black,
                 ),
                 onPressed: () => context.pop(),
               ),
@@ -44,9 +44,10 @@ class ScheduleScreen extends ConsumerWidget {
               centerTitle: true,
             ),
 
+            SizedBox(height: 10),
             DatesCarousel(today: today),
 
-            const SliverToBoxAdapter(child: SizedBox(height: 26)),
+            SizedBox(height: 26),
             // orange youtube banner
             YoutubeBanner(),
 

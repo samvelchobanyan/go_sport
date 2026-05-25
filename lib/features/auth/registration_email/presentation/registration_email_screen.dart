@@ -6,6 +6,7 @@ import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/domain/state/registration_state.dart';
+import 'package:go_sport/features/auth/login/presentation/login/login_controller.dart';
 import 'package:go_sport/features/shared_widgets/input.dart';
 import 'package:go_router/go_router.dart';
 
@@ -60,6 +61,17 @@ class _RegistrationEmailScreenState
     ref.listen<RegistrationState>(registrationControllerProvider, (prev, next) {
       if (next.isSuccess) {
         context.go('/confirm-email');
+      }
+      if (next.error != null) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(next.error!)));
+      }
+    });
+
+    ref.listen<LoginState>(loginControllerProvider, (previous, next) {
+      if (next.isAuthenticated) {
+        context.go('/'); // Navigate to home
       }
       if (next.error != null) {
         ScaffoldMessenger.of(
@@ -146,7 +158,7 @@ class _RegistrationEmailScreenState
                                     height: 20,
                                     child: CircularProgressIndicator(
                                       strokeWidth: 2,
-                                      color: Colors.white,
+                                      color: DSColors.white,
                                     ),
                                   )
                                 : Icon(
@@ -176,7 +188,7 @@ class _RegistrationEmailScreenState
                             onPressed: () {},
                             style: TextButton.styleFrom(
                               padding: const EdgeInsets.symmetric(vertical: 14),
-                              backgroundColor: DSColors.blue.withOpacity(0.05),
+                              backgroundColor: DSColors.blue5,
                               // This ensures no border is drawn
                               side: BorderSide.none,
                               shape: RoundedRectangleBorder(

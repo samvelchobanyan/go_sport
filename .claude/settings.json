@@ -5,7 +5,15 @@
       "Bash(git merge-tree *)",
       "Bash(git --version)",
       "Bash(grep -E \"^[a-z]+ in [a-z]+$|^  base   |^[^@< +-]\")",
-      "Bash(awk '/^changed in both/{flag=1; next} /^  base/{if\\(flag\\){gsub\\(/^[ ]+/,\"\"\\); split\\($0, a, \" \"\\); print a[length\\(a\\)]; flag=0}} /^added in remote/{flag2=1; next} /^  their/{if\\(flag2\\){gsub\\(/^[ ]+/,\"\"\\); split\\($0, a, \" \"\\); print \"[ADDED] \" a[length\\(a\\)]; flag2=0}} /^removed in remote/{flag3=1; next} /^  base/{if\\(flag3\\){gsub\\(/^[ ]+/,\"\"\\); split\\($0, a, \" \"\\); print \"[REMOVED] \" a[length\\(a\\)]; flag3=0}}')"
+      "Bash(awk '/^changed in both/{flag=1; next} /^  base/{if\\(flag\\){gsub\\(/^[ ]+/,\"\"\\); split\\($0, a, \" \"\\); print a[length\\(a\\)]; flag=0}} /^added in remote/{flag2=1; next} /^  their/{if\\(flag2\\){gsub\\(/^[ ]+/,\"\"\\); split\\($0, a, \" \"\\); print \"[ADDED] \" a[length\\(a\\)]; flag2=0}} /^removed in remote/{flag3=1; next} /^  base/{if\\(flag3\\){gsub\\(/^[ ]+/,\"\"\\); split\\($0, a, \" \"\\); print \"[REMOVED] \" a[length\\(a\\)]; flag3=0}}')",
+      "Bash(git mv *)",
+      "Bash(awk -F/ '{print $1\"/\"$2\"/\"$3}')",
+      "Read(//c/knowledge/flutter-kb/**)",
+      "PowerShell($flutter = \\(Get-Command flutter -ErrorAction SilentlyContinue\\).Source; if \\($flutter\\) { Write-Host \"flutter: $flutter\"; $flutterDir = Split-Path $flutter; $dartCandidates = @\\(\"$flutterDir\\\\dart.bat\", \"$flutterDir\\\\dart\", \"$flutterDir\\\\cache\\\\dart-sdk\\\\bin\\\\dart.exe\"\\); foreach \\($d in $dartCandidates\\) { if \\(Test-Path $d\\) { Write-Host \"dart found: $d\" } } } else { Write-Host \"flutter NOT in PATH\" })",
+      "PowerShell($paths = @\\(\"C:\\\\flutter\", \"C:\\\\src\\\\flutter\", \"C:\\\\tools\\\\flutter\", \"C:\\\\dev\\\\flutter\", \"$env:USERPROFILE\\\\flutter\", \"$env:USERPROFILE\\\\fvm\\\\default\", \"C:\\\\flutter-projects\\\\flutter\"\\); foreach \\($p in $paths\\) { $dart = \"$p\\\\bin\\\\dart.bat\"; if \\(Test-Path $dart\\) { Write-Host \"FOUND: $dart\" } }; Write-Host \"--- env FLUTTER_ROOT ---\"; $env:FLUTTER_ROOT; Write-Host \"--- pubspec dart sdk hint ---\")",
+      "Bash(git rm *)",
+      "Bash(git add *)",
+      "Bash(git checkout *)"
     ]
   }
 }

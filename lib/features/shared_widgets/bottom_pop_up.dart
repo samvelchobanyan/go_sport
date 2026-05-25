@@ -37,7 +37,7 @@ void showItemOptionsBottomSheet({
                     borderRadius: BorderRadius.circular(DSRadius.xs),
                     boxShadow: [
                       BoxShadow(
-                        color: DSColors.black.withValues(alpha: 0.7),
+                        color: DSColors.gray70,
                         blurRadius: 6,
                         spreadRadius:
                             -2, // prevents shadow from appearing on sides
@@ -62,7 +62,7 @@ void showItemOptionsBottomSheet({
                 ),
                 const SizedBox(width: 12),
                 Expanded(
-                  child: Column(  
+                  child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [

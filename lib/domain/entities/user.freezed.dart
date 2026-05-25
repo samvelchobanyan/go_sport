@@ -23,7 +23,9 @@ mixin _$User {
   String get email => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   String get surname => throw _privateConstructorUsedError;
+  String get provider => throw _privateConstructorUsedError;
   String? get phone => throw _privateConstructorUsedError;
+  String? get avatar => throw _privateConstructorUsedError;
 
   /// Create a copy of User
   /// with the given fields replaced by the non-null parameter values.
@@ -43,7 +45,9 @@ abstract class $UserCopyWith<$Res> {
     String email,
     String name,
     String surname,
+    String provider,
     String? phone,
+    String? avatar,
   });
 }
 
@@ -68,7 +72,9 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
     Object? email = null,
     Object? name = null,
     Object? surname = null,
+    Object? provider = null,
     Object? phone = freezed,
+    Object? avatar = freezed,
   }) {
     return _then(
       _value.copyWith(
@@ -96,9 +102,17 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
                 ? _value.surname
                 : surname // ignore: cast_nullable_to_non_nullable
                       as String,
+            provider: null == provider
+                ? _value.provider
+                : provider // ignore: cast_nullable_to_non_nullable
+                      as String,
             phone: freezed == phone
                 ? _value.phone
                 : phone // ignore: cast_nullable_to_non_nullable
+                      as String?,
+            avatar: freezed == avatar
+                ? _value.avatar
+                : avatar // ignore: cast_nullable_to_non_nullable
                       as String?,
           )
           as $Val,
@@ -121,7 +135,9 @@ abstract class _$$UserImplCopyWith<$Res> implements $UserCopyWith<$Res> {
     String email,
     String name,
     String surname,
+    String provider,
     String? phone,
+    String? avatar,
   });
 }
 
@@ -143,7 +159,9 @@ class __$$UserImplCopyWithImpl<$Res>
     Object? email = null,
     Object? name = null,
     Object? surname = null,
+    Object? provider = null,
     Object? phone = freezed,
+    Object? avatar = freezed,
   }) {
     return _then(
       _$UserImpl(
@@ -171,9 +189,17 @@ class __$$UserImplCopyWithImpl<$Res>
             ? _value.surname
             : surname // ignore: cast_nullable_to_non_nullable
                   as String,
+        provider: null == provider
+            ? _value.provider
+            : provider // ignore: cast_nullable_to_non_nullable
+                  as String,
         phone: freezed == phone
             ? _value.phone
             : phone // ignore: cast_nullable_to_non_nullable
+                  as String?,
+        avatar: freezed == avatar
+            ? _value.avatar
+            : avatar // ignore: cast_nullable_to_non_nullable
                   as String?,
       ),
     );
@@ -190,7 +216,9 @@ class _$UserImpl implements _User {
     required this.email,
     required this.name,
     required this.surname,
+    required this.provider,
     this.phone,
+    this.avatar,
   });
 
   @override
@@ -206,11 +234,15 @@ class _$UserImpl implements _User {
   @override
   final String surname;
   @override
+  final String provider;
+  @override
   final String? phone;
+  @override
+  final String? avatar;
 
   @override
   String toString() {
-    return 'User(id: $id, documentId: $documentId, username: $username, email: $email, name: $name, surname: $surname, phone: $phone)';
+    return 'User(id: $id, documentId: $documentId, username: $username, email: $email, name: $name, surname: $surname, provider: $provider, phone: $phone, avatar: $avatar)';
   }
 
   @override
@@ -226,7 +258,10 @@ class _$UserImpl implements _User {
             (identical(other.email, email) || other.email == email) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.surname, surname) || other.surname == surname) &&
-            (identical(other.phone, phone) || other.phone == phone));
+            (identical(other.provider, provider) ||
+                other.provider == provider) &&
+            (identical(other.phone, phone) || other.phone == phone) &&
+            (identical(other.avatar, avatar) || other.avatar == avatar));
   }
 
   @override
@@ -238,7 +273,9 @@ class _$UserImpl implements _User {
     email,
     name,
     surname,
+    provider,
     phone,
+    avatar,
   );
 
   /// Create a copy of User
@@ -258,7 +295,9 @@ abstract class _User implements User {
     required final String email,
     required final String name,
     required final String surname,
+    required final String provider,
     final String? phone,
+    final String? avatar,
   }) = _$UserImpl;
 
   @override
@@ -274,7 +313,11 @@ abstract class _User implements User {
   @override
   String get surname;
   @override
+  String get provider;
+  @override
   String? get phone;
+  @override
+  String? get avatar;
 
   /// Create a copy of User
   /// with the given fields replaced by the non-null parameter values.

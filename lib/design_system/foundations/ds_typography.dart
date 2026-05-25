@@ -43,7 +43,7 @@ class DSTypography {
     letterSpacing: 0,
     leadingDistribution: TextLeadingDistribution.even,
     color: DSColors.black,
-  );
+  ); 
 
   static const TextStyle subtitleLSemi = TextStyle(
     fontFamily: 'Montserrat',
