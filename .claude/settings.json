@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git fetch *)",
+      "Bash(git merge-tree *)",
+      "Bash(git --version)",
+      "Bash(grep -E \"^[a-z]+ in [a-z]+$|^  base   |^[^@< +-]\")",
+      "Bash(awk '/^changed in both/{flag=1; next} /^  base/{if\\(flag\\){gsub\\(/^[ ]+/,\"\"\\); split\\($0, a, \" \"\\); print a[length\\(a\\)]; flag=0}} /^added in remote/{flag2=1; next} /^  their/{if\\(flag2\\){gsub\\(/^[ ]+/,\"\"\\); split\\($0, a, \" \"\\); print \"[ADDED] \" a[length\\(a\\)]; flag2=0}} /^removed in remote/{flag3=1; next} /^  base/{if\\(flag3\\){gsub\\(/^[ ]+/,\"\"\\); split\\($0, a, \" \"\\); print \"[REMOVED] \" a[length\\(a\\)]; flag3=0}}')"
+    ]
+  }
+}
