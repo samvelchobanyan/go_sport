@@ -1,10 +1,6 @@
 {
   "permissions": {
     "allow": [
-      "Bash(grep -r \"Provider\\\\|NotifierProvider\" c:fluttergo_sportlibdomainstate --include=*.dart)",
-      "Bash(find c:fluttergo_sportlib -name *featured* -o -name *program*state* -o -name *episode*state*)",
-      "Bash(grep \"\\\\.dart$\")",
-      "Bash(grep -l \"card\\\\|Card\" \"c:\\\\flutter\\\\go_sport\\\\lib\\\\features\\\\shared_widgets\"/*.dart)",
       "Bash(xargs grep:*)",
       "Bash(dart run:*)",
       "Bash(flutter analyze:*)",
@@ -17,15 +13,17 @@
       "Bash(flutter pub *)",
       "PowerShell(flutter pub get 2>&1)",
       "Bash(git ls-tree *)",
-      "Bash(findstr /n \".\")",
-      "Bash(more +0)",
       "Bash(git config *)",
       "Bash(git check-attr *)",
-      "Bash(grep -E \"_controller\\\\.dart$\")",
-      "PowerShell(Get-ChildItem \"C:\\\\knowledge\\\\flutter-kb\\\\\" | Select-Object Name, @{Name='Type';Expression={if\\($_.PSIsContainer\\){'dir'}else{'file'}}})",
-      "PowerShell(dart analyze lib/features/user_profile/profile/presentation/profile/profile_screen.dart)",
       "Read(//c/src/flutter/bin/**)",
-      "Bash(git fetch *)"
+      "Bash(git fetch *)",
+      "PowerShell(node -e \"try { JSON.parse\\(require\\('fs'\\).readFileSync\\('c:/flutter/go_sport/.claude/settings.local.json','utf8'\\)\\); console.log\\('OK'\\); } catch\\(e\\){ console.log\\('ERROR:', e.message\\); }\")",
+      "Bash(find 'C:\\\\Users\\\\samve\\\\AppData\\\\Local\\\\Pub\\\\Cache\\\\hosted' -path '*google_sign_in_platform*authorization*' 2>&1 | head -5; echo '---'; find 'C:\\\\Users\\\\samve\\\\AppData\\\\Local\\\\Pub\\\\Cache\\\\hosted' -path '*google_sign_in-*' -name '*.dart' -not -path '*example*' 2>&1 | head -10)",
+      "Read(//c/Users/samve/AppData/Local/Pub/Cache/hosted/**)",
+      "Bash(cat >> *)"
+    ],
+    "additionalDirectories": [
+      "C:\\knowledge\\flutter-kb"
     ]
   }
 }

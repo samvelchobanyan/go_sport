@@ -6,6 +6,7 @@ class AppConfig {
   final Duration connectTimeout;
   final Duration receiveTimeout;
   final bool enableLogging;
+  final String googleWebClientId;
 
   const AppConfig._({
     required this.env,
@@ -13,6 +14,7 @@ class AppConfig {
     required this.connectTimeout,
     required this.receiveTimeout,
     required this.enableLogging,
+    required this.googleWebClientId,
   });
 
   static const dev = AppConfig._(
@@ -22,6 +24,8 @@ class AppConfig {
     connectTimeout: Duration(seconds: 30),
     receiveTimeout: Duration(seconds: 30),
     enableLogging: true,
+    googleWebClientId:
+        '442164065269-v8kmbe1colucrq818qvvcjlmqlj705ta.apps.googleusercontent.com',
   );
 
   static const prod = AppConfig._(
@@ -30,5 +34,6 @@ class AppConfig {
     connectTimeout: Duration(seconds: 15),
     receiveTimeout: Duration(seconds: 15),
     enableLogging: false,
+    googleWebClientId: '',
   );
 }

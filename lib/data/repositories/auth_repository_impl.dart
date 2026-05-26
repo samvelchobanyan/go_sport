@@ -28,6 +28,24 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
+  Future<({String jwt, User user})> loginWithGoogle({
+    required String accessToken,
+  }) async {
+    final response = await _apiClient.get(
+      '/api/auth/google/callback',
+      queryParameters: {'access_token': accessToken},
+      options: Options(extra: {'public': true}),
+    );
+
+    final jwt = response.data['jwt'] as String;
+    final user = UserDto.fromJson(
+      response.data['user'] as Map<String, dynamic>,
+    ).toDomain();
+
+    return (jwt: jwt, user: user);
+  }
+
+  @override
   Future<({String registrationToken})> registerEmail({
     required String email,
   }) async {

@@ -6,6 +6,10 @@ abstract interface class AuthRepository {
     required String password,
   });
 
+  Future<({String jwt, User user})> loginWithGoogle({
+    required String accessToken,
+  });
+
   Future<({String registrationToken})> registerEmail({required String email});
 
   Future<void> verifyEmail({required String token, required String otp});

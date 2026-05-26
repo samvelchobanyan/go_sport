@@ -10,9 +10,11 @@ import 'package:go_sport/core/notifications/notification_service.dart';
 import 'package:go_sport/core/notifications/reminder_storage.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'core/audio/app_audio_handler.dart';
+import 'core/auth/google_auth_service.dart';
 import 'core/auth/token_storage.dart';
 import 'core/config/app_config.dart';
 import 'core/di/audio_providers.dart';
+import 'core/di/auth_providers.dart';
 import 'core/navigation/app_router.dart';
 import 'core/network/interceptors/auth_interceptor.dart';
 import 'design_system/theme/ds_theme_data.dart';
@@ -39,6 +41,10 @@ Future<void> main() async {
 
   final apiClient = ApiClient(config, [AuthInterceptor(tokenStorage)]);
 
+  final googleAuthService = GoogleAuthService(
+    webClientId: config.googleWebClientId,
+  );
+
   final notificationService = NotificationService();
   await notificationService.init();
   await notificationService.requestPermissions();
@@ -64,6 +70,7 @@ Future<void> main() async {
           audioHandlerProvider.overrideWithValue(audioHandler),
           apiClientProvider.overrideWithValue(apiClient),
           tokenStorageProvider.overrideWithValue(tokenStorage),
+          googleAuthServiceProvider.overrideWithValue(googleAuthService),
           notificationServiceProvider.overrideWithValue(notificationService),
           reminderStorageProvider.overrideWithValue(reminderStorage),
         ],
