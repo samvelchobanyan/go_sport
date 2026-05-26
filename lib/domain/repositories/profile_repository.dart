@@ -7,6 +7,8 @@ abstract interface class ProfileRepository {
 
   Future<void> deleteUser({required String password});
 
+  Future<void> deleteUserWithGoogle({required String accessToken});
+
   Future<void> updateUser({String? name, String? surname, File? avatar});
 
   Future<void> deleteAvatar();

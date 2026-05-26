@@ -20,6 +20,7 @@ mixin _$UserState {
   User? get user => throw _privateConstructorUsedError;
   bool get isLoading => throw _privateConstructorUsedError;
   String? get error => throw _privateConstructorUsedError;
+  bool get isDeleted => throw _privateConstructorUsedError;
 
   /// Create a copy of UserState
   /// with the given fields replaced by the non-null parameter values.
@@ -33,7 +34,7 @@ abstract class $UserStateCopyWith<$Res> {
   factory $UserStateCopyWith(UserState value, $Res Function(UserState) then) =
       _$UserStateCopyWithImpl<$Res, UserState>;
   @useResult
-  $Res call({User? user, bool isLoading, String? error});
+  $Res call({User? user, bool isLoading, String? error, bool isDeleted});
 
   $UserCopyWith<$Res>? get user;
 }
@@ -56,6 +57,7 @@ class _$UserStateCopyWithImpl<$Res, $Val extends UserState>
     Object? user = freezed,
     Object? isLoading = null,
     Object? error = freezed,
+    Object? isDeleted = null,
   }) {
     return _then(
       _value.copyWith(
@@ -71,6 +73,10 @@ class _$UserStateCopyWithImpl<$Res, $Val extends UserState>
                 ? _value.error
                 : error // ignore: cast_nullable_to_non_nullable
                       as String?,
+            isDeleted: null == isDeleted
+                ? _value.isDeleted
+                : isDeleted // ignore: cast_nullable_to_non_nullable
+                      as bool,
           )
           as $Val,
     );
@@ -100,7 +106,7 @@ abstract class _$$UserStateImplCopyWith<$Res>
   ) = __$$UserStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({User? user, bool isLoading, String? error});
+  $Res call({User? user, bool isLoading, String? error, bool isDeleted});
 
   @override
   $UserCopyWith<$Res>? get user;
@@ -123,6 +129,7 @@ class __$$UserStateImplCopyWithImpl<$Res>
     Object? user = freezed,
     Object? isLoading = null,
     Object? error = freezed,
+    Object? isDeleted = null,
   }) {
     return _then(
       _$UserStateImpl(
@@ -138,6 +145,10 @@ class __$$UserStateImplCopyWithImpl<$Res>
             ? _value.error
             : error // ignore: cast_nullable_to_non_nullable
                   as String?,
+        isDeleted: null == isDeleted
+            ? _value.isDeleted
+            : isDeleted // ignore: cast_nullable_to_non_nullable
+                  as bool,
       ),
     );
   }
@@ -146,7 +157,12 @@ class __$$UserStateImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$UserStateImpl implements _UserState {
-  const _$UserStateImpl({this.user, this.isLoading = false, this.error});
+  const _$UserStateImpl({
+    this.user,
+    this.isLoading = false,
+    this.error,
+    this.isDeleted = false,
+  });
 
   @override
   final User? user;
@@ -155,10 +171,13 @@ class _$UserStateImpl implements _UserState {
   final bool isLoading;
   @override
   final String? error;
+  @override
+  @JsonKey()
+  final bool isDeleted;
 
   @override
   String toString() {
-    return 'UserState(user: $user, isLoading: $isLoading, error: $error)';
+    return 'UserState(user: $user, isLoading: $isLoading, error: $error, isDeleted: $isDeleted)';
   }
 
   @override
@@ -169,11 +188,14 @@ class _$UserStateImpl implements _UserState {
             (identical(other.user, user) || other.user == user) &&
             (identical(other.isLoading, isLoading) ||
                 other.isLoading == isLoading) &&
-            (identical(other.error, error) || other.error == error));
+            (identical(other.error, error) || other.error == error) &&
+            (identical(other.isDeleted, isDeleted) ||
+                other.isDeleted == isDeleted));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, user, isLoading, error);
+  int get hashCode =>
+      Object.hash(runtimeType, user, isLoading, error, isDeleted);
 
   /// Create a copy of UserState
   /// with the given fields replaced by the non-null parameter values.
@@ -189,6 +211,7 @@ abstract class _UserState implements UserState {
     final User? user,
     final bool isLoading,
     final String? error,
+    final bool isDeleted,
   }) = _$UserStateImpl;
 
   @override
@@ -197,6 +220,8 @@ abstract class _UserState implements UserState {
   bool get isLoading;
   @override
   String? get error;
+  @override
+  bool get isDeleted;
 
   /// Create a copy of UserState
   /// with the given fields replaced by the non-null parameter values.

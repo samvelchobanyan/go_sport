@@ -60,6 +60,14 @@ class ProfileRepositoryImpl implements ProfileRepository {
   }
 
   @override
+  Future<void> deleteUserWithGoogle({required String accessToken}) async {
+    await _apiClient.post(
+      '/api/users/me/delete',
+      data: {"access_token": accessToken},
+    );
+  }
+
+  @override
   Future<void> deleteAvatar() async {
     // Using DELETE method as requested
     await _apiClient.delete('/api/users/me/avatar');

@@ -3,6 +3,9 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../entities/user.dart';
 import '../repositories/profile_repository.dart';
+import '../../core/auth/auth_state.dart';
+import '../../core/auth/google_auth_service.dart';
+import '../../core/di/auth_providers.dart';
 import '../../core/di/repository_providers.dart';
 
 part 'user_state.freezed.dart';
@@ -13,15 +16,18 @@ class UserState with _$UserState {
     User? user,
     @Default(false) bool isLoading,
     String? error,
+    @Default(false) bool isDeleted,
   }) = _UserState;
 }
 
 class UserNotifier extends Notifier<UserState> {
   late final ProfileRepository _repository;
+  late final GoogleAuthService _googleAuthService;
 
   @override
   UserState build() {
     _repository = ref.watch(profileRepositoryProvider);
+    _googleAuthService = ref.watch(googleAuthServiceProvider);
     Future.microtask(() => getUser());
     return const UserState();
   }
@@ -51,7 +57,23 @@ class UserNotifier extends Notifier<UserState> {
     }
   }
 
-  // todo add deletegoogleuser with access_token instead of password
+  Future<void> deleteGoogleUser() async {
+    state = state.copyWith(isLoading: true, error: null, isDeleted: false);
+
+    try {
+      final accessToken = await _googleAuthService.signInAndGetAccessToken();
+      if (accessToken == null) {
+        state = state.copyWith(isLoading: false);
+        return;
+      }
+
+      await _repository.deleteUserWithGoogle(accessToken: accessToken);
+      await ref.read(authProvider.notifier).logout();
+      state = state.copyWith(isLoading: false, isDeleted: true);
+    } catch (e) {
+      state = state.copyWith(isLoading: false, error: 'Failed to delete user.');
+    }
+  }
 }
 
 final userStateProvider = NotifierProvider<UserNotifier, UserState>(

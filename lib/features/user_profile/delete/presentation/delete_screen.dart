@@ -24,11 +24,22 @@ class _DeleteScreenState extends ConsumerState<DeleteScreen> {
 
     final userState = ref.watch(userStateProvider);
 
+    ref.listen<UserState>(userStateProvider, (previous, next) {
+      if (next.isDeleted && !(previous?.isDeleted ?? false)) {
+        context.push(AppRoutes.deleteSuccess);
+      }
+      if (next.error != null && next.error != previous?.error) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(next.error!)));
+      }
+    });
+
     confirmDelete() {
       if (userState.user?.provider == 'local') {
         context.push(AppRoutes.confirmDeleteAccount);
       } else {
-        // For google users, redirect to google login for re-authentication before deletion
+        ref.read(userStateProvider.notifier).deleteGoogleUser();
       }
     }
 
@@ -108,7 +119,9 @@ class _DeleteScreenState extends ConsumerState<DeleteScreen> {
                             borderRadius: BorderRadius.circular(DSRadius.xl),
                           ),
                         ),
-                        onPressed: () => confirmDelete(),
+                        onPressed: userState.isLoading
+                            ? null
+                            : () => confirmDelete(),
                       ),
                     ),
                     SizedBox(height: 14),
