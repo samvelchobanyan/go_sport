@@ -17,6 +17,7 @@ void showAddToPlaylistBottomSheet({
   showModalBottomSheet(
     context: context,
     isScrollControlled: true,
+    useRootNavigator: true,
     useSafeArea: true,
     backgroundColor: DSColors.transparent,
     builder: (context) => _AddToPlaylistBottomSheet(track: track),

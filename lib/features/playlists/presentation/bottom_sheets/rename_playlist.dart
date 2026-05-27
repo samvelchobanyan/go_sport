@@ -15,6 +15,7 @@ void showRenamePlaylistBottomSheet({
   showModalBottomSheet(
     context: context,
     isScrollControlled: true,
+    useRootNavigator: true,
     backgroundColor: DSColors.transparent,
     builder: (context) => Padding(
       padding: EdgeInsets.only(

@@ -12,6 +12,7 @@ void showDeleteConfirmBottomSheet({
   showModalBottomSheet(
     context: context,
     isScrollControlled: true,
+    useRootNavigator: true,
     backgroundColor: DSColors.transparent,
     builder: (context) => BottomSheetContainer(
       child: Column(

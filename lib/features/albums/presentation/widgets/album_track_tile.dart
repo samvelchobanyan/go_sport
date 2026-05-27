@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/domain/entities/track.dart';
-import 'package:go_sport/features/shared_widgets/bottom_pop_up.dart';
+import 'package:go_sport/features/playlists/presentation/bottom_sheets/add_to_playlist_bottom_sheet.dart';
+import 'package:go_sport/features/shared_widgets/bottom_pop_ups/track_options.dart';
 import 'package:go_sport/features/shared_widgets/track_number_badge.dart';
 import 'package:go_sport/shared/widgets/equalizer_indicator.dart';
 
@@ -55,11 +56,15 @@ class AlbumTrackTile extends StatelessWidget {
             GestureDetector(
               onTap: () {
                 onMenuTap();
-                showItemOptionsBottomSheet(
+                showTrackOptionsBottomSheet(
                   context: context,
                   imageUrl: track.imageUrl ?? '',
                   title: track.title,
                   subtitle: track.artistName,
+                  onAddToPlaylist: () => showAddToPlaylistBottomSheet(
+                    context: context,
+                    track: track,
+                  ),
                 );
               },
               behavior: HitTestBehavior.opaque,
