@@ -42,11 +42,7 @@ class MyCategoriesHeader extends StatelessWidget {
                   ),
                   const Spacer(),
 
-                  SearchButton(
-                    onTap: () {
-                      // TODO: открыть поиск
-                    },
-                  ),
+                  const SearchButton(),
                 ],
               ),
             ),

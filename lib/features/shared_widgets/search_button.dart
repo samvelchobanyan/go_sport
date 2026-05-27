@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/features/search/presentation/search/search_screen.dart';
 
 class SearchButton extends StatelessWidget {
   final VoidCallback? onTap;
@@ -41,6 +42,9 @@ class SearchButton extends StatelessWidget {
       );
     }
 
-    return IconButton(icon: iconWidget, onPressed: onTap);
+    return IconButton(
+      icon: iconWidget,
+      onPressed: onTap ?? () => showSearchBottomSheet(context),
+    );
   }
 }

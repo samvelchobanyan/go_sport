@@ -103,12 +103,7 @@ class _ArtistScreenState extends ConsumerState<ArtistScreen> {
                 ),
                 onPressed: () {},
               ),
-              SearchButton(
-                decoration: true,
-                onTap: () {
-                  // TODO: открыть поиск
-                },
-              ),
+              const SearchButton(decoration: true),
             ],
             flexibleSpace: FlexibleSpaceBar(
               background: ArtistHero(

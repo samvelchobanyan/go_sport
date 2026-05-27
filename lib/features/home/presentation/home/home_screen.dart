@@ -196,11 +196,7 @@ class HomeScreen extends ConsumerWidget {
             title: SvgPicture.asset('assets/icons/app_logo.svg', height: 40),
             centerTitle: true,
             actions: [
-              SearchButton(
-                onTap: () {
-                  // TODO: открыть поиск
-                },
-              ),
+              const SearchButton(),
             ],
           ),
 

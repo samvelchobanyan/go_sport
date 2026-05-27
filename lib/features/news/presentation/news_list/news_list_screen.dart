@@ -28,11 +28,7 @@ class NewsListScreen extends ConsumerWidget {
         title: Text('News', style: context.h2),
         centerTitle: true,
         actions: [
-          SearchButton(
-            onTap: () {
-              // TODO: открыть поиск
-            },
-          ),
+          const SearchButton(),
         ],
       ),
       body: _buildBody(context, ref, newsState),

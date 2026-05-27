@@ -53,9 +53,7 @@ class _HomeAppBarSliver extends StatelessWidget {
       ),
       centerTitle: true,
       actions: [
-        SearchButton(
-          onTap: () {},
-        ),
+        const SearchButton(),
       ],
     );
   }
