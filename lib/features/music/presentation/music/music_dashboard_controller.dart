@@ -6,6 +6,7 @@ import 'package:go_sport/domain/entities/artist.dart';
 import 'package:go_sport/domain/repositories/albums_repository.dart';
 import 'package:go_sport/domain/repositories/artists_repository.dart';
 import 'package:go_sport/domain/repositories/music_repository.dart';
+import 'package:go_sport/domain/state/like_registry.dart';
 
 part 'music_dashboard_controller.freezed.dart';
 
@@ -36,6 +37,26 @@ class MusicDashboardController
     _repository = ref.watch(musicRepositoryProvider);
     _albumRepository = ref.watch(albumsRepositoryProvider);
     _artistsRepository = ref.watch(artistsRepositoryProvider);
+
+    ref.listen(
+      likeRegistryProvider.select((s) => s.albumLikes),
+      (_, next) {
+        final updated = state.featuredAlbums.withLikes(next);
+        if (!identical(updated, state.featuredAlbums)) {
+          state = state.copyWith(featuredAlbums: updated);
+        }
+      },
+    );
+    ref.listen(
+      likeRegistryProvider.select((s) => s.artistLikes),
+      (_, next) {
+        final updated = state.featuredArtists.withLikes(next);
+        if (!identical(updated, state.featuredArtists)) {
+          state = state.copyWith(featuredArtists: updated);
+        }
+      },
+    );
+
     Future.microtask(() => load());
     return const MusicDashboardState();
   }

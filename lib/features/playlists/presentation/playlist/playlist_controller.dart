@@ -5,6 +5,7 @@ import '../../../../core/di/repository_providers.dart';
 import '../../../../domain/entities/playlist.dart';
 import '../../../../domain/entities/track.dart';
 import '../../../../domain/state/featured_playlists_state.dart';
+import '../../../../domain/state/like_registry.dart';
 
 part 'playlist_controller.freezed.dart';
 
@@ -25,6 +26,31 @@ sealed class PlaylistDetailsState with _$PlaylistDetailsState {
 class PlaylistController extends AutoDisposeFamilyNotifier<PlaylistDetailsState, String> {
   @override
   PlaylistDetailsState build(String playlistId) {
+    ref.listen(
+      likeRegistryProvider.select((s) => s.trackLikes),
+      (_, next) {
+        final currentData = state.mapOrNull(data: (d) => d);
+        if (currentData == null) return;
+        final updated = currentData.tracks.withLikes(next);
+        if (!identical(updated, currentData.tracks)) {
+          state = currentData.copyWith(tracks: updated);
+        }
+      },
+    );
+    ref.listen(
+      likeRegistryProvider.select((s) => s.playlistLikes),
+      (_, next) {
+        final currentData = state.mapOrNull(data: (d) => d);
+        if (currentData == null) return;
+        final p = currentData.playlist;
+        final liked = next.containsKey(p.id);
+        final likeId = next[p.id];
+        if (p.isLiked == liked && p.likeId == likeId) return;
+        state = currentData.copyWith(
+          playlist: p.copyWith(isLiked: liked, likeId: likeId),
+        );
+      },
+    );
     return const PlaylistDetailsState.loading();
   }
 

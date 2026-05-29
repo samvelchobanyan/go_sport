@@ -4,6 +4,7 @@ import 'package:go_sport/core/di/repository_providers.dart';
 import 'package:go_sport/domain/repositories/programs_repository.dart';
 
 import '../../../../domain/entities/program.dart';
+import '../../../../domain/state/like_registry.dart';
 
 part 'my_programs_controller.freezed.dart';
 
@@ -25,6 +26,16 @@ class MyProgramsNotifier extends Notifier<MyProgramsState> {
   @override
   MyProgramsState build() {
     _repository = ref.watch(programsRepositoryProvider);
+    ref.listen(
+      likeRegistryProvider.select((s) => s.programLikes),
+      (_, next) {
+        if (state.programs.isEmpty) return;
+        final kept = state.programs.where((p) => next.containsKey(p.id)).toList();
+        if (kept.length != state.programs.length) {
+          state = state.copyWith(programs: kept);
+        }
+      },
+    );
     Future.microtask(() => loadFavorites());
     return const MyProgramsState();
   }

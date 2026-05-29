@@ -9,6 +9,7 @@ import 'package:just_audio/just_audio.dart';
 import '../entities/track.dart';
 import '../../core/audio/app_audio_handler.dart';
 import '../../core/di/audio_providers.dart';
+import 'like_registry.dart';
 
 part 'player_state.freezed.dart';
 
@@ -212,6 +213,22 @@ class PlayerNotifier extends Notifier<PlayerState> {
   PlayerState build() {
     _audioHandler = ref.watch(audioHandlerProvider);
     _listenToAudioHandler();
+
+    ref.listen(likeRegistryProvider, (_, next) {
+      var changed = false;
+      final updated = state.tracks.map((t) {
+        final isEpisode = t.releaseDate != null;
+        final likes = isEpisode ? next.episodeLikes : next.trackLikes;
+        final liked = likes.containsKey(t.id);
+        final likeId = likes[t.id];
+        if (t.isLiked == liked && t.likeId == likeId) return t;
+        changed = true;
+        return t.copyWith(isLiked: liked, likeId: likeId);
+      }).toList();
+      if (changed) {
+        state = state.copyWith(tracks: updated);
+      }
+    });
 
     ref.onDispose(() {
       for (final sub in _subscriptions) {

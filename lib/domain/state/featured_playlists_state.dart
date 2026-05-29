@@ -4,6 +4,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import '../entities/playlist.dart';
 import '../repositories/featured_playlist_repository.dart';
 import '../../core/di/repository_providers.dart';
+import 'like_registry.dart';
 
 part 'featured_playlists_state.freezed.dart';
 
@@ -28,6 +29,27 @@ class FeaturedPlaylistsNotifier extends Notifier<FeaturedPlaylistsState> {
   @override
   FeaturedPlaylistsState build() {
     _repository = ref.watch(featuredPlaylistRepositoryProvider);
+    ref.listen(
+      likeRegistryProvider.select((s) => s.playlistLikes),
+      (_, next) {
+        var changed = false;
+        final updated = <String, Playlist>{};
+        for (final entry in state.playlists.entries) {
+          final p = entry.value;
+          final liked = next.containsKey(p.id);
+          final likeId = next[p.id];
+          if (p.isLiked == liked && p.likeId == likeId) {
+            updated[entry.key] = p;
+          } else {
+            changed = true;
+            updated[entry.key] = p.copyWith(isLiked: liked, likeId: likeId);
+          }
+        }
+        if (changed) {
+          state = state.copyWith(playlists: updated);
+        }
+      },
+    );
     Future.microtask(() => loadPlaylists());
     return const FeaturedPlaylistsState();
   }

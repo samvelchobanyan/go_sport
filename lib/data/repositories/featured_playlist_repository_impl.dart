@@ -4,11 +4,13 @@ import 'package:go_sport/data/dto/track_dto.dart';
 import 'package:go_sport/domain/entities/playlist.dart';
 import 'package:go_sport/domain/entities/track.dart';
 import 'package:go_sport/domain/repositories/featured_playlist_repository.dart';
+import 'package:go_sport/domain/state/like_registry.dart';
 
 class FeaturedPlaylistRepositoryImpl implements FeaturedPlaylistRepository {
   final ApiClient _apiClient;
+  final LikeRegistry _registry;
 
-  FeaturedPlaylistRepositoryImpl(this._apiClient);
+  FeaturedPlaylistRepositoryImpl(this._apiClient, this._registry);
 
   @override
   Future<List<Playlist>> getFeaturedPlaylists() async {
@@ -21,9 +23,11 @@ class FeaturedPlaylistRepositoryImpl implements FeaturedPlaylistRepository {
     );
 
     final data = response.data['data'] as List<dynamic>;
-    return data
+    final playlists = data
         .map((e) => PlaylistDto.fromJson(e as Map<String, dynamic>).toDomain())
         .toList();
+    _registry.syncPlaylistsLikes(playlists);
+    return playlists;
   }
 
   @override
@@ -38,10 +42,12 @@ class FeaturedPlaylistRepositoryImpl implements FeaturedPlaylistRepository {
     );
 
     final data = response.data['data'] as Map<String, dynamic>;
-    final tracks = data['Tracks'] as List<dynamic>? ?? [];
-    return tracks
+    final tracksData = data['Tracks'] as List<dynamic>? ?? [];
+    final tracks = tracksData
         .map((e) => TrackDto.fromJson(e as Map<String, dynamic>).toDomain())
         .toList();
+    _registry.syncTracksLikes(tracks);
+    return tracks;
   }
 
   @override
@@ -54,13 +60,15 @@ class FeaturedPlaylistRepositoryImpl implements FeaturedPlaylistRepository {
     );
 
     final data = response.data['data'] as List<dynamic>;
-    return data.map((e) {
+    final playlists = data.map((e) {
       final entry = e as Map<String, dynamic>;
       final playlistJson = entry['Playlist'] as Map<String, dynamic>;
       playlistJson['Like'] = {'documentId': entry['documentId']};
       playlistJson['cnt'] = entry['cnt'];
       return PlaylistDto.fromJson(playlistJson).toDomain();
     }).toList();
+    _registry.syncPlaylistsLikes(playlists);
+    return playlists;
   }
 
   @override
@@ -86,6 +94,7 @@ class FeaturedPlaylistRepositoryImpl implements FeaturedPlaylistRepository {
       trackJson['Like'] = {'documentId': entry['documentId']};
       return TrackDto.fromJson(trackJson).toDomain();
     }).toList();
+    _registry.syncTracksLikes(items);
 
     final pageCount =
         response.data['meta']['pagination']['pageCount'] as int;
@@ -96,6 +105,7 @@ class FeaturedPlaylistRepositoryImpl implements FeaturedPlaylistRepository {
   Future<String?> toggleLike(String playlistId, [String? likeId]) async {
     if (likeId != null) {
       await _apiClient.delete('/api/user-playlists/$likeId');
+      _registry.markPlaylistUnliked(playlistId);
       return null;
     }
 
@@ -105,13 +115,16 @@ class FeaturedPlaylistRepositoryImpl implements FeaturedPlaylistRepository {
         'data': {'Playlist': playlistId},
       },
     );
-    return response.data['data']['documentId'] as String;
+    final newLikeId = response.data['data']['documentId'] as String;
+    _registry.markPlaylistLiked(playlistId, newLikeId);
+    return newLikeId;
   }
 
   @override
   Future<String?> toggleLikeTrack(String trackId, [String? likeId]) async {
     if (likeId != null) {
       await _apiClient.delete('/api/user-tracks/$likeId');
+      _registry.markTrackUnliked(trackId);
       return null;
     }
 
@@ -121,6 +134,8 @@ class FeaturedPlaylistRepositoryImpl implements FeaturedPlaylistRepository {
         'data': {'Track': trackId},
       },
     );
-    return response.data['data']['documentId'] as String;
+    final newLikeId = response.data['data']['documentId'] as String;
+    _registry.markTrackLiked(trackId, newLikeId);
+    return newLikeId;
   }
 }

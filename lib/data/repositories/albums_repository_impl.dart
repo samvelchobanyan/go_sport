@@ -4,12 +4,14 @@ import 'package:go_sport/data/dto/track_dto.dart';
 import 'package:go_sport/domain/entities/album.dart';
 import 'package:go_sport/domain/entities/track.dart';
 import 'package:go_sport/domain/repositories/albums_repository.dart';
+import 'package:go_sport/domain/state/like_registry.dart';
 
 class AlbumsRepositoryImpl implements AlbumsRepository {
   final ApiClient _apiClient;
+  final LikeRegistry _registry;
 
-  AlbumsRepositoryImpl(this._apiClient);
-      
+  AlbumsRepositoryImpl(this._apiClient, this._registry);
+
   @override
   Future<List<Album>> getFeaturedAlbums() async {
     final response = await _apiClient.get(
@@ -21,9 +23,11 @@ class AlbumsRepositoryImpl implements AlbumsRepository {
     );
 
     final data = response.data['data'] as List<dynamic>;
-    return data
+    final albums = data
         .map((e) => AlbumDto.fromJson(e as Map<String, dynamic>).toDomain())
         .toList();
+    _registry.syncAlbumsLikes(albums);
+    return albums;
   }
 
   @override
@@ -38,9 +42,11 @@ class AlbumsRepositoryImpl implements AlbumsRepository {
     final albumData = response.data['data'] as Map<String, dynamic>;
     final tracksData = albumData['Tracks'] as List<dynamic>? ?? [];
 
-    return tracksData
+    final tracks = tracksData
         .map((e) => TrackDto.fromJson(e as Map<String, dynamic>).toDomain())
         .toList();
+    _registry.syncTracksLikes(tracks);
+    return tracks;
   }
 
   @override
@@ -67,6 +73,7 @@ class AlbumsRepositoryImpl implements AlbumsRepository {
 
       return AlbumDto.fromJson(albumJson).toDomain();
     }).toList();
+    _registry.syncAlbumsLikes(albumList);
 
     final pageCount =
         response.data['meta']['pagination']['pageCount'] as int;
@@ -77,6 +84,7 @@ class AlbumsRepositoryImpl implements AlbumsRepository {
   Future<String?> toggleLike(String albumId, [String? likeId]) async {
     if (likeId != null) {
       await _apiClient.delete('/api/user-albums/$likeId');
+      _registry.markAlbumUnliked(albumId);
       return null;
     }
 
@@ -86,6 +94,8 @@ class AlbumsRepositoryImpl implements AlbumsRepository {
         'data': {'Album': albumId},
       },
     );
-    return response.data['data']['documentId'] as String;
+    final newLikeId = response.data['data']['documentId'] as String;
+    _registry.markAlbumLiked(albumId, newLikeId);
+    return newLikeId;
   }
 }

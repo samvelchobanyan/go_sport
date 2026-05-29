@@ -30,6 +30,7 @@ import '../../domain/repositories/featured_playlist_repository.dart';
 import '../../domain/repositories/search_repository.dart';
 import '../../domain/repositories/story_repository.dart';
 import '../../domain/repositories/track_repository.dart';
+import '../../domain/state/like_registry.dart';
 import '../di/network_providers.dart';
 
 final storyRepositoryProvider = Provider<StoryRepository>((ref) {
@@ -41,7 +42,10 @@ final newsRepositoryProvider = Provider<NewsRepository>((ref) {
 });
 
 final featuredPlaylistRepositoryProvider = Provider<FeaturedPlaylistRepository>((ref) {
-  return FeaturedPlaylistRepositoryImpl(ref.read(apiClientProvider));
+  return FeaturedPlaylistRepositoryImpl(
+    ref.read(apiClientProvider),
+    ref.read(likeRegistryProvider.notifier),
+  );
 });
 
 final customPlaylistRepositoryProvider = Provider<CustomPlaylistRepository>((ref) {
@@ -53,11 +57,17 @@ final tracksRepositoryProvider = Provider<TrackRepository>((ref) {
 });
 
 final episodesRepositoryProvider = Provider<EpisodesRepository>((ref) {
-  return EpisodesRepositoryImpl(ref.read(apiClientProvider));
+  return EpisodesRepositoryImpl(
+    ref.read(apiClientProvider),
+    ref.read(likeRegistryProvider.notifier),
+  );
 });
 
 final programsRepositoryProvider = Provider<ProgramsRepository>((ref) {
-  return ProgramsRepositoryImpl(ref.read(apiClientProvider));
+  return ProgramsRepositoryImpl(
+    ref.read(apiClientProvider),
+    ref.read(likeRegistryProvider.notifier),
+  );
 });
 
 final musicRepositoryProvider = Provider<MusicRepository>((ref) {
@@ -65,11 +75,17 @@ final musicRepositoryProvider = Provider<MusicRepository>((ref) {
 });
 
 final artistsRepositoryProvider = Provider<ArtistsRepository>((ref) {
-  return ArtistsRepositoryImpl(ref.read(apiClientProvider));
+  return ArtistsRepositoryImpl(
+    ref.read(apiClientProvider),
+    ref.read(likeRegistryProvider.notifier),
+  );
 });
 
 final albumsRepositoryProvider = Provider<AlbumsRepository>((ref) {
-  return AlbumsRepositoryImpl(ref.read(apiClientProvider));
+  return AlbumsRepositoryImpl(
+    ref.read(apiClientProvider),
+    ref.read(likeRegistryProvider.notifier),
+  );
 });
 
 final scheduleRepositoryProvider = Provider<ScheduleRepository>((ref) {

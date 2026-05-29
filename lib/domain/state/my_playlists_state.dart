@@ -4,6 +4,7 @@ import 'package:go_sport/core/di/repository_providers.dart';
 import 'package:go_sport/domain/entities/playlist.dart';
 import 'package:go_sport/domain/repositories/custom_playlist_repository.dart';
 import 'package:go_sport/domain/repositories/featured_playlist_repository.dart';
+import 'package:go_sport/domain/state/like_registry.dart';
 
 part 'my_playlists_state.freezed.dart';
 
@@ -24,6 +25,19 @@ class MyPlaylistsStateNotifier extends Notifier<MyPlaylistsState> {
   MyPlaylistsState build() {
     _featuredRepo = ref.watch(featuredPlaylistRepositoryProvider);
     _customRepo = ref.watch(customPlaylistRepositoryProvider);
+    ref.listen(
+      likeRegistryProvider.select((s) => s.playlistLikes),
+      (_, next) {
+        if (state.playlists.isEmpty) return;
+        final kept = state.playlists.where((p) {
+          if (p.type == PlaylistType.custom) return true;
+          return next.containsKey(p.id);
+        }).toList();
+        if (kept.length != state.playlists.length) {
+          state = state.copyWith(playlists: kept);
+        }
+      },
+    );
     Future.microtask(() => loadFavorites());
     return const MyPlaylistsState();
   }

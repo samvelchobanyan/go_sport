@@ -3,6 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:go_sport/core/di/repository_providers.dart';
 import 'package:go_sport/domain/entities/track.dart';
 import 'package:go_sport/domain/repositories/episodes_repository.dart';
+import 'package:go_sport/domain/state/like_registry.dart';
 
 part 'new_episodes_controller.freezed.dart';
 
@@ -24,6 +25,16 @@ class NewEpisodesNotifier extends Notifier<NewEpisodesState> {
   @override
   NewEpisodesState build() {
     _repository = ref.watch(episodesRepositoryProvider);
+    ref.listen(
+      likeRegistryProvider.select((s) => s.episodeLikes),
+      (_, next) {
+        if (state.episodes.isEmpty) return;
+        final kept = state.episodes.where((e) => next.containsKey(e.id)).toList();
+        if (kept.length != state.episodes.length) {
+          state = state.copyWith(episodes: kept);
+        }
+      },
+    );
     Future.microtask(() => loadEpisodes());
     return const NewEpisodesState();
   }

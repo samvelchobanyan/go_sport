@@ -3,6 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:go_sport/core/di/repository_providers.dart';
 import 'package:go_sport/domain/entities/artist.dart';
 import 'package:go_sport/domain/repositories/artists_repository.dart';
+import 'package:go_sport/domain/state/like_registry.dart';
 
 part 'my_artists_controller.freezed.dart';
 
@@ -34,6 +35,16 @@ class MyArtistsNotifier extends Notifier<MyArtistsState> {
   @override
   MyArtistsState build() {
     _repository = ref.watch(artistsRepositoryProvider);
+    ref.listen(
+      likeRegistryProvider.select((s) => s.artistLikes),
+      (_, next) {
+        if (state.artists.isEmpty) return;
+        final kept = state.artists.where((a) => next.containsKey(a.id)).toList();
+        if (kept.length != state.artists.length) {
+          state = state.copyWith(artists: kept);
+        }
+      },
+    );
     Future.microtask(loadFavorites);
     return const MyArtistsState();
   }

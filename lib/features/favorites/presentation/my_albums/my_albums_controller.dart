@@ -3,6 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:go_sport/core/di/repository_providers.dart';
 import 'package:go_sport/domain/entities/album.dart';
 import 'package:go_sport/domain/repositories/albums_repository.dart';
+import 'package:go_sport/domain/state/like_registry.dart';
 
 part 'my_albums_controller.freezed.dart';
 
@@ -34,6 +35,16 @@ class MyAlbumsNotifier extends Notifier<MyAlbumsState> {
   @override
   MyAlbumsState build() {
     _repository = ref.watch(albumsRepositoryProvider);
+    ref.listen(
+      likeRegistryProvider.select((s) => s.albumLikes),
+      (_, next) {
+        if (state.albums.isEmpty) return;
+        final kept = state.albums.where((a) => next.containsKey(a.id)).toList();
+        if (kept.length != state.albums.length) {
+          state = state.copyWith(albums: kept);
+        }
+      },
+    );
     Future.microtask(() => loadFavorites());
     return const MyAlbumsState();
   }

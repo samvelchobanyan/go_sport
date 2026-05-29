@@ -4,6 +4,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import '../../../../domain/entities/track.dart';
 import '../../../../domain/repositories/featured_playlist_repository.dart';
 import '../../../../core/di/repository_providers.dart';
+import '../../../../domain/state/like_registry.dart';
 
 part 'my_favorites_controller.freezed.dart';
 
@@ -25,6 +26,16 @@ class MyFavoritesNotifier extends Notifier<MyFavoritesState> {
   @override
   MyFavoritesState build() {
     _repository = ref.watch(featuredPlaylistRepositoryProvider);
+    ref.listen(
+      likeRegistryProvider.select((s) => s.trackLikes),
+      (_, next) {
+        if (state.favorites.isEmpty) return;
+        final kept = state.favorites.where((t) => next.containsKey(t.id)).toList();
+        if (kept.length != state.favorites.length) {
+          state = state.copyWith(favorites: kept);
+        }
+      },
+    );
     Future.microtask(() => loadFavorites());
     return const MyFavoritesState();
   }

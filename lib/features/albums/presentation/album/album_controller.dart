@@ -3,6 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../../../core/di/repository_providers.dart';
 import '../../../../domain/entities/track.dart';
+import '../../../../domain/state/like_registry.dart';
 
 part 'album_controller.freezed.dart';
 
@@ -22,6 +23,17 @@ sealed class AlbumTracksState with _$AlbumTracksState {
 class AlbumController extends AutoDisposeFamilyNotifier<AlbumTracksState, String> {
   @override
   AlbumTracksState build(String albumId) {
+    ref.listen(
+      likeRegistryProvider.select((s) => s.trackLikes),
+      (_, next) {
+        final currentTracks = state.mapOrNull(data: (d) => d.tracks);
+        if (currentTracks == null) return;
+        final updated = currentTracks.withLikes(next);
+        if (!identical(updated, currentTracks)) {
+          state = AlbumTracksState.data(tracks: updated);
+        }
+      },
+    );
     Future.microtask(() => loadTracks());
     return const AlbumTracksState.loading();
   }

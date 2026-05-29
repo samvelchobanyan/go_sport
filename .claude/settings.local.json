@@ -20,7 +20,9 @@
       "PowerShell(node -e \"try { JSON.parse\\(require\\('fs'\\).readFileSync\\('c:/flutter/go_sport/.claude/settings.local.json','utf8'\\)\\); console.log\\('OK'\\); } catch\\(e\\){ console.log\\('ERROR:', e.message\\); }\")",
       "Bash(find 'C:\\\\Users\\\\samve\\\\AppData\\\\Local\\\\Pub\\\\Cache\\\\hosted' -path '*google_sign_in_platform*authorization*' 2>&1 | head -5; echo '---'; find 'C:\\\\Users\\\\samve\\\\AppData\\\\Local\\\\Pub\\\\Cache\\\\hosted' -path '*google_sign_in-*' -name '*.dart' -not -path '*example*' 2>&1 | head -10)",
       "Read(//c/Users/samve/AppData/Local/Pub/Cache/hosted/**)",
-      "Bash(cat >> *)"
+      "Bash(cat >> *)",
+      "Bash(findstr /s \"onTap:\\\\s*\\\\\\(\\\\\\)\\\\s*{}\" lib/features --include=\"*.dart\")",
+      "Bash(powershell -Command \"Get-Content C:\\\\knowledge\\\\flutter-kb\\\\log.md | Select-Object -Last 30\")"
     ],
     "additionalDirectories": [
       "C:\\knowledge\\flutter-kb"

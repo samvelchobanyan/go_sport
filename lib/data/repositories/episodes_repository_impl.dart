@@ -2,11 +2,13 @@ import 'package:go_sport/core/network/api_client.dart';
 import 'package:go_sport/data/dto/episode_dto.dart';
 import 'package:go_sport/domain/entities/track.dart';
 import 'package:go_sport/domain/repositories/episodes_repository.dart';
+import 'package:go_sport/domain/state/like_registry.dart';
 
 class EpisodesRepositoryImpl implements EpisodesRepository {
   final ApiClient _apiClient;
+  final LikeRegistry _registry;
 
-  EpisodesRepositoryImpl(this._apiClient);
+  EpisodesRepositoryImpl(this._apiClient, this._registry);
 
   @override
   Future<List<Track>> getFeaturedEpisodes() async {
@@ -20,9 +22,11 @@ class EpisodesRepositoryImpl implements EpisodesRepository {
     );
 
     final data = response.data['data'] as List<dynamic>;
-    return data
+    final episodes = data
         .map((e) => EpisodeDto.fromJson(e as Map<String, dynamic>).toDomain())
         .toList();
+    _registry.syncEpisodesLikes(episodes);
+    return episodes;
   }
 
   @override
@@ -47,6 +51,7 @@ class EpisodesRepositoryImpl implements EpisodesRepository {
       episodeJson['Like'] = {'documentId': entry['documentId']};
       return EpisodeDto.fromJson(episodeJson).toDomain();
     }).toList();
+    _registry.syncEpisodesLikes(items);
 
     final pageCount =
         response.data['meta']['pagination']['pageCount'] as int;
@@ -57,6 +62,7 @@ class EpisodesRepositoryImpl implements EpisodesRepository {
   Future<String?> toggleLikeEpisode(String episodeId, [String? likeId]) async {
     if (likeId != null) {
       await _apiClient.delete('/api/user-episodes/$likeId');
+      _registry.markEpisodeUnliked(episodeId);
       return null;
     }
 
@@ -66,6 +72,8 @@ class EpisodesRepositoryImpl implements EpisodesRepository {
         'data': {'Episode': episodeId},
       },
     );
-    return response.data['data']['documentId'] as String;
+    final newLikeId = response.data['data']['documentId'] as String;
+    _registry.markEpisodeLiked(episodeId, newLikeId);
+    return newLikeId;
   }
 }
