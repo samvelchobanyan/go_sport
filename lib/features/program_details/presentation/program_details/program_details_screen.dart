@@ -146,7 +146,7 @@ class _ProgramDetailsScreenState extends ConsumerState<ProgramDetailsScreen> {
                   ),
                   onPressed: () {},
                 ),
-                SearchButton(decoration: true, onTap: () {}),
+                const SearchButton(decoration: true),
               ],
               flexibleSpace: FlexibleSpaceBar(
                 background: ProgramHero(

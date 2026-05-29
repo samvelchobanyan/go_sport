@@ -132,12 +132,7 @@ class _AlbumScreenState extends ConsumerState<AlbumScreen> {
                 ),
                 onPressed: () {},
               ),
-              SearchButton(
-                decoration: true,
-                onTap: () {
-                  // TODO: открыть поиск
-                },
-              ),
+              const SearchButton(decoration: true),
             ],
             flexibleSpace: FlexibleSpaceBar(
               background: AlbumHero(

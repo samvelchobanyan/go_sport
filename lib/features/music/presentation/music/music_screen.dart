@@ -146,11 +146,7 @@ class _MusicScreenState extends ConsumerState<MusicScreen> {
                   title: Text('Music', style: context.h2),
                   centerTitle: true,
                   actions: [
-                    SearchButton(
-                      onTap: () {
-                        // TODO: open music search
-                      },
-                    ),
+                    const SearchButton(),
                   ],
                 ),
 
