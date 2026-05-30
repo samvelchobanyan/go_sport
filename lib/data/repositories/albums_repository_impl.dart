@@ -23,11 +23,9 @@ class AlbumsRepositoryImpl implements AlbumsRepository {
     );
 
     final data = response.data['data'] as List<dynamic>;
-    final albums = data
+    return data
         .map((e) => AlbumDto.fromJson(e as Map<String, dynamic>).toDomain())
         .toList();
-    _registry.syncAlbumsLikes(albums);
-    return albums;
   }
 
   @override
@@ -42,11 +40,9 @@ class AlbumsRepositoryImpl implements AlbumsRepository {
     final albumData = response.data['data'] as Map<String, dynamic>;
     final tracksData = albumData['Tracks'] as List<dynamic>? ?? [];
 
-    final tracks = tracksData
+    return tracksData
         .map((e) => TrackDto.fromJson(e as Map<String, dynamic>).toDomain())
         .toList();
-    _registry.syncTracksLikes(tracks);
-    return tracks;
   }
 
   @override
@@ -84,7 +80,6 @@ class AlbumsRepositoryImpl implements AlbumsRepository {
   Future<String?> toggleLike(String albumId, [String? likeId]) async {
     if (likeId != null) {
       await _apiClient.delete('/api/user-albums/$likeId');
-      _registry.markAlbumUnliked(albumId);
       return null;
     }
 
@@ -94,8 +89,6 @@ class AlbumsRepositoryImpl implements AlbumsRepository {
         'data': {'Album': albumId},
       },
     );
-    final newLikeId = response.data['data']['documentId'] as String;
-    _registry.markAlbumLiked(albumId, newLikeId);
-    return newLikeId;
+    return response.data['data']['documentId'] as String;
   }
 }

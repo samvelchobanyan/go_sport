@@ -171,9 +171,7 @@ class _MyFavoritesScreenState extends ConsumerState<MyFavoritesScreen> {
           onTap: () => _onTrackTap(ref, songs, index),
           onMenuTap: (track) => showTrackOptionsBottomSheet(
             context: context,
-            imageUrl: track.imageUrl ?? '',
-            title: track.title,
-            subtitle: track.artistName,
+            track: track,
             onAddToPlaylist: () => showAddToPlaylistBottomSheet(
               context: context,
               track: track,

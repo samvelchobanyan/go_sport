@@ -91,9 +91,7 @@ class EpisodeTile extends StatelessWidget {
                 onMenuTap(); //in case something different should happen
                 showTrackOptionsBottomSheet(
                   context: context,
-                  imageUrl: episode.imageUrl ?? '',
-                  title: episode.title,
-                  subtitle: episode.artistName,
+                  track: episode,
                   onAddToPlaylist: () => showAddToPlaylistBottomSheet(
                     context: context,
                     track: episode,

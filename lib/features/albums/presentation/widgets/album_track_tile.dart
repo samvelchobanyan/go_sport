@@ -58,9 +58,7 @@ class AlbumTrackTile extends StatelessWidget {
                 onMenuTap();
                 showTrackOptionsBottomSheet(
                   context: context,
-                  imageUrl: track.imageUrl ?? '',
-                  title: track.title,
-                  subtitle: track.artistName,
+                  track: track,
                   onAddToPlaylist: () => showAddToPlaylistBottomSheet(
                     context: context,
                     track: track,

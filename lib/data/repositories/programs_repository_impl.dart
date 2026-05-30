@@ -23,11 +23,9 @@ class ProgramsRepositoryImpl implements ProgramsRepository {
     );
 
     final data = response.data['data'] as List<dynamic>;
-    final programs = data
+    return data
         .map((e) => ProgramDto.fromJson(e as Map<String, dynamic>).toDomain())
         .toList();
-    _registry.syncProgramsLikes(programs);
-    return programs;
   }
 
   @override
@@ -42,18 +40,15 @@ class ProgramsRepositoryImpl implements ProgramsRepository {
     );
 
     final data = response.data['data'] as List<dynamic>;
-    final episodes = data
+    return data
         .map((e) => EpisodeDto.fromJson(e as Map<String, dynamic>).toDomain())
         .toList();
-    _registry.syncEpisodesLikes(episodes);
-    return episodes;
   }
 
   @override
   Future<String?> toggleLike(String programId, [String? likeId]) async {
     if (likeId != null) {
       await _apiClient.delete('/api/user-programs/$likeId');
-      _registry.markProgramUnliked(programId);
       return null;
     }
 
@@ -63,9 +58,7 @@ class ProgramsRepositoryImpl implements ProgramsRepository {
         'data': {'Program': programId},
       },
     );
-    final newLikeId = response.data['data']['documentId'] as String;
-    _registry.markProgramLiked(programId, newLikeId);
-    return newLikeId;
+    return response.data['data']['documentId'] as String;
   }
 
   @override

@@ -23,11 +23,9 @@ class FeaturedPlaylistRepositoryImpl implements FeaturedPlaylistRepository {
     );
 
     final data = response.data['data'] as List<dynamic>;
-    final playlists = data
+    return data
         .map((e) => PlaylistDto.fromJson(e as Map<String, dynamic>).toDomain())
         .toList();
-    _registry.syncPlaylistsLikes(playlists);
-    return playlists;
   }
 
   @override
@@ -43,11 +41,9 @@ class FeaturedPlaylistRepositoryImpl implements FeaturedPlaylistRepository {
 
     final data = response.data['data'] as Map<String, dynamic>;
     final tracksData = data['Tracks'] as List<dynamic>? ?? [];
-    final tracks = tracksData
+    return tracksData
         .map((e) => TrackDto.fromJson(e as Map<String, dynamic>).toDomain())
         .toList();
-    _registry.syncTracksLikes(tracks);
-    return tracks;
   }
 
   @override
@@ -105,7 +101,6 @@ class FeaturedPlaylistRepositoryImpl implements FeaturedPlaylistRepository {
   Future<String?> toggleLike(String playlistId, [String? likeId]) async {
     if (likeId != null) {
       await _apiClient.delete('/api/user-playlists/$likeId');
-      _registry.markPlaylistUnliked(playlistId);
       return null;
     }
 
@@ -115,16 +110,13 @@ class FeaturedPlaylistRepositoryImpl implements FeaturedPlaylistRepository {
         'data': {'Playlist': playlistId},
       },
     );
-    final newLikeId = response.data['data']['documentId'] as String;
-    _registry.markPlaylistLiked(playlistId, newLikeId);
-    return newLikeId;
+    return response.data['data']['documentId'] as String;
   }
 
   @override
   Future<String?> toggleLikeTrack(String trackId, [String? likeId]) async {
     if (likeId != null) {
       await _apiClient.delete('/api/user-tracks/$likeId');
-      _registry.markTrackUnliked(trackId);
       return null;
     }
 
@@ -134,8 +126,6 @@ class FeaturedPlaylistRepositoryImpl implements FeaturedPlaylistRepository {
         'data': {'Track': trackId},
       },
     );
-    final newLikeId = response.data['data']['documentId'] as String;
-    _registry.markTrackLiked(trackId, newLikeId);
-    return newLikeId;
+    return response.data['data']['documentId'] as String;
   }
 }

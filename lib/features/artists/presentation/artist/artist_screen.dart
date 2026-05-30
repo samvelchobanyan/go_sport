@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/domain/entities/artist.dart';
+import 'package:go_sport/domain/state/like_registry.dart';
 import 'package:go_sport/features/artists/presentation/artist/artist_controller.dart';
 import 'package:go_sport/features/artists/presentation/widgets/artist_screen_skeleton.dart';
 import 'package:go_sport/features/artists/presentation/widgets/artist_hero.dart';
@@ -21,42 +22,12 @@ class ArtistScreen extends ConsumerStatefulWidget {
 }
 
 class _ArtistScreenState extends ConsumerState<ArtistScreen> {
-  late bool _isLiked;
-  late String? _likeId;
-
-  @override
-  void initState() {
-    super.initState();
-    _isLiked = widget.artist.isLiked;
-    _likeId = widget.artist.likeId;
-  }
-
-  void _onLikeTap() {
-    final previousIsLiked = _isLiked;
-    final previousLikeId = _likeId;
-
-    setState(() => _isLiked = !_isLiked);
-
-    final notifier = ref.read(
-      artistControllerProvider(widget.artist.id).notifier,
-    );
-
-    notifier
-        .toggleLike(widget.artist.id, previousIsLiked ? previousLikeId : null)
-        .then((newLikeId) {
-          setState(() => _likeId = newLikeId);
-        })
-        .catchError((_) {
-          setState(() {
-            _isLiked = previousIsLiked;
-            _likeId = previousLikeId;
-          });
-        });
-  }
-
   @override
   Widget build(BuildContext context) {
     final albumsState = ref.watch(artistControllerProvider(widget.artist.id));
+    final isLiked = ref.watch(
+      likeRegistryProvider.select((s) => s.artistLikes.containsKey(widget.artist.id)),
+    );
     final screenHeight = MediaQuery.of(context).size.height;
     final expandedHeight = screenHeight * 0.5;
 
@@ -107,8 +78,10 @@ class _ArtistScreenState extends ConsumerState<ArtistScreen> {
             ],
             flexibleSpace: FlexibleSpaceBar(
               background: ArtistHero(
-                artist: widget.artist.copyWith(isLiked: _isLiked),
-                onLikeTap: _onLikeTap,
+                artist: widget.artist.copyWith(isLiked: isLiked),
+                onLikeTap: () => ref
+                    .read(likeRegistryProvider.notifier)
+                    .toggleArtist(widget.artist.id),
               ),
             ),
             bottom: PreferredSize(

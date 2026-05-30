@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../../core/di/repository_providers.dart';
 import '../entities/album.dart';
 import '../entities/artist.dart';
 import '../entities/playlist.dart';
@@ -12,12 +13,12 @@ part 'like_registry.freezed.dart';
 @freezed
 class LikeRegistryState with _$LikeRegistryState {
   const factory LikeRegistryState({
-    @Default({}) Map<String, String> albumLikes,
-    @Default({}) Map<String, String> trackLikes,
-    @Default({}) Map<String, String> programLikes,
-    @Default({}) Map<String, String> artistLikes,
-    @Default({}) Map<String, String> playlistLikes,
-    @Default({}) Map<String, String> episodeLikes,
+    @Default({}) Map<String, String?> albumLikes,
+    @Default({}) Map<String, String?> trackLikes,
+    @Default({}) Map<String, String?> programLikes,
+    @Default({}) Map<String, String?> artistLikes,
+    @Default({}) Map<String, String?> playlistLikes,
+    @Default({}) Map<String, String?> episodeLikes,
   }) = _LikeRegistryState;
 }
 
@@ -45,66 +46,168 @@ class LikeRegistry extends Notifier<LikeRegistryState> {
   bool isEpisodeLiked(String id) => state.episodeLikes.containsKey(id);
   String? episodeLikeId(String id) => state.episodeLikes[id];
 
-  // === Mark (point updates after backend success) ===
+  // === Toggle (active: optimistic + repo + rollback) ===
 
-  void markAlbumLiked(String id, String likeId) {
-    state = state.copyWith(albumLikes: {...state.albumLikes, id: likeId});
+  Future<void> toggleAlbum(String id) async {
+    final wasLiked = state.albumLikes.containsKey(id);
+    final prevLikeId = state.albumLikes[id];
+
+    state = state.copyWith(
+      albumLikes: wasLiked
+          ? ({...state.albumLikes}..remove(id))
+          : {...state.albumLikes, id: null},
+    );
+
+    try {
+      final repo = ref.read(albumsRepositoryProvider);
+      final newLikeId = await repo.toggleLike(id, wasLiked ? prevLikeId : null);
+      if (!wasLiked && newLikeId != null) {
+        state = state.copyWith(albumLikes: {...state.albumLikes, id: newLikeId});
+      }
+    } catch (e) {
+      state = state.copyWith(
+        albumLikes: wasLiked
+            ? {...state.albumLikes, id: prevLikeId}
+            : ({...state.albumLikes}..remove(id)),
+      );
+      rethrow;
+    }
   }
 
-  void markAlbumUnliked(String id) {
-    if (!state.albumLikes.containsKey(id)) return;
-    final next = {...state.albumLikes}..remove(id);
-    state = state.copyWith(albumLikes: next);
+  Future<void> toggleTrack(String id) async {
+    final wasLiked = state.trackLikes.containsKey(id);
+    final prevLikeId = state.trackLikes[id];
+
+    state = state.copyWith(
+      trackLikes: wasLiked
+          ? ({...state.trackLikes}..remove(id))
+          : {...state.trackLikes, id: null},
+    );
+
+    try {
+      final repo = ref.read(featuredPlaylistRepositoryProvider);
+      final newLikeId =
+          await repo.toggleLikeTrack(id, wasLiked ? prevLikeId : null);
+      if (!wasLiked && newLikeId != null) {
+        state = state.copyWith(trackLikes: {...state.trackLikes, id: newLikeId});
+      }
+    } catch (e) {
+      state = state.copyWith(
+        trackLikes: wasLiked
+            ? {...state.trackLikes, id: prevLikeId}
+            : ({...state.trackLikes}..remove(id)),
+      );
+      rethrow;
+    }
   }
 
-  void markTrackLiked(String id, String likeId) {
-    state = state.copyWith(trackLikes: {...state.trackLikes, id: likeId});
+  Future<void> toggleProgram(String id) async {
+    final wasLiked = state.programLikes.containsKey(id);
+    final prevLikeId = state.programLikes[id];
+
+    state = state.copyWith(
+      programLikes: wasLiked
+          ? ({...state.programLikes}..remove(id))
+          : {...state.programLikes, id: null},
+    );
+
+    try {
+      final repo = ref.read(programsRepositoryProvider);
+      final newLikeId = await repo.toggleLike(id, wasLiked ? prevLikeId : null);
+      if (!wasLiked && newLikeId != null) {
+        state =
+            state.copyWith(programLikes: {...state.programLikes, id: newLikeId});
+      }
+    } catch (e) {
+      state = state.copyWith(
+        programLikes: wasLiked
+            ? {...state.programLikes, id: prevLikeId}
+            : ({...state.programLikes}..remove(id)),
+      );
+      rethrow;
+    }
   }
 
-  void markTrackUnliked(String id) {
-    if (!state.trackLikes.containsKey(id)) return;
-    final next = {...state.trackLikes}..remove(id);
-    state = state.copyWith(trackLikes: next);
+  Future<void> toggleArtist(String id) async {
+    final wasLiked = state.artistLikes.containsKey(id);
+    final prevLikeId = state.artistLikes[id];
+
+    state = state.copyWith(
+      artistLikes: wasLiked
+          ? ({...state.artistLikes}..remove(id))
+          : {...state.artistLikes, id: null},
+    );
+
+    try {
+      final repo = ref.read(artistsRepositoryProvider);
+      final newLikeId = await repo.toggleLike(id, wasLiked ? prevLikeId : null);
+      if (!wasLiked && newLikeId != null) {
+        state =
+            state.copyWith(artistLikes: {...state.artistLikes, id: newLikeId});
+      }
+    } catch (e) {
+      state = state.copyWith(
+        artistLikes: wasLiked
+            ? {...state.artistLikes, id: prevLikeId}
+            : ({...state.artistLikes}..remove(id)),
+      );
+      rethrow;
+    }
   }
 
-  void markProgramLiked(String id, String likeId) {
-    state = state.copyWith(programLikes: {...state.programLikes, id: likeId});
+  Future<void> togglePlaylist(String id) async {
+    final wasLiked = state.playlistLikes.containsKey(id);
+    final prevLikeId = state.playlistLikes[id];
+
+    state = state.copyWith(
+      playlistLikes: wasLiked
+          ? ({...state.playlistLikes}..remove(id))
+          : {...state.playlistLikes, id: null},
+    );
+
+    try {
+      final repo = ref.read(featuredPlaylistRepositoryProvider);
+      final newLikeId = await repo.toggleLike(id, wasLiked ? prevLikeId : null);
+      if (!wasLiked && newLikeId != null) {
+        state = state
+            .copyWith(playlistLikes: {...state.playlistLikes, id: newLikeId});
+      }
+    } catch (e) {
+      state = state.copyWith(
+        playlistLikes: wasLiked
+            ? {...state.playlistLikes, id: prevLikeId}
+            : ({...state.playlistLikes}..remove(id)),
+      );
+      rethrow;
+    }
   }
 
-  void markProgramUnliked(String id) {
-    if (!state.programLikes.containsKey(id)) return;
-    final next = {...state.programLikes}..remove(id);
-    state = state.copyWith(programLikes: next);
-  }
+  Future<void> toggleEpisode(String id) async {
+    final wasLiked = state.episodeLikes.containsKey(id);
+    final prevLikeId = state.episodeLikes[id];
 
-  void markArtistLiked(String id, String likeId) {
-    state = state.copyWith(artistLikes: {...state.artistLikes, id: likeId});
-  }
+    state = state.copyWith(
+      episodeLikes: wasLiked
+          ? ({...state.episodeLikes}..remove(id))
+          : {...state.episodeLikes, id: null},
+    );
 
-  void markArtistUnliked(String id) {
-    if (!state.artistLikes.containsKey(id)) return;
-    final next = {...state.artistLikes}..remove(id);
-    state = state.copyWith(artistLikes: next);
-  }
-
-  void markPlaylistLiked(String id, String likeId) {
-    state = state.copyWith(playlistLikes: {...state.playlistLikes, id: likeId});
-  }
-
-  void markPlaylistUnliked(String id) {
-    if (!state.playlistLikes.containsKey(id)) return;
-    final next = {...state.playlistLikes}..remove(id);
-    state = state.copyWith(playlistLikes: next);
-  }
-
-  void markEpisodeLiked(String id, String likeId) {
-    state = state.copyWith(episodeLikes: {...state.episodeLikes, id: likeId});
-  }
-
-  void markEpisodeUnliked(String id) {
-    if (!state.episodeLikes.containsKey(id)) return;
-    final next = {...state.episodeLikes}..remove(id);
-    state = state.copyWith(episodeLikes: next);
+    try {
+      final repo = ref.read(episodesRepositoryProvider);
+      final newLikeId =
+          await repo.toggleLikeEpisode(id, wasLiked ? prevLikeId : null);
+      if (!wasLiked && newLikeId != null) {
+        state =
+            state.copyWith(episodeLikes: {...state.episodeLikes, id: newLikeId});
+      }
+    } catch (e) {
+      state = state.copyWith(
+        episodeLikes: wasLiked
+            ? {...state.episodeLikes, id: prevLikeId}
+            : ({...state.episodeLikes}..remove(id)),
+      );
+      rethrow;
+    }
   }
 
   // === Sync (batch from backend responses) ===
@@ -193,9 +296,44 @@ class LikeRegistry extends Notifier<LikeRegistryState> {
     }
   }
 
-  bool _mapsEqual(Map<String, String> a, Map<String, String> b) {
+  // === Clear (on logout) ===
+
+  void clear() {
+    state = const LikeRegistryState();
+  }
+
+  // === Init (eager-load all "My X" endpoints on session start) ===
+
+  /// Loads page 1 of every "My X" endpoint in parallel. Each repo syncs the
+  /// registry as a side effect. Individual failures are swallowed so one bad
+  /// endpoint doesn't block the others.
+  Future<void> initSession() async {
+    Future<void> safe(Future Function() fn) async {
+      try {
+        await fn();
+      } catch (_) {
+        // ignore — partial population is fine
+      }
+    }
+
+    await Future.wait([
+      safe(() => ref.read(albumsRepositoryProvider).getFavoriteAlbums(page: 1)),
+      safe(() => ref.read(programsRepositoryProvider).getFavoritePrograms(page: 1)),
+      safe(() => ref.read(artistsRepositoryProvider).getFavoriteArtists(page: 1)),
+      safe(() =>
+          ref.read(featuredPlaylistRepositoryProvider).getLikedFeaturedPlaylists()),
+      safe(() =>
+          ref.read(featuredPlaylistRepositoryProvider).getFavoriteTracks(page: 1)),
+      safe(() => ref.read(episodesRepositoryProvider).getFavoriteEpisodes(page: 1)),
+    ]);
+  }
+
+  // === Helpers ===
+
+  bool _mapsEqual(Map<String, String?> a, Map<String, String?> b) {
     if (a.length != b.length) return false;
     for (final entry in a.entries) {
+      if (!b.containsKey(entry.key)) return false;
       if (b[entry.key] != entry.value) return false;
     }
     return true;
@@ -204,78 +342,3 @@ class LikeRegistry extends Notifier<LikeRegistryState> {
 
 final likeRegistryProvider =
     NotifierProvider<LikeRegistry, LikeRegistryState>(LikeRegistry.new);
-
-// === Extensions: apply likes map to a list of entities ===
-// Subscribers in list-holding controllers use these to patch their state
-// when the registry changes. Returns the same list instance if nothing
-// changed, so callers can short-circuit state updates.
-
-extension AlbumListLikeSync on List<Album> {
-  List<Album> withLikes(Map<String, String> likes) {
-    var changed = false;
-    final next = map((a) {
-      final liked = likes.containsKey(a.id);
-      final likeId = likes[a.id];
-      if (a.isLiked == liked && a.likeId == likeId) return a;
-      changed = true;
-      return a.copyWith(isLiked: liked, likeId: likeId);
-    }).toList();
-    return changed ? next : this;
-  }
-}
-
-extension TrackListLikeSync on List<Track> {
-  List<Track> withLikes(Map<String, String> likes) {
-    var changed = false;
-    final next = map((t) {
-      final liked = likes.containsKey(t.id);
-      final likeId = likes[t.id];
-      if (t.isLiked == liked && t.likeId == likeId) return t;
-      changed = true;
-      return t.copyWith(isLiked: liked, likeId: likeId);
-    }).toList();
-    return changed ? next : this;
-  }
-}
-
-extension ProgramListLikeSync on List<Program> {
-  List<Program> withLikes(Map<String, String> likes) {
-    var changed = false;
-    final next = map((p) {
-      final liked = likes.containsKey(p.id);
-      final likeId = likes[p.id];
-      if (p.isLiked == liked && p.likeId == likeId) return p;
-      changed = true;
-      return p.copyWith(isLiked: liked, likeId: likeId);
-    }).toList();
-    return changed ? next : this;
-  }
-}
-
-extension ArtistListLikeSync on List<Artist> {
-  List<Artist> withLikes(Map<String, String> likes) {
-    var changed = false;
-    final next = map((a) {
-      final liked = likes.containsKey(a.id);
-      final likeId = likes[a.id];
-      if (a.isLiked == liked && a.likeId == likeId) return a;
-      changed = true;
-      return a.copyWith(isLiked: liked, likeId: likeId);
-    }).toList();
-    return changed ? next : this;
-  }
-}
-
-extension PlaylistListLikeSync on List<Playlist> {
-  List<Playlist> withLikes(Map<String, String> likes) {
-    var changed = false;
-    final next = map((p) {
-      final liked = likes.containsKey(p.id);
-      final likeId = likes[p.id];
-      if (p.isLiked == liked && p.likeId == likeId) return p;
-      changed = true;
-      return p.copyWith(isLiked: liked, likeId: likeId);
-    }).toList();
-    return changed ? next : this;
-  }
-}

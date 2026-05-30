@@ -22,11 +22,9 @@ class EpisodesRepositoryImpl implements EpisodesRepository {
     );
 
     final data = response.data['data'] as List<dynamic>;
-    final episodes = data
+    return data
         .map((e) => EpisodeDto.fromJson(e as Map<String, dynamic>).toDomain())
         .toList();
-    _registry.syncEpisodesLikes(episodes);
-    return episodes;
   }
 
   @override
@@ -62,7 +60,6 @@ class EpisodesRepositoryImpl implements EpisodesRepository {
   Future<String?> toggleLikeEpisode(String episodeId, [String? likeId]) async {
     if (likeId != null) {
       await _apiClient.delete('/api/user-episodes/$likeId');
-      _registry.markEpisodeUnliked(episodeId);
       return null;
     }
 
@@ -72,8 +69,6 @@ class EpisodesRepositoryImpl implements EpisodesRepository {
         'data': {'Episode': episodeId},
       },
     );
-    final newLikeId = response.data['data']['documentId'] as String;
-    _registry.markEpisodeLiked(episodeId, newLikeId);
-    return newLikeId;
+    return response.data['data']['documentId'] as String;
   }
 }

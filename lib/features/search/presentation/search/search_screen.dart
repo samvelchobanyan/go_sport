@@ -545,9 +545,7 @@ class _TrackRow extends ConsumerWidget {
       },
       onMenuTap: (t) => showTrackOptionsBottomSheet(
         context: context,
-        imageUrl: t.imageUrl ?? '',
-        title: t.title,
-        subtitle: t.artistName,
+        track: t,
         onAddToPlaylist: () => showAddToPlaylistBottomSheet(
           context: context,
           track: t,

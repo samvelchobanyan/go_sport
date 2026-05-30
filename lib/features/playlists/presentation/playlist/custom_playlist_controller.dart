@@ -3,7 +3,6 @@ import 'package:go_sport/core/di/repository_providers.dart';
 import 'package:go_sport/domain/entities/playlist.dart';
 import 'package:go_sport/domain/entities/track.dart';
 import 'package:go_sport/domain/repositories/custom_playlist_repository.dart';
-import 'package:go_sport/domain/state/like_registry.dart';
 import 'package:go_sport/domain/state/my_playlists_state.dart';
 
 import 'playlist_controller.dart';
@@ -15,17 +14,6 @@ class CustomPlaylistNotifier
   @override
   PlaylistDetailsState build(String arg) {
     _repository = ref.watch(customPlaylistRepositoryProvider);
-    ref.listen(
-      likeRegistryProvider.select((s) => s.trackLikes),
-      (_, next) {
-        final currentData = state.mapOrNull(data: (d) => d);
-        if (currentData == null) return;
-        final updated = currentData.tracks.withLikes(next);
-        if (!identical(updated, currentData.tracks)) {
-          state = currentData.copyWith(tracks: updated);
-        }
-      },
-    );
     return const PlaylistDetailsState.loading();
   }
 

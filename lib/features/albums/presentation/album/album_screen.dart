@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/domain/entities/album.dart';
 import 'package:go_sport/domain/entities/track.dart';
+import 'package:go_sport/domain/state/like_registry.dart';
 import 'package:go_sport/domain/state/player_state.dart';
 import 'package:go_sport/features/albums/presentation/album/album_controller.dart';
 import 'package:go_sport/features/albums/presentation/widgets/album_hero.dart';
@@ -22,16 +23,6 @@ class AlbumScreen extends ConsumerStatefulWidget {
 }
 
 class _AlbumScreenState extends ConsumerState<AlbumScreen> {
-  late bool _isLiked;
-  late String? _likeId;
-
-  @override
-  void initState() {
-    super.initState();
-    _isLiked = widget.album.isLiked;
-    _likeId = widget.album.likeId;
-  }
-
   void _onTrackTap(List<Track> tracks, int index) {
     ref
         .read(playerStateProvider.notifier)
@@ -60,32 +51,12 @@ class _AlbumScreenState extends ConsumerState<AlbumScreen> {
         );
   }
 
-  void _onLikeTap() {
-    final previousIsLiked = _isLiked;
-    final previousLikeId = _likeId;
-
-    setState(() => _isLiked = !_isLiked);
-
-    final notifier = ref.read(
-      albumControllerProvider(widget.album.id).notifier,
-    );
-
-    notifier
-        .toggleLike(widget.album.id, previousIsLiked ? previousLikeId : null)
-        .then((newLikeId) {
-          setState(() => _likeId = newLikeId);
-        })
-        .catchError((_) {
-          setState(() {
-            _isLiked = previousIsLiked;
-            _likeId = previousLikeId;
-          });
-        });
-  }
-
   @override
   Widget build(BuildContext context) {
     final tracksState = ref.watch(albumControllerProvider(widget.album.id));
+    final isLiked = ref.watch(
+      likeRegistryProvider.select((s) => s.albumLikes.containsKey(widget.album.id)),
+    );
     final screenHeight = MediaQuery.of(context).size.height;
     final expandedHeight = screenHeight * 0.5;
 
@@ -136,8 +107,10 @@ class _AlbumScreenState extends ConsumerState<AlbumScreen> {
             ],
             flexibleSpace: FlexibleSpaceBar(
               background: AlbumHero(
-                album: widget.album.copyWith(isLiked: _isLiked),
-                onLikeTap: _onLikeTap,
+                album: widget.album.copyWith(isLiked: isLiked),
+                onLikeTap: () => ref
+                    .read(likeRegistryProvider.notifier)
+                    .toggleAlbum(widget.album.id),
                 onPlayTap: () {
                   final tracks = tracksState.mapOrNull(
                     data: (data) => data.tracks,

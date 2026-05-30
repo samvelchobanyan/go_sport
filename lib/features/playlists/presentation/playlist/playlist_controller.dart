@@ -5,7 +5,6 @@ import '../../../../core/di/repository_providers.dart';
 import '../../../../domain/entities/playlist.dart';
 import '../../../../domain/entities/track.dart';
 import '../../../../domain/state/featured_playlists_state.dart';
-import '../../../../domain/state/like_registry.dart';
 
 part 'playlist_controller.freezed.dart';
 
@@ -26,31 +25,6 @@ sealed class PlaylistDetailsState with _$PlaylistDetailsState {
 class PlaylistController extends AutoDisposeFamilyNotifier<PlaylistDetailsState, String> {
   @override
   PlaylistDetailsState build(String playlistId) {
-    ref.listen(
-      likeRegistryProvider.select((s) => s.trackLikes),
-      (_, next) {
-        final currentData = state.mapOrNull(data: (d) => d);
-        if (currentData == null) return;
-        final updated = currentData.tracks.withLikes(next);
-        if (!identical(updated, currentData.tracks)) {
-          state = currentData.copyWith(tracks: updated);
-        }
-      },
-    );
-    ref.listen(
-      likeRegistryProvider.select((s) => s.playlistLikes),
-      (_, next) {
-        final currentData = state.mapOrNull(data: (d) => d);
-        if (currentData == null) return;
-        final p = currentData.playlist;
-        final liked = next.containsKey(p.id);
-        final likeId = next[p.id];
-        if (p.isLiked == liked && p.likeId == likeId) return;
-        state = currentData.copyWith(
-          playlist: p.copyWith(isLiked: liked, likeId: likeId),
-        );
-      },
-    );
     return const PlaylistDetailsState.loading();
   }
 
@@ -95,26 +69,6 @@ class PlaylistController extends AutoDisposeFamilyNotifier<PlaylistDetailsState,
     }
   }
 
-  Future<void> toggleLike(String? likeId) async {
-    final currentState = state;
-    if (currentState is! PlaylistDetailsData) return;
-
-    try {
-      final newLikeId = await ref.read(featuredPlaylistRepositoryProvider).toggleLike(arg, likeId);
-      
-      // Update local state instantly so UI reacts
-      final updatedPlaylist = currentState.playlist.copyWith(
-        isLiked: newLikeId != null,
-        likeId: newLikeId,
-      );
-      state = PlaylistDetailsState.data(playlist: updatedPlaylist, tracks: currentState.tracks);
-      
-      // Sync global state
-      ref.read(featuredPlaylistsStateProvider.notifier).updateLike(arg, newLikeId);
-    } catch (e) {
-      // Error handling can be added here
-    }
-  }
 }
 
 final playlistControllerProvider = NotifierProvider.autoDispose

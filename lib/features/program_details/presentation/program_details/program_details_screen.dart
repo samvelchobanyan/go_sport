@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/domain/entities/program.dart';
 import 'package:go_sport/domain/entities/track.dart';
+import 'package:go_sport/domain/state/like_registry.dart';
 import 'package:go_sport/domain/state/player_state.dart';
 import 'package:go_sport/features/program_details/presentation/widgets/program_episode_tile.dart';
 import 'package:go_sport/features/program_details/presentation/widgets/program_screen_skeleton.dart';
@@ -25,16 +26,6 @@ class ProgramDetailsScreen extends ConsumerStatefulWidget {
 }
 
 class _ProgramDetailsScreenState extends ConsumerState<ProgramDetailsScreen> {
-  late bool _isLiked;
-  late String? _likeId;
-
-  @override
-  void initState() {
-    super.initState();
-    _isLiked = widget.program.isLiked;
-    _likeId = widget.program.likeId;
-  }
-
   void _onTrackTap(List<Track> episodes, int index) {
     ref
         .read(playerStateProvider.notifier)
@@ -68,33 +59,13 @@ class _ProgramDetailsScreenState extends ConsumerState<ProgramDetailsScreen> {
         );
   }
 
-  void _onLikeTap() {
-    final previousIsLiked = _isLiked;
-    final previousLikeId = _likeId;
-
-    setState(() => _isLiked = !_isLiked);
-
-    final notifier = ref.read(
-      programDetailsControllerProvider(widget.program.id).notifier,
-    );
-
-    notifier
-        .toggleLike(widget.program.id, previousIsLiked ? previousLikeId : null)
-        .then((newLikeId) {
-          setState(() => _likeId = newLikeId);
-        })
-        .catchError((_) {
-          setState(() {
-            _isLiked = previousIsLiked;
-            _likeId = previousLikeId;
-          });
-        });
-  }
-
   @override
   Widget build(BuildContext context) {
     final episodesState = ref.watch(
       programDetailsControllerProvider(widget.program.id),
+    );
+    final isLiked = ref.watch(
+      likeRegistryProvider.select((s) => s.programLikes.containsKey(widget.program.id)),
     );
     final screenHeight = MediaQuery.of(context).size.height;
     final expandedHeight = screenHeight * 0.5;
@@ -150,8 +121,10 @@ class _ProgramDetailsScreenState extends ConsumerState<ProgramDetailsScreen> {
               ],
               flexibleSpace: FlexibleSpaceBar(
                 background: ProgramHero(
-                  program: widget.program.copyWith(isLiked: _isLiked),
-                  onLikeTap: _onLikeTap,
+                  program: widget.program.copyWith(isLiked: isLiked),
+                  onLikeTap: () => ref
+                      .read(likeRegistryProvider.notifier)
+                      .toggleProgram(widget.program.id),
                   onPlayTap: () {
                     final episodes = episodesState.mapOrNull(
                       data: (data) => data.episodes,

@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
+import 'package:go_sport/domain/entities/track.dart';
+import 'package:go_sport/domain/state/like_registry.dart';
 import 'package:go_sport/features/shared_widgets/bottom_pop_ups/action_button.dart';
 import 'package:go_sport/features/shared_widgets/bottom_pop_ups/bottom_sheet_container.dart';
 import 'package:go_sport/features/shared_widgets/dotted_divider.dart';
 
 void showTrackOptionsBottomSheet({
   required BuildContext context,
-  required String imageUrl,
-  required String title,
-  String? subtitle,
+  required Track track,
   VoidCallback? onRemoveFromPlaylist,
   VoidCallback? onAddToPlaylist,
 }) {
@@ -20,128 +21,142 @@ void showTrackOptionsBottomSheet({
     useRootNavigator: true,
     backgroundColor: DSColors.transparent,
     builder: (context) => BottomSheetContainer(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Album info
-            Row(
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(DSRadius.xs),
-                    boxShadow: [
-                      BoxShadow(
-                        color: DSColors.gray70,
-                        blurRadius: 6,
-                        spreadRadius:
-                            -2, // prevents shadow from appearing on sides
-                        offset: const Offset(0, 4), // pushes shadow down
-                      ),
-                    ],
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(DSRadius.xs),
-                    child: Image.network(
-                      imageUrl,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Track info
+          Row(
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(DSRadius.xs),
+                  boxShadow: [
+                    BoxShadow(
+                      color: DSColors.gray70,
+                      blurRadius: 6,
+                      spreadRadius: -2,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(DSRadius.xs),
+                  child: Image.network(
+                    track.imageUrl ?? '',
+                    width: 48,
+                    height: 48,
+                    fit: BoxFit.cover,
+                    errorBuilder: (_, __, ___) => Container(
                       width: 48,
                       height: 48,
-                      fit: BoxFit.cover,
-                      errorBuilder: (_, __, ___) => Container(
-                        width: 48,
-                        height: 48,
-                        color: DSColors.gray20,
-                      ),
+                      color: DSColors.gray20,
                     ),
                   ),
                 ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      track.title,
+                      style: context.subtitleM,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    if (track.artistName.isNotEmpty) ...[
+                      const SizedBox(height: 4),
                       Text(
-                        title,
-                        style: context.subtitleM,
+                        track.artistName,
+                        style: context.textL?.copyWith(
+                          color: DSColors.gray60,
+                        ),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
-                      if (subtitle != null) ...[
-                        const SizedBox(height: 4),
-                        Text(
-                          subtitle,
-                          style: context.textL?.copyWith(
-                            color: DSColors.gray60,
-                          ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ],
                     ],
-                  ),
+                  ],
                 ),
-              ],
-            ),
-            const SizedBox(height: 10),
-            DottedDivider(color: DSColors.gray20),
-            const SizedBox(height: 10),
-            // Action buttons
-            Column(
-              children: [
-                // Add to playlist
-                ActionButton(
-                  icon: 'assets/icons/plus_bg.svg',
-                  label: onRemoveFromPlaylist != null
-                      ? 'Add to another playlist'
-                      : 'Add to playlist',
-                  onTap: () {
-                    Navigator.pop(context);
-                    if (onAddToPlaylist != null) {
-                      onAddToPlaylist();
-                    } else {
-                      debugPrint('Add to playlist tapped');
-                    }
-                  },
-                ),
-                const SizedBox(height: 10),
+              ),
+            ],
+          ),
+          const SizedBox(height: 10),
+          DottedDivider(color: DSColors.gray20),
+          const SizedBox(height: 10),
+          // Action buttons
+          Column(
+            children: [
+              // Add to playlist
+              ActionButton(
+                icon: 'assets/icons/plus_bg.svg',
+                label: onRemoveFromPlaylist != null
+                    ? 'Add to another playlist'
+                    : 'Add to playlist',
+                onTap: () {
+                  Navigator.pop(context);
+                  if (onAddToPlaylist != null) {
+                    onAddToPlaylist();
+                  } else {
+                    debugPrint('Add to playlist tapped');
+                  }
+                },
+              ),
+              const SizedBox(height: 10),
 
-                // Like
-                ActionButton(
-                  icon: 'assets/icons/heart_bg.svg',
-                  label: 'Liked',
-                  onTap: () {
-                    Navigator.pop(context);
-                    debugPrint('Like tapped');
-                  },
-                ),
-
-                // Remove from this playlist
-                if (onRemoveFromPlaylist != null) ...[
-                  const SizedBox(height: 10),
-                  ActionButton(
-                    icon: 'assets/icons/delete_bg.svg',
-                    label: 'Remove from this playlist',
+              // Like
+              Consumer(
+                builder: (context, ref, _) {
+                  final isEpisode = track.releaseDate != null;
+                  final isLiked = ref.watch(
+                    likeRegistryProvider.select((s) => isEpisode
+                        ? s.episodeLikes.containsKey(track.id)
+                        : s.trackLikes.containsKey(track.id)),
+                  );
+                  return ActionButton(
+                    icon: 'assets/icons/heart_bg.svg',
+                    label: isLiked ? 'Liked' : 'Like',
                     onTap: () {
+                      final registry = ref.read(likeRegistryProvider.notifier);
+                      if (isEpisode) {
+                        registry.toggleEpisode(track.id);
+                      } else {
+                        registry.toggleTrack(track.id);
+                      }
                       Navigator.pop(context);
-                      onRemoveFromPlaylist();
                     },
-                  ),
-                ],
-                const SizedBox(height: 10),
+                  );
+                },
+              ),
 
-                // Share
+              // Remove from this playlist
+              if (onRemoveFromPlaylist != null) ...[
+                const SizedBox(height: 10),
                 ActionButton(
-                  icon: 'assets/icons/share.svg',
-                  label: 'Share',
+                  icon: 'assets/icons/delete_bg.svg',
+                  label: 'Remove from this playlist',
                   onTap: () {
                     Navigator.pop(context);
-                    debugPrint('Share tapped');
+                    onRemoveFromPlaylist();
                   },
                 ),
               ],
-            ),
-          ],
-        ),
+              const SizedBox(height: 10),
+
+              // Share
+              ActionButton(
+                icon: 'assets/icons/share.svg',
+                label: 'Share',
+                onTap: () {
+                  Navigator.pop(context);
+                  debugPrint('Share tapped');
+                },
+              ),
+            ],
+          ),
+        ],
+      ),
     ),
   );
 }

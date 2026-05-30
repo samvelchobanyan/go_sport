@@ -17,12 +17,12 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$LikeRegistryState {
-  Map<String, String> get albumLikes => throw _privateConstructorUsedError;
-  Map<String, String> get trackLikes => throw _privateConstructorUsedError;
-  Map<String, String> get programLikes => throw _privateConstructorUsedError;
-  Map<String, String> get artistLikes => throw _privateConstructorUsedError;
-  Map<String, String> get playlistLikes => throw _privateConstructorUsedError;
-  Map<String, String> get episodeLikes => throw _privateConstructorUsedError;
+  Map<String, String?> get albumLikes => throw _privateConstructorUsedError;
+  Map<String, String?> get trackLikes => throw _privateConstructorUsedError;
+  Map<String, String?> get programLikes => throw _privateConstructorUsedError;
+  Map<String, String?> get artistLikes => throw _privateConstructorUsedError;
+  Map<String, String?> get playlistLikes => throw _privateConstructorUsedError;
+  Map<String, String?> get episodeLikes => throw _privateConstructorUsedError;
 
   /// Create a copy of LikeRegistryState
   /// with the given fields replaced by the non-null parameter values.
@@ -39,12 +39,12 @@ abstract class $LikeRegistryStateCopyWith<$Res> {
   ) = _$LikeRegistryStateCopyWithImpl<$Res, LikeRegistryState>;
   @useResult
   $Res call({
-    Map<String, String> albumLikes,
-    Map<String, String> trackLikes,
-    Map<String, String> programLikes,
-    Map<String, String> artistLikes,
-    Map<String, String> playlistLikes,
-    Map<String, String> episodeLikes,
+    Map<String, String?> albumLikes,
+    Map<String, String?> trackLikes,
+    Map<String, String?> programLikes,
+    Map<String, String?> artistLikes,
+    Map<String, String?> playlistLikes,
+    Map<String, String?> episodeLikes,
   });
 }
 
@@ -75,27 +75,27 @@ class _$LikeRegistryStateCopyWithImpl<$Res, $Val extends LikeRegistryState>
             albumLikes: null == albumLikes
                 ? _value.albumLikes
                 : albumLikes // ignore: cast_nullable_to_non_nullable
-                      as Map<String, String>,
+                      as Map<String, String?>,
             trackLikes: null == trackLikes
                 ? _value.trackLikes
                 : trackLikes // ignore: cast_nullable_to_non_nullable
-                      as Map<String, String>,
+                      as Map<String, String?>,
             programLikes: null == programLikes
                 ? _value.programLikes
                 : programLikes // ignore: cast_nullable_to_non_nullable
-                      as Map<String, String>,
+                      as Map<String, String?>,
             artistLikes: null == artistLikes
                 ? _value.artistLikes
                 : artistLikes // ignore: cast_nullable_to_non_nullable
-                      as Map<String, String>,
+                      as Map<String, String?>,
             playlistLikes: null == playlistLikes
                 ? _value.playlistLikes
                 : playlistLikes // ignore: cast_nullable_to_non_nullable
-                      as Map<String, String>,
+                      as Map<String, String?>,
             episodeLikes: null == episodeLikes
                 ? _value.episodeLikes
                 : episodeLikes // ignore: cast_nullable_to_non_nullable
-                      as Map<String, String>,
+                      as Map<String, String?>,
           )
           as $Val,
     );
@@ -112,12 +112,12 @@ abstract class _$$LikeRegistryStateImplCopyWith<$Res>
   @override
   @useResult
   $Res call({
-    Map<String, String> albumLikes,
-    Map<String, String> trackLikes,
-    Map<String, String> programLikes,
-    Map<String, String> artistLikes,
-    Map<String, String> playlistLikes,
-    Map<String, String> episodeLikes,
+    Map<String, String?> albumLikes,
+    Map<String, String?> trackLikes,
+    Map<String, String?> programLikes,
+    Map<String, String?> artistLikes,
+    Map<String, String?> playlistLikes,
+    Map<String, String?> episodeLikes,
   });
 }
 
@@ -147,27 +147,27 @@ class __$$LikeRegistryStateImplCopyWithImpl<$Res>
         albumLikes: null == albumLikes
             ? _value._albumLikes
             : albumLikes // ignore: cast_nullable_to_non_nullable
-                  as Map<String, String>,
+                  as Map<String, String?>,
         trackLikes: null == trackLikes
             ? _value._trackLikes
             : trackLikes // ignore: cast_nullable_to_non_nullable
-                  as Map<String, String>,
+                  as Map<String, String?>,
         programLikes: null == programLikes
             ? _value._programLikes
             : programLikes // ignore: cast_nullable_to_non_nullable
-                  as Map<String, String>,
+                  as Map<String, String?>,
         artistLikes: null == artistLikes
             ? _value._artistLikes
             : artistLikes // ignore: cast_nullable_to_non_nullable
-                  as Map<String, String>,
+                  as Map<String, String?>,
         playlistLikes: null == playlistLikes
             ? _value._playlistLikes
             : playlistLikes // ignore: cast_nullable_to_non_nullable
-                  as Map<String, String>,
+                  as Map<String, String?>,
         episodeLikes: null == episodeLikes
             ? _value._episodeLikes
             : episodeLikes // ignore: cast_nullable_to_non_nullable
-                  as Map<String, String>,
+                  as Map<String, String?>,
       ),
     );
   }
@@ -177,12 +177,12 @@ class __$$LikeRegistryStateImplCopyWithImpl<$Res>
 
 class _$LikeRegistryStateImpl implements _LikeRegistryState {
   const _$LikeRegistryStateImpl({
-    final Map<String, String> albumLikes = const {},
-    final Map<String, String> trackLikes = const {},
-    final Map<String, String> programLikes = const {},
-    final Map<String, String> artistLikes = const {},
-    final Map<String, String> playlistLikes = const {},
-    final Map<String, String> episodeLikes = const {},
+    final Map<String, String?> albumLikes = const {},
+    final Map<String, String?> trackLikes = const {},
+    final Map<String, String?> programLikes = const {},
+    final Map<String, String?> artistLikes = const {},
+    final Map<String, String?> playlistLikes = const {},
+    final Map<String, String?> episodeLikes = const {},
   }) : _albumLikes = albumLikes,
        _trackLikes = trackLikes,
        _programLikes = programLikes,
@@ -190,55 +190,55 @@ class _$LikeRegistryStateImpl implements _LikeRegistryState {
        _playlistLikes = playlistLikes,
        _episodeLikes = episodeLikes;
 
-  final Map<String, String> _albumLikes;
+  final Map<String, String?> _albumLikes;
   @override
   @JsonKey()
-  Map<String, String> get albumLikes {
+  Map<String, String?> get albumLikes {
     if (_albumLikes is EqualUnmodifiableMapView) return _albumLikes;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableMapView(_albumLikes);
   }
 
-  final Map<String, String> _trackLikes;
+  final Map<String, String?> _trackLikes;
   @override
   @JsonKey()
-  Map<String, String> get trackLikes {
+  Map<String, String?> get trackLikes {
     if (_trackLikes is EqualUnmodifiableMapView) return _trackLikes;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableMapView(_trackLikes);
   }
 
-  final Map<String, String> _programLikes;
+  final Map<String, String?> _programLikes;
   @override
   @JsonKey()
-  Map<String, String> get programLikes {
+  Map<String, String?> get programLikes {
     if (_programLikes is EqualUnmodifiableMapView) return _programLikes;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableMapView(_programLikes);
   }
 
-  final Map<String, String> _artistLikes;
+  final Map<String, String?> _artistLikes;
   @override
   @JsonKey()
-  Map<String, String> get artistLikes {
+  Map<String, String?> get artistLikes {
     if (_artistLikes is EqualUnmodifiableMapView) return _artistLikes;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableMapView(_artistLikes);
   }
 
-  final Map<String, String> _playlistLikes;
+  final Map<String, String?> _playlistLikes;
   @override
   @JsonKey()
-  Map<String, String> get playlistLikes {
+  Map<String, String?> get playlistLikes {
     if (_playlistLikes is EqualUnmodifiableMapView) return _playlistLikes;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableMapView(_playlistLikes);
   }
 
-  final Map<String, String> _episodeLikes;
+  final Map<String, String?> _episodeLikes;
   @override
   @JsonKey()
-  Map<String, String> get episodeLikes {
+  Map<String, String?> get episodeLikes {
     if (_episodeLikes is EqualUnmodifiableMapView) return _episodeLikes;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableMapView(_episodeLikes);
@@ -305,26 +305,26 @@ class _$LikeRegistryStateImpl implements _LikeRegistryState {
 
 abstract class _LikeRegistryState implements LikeRegistryState {
   const factory _LikeRegistryState({
-    final Map<String, String> albumLikes,
-    final Map<String, String> trackLikes,
-    final Map<String, String> programLikes,
-    final Map<String, String> artistLikes,
-    final Map<String, String> playlistLikes,
-    final Map<String, String> episodeLikes,
+    final Map<String, String?> albumLikes,
+    final Map<String, String?> trackLikes,
+    final Map<String, String?> programLikes,
+    final Map<String, String?> artistLikes,
+    final Map<String, String?> playlistLikes,
+    final Map<String, String?> episodeLikes,
   }) = _$LikeRegistryStateImpl;
 
   @override
-  Map<String, String> get albumLikes;
+  Map<String, String?> get albumLikes;
   @override
-  Map<String, String> get trackLikes;
+  Map<String, String?> get trackLikes;
   @override
-  Map<String, String> get programLikes;
+  Map<String, String?> get programLikes;
   @override
-  Map<String, String> get artistLikes;
+  Map<String, String?> get artistLikes;
   @override
-  Map<String, String> get playlistLikes;
+  Map<String, String?> get playlistLikes;
   @override
-  Map<String, String> get episodeLikes;
+  Map<String, String?> get episodeLikes;
 
   /// Create a copy of LikeRegistryState
   /// with the given fields replaced by the non-null parameter values.

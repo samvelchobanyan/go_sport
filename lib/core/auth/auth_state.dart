@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../../domain/state/like_registry.dart';
 import '../di/push_providers.dart';
 import 'token_storage.dart';
 
@@ -22,6 +23,9 @@ class AuthNotifier extends Notifier<AuthState> {
   AuthState build() {
     final tokenStorage = ref.watch(tokenStorageProvider);
     if (tokenStorage.accessToken != null) {
+      Future.microtask(() {
+        ref.read(likeRegistryProvider.notifier).initSession();
+      });
       return const AuthState.authenticated();
     }
     if (tokenStorage.choseGuest) {
@@ -40,6 +44,7 @@ class AuthNotifier extends Notifier<AuthState> {
     final tokenStorage = ref.read(tokenStorageProvider);
     await tokenStorage.saveTokens(accessToken: jwt, refreshToken: '');
     state = const AuthState.authenticated();
+    ref.read(likeRegistryProvider.notifier).initSession();
   }
 
   Future<void> logout() async {
@@ -48,6 +53,9 @@ class AuthNotifier extends Notifier<AuthState> {
 
     // Backend cleanup (device delete) — fire-and-forget, doesn't block logout
     pushService.unregister().ignore();
+
+    // Clear likes (no API calls — just state reset)
+    ref.read(likeRegistryProvider.notifier).clear();
 
     // Local logout
     await tokenStorage.clearTokens();

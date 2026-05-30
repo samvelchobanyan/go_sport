@@ -5,6 +5,7 @@ import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/domain/entities/playlist.dart';
 import 'package:go_sport/domain/entities/track.dart';
+import 'package:go_sport/domain/state/like_registry.dart';
 import 'package:go_sport/domain/state/player_state.dart';
 import 'package:go_sport/features/shared_widgets/dotted_divider.dart';
 
@@ -77,9 +78,7 @@ class _PlaylistScreenState extends ConsumerState<PlaylistScreen> {
   void _onTrackMenuTap(Track track) {
     showTrackOptionsBottomSheet(
       context: context,
-      imageUrl: track.imageUrl ?? '',
-      title: track.title,
-      subtitle: track.artistName,
+      track: track,
       onAddToPlaylist: () => showAddToPlaylistBottomSheet(
         context: context,
         track: track,
@@ -122,10 +121,8 @@ class _PlaylistScreenState extends ConsumerState<PlaylistScreen> {
         );
   }
 
-  void _onLikeTap(WidgetRef ref, String? likeId) {
-    ref
-        .read(playlistControllerProvider(widget.playlistId).notifier)
-        .toggleLike(likeId);
+  void _onLikeTap(WidgetRef ref) {
+    ref.read(likeRegistryProvider.notifier).togglePlaylist(widget.playlistId);
   }
 
   @override
@@ -160,7 +157,10 @@ class _PlaylistScreenState extends ConsumerState<PlaylistScreen> {
       );
     }
 
-    final pl = currentPlaylist;
+    final isLikedFromRegistry = ref.watch(
+      likeRegistryProvider.select((s) => s.playlistLikes.containsKey(widget.playlistId)),
+    );
+    final pl = currentPlaylist.copyWith(isLiked: isLikedFromRegistry);
     final screenHeight = MediaQuery.of(context).size.height;
     final expandedHeight = screenHeight * 0.5;
 
@@ -284,7 +284,7 @@ class _PlaylistScreenState extends ConsumerState<PlaylistScreen> {
                                   .notifier)
                               .addTracks(tracks),
                         )
-                    : () => _onLikeTap(ref, pl.likeId),
+                    : () => _onLikeTap(ref),
                 onPlayTap: () {
                   final tracksValue = tracksState.mapOrNull(
                     data: (data) => data.tracks,

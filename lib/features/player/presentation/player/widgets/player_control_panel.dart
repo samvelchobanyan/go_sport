@@ -2,12 +2,12 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:go_sport/core/di/repository_providers.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/components/icons/ds_heart_icon.dart';
+import 'package:go_sport/domain/state/like_registry.dart';
 import 'package:go_sport/domain/state/player_state.dart';
 import 'package:go_sport/domain/state/player_state_selectors.dart';
 
@@ -125,46 +125,43 @@ class PlayerControlPanel extends ConsumerWidget {
         const SizedBox(width: 8),
 
         // Like button
-        GestureDetector(
-          onTap: () async {
-            if (track == null) return;
-
-            final wasLiked = track.isLiked;
-            final prevLikeId = track.likeId;
-            final notifier = ref.read(playerStateProvider.notifier);
-            final isEpisode = track.releaseDate != null;
-
-            notifier.updateTrackLike(track.id, isLiked: !wasLiked, likeId: prevLikeId);
-
-            try {
-              final newLikeId = isEpisode
-                  ? await ref
-                      .read(episodesRepositoryProvider)
-                      .toggleLikeEpisode(track.id, prevLikeId)
-                  : await ref
-                      .read(featuredPlaylistRepositoryProvider)
-                      .toggleLikeTrack(track.id, prevLikeId);
-              notifier.updateTrackLike(track.id, isLiked: !wasLiked, likeId: newLikeId);
-            } catch (e) {
-              // Handle error (e.g. show a snackbar)
-              notifier.updateTrackLike(track.id, isLiked: wasLiked, likeId: prevLikeId);
-            }
-          },
-          child: Container(
-            width: 48,
-            height: 48,
-            decoration: const BoxDecoration(
-              color: DSColors.white,
-              shape: BoxShape.circle,
-            ),
-            child: Center(
-              child: DSHeartIcon(
-                color: DSColors.orange,
-                size: 38,
-                isFilled: track?.isLiked ?? false,
+        Consumer(
+          builder: (context, ref, _) {
+            final isLiked = track == null
+                ? false
+                : ref.watch(
+                    likeRegistryProvider.select((s) =>
+                        track.releaseDate != null
+                            ? s.episodeLikes.containsKey(track.id)
+                            : s.trackLikes.containsKey(track.id)),
+                  );
+            return GestureDetector(
+              onTap: () {
+                if (track == null) return;
+                final registry = ref.read(likeRegistryProvider.notifier);
+                if (track.releaseDate != null) {
+                  registry.toggleEpisode(track.id);
+                } else {
+                  registry.toggleTrack(track.id);
+                }
+              },
+              child: Container(
+                width: 48,
+                height: 48,
+                decoration: const BoxDecoration(
+                  color: DSColors.white,
+                  shape: BoxShape.circle,
+                ),
+                child: Center(
+                  child: DSHeartIcon(
+                    color: DSColors.orange,
+                    size: 38,
+                    isFilled: isLiked,
+                  ),
+                ),
               ),
-            ),
-          ),
+            );
+          },
         ),
       ],
     );
