@@ -19,12 +19,6 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$MusicDashboardState {
   bool get isLoading => throw _privateConstructorUsedError;
   String? get error => throw _privateConstructorUsedError;
-  int get favoritesCount => throw _privateConstructorUsedError;
-  int get playlistsCount => throw _privateConstructorUsedError;
-  int get albumsCount => throw _privateConstructorUsedError;
-  int get artistsCount => throw _privateConstructorUsedError;
-  int get episodesCount => throw _privateConstructorUsedError;
-  int get programsCount => throw _privateConstructorUsedError;
   List<Album> get featuredAlbums => throw _privateConstructorUsedError;
   List<Artist> get featuredArtists => throw _privateConstructorUsedError;
 
@@ -45,12 +39,6 @@ abstract class $MusicDashboardStateCopyWith<$Res> {
   $Res call({
     bool isLoading,
     String? error,
-    int favoritesCount,
-    int playlistsCount,
-    int albumsCount,
-    int artistsCount,
-    int episodesCount,
-    int programsCount,
     List<Album> featuredAlbums,
     List<Artist> featuredArtists,
   });
@@ -73,12 +61,6 @@ class _$MusicDashboardStateCopyWithImpl<$Res, $Val extends MusicDashboardState>
   $Res call({
     Object? isLoading = null,
     Object? error = freezed,
-    Object? favoritesCount = null,
-    Object? playlistsCount = null,
-    Object? albumsCount = null,
-    Object? artistsCount = null,
-    Object? episodesCount = null,
-    Object? programsCount = null,
     Object? featuredAlbums = null,
     Object? featuredArtists = null,
   }) {
@@ -92,30 +74,6 @@ class _$MusicDashboardStateCopyWithImpl<$Res, $Val extends MusicDashboardState>
                 ? _value.error
                 : error // ignore: cast_nullable_to_non_nullable
                       as String?,
-            favoritesCount: null == favoritesCount
-                ? _value.favoritesCount
-                : favoritesCount // ignore: cast_nullable_to_non_nullable
-                      as int,
-            playlistsCount: null == playlistsCount
-                ? _value.playlistsCount
-                : playlistsCount // ignore: cast_nullable_to_non_nullable
-                      as int,
-            albumsCount: null == albumsCount
-                ? _value.albumsCount
-                : albumsCount // ignore: cast_nullable_to_non_nullable
-                      as int,
-            artistsCount: null == artistsCount
-                ? _value.artistsCount
-                : artistsCount // ignore: cast_nullable_to_non_nullable
-                      as int,
-            episodesCount: null == episodesCount
-                ? _value.episodesCount
-                : episodesCount // ignore: cast_nullable_to_non_nullable
-                      as int,
-            programsCount: null == programsCount
-                ? _value.programsCount
-                : programsCount // ignore: cast_nullable_to_non_nullable
-                      as int,
             featuredAlbums: null == featuredAlbums
                 ? _value.featuredAlbums
                 : featuredAlbums // ignore: cast_nullable_to_non_nullable
@@ -142,12 +100,6 @@ abstract class _$$MusicDashboardStateImplCopyWith<$Res>
   $Res call({
     bool isLoading,
     String? error,
-    int favoritesCount,
-    int playlistsCount,
-    int albumsCount,
-    int artistsCount,
-    int episodesCount,
-    int programsCount,
     List<Album> featuredAlbums,
     List<Artist> featuredArtists,
   });
@@ -169,12 +121,6 @@ class __$$MusicDashboardStateImplCopyWithImpl<$Res>
   $Res call({
     Object? isLoading = null,
     Object? error = freezed,
-    Object? favoritesCount = null,
-    Object? playlistsCount = null,
-    Object? albumsCount = null,
-    Object? artistsCount = null,
-    Object? episodesCount = null,
-    Object? programsCount = null,
     Object? featuredAlbums = null,
     Object? featuredArtists = null,
   }) {
@@ -188,30 +134,6 @@ class __$$MusicDashboardStateImplCopyWithImpl<$Res>
             ? _value.error
             : error // ignore: cast_nullable_to_non_nullable
                   as String?,
-        favoritesCount: null == favoritesCount
-            ? _value.favoritesCount
-            : favoritesCount // ignore: cast_nullable_to_non_nullable
-                  as int,
-        playlistsCount: null == playlistsCount
-            ? _value.playlistsCount
-            : playlistsCount // ignore: cast_nullable_to_non_nullable
-                  as int,
-        albumsCount: null == albumsCount
-            ? _value.albumsCount
-            : albumsCount // ignore: cast_nullable_to_non_nullable
-                  as int,
-        artistsCount: null == artistsCount
-            ? _value.artistsCount
-            : artistsCount // ignore: cast_nullable_to_non_nullable
-                  as int,
-        episodesCount: null == episodesCount
-            ? _value.episodesCount
-            : episodesCount // ignore: cast_nullable_to_non_nullable
-                  as int,
-        programsCount: null == programsCount
-            ? _value.programsCount
-            : programsCount // ignore: cast_nullable_to_non_nullable
-                  as int,
         featuredAlbums: null == featuredAlbums
             ? _value._featuredAlbums
             : featuredAlbums // ignore: cast_nullable_to_non_nullable
@@ -231,12 +153,6 @@ class _$MusicDashboardStateImpl implements _MusicDashboardState {
   const _$MusicDashboardStateImpl({
     this.isLoading = false,
     this.error,
-    this.favoritesCount = 0,
-    this.playlistsCount = 0,
-    this.albumsCount = 0,
-    this.artistsCount = 0,
-    this.episodesCount = 0,
-    this.programsCount = 0,
     final List<Album> featuredAlbums = const [],
     final List<Artist> featuredArtists = const [],
   }) : _featuredAlbums = featuredAlbums,
@@ -247,24 +163,6 @@ class _$MusicDashboardStateImpl implements _MusicDashboardState {
   final bool isLoading;
   @override
   final String? error;
-  @override
-  @JsonKey()
-  final int favoritesCount;
-  @override
-  @JsonKey()
-  final int playlistsCount;
-  @override
-  @JsonKey()
-  final int albumsCount;
-  @override
-  @JsonKey()
-  final int artistsCount;
-  @override
-  @JsonKey()
-  final int episodesCount;
-  @override
-  @JsonKey()
-  final int programsCount;
   final List<Album> _featuredAlbums;
   @override
   @JsonKey()
@@ -285,7 +183,7 @@ class _$MusicDashboardStateImpl implements _MusicDashboardState {
 
   @override
   String toString() {
-    return 'MusicDashboardState(isLoading: $isLoading, error: $error, favoritesCount: $favoritesCount, playlistsCount: $playlistsCount, albumsCount: $albumsCount, artistsCount: $artistsCount, episodesCount: $episodesCount, programsCount: $programsCount, featuredAlbums: $featuredAlbums, featuredArtists: $featuredArtists)';
+    return 'MusicDashboardState(isLoading: $isLoading, error: $error, featuredAlbums: $featuredAlbums, featuredArtists: $featuredArtists)';
   }
 
   @override
@@ -296,18 +194,6 @@ class _$MusicDashboardStateImpl implements _MusicDashboardState {
             (identical(other.isLoading, isLoading) ||
                 other.isLoading == isLoading) &&
             (identical(other.error, error) || other.error == error) &&
-            (identical(other.favoritesCount, favoritesCount) ||
-                other.favoritesCount == favoritesCount) &&
-            (identical(other.playlistsCount, playlistsCount) ||
-                other.playlistsCount == playlistsCount) &&
-            (identical(other.albumsCount, albumsCount) ||
-                other.albumsCount == albumsCount) &&
-            (identical(other.artistsCount, artistsCount) ||
-                other.artistsCount == artistsCount) &&
-            (identical(other.episodesCount, episodesCount) ||
-                other.episodesCount == episodesCount) &&
-            (identical(other.programsCount, programsCount) ||
-                other.programsCount == programsCount) &&
             const DeepCollectionEquality().equals(
               other._featuredAlbums,
               _featuredAlbums,
@@ -323,12 +209,6 @@ class _$MusicDashboardStateImpl implements _MusicDashboardState {
     runtimeType,
     isLoading,
     error,
-    favoritesCount,
-    playlistsCount,
-    albumsCount,
-    artistsCount,
-    episodesCount,
-    programsCount,
     const DeepCollectionEquality().hash(_featuredAlbums),
     const DeepCollectionEquality().hash(_featuredArtists),
   );
@@ -349,12 +229,6 @@ abstract class _MusicDashboardState implements MusicDashboardState {
   const factory _MusicDashboardState({
     final bool isLoading,
     final String? error,
-    final int favoritesCount,
-    final int playlistsCount,
-    final int albumsCount,
-    final int artistsCount,
-    final int episodesCount,
-    final int programsCount,
     final List<Album> featuredAlbums,
     final List<Artist> featuredArtists,
   }) = _$MusicDashboardStateImpl;
@@ -363,18 +237,6 @@ abstract class _MusicDashboardState implements MusicDashboardState {
   bool get isLoading;
   @override
   String? get error;
-  @override
-  int get favoritesCount;
-  @override
-  int get playlistsCount;
-  @override
-  int get albumsCount;
-  @override
-  int get artistsCount;
-  @override
-  int get episodesCount;
-  @override
-  int get programsCount;
   @override
   List<Album> get featuredAlbums;
   @override

@@ -111,8 +111,8 @@ void showTrackOptionsBottomSheet({
                   final isEpisode = track.releaseDate != null;
                   final isLiked = ref.watch(
                     likeRegistryProvider.select((s) => isEpisode
-                        ? s.episodeLikes.containsKey(track.id)
-                        : s.trackLikes.containsKey(track.id)),
+                        ? s.likedEpisodes.any((e) => e.id == track.id)
+                        : s.likedTracks.any((t) => t.id == track.id)),
                   );
                   return ActionButton(
                     icon: 'assets/icons/heart_bg.svg',
@@ -120,9 +120,9 @@ void showTrackOptionsBottomSheet({
                     onTap: () {
                       final registry = ref.read(likeRegistryProvider.notifier);
                       if (isEpisode) {
-                        registry.toggleEpisode(track.id);
+                        registry.toggleEpisodeLike(track);
                       } else {
-                        registry.toggleTrack(track.id);
+                        registry.toggleTrackLike(track);
                       }
                       Navigator.pop(context);
                     },

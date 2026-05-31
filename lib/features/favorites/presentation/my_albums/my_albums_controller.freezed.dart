@@ -18,11 +18,6 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$MyAlbumsState {
   List<Album> get albums => throw _privateConstructorUsedError;
-  bool get isLoading => throw _privateConstructorUsedError;
-  bool get isLoadingMore => throw _privateConstructorUsedError;
-  int get currentPage => throw _privateConstructorUsedError;
-  bool get hasMore => throw _privateConstructorUsedError;
-  String? get error => throw _privateConstructorUsedError;
 
   /// Create a copy of MyAlbumsState
   /// with the given fields replaced by the non-null parameter values.
@@ -38,14 +33,7 @@ abstract class $MyAlbumsStateCopyWith<$Res> {
     $Res Function(MyAlbumsState) then,
   ) = _$MyAlbumsStateCopyWithImpl<$Res, MyAlbumsState>;
   @useResult
-  $Res call({
-    List<Album> albums,
-    bool isLoading,
-    bool isLoadingMore,
-    int currentPage,
-    bool hasMore,
-    String? error,
-  });
+  $Res call({List<Album> albums});
 }
 
 /// @nodoc
@@ -62,40 +50,13 @@ class _$MyAlbumsStateCopyWithImpl<$Res, $Val extends MyAlbumsState>
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? albums = null,
-    Object? isLoading = null,
-    Object? isLoadingMore = null,
-    Object? currentPage = null,
-    Object? hasMore = null,
-    Object? error = freezed,
-  }) {
+  $Res call({Object? albums = null}) {
     return _then(
       _value.copyWith(
             albums: null == albums
                 ? _value.albums
                 : albums // ignore: cast_nullable_to_non_nullable
                       as List<Album>,
-            isLoading: null == isLoading
-                ? _value.isLoading
-                : isLoading // ignore: cast_nullable_to_non_nullable
-                      as bool,
-            isLoadingMore: null == isLoadingMore
-                ? _value.isLoadingMore
-                : isLoadingMore // ignore: cast_nullable_to_non_nullable
-                      as bool,
-            currentPage: null == currentPage
-                ? _value.currentPage
-                : currentPage // ignore: cast_nullable_to_non_nullable
-                      as int,
-            hasMore: null == hasMore
-                ? _value.hasMore
-                : hasMore // ignore: cast_nullable_to_non_nullable
-                      as bool,
-            error: freezed == error
-                ? _value.error
-                : error // ignore: cast_nullable_to_non_nullable
-                      as String?,
           )
           as $Val,
     );
@@ -111,14 +72,7 @@ abstract class _$$MyAlbumsStateImplCopyWith<$Res>
   ) = __$$MyAlbumsStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({
-    List<Album> albums,
-    bool isLoading,
-    bool isLoadingMore,
-    int currentPage,
-    bool hasMore,
-    String? error,
-  });
+  $Res call({List<Album> albums});
 }
 
 /// @nodoc
@@ -134,40 +88,13 @@ class __$$MyAlbumsStateImplCopyWithImpl<$Res>
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? albums = null,
-    Object? isLoading = null,
-    Object? isLoadingMore = null,
-    Object? currentPage = null,
-    Object? hasMore = null,
-    Object? error = freezed,
-  }) {
+  $Res call({Object? albums = null}) {
     return _then(
       _$MyAlbumsStateImpl(
         albums: null == albums
             ? _value._albums
             : albums // ignore: cast_nullable_to_non_nullable
                   as List<Album>,
-        isLoading: null == isLoading
-            ? _value.isLoading
-            : isLoading // ignore: cast_nullable_to_non_nullable
-                  as bool,
-        isLoadingMore: null == isLoadingMore
-            ? _value.isLoadingMore
-            : isLoadingMore // ignore: cast_nullable_to_non_nullable
-                  as bool,
-        currentPage: null == currentPage
-            ? _value.currentPage
-            : currentPage // ignore: cast_nullable_to_non_nullable
-                  as int,
-        hasMore: null == hasMore
-            ? _value.hasMore
-            : hasMore // ignore: cast_nullable_to_non_nullable
-                  as bool,
-        error: freezed == error
-            ? _value.error
-            : error // ignore: cast_nullable_to_non_nullable
-                  as String?,
       ),
     );
   }
@@ -176,14 +103,8 @@ class __$$MyAlbumsStateImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$MyAlbumsStateImpl implements _MyAlbumsState {
-  const _$MyAlbumsStateImpl({
-    final List<Album> albums = const [],
-    this.isLoading = false,
-    this.isLoadingMore = false,
-    this.currentPage = 1,
-    this.hasMore = true,
-    this.error,
-  }) : _albums = albums;
+  const _$MyAlbumsStateImpl({final List<Album> albums = const []})
+    : _albums = albums;
 
   final List<Album> _albums;
   @override
@@ -195,23 +116,8 @@ class _$MyAlbumsStateImpl implements _MyAlbumsState {
   }
 
   @override
-  @JsonKey()
-  final bool isLoading;
-  @override
-  @JsonKey()
-  final bool isLoadingMore;
-  @override
-  @JsonKey()
-  final int currentPage;
-  @override
-  @JsonKey()
-  final bool hasMore;
-  @override
-  final String? error;
-
-  @override
   String toString() {
-    return 'MyAlbumsState(albums: $albums, isLoading: $isLoading, isLoadingMore: $isLoadingMore, currentPage: $currentPage, hasMore: $hasMore, error: $error)';
+    return 'MyAlbumsState(albums: $albums)';
   }
 
   @override
@@ -219,27 +125,12 @@ class _$MyAlbumsStateImpl implements _MyAlbumsState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$MyAlbumsStateImpl &&
-            const DeepCollectionEquality().equals(other._albums, _albums) &&
-            (identical(other.isLoading, isLoading) ||
-                other.isLoading == isLoading) &&
-            (identical(other.isLoadingMore, isLoadingMore) ||
-                other.isLoadingMore == isLoadingMore) &&
-            (identical(other.currentPage, currentPage) ||
-                other.currentPage == currentPage) &&
-            (identical(other.hasMore, hasMore) || other.hasMore == hasMore) &&
-            (identical(other.error, error) || other.error == error));
+            const DeepCollectionEquality().equals(other._albums, _albums));
   }
 
   @override
-  int get hashCode => Object.hash(
-    runtimeType,
-    const DeepCollectionEquality().hash(_albums),
-    isLoading,
-    isLoadingMore,
-    currentPage,
-    hasMore,
-    error,
-  );
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(_albums));
 
   /// Create a copy of MyAlbumsState
   /// with the given fields replaced by the non-null parameter values.
@@ -251,27 +142,11 @@ class _$MyAlbumsStateImpl implements _MyAlbumsState {
 }
 
 abstract class _MyAlbumsState implements MyAlbumsState {
-  const factory _MyAlbumsState({
-    final List<Album> albums,
-    final bool isLoading,
-    final bool isLoadingMore,
-    final int currentPage,
-    final bool hasMore,
-    final String? error,
-  }) = _$MyAlbumsStateImpl;
+  const factory _MyAlbumsState({final List<Album> albums}) =
+      _$MyAlbumsStateImpl;
 
   @override
   List<Album> get albums;
-  @override
-  bool get isLoading;
-  @override
-  bool get isLoadingMore;
-  @override
-  int get currentPage;
-  @override
-  bool get hasMore;
-  @override
-  String? get error;
 
   /// Create a copy of MyAlbumsState
   /// with the given fields replaced by the non-null parameter values.

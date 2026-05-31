@@ -7,6 +7,7 @@ import 'package:go_sport/domain/entities/playlist.dart';
 
 class PlaylistHero extends StatelessWidget {
   final Playlist playlist;
+  final bool isLiked;
   final VoidCallback onActionTap;
   final VoidCallback onPlayTap;
   final bool showPlayButton;
@@ -14,6 +15,7 @@ class PlaylistHero extends StatelessWidget {
   const PlaylistHero({
     super.key,
     required this.playlist,
+    required this.isLiked,
     required this.onActionTap,
     required this.onPlayTap,
     this.showPlayButton = true,
@@ -101,7 +103,7 @@ class PlaylistHero extends StatelessWidget {
                               : DSHeartIcon(
                                   color: DSColors.white,
                                   size: 32,
-                                  isFilled: playlist.isLiked,
+                                  isFilled: isLiked,
                                 ),
                         ),
                       ),

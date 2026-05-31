@@ -6,12 +6,14 @@ import 'package:go_sport/domain/entities/program.dart';
 
 class ProgramHero extends StatelessWidget {
   final Program program;
+  final bool isLiked;
   final VoidCallback onLikeTap;
   final VoidCallback onPlayTap;
 
   const ProgramHero({
     super.key,
     required this.program,
+    required this.isLiked,
     required this.onLikeTap,
     required this.onPlayTap,
   });
@@ -81,7 +83,7 @@ class ProgramHero extends StatelessWidget {
                           child: DSHeartIcon(
                             color: DSColors.white,
                             size: 24,
-                            isFilled: program.isLiked,
+                            isFilled: isLiked,
                           ),
                         ),
                       ),

@@ -224,17 +224,17 @@ class _MiniPlayerWidgetState extends ConsumerState<MiniPlayerWidget>
                       : ref.watch(
                           likeRegistryProvider.select((s) =>
                               track.releaseDate != null
-                                  ? s.episodeLikes.containsKey(track.id)
-                                  : s.trackLikes.containsKey(track.id)),
+                                  ? s.likedEpisodes.any((e) => e.id == track.id)
+                                  : s.likedTracks.any((t) => t.id == track.id)),
                         );
                   return GestureDetector(
                     onTap: () {
                       if (track == null) return;
                       final registry = ref.read(likeRegistryProvider.notifier);
                       if (track.releaseDate != null) {
-                        registry.toggleEpisode(track.id);
+                        registry.toggleEpisodeLike(track);
                       } else {
-                        registry.toggleTrack(track.id);
+                        registry.toggleTrackLike(track);
                       }
                     },
                     child: Padding(
@@ -447,8 +447,8 @@ class _MiniPlayerWidgetState extends ConsumerState<MiniPlayerWidget>
                               : ref.watch(
                                   likeRegistryProvider.select((s) =>
                                       track.releaseDate != null
-                                          ? s.episodeLikes.containsKey(track.id)
-                                          : s.trackLikes.containsKey(track.id)),
+                                          ? s.likedEpisodes.any((e) => e.id == track.id)
+                                          : s.likedTracks.any((t) => t.id == track.id)),
                                 );
                           return GestureDetector(
                             onTap: () {
@@ -456,9 +456,9 @@ class _MiniPlayerWidgetState extends ConsumerState<MiniPlayerWidget>
                               final registry =
                                   ref.read(likeRegistryProvider.notifier);
                               if (track.releaseDate != null) {
-                                registry.toggleEpisode(track.id);
+                                registry.toggleEpisodeLike(track);
                               } else {
-                                registry.toggleTrack(track.id);
+                                registry.toggleTrackLike(track);
                               }
                             },
                             child: Padding(

@@ -11,43 +11,12 @@ import 'package:go_sport/features/shared_widgets/dotted_divider.dart';
 import 'package:go_sport/features/shared_widgets/my_categories_top.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 
-class MyAlbumsScreen extends ConsumerStatefulWidget {
+class MyAlbumsScreen extends ConsumerWidget {
   const MyAlbumsScreen({super.key});
 
   @override
-  ConsumerState<MyAlbumsScreen> createState() => _MyAlbumsScreenState();
-}
-
-class _MyAlbumsScreenState extends ConsumerState<MyAlbumsScreen> {
-  late final ScrollController _scrollController;
-
-  @override
-  void initState() {
-    super.initState();
-    _scrollController = ScrollController()..addListener(_onScroll);
-  }
-
-  void _onScroll() {
-    final state = ref.read(myAlbumsStateProvider);
-    if (state.isLoading || state.isLoadingMore || !state.hasMore) return;
-
-    if (_scrollController.position.pixels >=
-        _scrollController.position.maxScrollExtent * 0.8) {
-      ref.read(myAlbumsStateProvider.notifier).loadMore();
-    }
-  }
-
-  @override
-  void dispose() {
-    _scrollController.removeListener(_onScroll);
-    _scrollController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final state = ref.watch(myAlbumsStateProvider);
-    final albums = state.albums;
+  Widget build(BuildContext context, WidgetRef ref) {
+    final albums = ref.watch(myAlbumsStateProvider).albums;
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.dark,
@@ -80,13 +49,7 @@ class _MyAlbumsScreenState extends ConsumerState<MyAlbumsScreen> {
                     ),
                     child: Container(
                       color: DSColors.white,
-                      child: state.isLoading && albums.isEmpty
-                          ? const Center(
-                              child: CircularProgressIndicator(),
-                            )
-                          : state.error != null && albums.isEmpty
-                          ? _buildErrorWidget(state)
-                          : _buildAlbumsList(ref, albums, state.isLoadingMore),
+                      child: _buildAlbumsList(ref, albums),
                     ),
                   ),
                 ),
@@ -98,42 +61,31 @@ class _MyAlbumsScreenState extends ConsumerState<MyAlbumsScreen> {
     );
   }
 
-  Widget _buildAlbumsList(
-    WidgetRef ref,
-    List<Album> albums,
-    bool isLoadingMore,
-  ) {
+  Widget _buildAlbumsList(WidgetRef ref, List<Album> albums) {
     if (albums.isEmpty) {
-      return Center(
-        child: Text('No favorite albums yet', style: context.subtitleLBold),
+      return Builder(
+        builder: (context) => Center(
+          child: Text('No favorite albums yet', style: context.subtitleLBold),
+        ),
       );
     }
 
     return RefreshIndicator(
       onRefresh: () => ref.read(myAlbumsStateProvider.notifier).refresh(),
       child: ListView.separated(
-        controller: _scrollController,
         physics: const AlwaysScrollableScrollPhysics(),
         padding: const EdgeInsets.only(top: 16, bottom: 16),
-        itemCount: albums.length + (isLoadingMore ? 1 : 0),
+        itemCount: albums.length,
         separatorBuilder: (context, index) {
           if (index >= albums.length - 1) {
             return const SizedBox.shrink();
           }
-
           return const Padding(
             padding: EdgeInsets.symmetric(horizontal: 16),
             child: DottedDivider(),
           );
         },
         itemBuilder: (context, index) {
-          if (index >= albums.length) {
-            return const Padding(
-              padding: EdgeInsets.all(16),
-              child: Center(child: CircularProgressIndicator()),
-            );
-          }
-
           final album = albums[index];
           return AlbumTile(
             imageUrl: album.imageUrl,
@@ -146,22 +98,6 @@ class _MyAlbumsScreenState extends ConsumerState<MyAlbumsScreen> {
             ),
           );
         },
-      ),
-    );
-  }
-
-  Widget _buildErrorWidget(MyAlbumsState state) {
-    return Center(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text('Failed to load favorite albums', style: context.subtitleLBold),
-          const SizedBox(height: 8),
-          ElevatedButton(
-            onPressed: () => ref.read(myAlbumsStateProvider.notifier).refresh(),
-            child: const Text('Retry'),
-          ),
-        ],
       ),
     );
   }

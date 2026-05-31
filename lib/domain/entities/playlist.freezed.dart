@@ -23,7 +23,6 @@ mixin _$Playlist {
   int get trackCount => throw _privateConstructorUsedError;
   List<String> get trackDocIds => throw _privateConstructorUsedError;
   PlaylistType get type => throw _privateConstructorUsedError;
-  bool get isLiked => throw _privateConstructorUsedError;
   String? get likeId => throw _privateConstructorUsedError;
 
   /// Create a copy of Playlist
@@ -45,7 +44,6 @@ abstract class $PlaylistCopyWith<$Res> {
     int trackCount,
     List<String> trackDocIds,
     PlaylistType type,
-    bool isLiked,
     String? likeId,
   });
 }
@@ -71,7 +69,6 @@ class _$PlaylistCopyWithImpl<$Res, $Val extends Playlist>
     Object? trackCount = null,
     Object? trackDocIds = null,
     Object? type = null,
-    Object? isLiked = null,
     Object? likeId = freezed,
   }) {
     return _then(
@@ -100,10 +97,6 @@ class _$PlaylistCopyWithImpl<$Res, $Val extends Playlist>
                 ? _value.type
                 : type // ignore: cast_nullable_to_non_nullable
                       as PlaylistType,
-            isLiked: null == isLiked
-                ? _value.isLiked
-                : isLiked // ignore: cast_nullable_to_non_nullable
-                      as bool,
             likeId: freezed == likeId
                 ? _value.likeId
                 : likeId // ignore: cast_nullable_to_non_nullable
@@ -130,7 +123,6 @@ abstract class _$$PlaylistImplCopyWith<$Res>
     int trackCount,
     List<String> trackDocIds,
     PlaylistType type,
-    bool isLiked,
     String? likeId,
   });
 }
@@ -155,7 +147,6 @@ class __$$PlaylistImplCopyWithImpl<$Res>
     Object? trackCount = null,
     Object? trackDocIds = null,
     Object? type = null,
-    Object? isLiked = null,
     Object? likeId = freezed,
   }) {
     return _then(
@@ -184,10 +175,6 @@ class __$$PlaylistImplCopyWithImpl<$Res>
             ? _value.type
             : type // ignore: cast_nullable_to_non_nullable
                   as PlaylistType,
-        isLiked: null == isLiked
-            ? _value.isLiked
-            : isLiked // ignore: cast_nullable_to_non_nullable
-                  as bool,
         likeId: freezed == likeId
             ? _value.likeId
             : likeId // ignore: cast_nullable_to_non_nullable
@@ -207,7 +194,6 @@ class _$PlaylistImpl implements _Playlist {
     required this.trackCount,
     final List<String> trackDocIds = const [],
     this.type = PlaylistType.featured,
-    this.isLiked = false,
     this.likeId,
   }) : _trackDocIds = trackDocIds;
 
@@ -232,14 +218,11 @@ class _$PlaylistImpl implements _Playlist {
   @JsonKey()
   final PlaylistType type;
   @override
-  @JsonKey()
-  final bool isLiked;
-  @override
   final String? likeId;
 
   @override
   String toString() {
-    return 'Playlist(id: $id, title: $title, imageUrl: $imageUrl, trackCount: $trackCount, trackDocIds: $trackDocIds, type: $type, isLiked: $isLiked, likeId: $likeId)';
+    return 'Playlist(id: $id, title: $title, imageUrl: $imageUrl, trackCount: $trackCount, trackDocIds: $trackDocIds, type: $type, likeId: $likeId)';
   }
 
   @override
@@ -258,7 +241,6 @@ class _$PlaylistImpl implements _Playlist {
               _trackDocIds,
             ) &&
             (identical(other.type, type) || other.type == type) &&
-            (identical(other.isLiked, isLiked) || other.isLiked == isLiked) &&
             (identical(other.likeId, likeId) || other.likeId == likeId));
   }
 
@@ -271,7 +253,6 @@ class _$PlaylistImpl implements _Playlist {
     trackCount,
     const DeepCollectionEquality().hash(_trackDocIds),
     type,
-    isLiked,
     likeId,
   );
 
@@ -292,7 +273,6 @@ abstract class _Playlist implements Playlist {
     required final int trackCount,
     final List<String> trackDocIds,
     final PlaylistType type,
-    final bool isLiked,
     final String? likeId,
   }) = _$PlaylistImpl;
 
@@ -308,8 +288,6 @@ abstract class _Playlist implements Playlist {
   List<String> get trackDocIds;
   @override
   PlaylistType get type;
-  @override
-  bool get isLiked;
   @override
   String? get likeId;
 

@@ -8,6 +8,7 @@ import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/domain/state/featured_playlists_state.dart';
+import 'package:go_sport/domain/state/like_registry.dart';
 import 'package:go_sport/features/music/presentation/music/music_dashboard_controller.dart';
 import 'package:go_sport/features/music/presentation/widgets/music_quick_action_card.dart';
 import 'package:go_sport/features/music/presentation/widgets/music_screen_skeleton.dart';
@@ -37,12 +38,25 @@ class _MusicScreenState extends ConsumerState<MusicScreen> {
     final musicDashboardState = ref.watch(musicStateProvider);
     final featuredArtists = musicDashboardState.featuredArtists;
     final featuredAlbums = musicDashboardState.featuredAlbums;
-    final artistsCount = musicDashboardState.artistsCount;
-    final albumsCount = musicDashboardState.albumsCount;
-    final playlistsCount = musicDashboardState.playlistsCount;
-    final episodesCount = musicDashboardState.episodesCount;
-    final programsCount = musicDashboardState.programsCount;
-    final favoritesCount = musicDashboardState.favoritesCount;
+
+    final favoritesCount = ref.watch(
+      likeRegistryProvider.select((s) => s.likedTracks.length),
+    );
+    final playlistsCount = ref.watch(
+      likeRegistryProvider.select((s) => s.likedPlaylists.length),
+    );
+    final albumsCount = ref.watch(
+      likeRegistryProvider.select((s) => s.likedAlbums.length),
+    );
+    final artistsCount = ref.watch(
+      likeRegistryProvider.select((s) => s.likedArtists.length),
+    );
+    final episodesCount = ref.watch(
+      likeRegistryProvider.select((s) => s.likedEpisodes.length),
+    );
+    final programsCount = ref.watch(
+      likeRegistryProvider.select((s) => s.likedPrograms.length),
+    );
 
     // Quick action cards data
     final cards = [

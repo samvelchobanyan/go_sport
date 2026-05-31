@@ -14,7 +14,11 @@
       "Bash(git rm *)",
       "Bash(git add *)",
       "Bash(git checkout *)",
-      "Bash(git merge *)"
+      "Bash(git merge *)",
+      "PowerShell(Get-Command flutter -ErrorAction SilentlyContinue)",
+      "Read(//c//**)",
+      "PowerShell($env:Path -split ';' | Where-Object { $_ -match 'dart|flutter' }; Get-Command dart -ErrorAction SilentlyContinue; Get-Command flutter -ErrorAction SilentlyContinue)",
+      "PowerShell(& \"C:\\\\flutter\\\\bin\\\\dart.bat\" run build_runner build --delete-conflicting-outputs 2>&1)"
     ]
   }
 }

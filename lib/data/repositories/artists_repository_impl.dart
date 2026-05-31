@@ -4,13 +4,11 @@ import 'package:go_sport/data/dto/artist_dto.dart';
 import 'package:go_sport/domain/entities/album.dart';
 import 'package:go_sport/domain/entities/artist.dart';
 import 'package:go_sport/domain/repositories/artists_repository.dart';
-import 'package:go_sport/domain/state/like_registry.dart';
 
 class ArtistsRepositoryImpl implements ArtistsRepository {
   final ApiClient _apiClient;
-  final LikeRegistry _registry;
 
-  ArtistsRepositoryImpl(this._apiClient, this._registry);
+  ArtistsRepositoryImpl(this._apiClient);
 
   @override
   Future<List<Artist>> getFeaturedArtists() async {
@@ -48,7 +46,6 @@ class ArtistsRepositoryImpl implements ArtistsRepository {
       final artistJson = entry['Artist'] as Map<String, dynamic>;
       return ArtistDto.fromJson(artistJson).toDomain();
     }).toList();
-    _registry.syncArtistsLikes(artistList);
 
     final pageCount =
         response.data['meta']['pagination']['pageCount'] as int;

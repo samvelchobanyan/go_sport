@@ -65,7 +65,7 @@ class _ProgramDetailsScreenState extends ConsumerState<ProgramDetailsScreen> {
       programDetailsControllerProvider(widget.program.id),
     );
     final isLiked = ref.watch(
-      likeRegistryProvider.select((s) => s.programLikes.containsKey(widget.program.id)),
+      likeRegistryProvider.select((s) => s.likedPrograms.any((p) => p.id == widget.program.id)),
     );
     final screenHeight = MediaQuery.of(context).size.height;
     final expandedHeight = screenHeight * 0.5;
@@ -121,10 +121,11 @@ class _ProgramDetailsScreenState extends ConsumerState<ProgramDetailsScreen> {
               ],
               flexibleSpace: FlexibleSpaceBar(
                 background: ProgramHero(
-                  program: widget.program.copyWith(isLiked: isLiked),
+                  program: widget.program,
+                  isLiked: isLiked,
                   onLikeTap: () => ref
                       .read(likeRegistryProvider.notifier)
-                      .toggleProgram(widget.program.id),
+                      .toggleProgramLike(widget.program),
                   onPlayTap: () {
                     final episodes = episodesState.mapOrNull(
                       data: (data) => data.episodes,

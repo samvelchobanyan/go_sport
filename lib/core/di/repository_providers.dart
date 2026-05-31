@@ -6,14 +6,12 @@ import 'package:go_sport/data/repositories/profile_repository_impl.dart';
 import 'package:go_sport/domain/repositories/auth_repository.dart';
 import 'package:go_sport/data/repositories/artists_repository_impl.dart';
 import 'package:go_sport/data/repositories/episodes_repository_impl.dart';
-import 'package:go_sport/data/repositories/music_repository_mock.dart';
 import 'package:go_sport/data/repositories/programs_repository_impl.dart';
 import 'package:go_sport/data/repositories/schedule_repository_impl.dart';
 import 'package:go_sport/domain/repositories/albums_repository.dart';
 import 'package:go_sport/domain/repositories/artists_repository.dart';
 import 'package:go_sport/domain/repositories/device_repository.dart';
 import 'package:go_sport/domain/repositories/episodes_repository.dart';
-import 'package:go_sport/domain/repositories/music_repository.dart';
 import 'package:go_sport/domain/repositories/profile_repository.dart';
 import 'package:go_sport/domain/repositories/programs_repository.dart';
 import 'package:go_sport/domain/repositories/schedule_repository.dart';
@@ -30,7 +28,6 @@ import '../../domain/repositories/featured_playlist_repository.dart';
 import '../../domain/repositories/search_repository.dart';
 import '../../domain/repositories/story_repository.dart';
 import '../../domain/repositories/track_repository.dart';
-import '../../domain/state/like_registry.dart';
 import '../di/network_providers.dart';
 
 final storyRepositoryProvider = Provider<StoryRepository>((ref) {
@@ -42,10 +39,7 @@ final newsRepositoryProvider = Provider<NewsRepository>((ref) {
 });
 
 final featuredPlaylistRepositoryProvider = Provider<FeaturedPlaylistRepository>((ref) {
-  return FeaturedPlaylistRepositoryImpl(
-    ref.read(apiClientProvider),
-    ref.read(likeRegistryProvider.notifier),
-  );
+  return FeaturedPlaylistRepositoryImpl(ref.read(apiClientProvider));
 });
 
 final customPlaylistRepositoryProvider = Provider<CustomPlaylistRepository>((ref) {
@@ -57,35 +51,19 @@ final tracksRepositoryProvider = Provider<TrackRepository>((ref) {
 });
 
 final episodesRepositoryProvider = Provider<EpisodesRepository>((ref) {
-  return EpisodesRepositoryImpl(
-    ref.read(apiClientProvider),
-    ref.read(likeRegistryProvider.notifier),
-  );
+  return EpisodesRepositoryImpl(ref.read(apiClientProvider));
 });
 
 final programsRepositoryProvider = Provider<ProgramsRepository>((ref) {
-  return ProgramsRepositoryImpl(
-    ref.read(apiClientProvider),
-    ref.read(likeRegistryProvider.notifier),
-  );
-});
-
-final musicRepositoryProvider = Provider<MusicRepository>((ref) {
-  return MusicRepositoryMock();
+  return ProgramsRepositoryImpl(ref.read(apiClientProvider));
 });
 
 final artistsRepositoryProvider = Provider<ArtistsRepository>((ref) {
-  return ArtistsRepositoryImpl(
-    ref.read(apiClientProvider),
-    ref.read(likeRegistryProvider.notifier),
-  );
+  return ArtistsRepositoryImpl(ref.read(apiClientProvider));
 });
 
 final albumsRepositoryProvider = Provider<AlbumsRepository>((ref) {
-  return AlbumsRepositoryImpl(
-    ref.read(apiClientProvider),
-    ref.read(likeRegistryProvider.notifier),
-  );
+  return AlbumsRepositoryImpl(ref.read(apiClientProvider));
 });
 
 final scheduleRepositoryProvider = Provider<ScheduleRepository>((ref) {

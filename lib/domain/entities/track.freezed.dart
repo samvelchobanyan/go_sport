@@ -24,7 +24,6 @@ mixin _$Track {
   Duration get duration => throw _privateConstructorUsedError;
   String get audioUrl => throw _privateConstructorUsedError;
   DateTime? get releaseDate => throw _privateConstructorUsedError;
-  bool get isLiked => throw _privateConstructorUsedError;
   String? get likeId => throw _privateConstructorUsedError;
 
   /// Create a copy of Track
@@ -46,7 +45,6 @@ abstract class $TrackCopyWith<$Res> {
     Duration duration,
     String audioUrl,
     DateTime? releaseDate,
-    bool isLiked,
     String? likeId,
   });
 }
@@ -73,7 +71,6 @@ class _$TrackCopyWithImpl<$Res, $Val extends Track>
     Object? duration = null,
     Object? audioUrl = null,
     Object? releaseDate = freezed,
-    Object? isLiked = null,
     Object? likeId = freezed,
   }) {
     return _then(
@@ -106,10 +103,6 @@ class _$TrackCopyWithImpl<$Res, $Val extends Track>
                 ? _value.releaseDate
                 : releaseDate // ignore: cast_nullable_to_non_nullable
                       as DateTime?,
-            isLiked: null == isLiked
-                ? _value.isLiked
-                : isLiked // ignore: cast_nullable_to_non_nullable
-                      as bool,
             likeId: freezed == likeId
                 ? _value.likeId
                 : likeId // ignore: cast_nullable_to_non_nullable
@@ -136,7 +129,6 @@ abstract class _$$TrackImplCopyWith<$Res> implements $TrackCopyWith<$Res> {
     Duration duration,
     String audioUrl,
     DateTime? releaseDate,
-    bool isLiked,
     String? likeId,
   });
 }
@@ -162,7 +154,6 @@ class __$$TrackImplCopyWithImpl<$Res>
     Object? duration = null,
     Object? audioUrl = null,
     Object? releaseDate = freezed,
-    Object? isLiked = null,
     Object? likeId = freezed,
   }) {
     return _then(
@@ -195,10 +186,6 @@ class __$$TrackImplCopyWithImpl<$Res>
             ? _value.releaseDate
             : releaseDate // ignore: cast_nullable_to_non_nullable
                   as DateTime?,
-        isLiked: null == isLiked
-            ? _value.isLiked
-            : isLiked // ignore: cast_nullable_to_non_nullable
-                  as bool,
         likeId: freezed == likeId
             ? _value.likeId
             : likeId // ignore: cast_nullable_to_non_nullable
@@ -219,7 +206,6 @@ class _$TrackImpl implements _Track {
     required this.duration,
     required this.audioUrl,
     this.releaseDate,
-    this.isLiked = false,
     this.likeId,
   });
 
@@ -238,14 +224,11 @@ class _$TrackImpl implements _Track {
   @override
   final DateTime? releaseDate;
   @override
-  @JsonKey()
-  final bool isLiked;
-  @override
   final String? likeId;
 
   @override
   String toString() {
-    return 'Track(id: $id, title: $title, artistName: $artistName, imageUrl: $imageUrl, duration: $duration, audioUrl: $audioUrl, releaseDate: $releaseDate, isLiked: $isLiked, likeId: $likeId)';
+    return 'Track(id: $id, title: $title, artistName: $artistName, imageUrl: $imageUrl, duration: $duration, audioUrl: $audioUrl, releaseDate: $releaseDate, likeId: $likeId)';
   }
 
   @override
@@ -265,7 +248,6 @@ class _$TrackImpl implements _Track {
                 other.audioUrl == audioUrl) &&
             (identical(other.releaseDate, releaseDate) ||
                 other.releaseDate == releaseDate) &&
-            (identical(other.isLiked, isLiked) || other.isLiked == isLiked) &&
             (identical(other.likeId, likeId) || other.likeId == likeId));
   }
 
@@ -279,7 +261,6 @@ class _$TrackImpl implements _Track {
     duration,
     audioUrl,
     releaseDate,
-    isLiked,
     likeId,
   );
 
@@ -301,7 +282,6 @@ abstract class _Track implements Track {
     required final Duration duration,
     required final String audioUrl,
     final DateTime? releaseDate,
-    final bool isLiked,
     final String? likeId,
   }) = _$TrackImpl;
 
@@ -319,8 +299,6 @@ abstract class _Track implements Track {
   String get audioUrl;
   @override
   DateTime? get releaseDate;
-  @override
-  bool get isLiked;
   @override
   String? get likeId;
 

@@ -16,43 +16,12 @@ import 'package:go_sport/features/shared_widgets/bottom_pop_ups/track_options.da
 import 'package:go_sport/features/playlists/presentation/bottom_sheets/add_to_playlist_bottom_sheet.dart';
 import 'package:go_sport/features/shared_widgets/track_tile.dart';
 
-class MyFavoritesScreen extends ConsumerStatefulWidget {
+class MyFavoritesScreen extends ConsumerWidget {
   const MyFavoritesScreen({super.key});
 
   @override
-  ConsumerState<MyFavoritesScreen> createState() => _MyFavoritesScreenState();
-}
-
-class _MyFavoritesScreenState extends ConsumerState<MyFavoritesScreen> {
-  late final ScrollController _scrollController;
-
-  @override
-  void initState() {
-    super.initState();
-    _scrollController = ScrollController()..addListener(_onScroll);
-  }
-
-  void _onScroll() {
-    final state = ref.read(myFavoritesStateProvider);
-    if (state.isLoading || state.isLoadingMore || !state.hasMore) return;
-
-    if (_scrollController.position.pixels >=
-        _scrollController.position.maxScrollExtent * 0.8) {
-      ref.read(myFavoritesStateProvider.notifier).loadMore();
-    }
-  }
-
-  @override
-  void dispose() {
-    _scrollController.removeListener(_onScroll);
-    _scrollController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final state = ref.watch(myFavoritesStateProvider);
-    final favorites = state.favorites;
+  Widget build(BuildContext context, WidgetRef ref) {
+    final favorites = ref.watch(myFavoritesStateProvider).favorites;
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.dark,
@@ -97,17 +66,7 @@ class _MyFavoritesScreenState extends ConsumerState<MyFavoritesScreen> {
                     ),
                     child: Container(
                       color: DSColors.white,
-                      child: state.isLoading && favorites.isEmpty
-                          ? const Center(
-                              child: CircularProgressIndicator(),
-                            )
-                          : state.error != null && favorites.isEmpty
-                          ? _buildErrorWidget(state)
-                          : _buildSongsList(
-                              ref,
-                              favorites,
-                              state.isLoadingMore,
-                            ),
+                      child: _buildSongsList(context, ref, favorites),
                     ),
                   ),
                 ),
@@ -120,9 +79,9 @@ class _MyFavoritesScreenState extends ConsumerState<MyFavoritesScreen> {
   }
 
   Widget _buildSongsList(
+    BuildContext context,
     WidgetRef ref,
     List<Track> songs,
-    bool isLoadingMore,
   ) {
     final playerState = ref.watch(playerStateProvider);
     final playingTrackId = playerState.currentTrack?.id;
@@ -134,72 +93,42 @@ class _MyFavoritesScreenState extends ConsumerState<MyFavoritesScreen> {
     }
 
     return RefreshIndicator(
-      onRefresh: () =>
-          ref.read(myFavoritesStateProvider.notifier).refresh(),
+      onRefresh: () => ref.read(myFavoritesStateProvider.notifier).refresh(),
       child: ListView.separated(
-      controller: _scrollController,
-      physics: const AlwaysScrollableScrollPhysics(),
-      padding: EdgeInsets.only(bottom: isLoadingMore ? 16 : 100),
-      itemCount: songs.length + (isLoadingMore ? 1 : 0),
-      separatorBuilder: (context, index) {
-        if (index >= songs.length - 1) {
-          return const SizedBox.shrink();
-        }
-
-        return const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16),
-          child: DottedDivider(),
-        );
-      },
-      itemBuilder: (context, index) {
-        if (index == songs.length) {
+        physics: const AlwaysScrollableScrollPhysics(),
+        padding: const EdgeInsets.only(bottom: 100),
+        itemCount: songs.length,
+        separatorBuilder: (context, index) {
+          if (index >= songs.length - 1) {
+            return const SizedBox.shrink();
+          }
           return const Padding(
-            padding: EdgeInsets.all(16),
-            child: Center(child: CircularProgressIndicator()),
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            child: DottedDivider(),
           );
-        }
+        },
+        itemBuilder: (context, index) {
+          final track = songs[index];
+          final isCurrentTrack = track.id == playingTrackId;
+          final bool? trackPlayingState = isCurrentTrack
+              ? playerState.isPlaying && playerState.isRadioMode == false
+              : null;
 
-        final track = songs[index];
-        final isCurrentTrack = track.id == playingTrackId;
-        final bool? trackPlayingState = isCurrentTrack
-            ? playerState.isPlaying && playerState.isRadioMode == false
-            : null;
-
-        return TrackTile(
-          track: track,
-          isPlaying: trackPlayingState,
-          onTap: () => _onTrackTap(ref, songs, index),
-          onMenuTap: (track) => showTrackOptionsBottomSheet(
-            context: context,
+          return TrackTile(
             track: track,
-            onAddToPlaylist: () => showAddToPlaylistBottomSheet(
+            isPlaying: trackPlayingState,
+            onTap: () => _onTrackTap(ref, songs, index),
+            onMenuTap: (track) => showTrackOptionsBottomSheet(
               context: context,
               track: track,
+              onAddToPlaylist: () => showAddToPlaylistBottomSheet(
+                context: context,
+                track: track,
+              ),
             ),
-          ),
-        );
-      },
+          );
+        },
       ),
-    );
-  }
-
-  Widget _buildErrorWidget(MyFavoritesState state) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text('Error loading favorites', style: context.subtitleLSemi),
-        const SizedBox(height: 8),
-        Text(
-          state.error!,
-          style: context.textL?.copyWith(color: DSColors.gray60),
-        ),
-        const SizedBox(height: 16),
-        ElevatedButton(
-          onPressed: () =>
-              ref.read(myFavoritesStateProvider.notifier).refresh(),
-          child: const Text('Retry'),
-        ),
-      ],
     );
   }
 
@@ -233,5 +162,4 @@ class _MyFavoritesScreenState extends ConsumerState<MyFavoritesScreen> {
           startIndex: index,
         );
   }
-
 }

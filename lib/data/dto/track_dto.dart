@@ -82,7 +82,6 @@ class TrackDto {
       imageUrl: albumCoverUrl,
       duration: Duration(seconds: length),
       audioUrl: file?.url ?? '',
-      isLiked: likeId != null,
       likeId: likeId,
     );
   }

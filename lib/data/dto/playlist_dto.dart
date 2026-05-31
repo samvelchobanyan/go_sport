@@ -45,7 +45,6 @@ class PlaylistDto {
       title: name,
       imageUrl: cover?.url ?? '',
       trackCount: cnt,
-      isLiked: likeId != null,
       likeId: likeId,
     );
   }

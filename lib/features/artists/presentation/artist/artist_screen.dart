@@ -26,7 +26,7 @@ class _ArtistScreenState extends ConsumerState<ArtistScreen> {
   Widget build(BuildContext context) {
     final albumsState = ref.watch(artistControllerProvider(widget.artist.id));
     final isLiked = ref.watch(
-      likeRegistryProvider.select((s) => s.artistLikes.containsKey(widget.artist.id)),
+      likeRegistryProvider.select((s) => s.likedArtists.any((a) => a.id == widget.artist.id)),
     );
     final screenHeight = MediaQuery.of(context).size.height;
     final expandedHeight = screenHeight * 0.5;
@@ -78,10 +78,11 @@ class _ArtistScreenState extends ConsumerState<ArtistScreen> {
             ],
             flexibleSpace: FlexibleSpaceBar(
               background: ArtistHero(
-                artist: widget.artist.copyWith(isLiked: isLiked),
+                artist: widget.artist,
+                isLiked: isLiked,
                 onLikeTap: () => ref
                     .read(likeRegistryProvider.notifier)
-                    .toggleArtist(widget.artist.id),
+                    .toggleArtistLike(widget.artist),
               ),
             ),
             bottom: PreferredSize(

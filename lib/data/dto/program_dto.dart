@@ -45,7 +45,6 @@ class ProgramDto {
       title: name,
       imageUrl: cover?.url ?? '',
       episodeCount: cnt,
-      isLiked: likeId != null,
       likeId: likeId,
     );
   }

@@ -18,11 +18,6 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$NewEpisodesState {
   List<Track> get episodes => throw _privateConstructorUsedError;
-  bool get isLoading => throw _privateConstructorUsedError;
-  bool get isLoadingMore => throw _privateConstructorUsedError;
-  int get currentPage => throw _privateConstructorUsedError;
-  bool get hasMore => throw _privateConstructorUsedError;
-  String? get error => throw _privateConstructorUsedError;
 
   /// Create a copy of NewEpisodesState
   /// with the given fields replaced by the non-null parameter values.
@@ -38,14 +33,7 @@ abstract class $NewEpisodesStateCopyWith<$Res> {
     $Res Function(NewEpisodesState) then,
   ) = _$NewEpisodesStateCopyWithImpl<$Res, NewEpisodesState>;
   @useResult
-  $Res call({
-    List<Track> episodes,
-    bool isLoading,
-    bool isLoadingMore,
-    int currentPage,
-    bool hasMore,
-    String? error,
-  });
+  $Res call({List<Track> episodes});
 }
 
 /// @nodoc
@@ -62,40 +50,13 @@ class _$NewEpisodesStateCopyWithImpl<$Res, $Val extends NewEpisodesState>
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? episodes = null,
-    Object? isLoading = null,
-    Object? isLoadingMore = null,
-    Object? currentPage = null,
-    Object? hasMore = null,
-    Object? error = freezed,
-  }) {
+  $Res call({Object? episodes = null}) {
     return _then(
       _value.copyWith(
             episodes: null == episodes
                 ? _value.episodes
                 : episodes // ignore: cast_nullable_to_non_nullable
                       as List<Track>,
-            isLoading: null == isLoading
-                ? _value.isLoading
-                : isLoading // ignore: cast_nullable_to_non_nullable
-                      as bool,
-            isLoadingMore: null == isLoadingMore
-                ? _value.isLoadingMore
-                : isLoadingMore // ignore: cast_nullable_to_non_nullable
-                      as bool,
-            currentPage: null == currentPage
-                ? _value.currentPage
-                : currentPage // ignore: cast_nullable_to_non_nullable
-                      as int,
-            hasMore: null == hasMore
-                ? _value.hasMore
-                : hasMore // ignore: cast_nullable_to_non_nullable
-                      as bool,
-            error: freezed == error
-                ? _value.error
-                : error // ignore: cast_nullable_to_non_nullable
-                      as String?,
           )
           as $Val,
     );
@@ -111,14 +72,7 @@ abstract class _$$NewEpisodesStateImplCopyWith<$Res>
   ) = __$$NewEpisodesStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({
-    List<Track> episodes,
-    bool isLoading,
-    bool isLoadingMore,
-    int currentPage,
-    bool hasMore,
-    String? error,
-  });
+  $Res call({List<Track> episodes});
 }
 
 /// @nodoc
@@ -134,40 +88,13 @@ class __$$NewEpisodesStateImplCopyWithImpl<$Res>
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? episodes = null,
-    Object? isLoading = null,
-    Object? isLoadingMore = null,
-    Object? currentPage = null,
-    Object? hasMore = null,
-    Object? error = freezed,
-  }) {
+  $Res call({Object? episodes = null}) {
     return _then(
       _$NewEpisodesStateImpl(
         episodes: null == episodes
             ? _value._episodes
             : episodes // ignore: cast_nullable_to_non_nullable
                   as List<Track>,
-        isLoading: null == isLoading
-            ? _value.isLoading
-            : isLoading // ignore: cast_nullable_to_non_nullable
-                  as bool,
-        isLoadingMore: null == isLoadingMore
-            ? _value.isLoadingMore
-            : isLoadingMore // ignore: cast_nullable_to_non_nullable
-                  as bool,
-        currentPage: null == currentPage
-            ? _value.currentPage
-            : currentPage // ignore: cast_nullable_to_non_nullable
-                  as int,
-        hasMore: null == hasMore
-            ? _value.hasMore
-            : hasMore // ignore: cast_nullable_to_non_nullable
-                  as bool,
-        error: freezed == error
-            ? _value.error
-            : error // ignore: cast_nullable_to_non_nullable
-                  as String?,
       ),
     );
   }
@@ -176,14 +103,8 @@ class __$$NewEpisodesStateImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$NewEpisodesStateImpl implements _NewEpisodesState {
-  const _$NewEpisodesStateImpl({
-    final List<Track> episodes = const [],
-    this.isLoading = false,
-    this.isLoadingMore = false,
-    this.currentPage = 1,
-    this.hasMore = true,
-    this.error,
-  }) : _episodes = episodes;
+  const _$NewEpisodesStateImpl({final List<Track> episodes = const []})
+    : _episodes = episodes;
 
   final List<Track> _episodes;
   @override
@@ -195,23 +116,8 @@ class _$NewEpisodesStateImpl implements _NewEpisodesState {
   }
 
   @override
-  @JsonKey()
-  final bool isLoading;
-  @override
-  @JsonKey()
-  final bool isLoadingMore;
-  @override
-  @JsonKey()
-  final int currentPage;
-  @override
-  @JsonKey()
-  final bool hasMore;
-  @override
-  final String? error;
-
-  @override
   String toString() {
-    return 'NewEpisodesState(episodes: $episodes, isLoading: $isLoading, isLoadingMore: $isLoadingMore, currentPage: $currentPage, hasMore: $hasMore, error: $error)';
+    return 'NewEpisodesState(episodes: $episodes)';
   }
 
   @override
@@ -219,27 +125,12 @@ class _$NewEpisodesStateImpl implements _NewEpisodesState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$NewEpisodesStateImpl &&
-            const DeepCollectionEquality().equals(other._episodes, _episodes) &&
-            (identical(other.isLoading, isLoading) ||
-                other.isLoading == isLoading) &&
-            (identical(other.isLoadingMore, isLoadingMore) ||
-                other.isLoadingMore == isLoadingMore) &&
-            (identical(other.currentPage, currentPage) ||
-                other.currentPage == currentPage) &&
-            (identical(other.hasMore, hasMore) || other.hasMore == hasMore) &&
-            (identical(other.error, error) || other.error == error));
+            const DeepCollectionEquality().equals(other._episodes, _episodes));
   }
 
   @override
-  int get hashCode => Object.hash(
-    runtimeType,
-    const DeepCollectionEquality().hash(_episodes),
-    isLoading,
-    isLoadingMore,
-    currentPage,
-    hasMore,
-    error,
-  );
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(_episodes));
 
   /// Create a copy of NewEpisodesState
   /// with the given fields replaced by the non-null parameter values.
@@ -254,27 +145,11 @@ class _$NewEpisodesStateImpl implements _NewEpisodesState {
 }
 
 abstract class _NewEpisodesState implements NewEpisodesState {
-  const factory _NewEpisodesState({
-    final List<Track> episodes,
-    final bool isLoading,
-    final bool isLoadingMore,
-    final int currentPage,
-    final bool hasMore,
-    final String? error,
-  }) = _$NewEpisodesStateImpl;
+  const factory _NewEpisodesState({final List<Track> episodes}) =
+      _$NewEpisodesStateImpl;
 
   @override
   List<Track> get episodes;
-  @override
-  bool get isLoading;
-  @override
-  bool get isLoadingMore;
-  @override
-  int get currentPage;
-  @override
-  bool get hasMore;
-  @override
-  String? get error;
 
   /// Create a copy of NewEpisodesState
   /// with the given fields replaced by the non-null parameter values.

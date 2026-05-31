@@ -50,7 +50,6 @@ class EpisodeDto {
       duration: Duration(seconds: length),
       audioUrl: fileUrl ?? '',
       releaseDate: streamed,
-      isLiked: likeId != null,
       likeId: likeId,
     );
   }

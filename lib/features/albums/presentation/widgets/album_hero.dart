@@ -6,12 +6,14 @@ import 'package:go_sport/domain/entities/album.dart';
 
 class AlbumHero extends StatelessWidget {
   final Album album;
+  final bool isLiked;
   final VoidCallback onLikeTap;
   final VoidCallback onPlayTap;
 
   const AlbumHero({
     super.key,
     required this.album,
+    required this.isLiked,
     required this.onLikeTap,
     required this.onPlayTap,
   });
@@ -88,7 +90,7 @@ class AlbumHero extends StatelessWidget {
                           child: DSHeartIcon(
                             color: DSColors.white,
                             size: 24,
-                            isFilled: album.isLiked,
+                            isFilled: isLiked,
                           ),
                         ),
                       ),

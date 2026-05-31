@@ -4,13 +4,11 @@ import 'package:go_sport/data/dto/track_dto.dart';
 import 'package:go_sport/domain/entities/playlist.dart';
 import 'package:go_sport/domain/entities/track.dart';
 import 'package:go_sport/domain/repositories/featured_playlist_repository.dart';
-import 'package:go_sport/domain/state/like_registry.dart';
 
 class FeaturedPlaylistRepositoryImpl implements FeaturedPlaylistRepository {
   final ApiClient _apiClient;
-  final LikeRegistry _registry;
 
-  FeaturedPlaylistRepositoryImpl(this._apiClient, this._registry);
+  FeaturedPlaylistRepositoryImpl(this._apiClient);
 
   @override
   Future<List<Playlist>> getFeaturedPlaylists() async {
@@ -63,7 +61,6 @@ class FeaturedPlaylistRepositoryImpl implements FeaturedPlaylistRepository {
       playlistJson['cnt'] = entry['cnt'];
       return PlaylistDto.fromJson(playlistJson).toDomain();
     }).toList();
-    _registry.syncPlaylistsLikes(playlists);
     return playlists;
   }
 
@@ -90,7 +87,6 @@ class FeaturedPlaylistRepositoryImpl implements FeaturedPlaylistRepository {
       trackJson['Like'] = {'documentId': entry['documentId']};
       return TrackDto.fromJson(trackJson).toDomain();
     }).toList();
-    _registry.syncTracksLikes(items);
 
     final pageCount =
         response.data['meta']['pagination']['pageCount'] as int;

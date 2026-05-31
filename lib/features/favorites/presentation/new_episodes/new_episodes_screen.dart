@@ -14,43 +14,12 @@ import 'package:go_sport/features/shared_widgets/dotted_divider.dart';
 import 'package:go_sport/features/shared_widgets/episode_tile.dart';
 import 'package:go_sport/features/shared_widgets/my_categories_top.dart';
 
-class NewEpisodesScreen extends ConsumerStatefulWidget {
+class NewEpisodesScreen extends ConsumerWidget {
   const NewEpisodesScreen({super.key});
 
   @override
-  ConsumerState<NewEpisodesScreen> createState() => _NewEpisodesScreenState();
-}
-
-class _NewEpisodesScreenState extends ConsumerState<NewEpisodesScreen> {
-  late final ScrollController _scrollController;
-
-  @override
-  void initState() {
-    super.initState();
-    _scrollController = ScrollController()..addListener(_onScroll);
-  }
-
-  void _onScroll() {
-    final state = ref.read(newEpisodesStateProvider);
-    if (state.isLoading || state.isLoadingMore || !state.hasMore) return;
-
-    if (_scrollController.position.pixels >=
-        _scrollController.position.maxScrollExtent * 0.8) {
-      ref.read(newEpisodesStateProvider.notifier).loadMore();
-    }
-  }
-
-  @override
-  void dispose() {
-    _scrollController.removeListener(_onScroll);
-    _scrollController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final state = ref.watch(newEpisodesStateProvider);
-    final List<Track> episodes = state.episodes;
+  Widget build(BuildContext context, WidgetRef ref) {
+    final episodes = ref.watch(newEpisodesStateProvider).episodes;
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.dark,
@@ -94,17 +63,7 @@ class _NewEpisodesScreenState extends ConsumerState<NewEpisodesScreen> {
                     ),
                     child: Container(
                       color: DSColors.white,
-                      child: state.isLoading && state.episodes.isEmpty
-                          ? const Center(
-                              child: CircularProgressIndicator(),
-                            )
-                          : state.error != null && state.episodes.isEmpty
-                          ? _buildErrorWidget(state)
-                          : _buildEpisodesList(
-                              ref,
-                              episodes,
-                              state.isLoadingMore,
-                            ),
+                      child: _buildEpisodesList(context, ref, episodes),
                     ),
                   ),
                 ),
@@ -116,27 +75,10 @@ class _NewEpisodesScreenState extends ConsumerState<NewEpisodesScreen> {
     );
   }
 
-  Widget _buildErrorWidget(NewEpisodesState state) {
-    return Center(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text('Failed to load episodes', style: context.subtitleLBold),
-          const SizedBox(height: 8),
-          ElevatedButton(
-            onPressed: () =>
-                ref.read(newEpisodesStateProvider.notifier).refresh(),
-            child: const Text('Retry'),
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget _buildEpisodesList(
+    BuildContext context,
     WidgetRef ref,
     List<Track> episodes,
-    bool isLoadingMore,
   ) {
     final playerState = ref.watch(playerStateProvider);
     final playingTrackId = playerState.currentTrack?.id;
@@ -148,30 +90,20 @@ class _NewEpisodesScreenState extends ConsumerState<NewEpisodesScreen> {
     }
 
     return RefreshIndicator(
-      onRefresh: () =>
-          ref.read(newEpisodesStateProvider.notifier).refresh(),
+      onRefresh: () => ref.read(newEpisodesStateProvider.notifier).refresh(),
       child: ListView.separated(
-        controller: _scrollController,
         physics: const AlwaysScrollableScrollPhysics(),
-        itemCount: episodes.length + (isLoadingMore ? 1 : 0),
+        itemCount: episodes.length,
         separatorBuilder: (context, index) {
           if (index >= episodes.length - 1) {
             return const SizedBox.shrink();
           }
-
           return const Padding(
             padding: EdgeInsets.symmetric(horizontal: 16),
             child: DottedDivider(),
           );
         },
         itemBuilder: (context, index) {
-          if (index >= episodes.length) {
-            return const Padding(
-              padding: EdgeInsets.all(16),
-              child: Center(child: CircularProgressIndicator()),
-            );
-          }
-
           final episode = episodes[index];
           final isCurrentTrack = episode.id == playingTrackId;
           final bool? trackPlayingState = isCurrentTrack

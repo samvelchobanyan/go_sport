@@ -2,13 +2,11 @@ import 'package:go_sport/core/network/api_client.dart';
 import 'package:go_sport/data/dto/episode_dto.dart';
 import 'package:go_sport/domain/entities/track.dart';
 import 'package:go_sport/domain/repositories/episodes_repository.dart';
-import 'package:go_sport/domain/state/like_registry.dart';
 
 class EpisodesRepositoryImpl implements EpisodesRepository {
   final ApiClient _apiClient;
-  final LikeRegistry _registry;
 
-  EpisodesRepositoryImpl(this._apiClient, this._registry);
+  EpisodesRepositoryImpl(this._apiClient);
 
   @override
   Future<List<Track>> getFeaturedEpisodes() async {
@@ -49,7 +47,6 @@ class EpisodesRepositoryImpl implements EpisodesRepository {
       episodeJson['Like'] = {'documentId': entry['documentId']};
       return EpisodeDto.fromJson(episodeJson).toDomain();
     }).toList();
-    _registry.syncEpisodesLikes(items);
 
     final pageCount =
         response.data['meta']['pagination']['pageCount'] as int;

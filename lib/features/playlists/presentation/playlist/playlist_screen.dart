@@ -121,8 +121,8 @@ class _PlaylistScreenState extends ConsumerState<PlaylistScreen> {
         );
   }
 
-  void _onLikeTap(WidgetRef ref) {
-    ref.read(likeRegistryProvider.notifier).togglePlaylist(widget.playlistId);
+  void _onLikeTap(WidgetRef ref, Playlist playlist) {
+    ref.read(likeRegistryProvider.notifier).togglePlaylistLike(playlist);
   }
 
   @override
@@ -158,9 +158,9 @@ class _PlaylistScreenState extends ConsumerState<PlaylistScreen> {
     }
 
     final isLikedFromRegistry = ref.watch(
-      likeRegistryProvider.select((s) => s.playlistLikes.containsKey(widget.playlistId)),
+      likeRegistryProvider.select((s) => s.likedPlaylists.any((p) => p.id == widget.playlistId)),
     );
-    final pl = currentPlaylist.copyWith(isLiked: isLikedFromRegistry);
+    final pl = currentPlaylist;
     final screenHeight = MediaQuery.of(context).size.height;
     final expandedHeight = screenHeight * 0.5;
 
@@ -272,6 +272,7 @@ class _PlaylistScreenState extends ConsumerState<PlaylistScreen> {
             flexibleSpace: FlexibleSpaceBar(
               background: PlaylistHero(
                 playlist: pl,
+                isLiked: isLikedFromRegistry,
                 showPlayButton: tracksState.mapOrNull(
                       data: (data) => data.tracks.isNotEmpty,
                     ) ??
@@ -284,7 +285,7 @@ class _PlaylistScreenState extends ConsumerState<PlaylistScreen> {
                                   .notifier)
                               .addTracks(tracks),
                         )
-                    : () => _onLikeTap(ref),
+                    : () => _onLikeTap(ref, pl),
                 onPlayTap: () {
                   final tracksValue = tracksState.mapOrNull(
                     data: (data) => data.tracks,

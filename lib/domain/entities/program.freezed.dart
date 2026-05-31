@@ -21,7 +21,6 @@ mixin _$Program {
   String get title => throw _privateConstructorUsedError;
   String get imageUrl => throw _privateConstructorUsedError;
   int get episodeCount => throw _privateConstructorUsedError;
-  bool get isLiked => throw _privateConstructorUsedError;
   String? get likeId => throw _privateConstructorUsedError;
 
   /// Create a copy of Program
@@ -40,7 +39,6 @@ abstract class $ProgramCopyWith<$Res> {
     String title,
     String imageUrl,
     int episodeCount,
-    bool isLiked,
     String? likeId,
   });
 }
@@ -64,7 +62,6 @@ class _$ProgramCopyWithImpl<$Res, $Val extends Program>
     Object? title = null,
     Object? imageUrl = null,
     Object? episodeCount = null,
-    Object? isLiked = null,
     Object? likeId = freezed,
   }) {
     return _then(
@@ -85,10 +82,6 @@ class _$ProgramCopyWithImpl<$Res, $Val extends Program>
                 ? _value.episodeCount
                 : episodeCount // ignore: cast_nullable_to_non_nullable
                       as int,
-            isLiked: null == isLiked
-                ? _value.isLiked
-                : isLiked // ignore: cast_nullable_to_non_nullable
-                      as bool,
             likeId: freezed == likeId
                 ? _value.likeId
                 : likeId // ignore: cast_nullable_to_non_nullable
@@ -112,7 +105,6 @@ abstract class _$$ProgramImplCopyWith<$Res> implements $ProgramCopyWith<$Res> {
     String title,
     String imageUrl,
     int episodeCount,
-    bool isLiked,
     String? likeId,
   });
 }
@@ -135,7 +127,6 @@ class __$$ProgramImplCopyWithImpl<$Res>
     Object? title = null,
     Object? imageUrl = null,
     Object? episodeCount = null,
-    Object? isLiked = null,
     Object? likeId = freezed,
   }) {
     return _then(
@@ -156,10 +147,6 @@ class __$$ProgramImplCopyWithImpl<$Res>
             ? _value.episodeCount
             : episodeCount // ignore: cast_nullable_to_non_nullable
                   as int,
-        isLiked: null == isLiked
-            ? _value.isLiked
-            : isLiked // ignore: cast_nullable_to_non_nullable
-                  as bool,
         likeId: freezed == likeId
             ? _value.likeId
             : likeId // ignore: cast_nullable_to_non_nullable
@@ -177,7 +164,6 @@ class _$ProgramImpl implements _Program {
     required this.title,
     required this.imageUrl,
     required this.episodeCount,
-    required this.isLiked,
     this.likeId,
   });
 
@@ -190,13 +176,11 @@ class _$ProgramImpl implements _Program {
   @override
   final int episodeCount;
   @override
-  final bool isLiked;
-  @override
   final String? likeId;
 
   @override
   String toString() {
-    return 'Program(id: $id, title: $title, imageUrl: $imageUrl, episodeCount: $episodeCount, isLiked: $isLiked, likeId: $likeId)';
+    return 'Program(id: $id, title: $title, imageUrl: $imageUrl, episodeCount: $episodeCount, likeId: $likeId)';
   }
 
   @override
@@ -210,20 +194,12 @@ class _$ProgramImpl implements _Program {
                 other.imageUrl == imageUrl) &&
             (identical(other.episodeCount, episodeCount) ||
                 other.episodeCount == episodeCount) &&
-            (identical(other.isLiked, isLiked) || other.isLiked == isLiked) &&
             (identical(other.likeId, likeId) || other.likeId == likeId));
   }
 
   @override
-  int get hashCode => Object.hash(
-    runtimeType,
-    id,
-    title,
-    imageUrl,
-    episodeCount,
-    isLiked,
-    likeId,
-  );
+  int get hashCode =>
+      Object.hash(runtimeType, id, title, imageUrl, episodeCount, likeId);
 
   /// Create a copy of Program
   /// with the given fields replaced by the non-null parameter values.
@@ -240,7 +216,6 @@ abstract class _Program implements Program {
     required final String title,
     required final String imageUrl,
     required final int episodeCount,
-    required final bool isLiked,
     final String? likeId,
   }) = _$ProgramImpl;
 
@@ -252,8 +227,6 @@ abstract class _Program implements Program {
   String get imageUrl;
   @override
   int get episodeCount;
-  @override
-  bool get isLiked;
   @override
   String? get likeId;
 

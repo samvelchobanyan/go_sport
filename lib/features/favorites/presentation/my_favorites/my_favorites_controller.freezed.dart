@@ -18,11 +18,6 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$MyFavoritesState {
   List<Track> get favorites => throw _privateConstructorUsedError;
-  bool get isLoading => throw _privateConstructorUsedError;
-  bool get isLoadingMore => throw _privateConstructorUsedError;
-  int get currentPage => throw _privateConstructorUsedError;
-  bool get hasMore => throw _privateConstructorUsedError;
-  String? get error => throw _privateConstructorUsedError;
 
   /// Create a copy of MyFavoritesState
   /// with the given fields replaced by the non-null parameter values.
@@ -38,14 +33,7 @@ abstract class $MyFavoritesStateCopyWith<$Res> {
     $Res Function(MyFavoritesState) then,
   ) = _$MyFavoritesStateCopyWithImpl<$Res, MyFavoritesState>;
   @useResult
-  $Res call({
-    List<Track> favorites,
-    bool isLoading,
-    bool isLoadingMore,
-    int currentPage,
-    bool hasMore,
-    String? error,
-  });
+  $Res call({List<Track> favorites});
 }
 
 /// @nodoc
@@ -62,40 +50,13 @@ class _$MyFavoritesStateCopyWithImpl<$Res, $Val extends MyFavoritesState>
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? favorites = null,
-    Object? isLoading = null,
-    Object? isLoadingMore = null,
-    Object? currentPage = null,
-    Object? hasMore = null,
-    Object? error = freezed,
-  }) {
+  $Res call({Object? favorites = null}) {
     return _then(
       _value.copyWith(
             favorites: null == favorites
                 ? _value.favorites
                 : favorites // ignore: cast_nullable_to_non_nullable
                       as List<Track>,
-            isLoading: null == isLoading
-                ? _value.isLoading
-                : isLoading // ignore: cast_nullable_to_non_nullable
-                      as bool,
-            isLoadingMore: null == isLoadingMore
-                ? _value.isLoadingMore
-                : isLoadingMore // ignore: cast_nullable_to_non_nullable
-                      as bool,
-            currentPage: null == currentPage
-                ? _value.currentPage
-                : currentPage // ignore: cast_nullable_to_non_nullable
-                      as int,
-            hasMore: null == hasMore
-                ? _value.hasMore
-                : hasMore // ignore: cast_nullable_to_non_nullable
-                      as bool,
-            error: freezed == error
-                ? _value.error
-                : error // ignore: cast_nullable_to_non_nullable
-                      as String?,
           )
           as $Val,
     );
@@ -111,14 +72,7 @@ abstract class _$$MyFavoritesStateImplCopyWith<$Res>
   ) = __$$MyFavoritesStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({
-    List<Track> favorites,
-    bool isLoading,
-    bool isLoadingMore,
-    int currentPage,
-    bool hasMore,
-    String? error,
-  });
+  $Res call({List<Track> favorites});
 }
 
 /// @nodoc
@@ -134,40 +88,13 @@ class __$$MyFavoritesStateImplCopyWithImpl<$Res>
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? favorites = null,
-    Object? isLoading = null,
-    Object? isLoadingMore = null,
-    Object? currentPage = null,
-    Object? hasMore = null,
-    Object? error = freezed,
-  }) {
+  $Res call({Object? favorites = null}) {
     return _then(
       _$MyFavoritesStateImpl(
         favorites: null == favorites
             ? _value._favorites
             : favorites // ignore: cast_nullable_to_non_nullable
                   as List<Track>,
-        isLoading: null == isLoading
-            ? _value.isLoading
-            : isLoading // ignore: cast_nullable_to_non_nullable
-                  as bool,
-        isLoadingMore: null == isLoadingMore
-            ? _value.isLoadingMore
-            : isLoadingMore // ignore: cast_nullable_to_non_nullable
-                  as bool,
-        currentPage: null == currentPage
-            ? _value.currentPage
-            : currentPage // ignore: cast_nullable_to_non_nullable
-                  as int,
-        hasMore: null == hasMore
-            ? _value.hasMore
-            : hasMore // ignore: cast_nullable_to_non_nullable
-                  as bool,
-        error: freezed == error
-            ? _value.error
-            : error // ignore: cast_nullable_to_non_nullable
-                  as String?,
       ),
     );
   }
@@ -176,14 +103,8 @@ class __$$MyFavoritesStateImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$MyFavoritesStateImpl implements _MyFavoritesState {
-  const _$MyFavoritesStateImpl({
-    final List<Track> favorites = const [],
-    this.isLoading = false,
-    this.isLoadingMore = false,
-    this.currentPage = 1,
-    this.hasMore = true,
-    this.error,
-  }) : _favorites = favorites;
+  const _$MyFavoritesStateImpl({final List<Track> favorites = const []})
+    : _favorites = favorites;
 
   final List<Track> _favorites;
   @override
@@ -195,23 +116,8 @@ class _$MyFavoritesStateImpl implements _MyFavoritesState {
   }
 
   @override
-  @JsonKey()
-  final bool isLoading;
-  @override
-  @JsonKey()
-  final bool isLoadingMore;
-  @override
-  @JsonKey()
-  final int currentPage;
-  @override
-  @JsonKey()
-  final bool hasMore;
-  @override
-  final String? error;
-
-  @override
   String toString() {
-    return 'MyFavoritesState(favorites: $favorites, isLoading: $isLoading, isLoadingMore: $isLoadingMore, currentPage: $currentPage, hasMore: $hasMore, error: $error)';
+    return 'MyFavoritesState(favorites: $favorites)';
   }
 
   @override
@@ -222,27 +128,12 @@ class _$MyFavoritesStateImpl implements _MyFavoritesState {
             const DeepCollectionEquality().equals(
               other._favorites,
               _favorites,
-            ) &&
-            (identical(other.isLoading, isLoading) ||
-                other.isLoading == isLoading) &&
-            (identical(other.isLoadingMore, isLoadingMore) ||
-                other.isLoadingMore == isLoadingMore) &&
-            (identical(other.currentPage, currentPage) ||
-                other.currentPage == currentPage) &&
-            (identical(other.hasMore, hasMore) || other.hasMore == hasMore) &&
-            (identical(other.error, error) || other.error == error));
+            ));
   }
 
   @override
-  int get hashCode => Object.hash(
-    runtimeType,
-    const DeepCollectionEquality().hash(_favorites),
-    isLoading,
-    isLoadingMore,
-    currentPage,
-    hasMore,
-    error,
-  );
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(_favorites));
 
   /// Create a copy of MyFavoritesState
   /// with the given fields replaced by the non-null parameter values.
@@ -257,27 +148,11 @@ class _$MyFavoritesStateImpl implements _MyFavoritesState {
 }
 
 abstract class _MyFavoritesState implements MyFavoritesState {
-  const factory _MyFavoritesState({
-    final List<Track> favorites,
-    final bool isLoading,
-    final bool isLoadingMore,
-    final int currentPage,
-    final bool hasMore,
-    final String? error,
-  }) = _$MyFavoritesStateImpl;
+  const factory _MyFavoritesState({final List<Track> favorites}) =
+      _$MyFavoritesStateImpl;
 
   @override
   List<Track> get favorites;
-  @override
-  bool get isLoading;
-  @override
-  bool get isLoadingMore;
-  @override
-  int get currentPage;
-  @override
-  bool get hasMore;
-  @override
-  String? get error;
 
   /// Create a copy of MyFavoritesState
   /// with the given fields replaced by the non-null parameter values.

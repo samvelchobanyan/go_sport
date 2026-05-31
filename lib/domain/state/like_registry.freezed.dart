@@ -17,12 +17,12 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$LikeRegistryState {
-  Map<String, String?> get albumLikes => throw _privateConstructorUsedError;
-  Map<String, String?> get trackLikes => throw _privateConstructorUsedError;
-  Map<String, String?> get programLikes => throw _privateConstructorUsedError;
-  Map<String, String?> get artistLikes => throw _privateConstructorUsedError;
-  Map<String, String?> get playlistLikes => throw _privateConstructorUsedError;
-  Map<String, String?> get episodeLikes => throw _privateConstructorUsedError;
+  List<Album> get likedAlbums => throw _privateConstructorUsedError;
+  List<Track> get likedTracks => throw _privateConstructorUsedError;
+  List<Program> get likedPrograms => throw _privateConstructorUsedError;
+  List<Artist> get likedArtists => throw _privateConstructorUsedError;
+  List<Playlist> get likedPlaylists => throw _privateConstructorUsedError;
+  List<Track> get likedEpisodes => throw _privateConstructorUsedError;
 
   /// Create a copy of LikeRegistryState
   /// with the given fields replaced by the non-null parameter values.
@@ -39,12 +39,12 @@ abstract class $LikeRegistryStateCopyWith<$Res> {
   ) = _$LikeRegistryStateCopyWithImpl<$Res, LikeRegistryState>;
   @useResult
   $Res call({
-    Map<String, String?> albumLikes,
-    Map<String, String?> trackLikes,
-    Map<String, String?> programLikes,
-    Map<String, String?> artistLikes,
-    Map<String, String?> playlistLikes,
-    Map<String, String?> episodeLikes,
+    List<Album> likedAlbums,
+    List<Track> likedTracks,
+    List<Program> likedPrograms,
+    List<Artist> likedArtists,
+    List<Playlist> likedPlaylists,
+    List<Track> likedEpisodes,
   });
 }
 
@@ -63,39 +63,39 @@ class _$LikeRegistryStateCopyWithImpl<$Res, $Val extends LikeRegistryState>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? albumLikes = null,
-    Object? trackLikes = null,
-    Object? programLikes = null,
-    Object? artistLikes = null,
-    Object? playlistLikes = null,
-    Object? episodeLikes = null,
+    Object? likedAlbums = null,
+    Object? likedTracks = null,
+    Object? likedPrograms = null,
+    Object? likedArtists = null,
+    Object? likedPlaylists = null,
+    Object? likedEpisodes = null,
   }) {
     return _then(
       _value.copyWith(
-            albumLikes: null == albumLikes
-                ? _value.albumLikes
-                : albumLikes // ignore: cast_nullable_to_non_nullable
-                      as Map<String, String?>,
-            trackLikes: null == trackLikes
-                ? _value.trackLikes
-                : trackLikes // ignore: cast_nullable_to_non_nullable
-                      as Map<String, String?>,
-            programLikes: null == programLikes
-                ? _value.programLikes
-                : programLikes // ignore: cast_nullable_to_non_nullable
-                      as Map<String, String?>,
-            artistLikes: null == artistLikes
-                ? _value.artistLikes
-                : artistLikes // ignore: cast_nullable_to_non_nullable
-                      as Map<String, String?>,
-            playlistLikes: null == playlistLikes
-                ? _value.playlistLikes
-                : playlistLikes // ignore: cast_nullable_to_non_nullable
-                      as Map<String, String?>,
-            episodeLikes: null == episodeLikes
-                ? _value.episodeLikes
-                : episodeLikes // ignore: cast_nullable_to_non_nullable
-                      as Map<String, String?>,
+            likedAlbums: null == likedAlbums
+                ? _value.likedAlbums
+                : likedAlbums // ignore: cast_nullable_to_non_nullable
+                      as List<Album>,
+            likedTracks: null == likedTracks
+                ? _value.likedTracks
+                : likedTracks // ignore: cast_nullable_to_non_nullable
+                      as List<Track>,
+            likedPrograms: null == likedPrograms
+                ? _value.likedPrograms
+                : likedPrograms // ignore: cast_nullable_to_non_nullable
+                      as List<Program>,
+            likedArtists: null == likedArtists
+                ? _value.likedArtists
+                : likedArtists // ignore: cast_nullable_to_non_nullable
+                      as List<Artist>,
+            likedPlaylists: null == likedPlaylists
+                ? _value.likedPlaylists
+                : likedPlaylists // ignore: cast_nullable_to_non_nullable
+                      as List<Playlist>,
+            likedEpisodes: null == likedEpisodes
+                ? _value.likedEpisodes
+                : likedEpisodes // ignore: cast_nullable_to_non_nullable
+                      as List<Track>,
           )
           as $Val,
     );
@@ -112,12 +112,12 @@ abstract class _$$LikeRegistryStateImplCopyWith<$Res>
   @override
   @useResult
   $Res call({
-    Map<String, String?> albumLikes,
-    Map<String, String?> trackLikes,
-    Map<String, String?> programLikes,
-    Map<String, String?> artistLikes,
-    Map<String, String?> playlistLikes,
-    Map<String, String?> episodeLikes,
+    List<Album> likedAlbums,
+    List<Track> likedTracks,
+    List<Program> likedPrograms,
+    List<Artist> likedArtists,
+    List<Playlist> likedPlaylists,
+    List<Track> likedEpisodes,
   });
 }
 
@@ -135,39 +135,39 @@ class __$$LikeRegistryStateImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? albumLikes = null,
-    Object? trackLikes = null,
-    Object? programLikes = null,
-    Object? artistLikes = null,
-    Object? playlistLikes = null,
-    Object? episodeLikes = null,
+    Object? likedAlbums = null,
+    Object? likedTracks = null,
+    Object? likedPrograms = null,
+    Object? likedArtists = null,
+    Object? likedPlaylists = null,
+    Object? likedEpisodes = null,
   }) {
     return _then(
       _$LikeRegistryStateImpl(
-        albumLikes: null == albumLikes
-            ? _value._albumLikes
-            : albumLikes // ignore: cast_nullable_to_non_nullable
-                  as Map<String, String?>,
-        trackLikes: null == trackLikes
-            ? _value._trackLikes
-            : trackLikes // ignore: cast_nullable_to_non_nullable
-                  as Map<String, String?>,
-        programLikes: null == programLikes
-            ? _value._programLikes
-            : programLikes // ignore: cast_nullable_to_non_nullable
-                  as Map<String, String?>,
-        artistLikes: null == artistLikes
-            ? _value._artistLikes
-            : artistLikes // ignore: cast_nullable_to_non_nullable
-                  as Map<String, String?>,
-        playlistLikes: null == playlistLikes
-            ? _value._playlistLikes
-            : playlistLikes // ignore: cast_nullable_to_non_nullable
-                  as Map<String, String?>,
-        episodeLikes: null == episodeLikes
-            ? _value._episodeLikes
-            : episodeLikes // ignore: cast_nullable_to_non_nullable
-                  as Map<String, String?>,
+        likedAlbums: null == likedAlbums
+            ? _value._likedAlbums
+            : likedAlbums // ignore: cast_nullable_to_non_nullable
+                  as List<Album>,
+        likedTracks: null == likedTracks
+            ? _value._likedTracks
+            : likedTracks // ignore: cast_nullable_to_non_nullable
+                  as List<Track>,
+        likedPrograms: null == likedPrograms
+            ? _value._likedPrograms
+            : likedPrograms // ignore: cast_nullable_to_non_nullable
+                  as List<Program>,
+        likedArtists: null == likedArtists
+            ? _value._likedArtists
+            : likedArtists // ignore: cast_nullable_to_non_nullable
+                  as List<Artist>,
+        likedPlaylists: null == likedPlaylists
+            ? _value._likedPlaylists
+            : likedPlaylists // ignore: cast_nullable_to_non_nullable
+                  as List<Playlist>,
+        likedEpisodes: null == likedEpisodes
+            ? _value._likedEpisodes
+            : likedEpisodes // ignore: cast_nullable_to_non_nullable
+                  as List<Track>,
       ),
     );
   }
@@ -177,76 +177,76 @@ class __$$LikeRegistryStateImplCopyWithImpl<$Res>
 
 class _$LikeRegistryStateImpl implements _LikeRegistryState {
   const _$LikeRegistryStateImpl({
-    final Map<String, String?> albumLikes = const {},
-    final Map<String, String?> trackLikes = const {},
-    final Map<String, String?> programLikes = const {},
-    final Map<String, String?> artistLikes = const {},
-    final Map<String, String?> playlistLikes = const {},
-    final Map<String, String?> episodeLikes = const {},
-  }) : _albumLikes = albumLikes,
-       _trackLikes = trackLikes,
-       _programLikes = programLikes,
-       _artistLikes = artistLikes,
-       _playlistLikes = playlistLikes,
-       _episodeLikes = episodeLikes;
+    final List<Album> likedAlbums = const [],
+    final List<Track> likedTracks = const [],
+    final List<Program> likedPrograms = const [],
+    final List<Artist> likedArtists = const [],
+    final List<Playlist> likedPlaylists = const [],
+    final List<Track> likedEpisodes = const [],
+  }) : _likedAlbums = likedAlbums,
+       _likedTracks = likedTracks,
+       _likedPrograms = likedPrograms,
+       _likedArtists = likedArtists,
+       _likedPlaylists = likedPlaylists,
+       _likedEpisodes = likedEpisodes;
 
-  final Map<String, String?> _albumLikes;
+  final List<Album> _likedAlbums;
   @override
   @JsonKey()
-  Map<String, String?> get albumLikes {
-    if (_albumLikes is EqualUnmodifiableMapView) return _albumLikes;
+  List<Album> get likedAlbums {
+    if (_likedAlbums is EqualUnmodifiableListView) return _likedAlbums;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableMapView(_albumLikes);
+    return EqualUnmodifiableListView(_likedAlbums);
   }
 
-  final Map<String, String?> _trackLikes;
+  final List<Track> _likedTracks;
   @override
   @JsonKey()
-  Map<String, String?> get trackLikes {
-    if (_trackLikes is EqualUnmodifiableMapView) return _trackLikes;
+  List<Track> get likedTracks {
+    if (_likedTracks is EqualUnmodifiableListView) return _likedTracks;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableMapView(_trackLikes);
+    return EqualUnmodifiableListView(_likedTracks);
   }
 
-  final Map<String, String?> _programLikes;
+  final List<Program> _likedPrograms;
   @override
   @JsonKey()
-  Map<String, String?> get programLikes {
-    if (_programLikes is EqualUnmodifiableMapView) return _programLikes;
+  List<Program> get likedPrograms {
+    if (_likedPrograms is EqualUnmodifiableListView) return _likedPrograms;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableMapView(_programLikes);
+    return EqualUnmodifiableListView(_likedPrograms);
   }
 
-  final Map<String, String?> _artistLikes;
+  final List<Artist> _likedArtists;
   @override
   @JsonKey()
-  Map<String, String?> get artistLikes {
-    if (_artistLikes is EqualUnmodifiableMapView) return _artistLikes;
+  List<Artist> get likedArtists {
+    if (_likedArtists is EqualUnmodifiableListView) return _likedArtists;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableMapView(_artistLikes);
+    return EqualUnmodifiableListView(_likedArtists);
   }
 
-  final Map<String, String?> _playlistLikes;
+  final List<Playlist> _likedPlaylists;
   @override
   @JsonKey()
-  Map<String, String?> get playlistLikes {
-    if (_playlistLikes is EqualUnmodifiableMapView) return _playlistLikes;
+  List<Playlist> get likedPlaylists {
+    if (_likedPlaylists is EqualUnmodifiableListView) return _likedPlaylists;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableMapView(_playlistLikes);
+    return EqualUnmodifiableListView(_likedPlaylists);
   }
 
-  final Map<String, String?> _episodeLikes;
+  final List<Track> _likedEpisodes;
   @override
   @JsonKey()
-  Map<String, String?> get episodeLikes {
-    if (_episodeLikes is EqualUnmodifiableMapView) return _episodeLikes;
+  List<Track> get likedEpisodes {
+    if (_likedEpisodes is EqualUnmodifiableListView) return _likedEpisodes;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableMapView(_episodeLikes);
+    return EqualUnmodifiableListView(_likedEpisodes);
   }
 
   @override
   String toString() {
-    return 'LikeRegistryState(albumLikes: $albumLikes, trackLikes: $trackLikes, programLikes: $programLikes, artistLikes: $artistLikes, playlistLikes: $playlistLikes, episodeLikes: $episodeLikes)';
+    return 'LikeRegistryState(likedAlbums: $likedAlbums, likedTracks: $likedTracks, likedPrograms: $likedPrograms, likedArtists: $likedArtists, likedPlaylists: $likedPlaylists, likedEpisodes: $likedEpisodes)';
   }
 
   @override
@@ -255,40 +255,40 @@ class _$LikeRegistryStateImpl implements _LikeRegistryState {
         (other.runtimeType == runtimeType &&
             other is _$LikeRegistryStateImpl &&
             const DeepCollectionEquality().equals(
-              other._albumLikes,
-              _albumLikes,
+              other._likedAlbums,
+              _likedAlbums,
             ) &&
             const DeepCollectionEquality().equals(
-              other._trackLikes,
-              _trackLikes,
+              other._likedTracks,
+              _likedTracks,
             ) &&
             const DeepCollectionEquality().equals(
-              other._programLikes,
-              _programLikes,
+              other._likedPrograms,
+              _likedPrograms,
             ) &&
             const DeepCollectionEquality().equals(
-              other._artistLikes,
-              _artistLikes,
+              other._likedArtists,
+              _likedArtists,
             ) &&
             const DeepCollectionEquality().equals(
-              other._playlistLikes,
-              _playlistLikes,
+              other._likedPlaylists,
+              _likedPlaylists,
             ) &&
             const DeepCollectionEquality().equals(
-              other._episodeLikes,
-              _episodeLikes,
+              other._likedEpisodes,
+              _likedEpisodes,
             ));
   }
 
   @override
   int get hashCode => Object.hash(
     runtimeType,
-    const DeepCollectionEquality().hash(_albumLikes),
-    const DeepCollectionEquality().hash(_trackLikes),
-    const DeepCollectionEquality().hash(_programLikes),
-    const DeepCollectionEquality().hash(_artistLikes),
-    const DeepCollectionEquality().hash(_playlistLikes),
-    const DeepCollectionEquality().hash(_episodeLikes),
+    const DeepCollectionEquality().hash(_likedAlbums),
+    const DeepCollectionEquality().hash(_likedTracks),
+    const DeepCollectionEquality().hash(_likedPrograms),
+    const DeepCollectionEquality().hash(_likedArtists),
+    const DeepCollectionEquality().hash(_likedPlaylists),
+    const DeepCollectionEquality().hash(_likedEpisodes),
   );
 
   /// Create a copy of LikeRegistryState
@@ -305,26 +305,26 @@ class _$LikeRegistryStateImpl implements _LikeRegistryState {
 
 abstract class _LikeRegistryState implements LikeRegistryState {
   const factory _LikeRegistryState({
-    final Map<String, String?> albumLikes,
-    final Map<String, String?> trackLikes,
-    final Map<String, String?> programLikes,
-    final Map<String, String?> artistLikes,
-    final Map<String, String?> playlistLikes,
-    final Map<String, String?> episodeLikes,
+    final List<Album> likedAlbums,
+    final List<Track> likedTracks,
+    final List<Program> likedPrograms,
+    final List<Artist> likedArtists,
+    final List<Playlist> likedPlaylists,
+    final List<Track> likedEpisodes,
   }) = _$LikeRegistryStateImpl;
 
   @override
-  Map<String, String?> get albumLikes;
+  List<Album> get likedAlbums;
   @override
-  Map<String, String?> get trackLikes;
+  List<Track> get likedTracks;
   @override
-  Map<String, String?> get programLikes;
+  List<Program> get likedPrograms;
   @override
-  Map<String, String?> get artistLikes;
+  List<Artist> get likedArtists;
   @override
-  Map<String, String?> get playlistLikes;
+  List<Playlist> get likedPlaylists;
   @override
-  Map<String, String?> get episodeLikes;
+  List<Track> get likedEpisodes;
 
   /// Create a copy of LikeRegistryState
   /// with the given fields replaced by the non-null parameter values.

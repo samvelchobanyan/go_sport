@@ -13,7 +13,6 @@ class Playlist with _$Playlist {
     required int trackCount,
     @Default([]) List<String> trackDocIds,
     @Default(PlaylistType.featured) PlaylistType type,
-    @Default(false) bool isLiked,
     String? likeId,
   }) = _Playlist;
 }

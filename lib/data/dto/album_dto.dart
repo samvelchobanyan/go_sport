@@ -63,7 +63,6 @@ class AlbumDto {
       imageUrl: coverUrl,
       trackCount: cnt,
       releaseYear: year.toString(),
-      isLiked: likeId != null,
       likeId: likeId,
     );
   }

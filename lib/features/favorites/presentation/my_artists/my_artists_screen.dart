@@ -10,43 +10,12 @@ import 'package:go_sport/features/shared_widgets/artist_tile.dart';
 import 'package:go_sport/features/shared_widgets/dotted_divider.dart';
 import 'package:go_sport/features/shared_widgets/my_categories_top.dart';
 
-class MyArtistsScreen extends ConsumerStatefulWidget {
+class MyArtistsScreen extends ConsumerWidget {
   const MyArtistsScreen({super.key});
 
   @override
-  ConsumerState<MyArtistsScreen> createState() => _MyArtistsScreenState();
-}
-
-class _MyArtistsScreenState extends ConsumerState<MyArtistsScreen> {
-  late final ScrollController _scrollController;
-
-  @override
-  void initState() {
-    super.initState();
-    _scrollController = ScrollController()..addListener(_onScroll);
-  }
-
-  void _onScroll() {
-    final state = ref.read(myArtistsStateProvider);
-    if (state.isLoading || state.isLoadingMore || !state.hasMore) return;
-
-    if (_scrollController.position.pixels >=
-        _scrollController.position.maxScrollExtent * 0.8) {
-      ref.read(myArtistsStateProvider.notifier).loadMore();
-    }
-  }
-
-  @override
-  void dispose() {
-    _scrollController.removeListener(_onScroll);
-    _scrollController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final state = ref.watch(myArtistsStateProvider);
-    final artists = state.artists;
+  Widget build(BuildContext context, WidgetRef ref) {
+    final artists = ref.watch(myArtistsStateProvider).artists;
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.dark,
@@ -79,13 +48,7 @@ class _MyArtistsScreenState extends ConsumerState<MyArtistsScreen> {
                     ),
                     child: Container(
                       color: DSColors.white,
-                      child: state.isLoading && artists.isEmpty
-                          ? const Center(
-                              child: CircularProgressIndicator(),
-                            )
-                          : state.error != null && artists.isEmpty
-                          ? _buildErrorWidget(state)
-                          : _buildArtistsList(ref, artists, state.isLoadingMore),
+                      child: _buildArtistsList(ref, artists),
                     ),
                   ),
                 ),
@@ -97,60 +60,31 @@ class _MyArtistsScreenState extends ConsumerState<MyArtistsScreen> {
     );
   }
 
-  Widget _buildErrorWidget(MyArtistsState state) {
-    return Center(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text('Failed to load favorite artists', style: context.subtitleLBold),
-          const SizedBox(height: 8),
-          ElevatedButton(
-            onPressed: () =>
-                ref.read(myArtistsStateProvider.notifier).refresh(),
-            child: const Text('Retry'),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildArtistsList(
-    WidgetRef ref,
-    List<Artist> artists,
-    bool isLoadingMore,
-  ) {
+  Widget _buildArtistsList(WidgetRef ref, List<Artist> artists) {
     if (artists.isEmpty) {
-      return Center(
-        child: Text('No favorite artists yet', style: context.subtitleLBold),
+      return Builder(
+        builder: (context) => Center(
+          child: Text('No favorite artists yet', style: context.subtitleLBold),
+        ),
       );
     }
 
     return RefreshIndicator(
       onRefresh: () => ref.read(myArtistsStateProvider.notifier).refresh(),
       child: ListView.separated(
-        controller: _scrollController,
         physics: const AlwaysScrollableScrollPhysics(),
-        itemCount: artists.length + (isLoadingMore ? 1 : 0),
+        itemCount: artists.length,
         separatorBuilder: (context, index) {
           if (index >= artists.length - 1) {
             return const SizedBox.shrink();
           }
-
           return const Padding(
             padding: EdgeInsets.symmetric(horizontal: 16),
             child: DottedDivider(),
           );
         },
         itemBuilder: (context, index) {
-          if (index >= artists.length) {
-            return const Padding(
-              padding: EdgeInsets.all(16),
-              child: Center(child: CircularProgressIndicator()),
-            );
-          }
-
           final artist = artists[index];
-
           return ClipRRect(
             borderRadius: index == 0
                 ? const BorderRadius.only(
@@ -160,9 +94,7 @@ class _MyArtistsScreenState extends ConsumerState<MyArtistsScreen> {
                 : BorderRadius.zero,
             child: Container(
               color: DSColors.white,
-              child: ArtistTile(
-                artist: artist,
-              ),
+              child: ArtistTile(artist: artist),
             ),
           );
         },

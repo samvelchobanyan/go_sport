@@ -12,7 +12,6 @@ class Track with _$Track {
     required Duration duration,
     required String audioUrl,
     DateTime? releaseDate,
-    @Default(false) bool isLiked,
     String? likeId,
   }) = _Track;
 }

@@ -4,13 +4,11 @@ import 'package:go_sport/data/dto/program_dto.dart';
 import 'package:go_sport/domain/entities/program.dart';
 import 'package:go_sport/domain/entities/track.dart';
 import 'package:go_sport/domain/repositories/programs_repository.dart';
-import 'package:go_sport/domain/state/like_registry.dart';
 
 class ProgramsRepositoryImpl implements ProgramsRepository {
   final ApiClient _apiClient;
-  final LikeRegistry _registry;
 
-  ProgramsRepositoryImpl(this._apiClient, this._registry);
+  ProgramsRepositoryImpl(this._apiClient);
 
   @override
   Future<List<Program>> getFeaturedPrograms() async {
@@ -88,7 +86,6 @@ class ProgramsRepositoryImpl implements ProgramsRepository {
       programJson['cnt'] = entry['cnt'];
       return ProgramDto.fromJson(programJson).toDomain();
     }).toList();
-    _registry.syncProgramsLikes(items);
 
     final pageCount =
         response.data['meta']['pagination']['pageCount'] as int;

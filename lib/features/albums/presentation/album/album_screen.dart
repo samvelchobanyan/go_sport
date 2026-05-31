@@ -55,7 +55,7 @@ class _AlbumScreenState extends ConsumerState<AlbumScreen> {
   Widget build(BuildContext context) {
     final tracksState = ref.watch(albumControllerProvider(widget.album.id));
     final isLiked = ref.watch(
-      likeRegistryProvider.select((s) => s.albumLikes.containsKey(widget.album.id)),
+      likeRegistryProvider.select((s) => s.likedAlbums.any((a) => a.id == widget.album.id)),
     );
     final screenHeight = MediaQuery.of(context).size.height;
     final expandedHeight = screenHeight * 0.5;
@@ -107,10 +107,11 @@ class _AlbumScreenState extends ConsumerState<AlbumScreen> {
             ],
             flexibleSpace: FlexibleSpaceBar(
               background: AlbumHero(
-                album: widget.album.copyWith(isLiked: isLiked),
+                album: widget.album,
+                isLiked: isLiked,
                 onLikeTap: () => ref
                     .read(likeRegistryProvider.notifier)
-                    .toggleAlbum(widget.album.id),
+                    .toggleAlbumLike(widget.album),
                 onPlayTap: () {
                   final tracks = tracksState.mapOrNull(
                     data: (data) => data.tracks,

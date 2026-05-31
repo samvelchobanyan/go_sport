@@ -18,11 +18,6 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$MyProgramsState {
   List<Program> get programs => throw _privateConstructorUsedError;
-  bool get isLoading => throw _privateConstructorUsedError;
-  bool get isLoadingMore => throw _privateConstructorUsedError;
-  int get currentPage => throw _privateConstructorUsedError;
-  bool get hasMore => throw _privateConstructorUsedError;
-  String? get error => throw _privateConstructorUsedError;
 
   /// Create a copy of MyProgramsState
   /// with the given fields replaced by the non-null parameter values.
@@ -38,14 +33,7 @@ abstract class $MyProgramsStateCopyWith<$Res> {
     $Res Function(MyProgramsState) then,
   ) = _$MyProgramsStateCopyWithImpl<$Res, MyProgramsState>;
   @useResult
-  $Res call({
-    List<Program> programs,
-    bool isLoading,
-    bool isLoadingMore,
-    int currentPage,
-    bool hasMore,
-    String? error,
-  });
+  $Res call({List<Program> programs});
 }
 
 /// @nodoc
@@ -62,40 +50,13 @@ class _$MyProgramsStateCopyWithImpl<$Res, $Val extends MyProgramsState>
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? programs = null,
-    Object? isLoading = null,
-    Object? isLoadingMore = null,
-    Object? currentPage = null,
-    Object? hasMore = null,
-    Object? error = freezed,
-  }) {
+  $Res call({Object? programs = null}) {
     return _then(
       _value.copyWith(
             programs: null == programs
                 ? _value.programs
                 : programs // ignore: cast_nullable_to_non_nullable
                       as List<Program>,
-            isLoading: null == isLoading
-                ? _value.isLoading
-                : isLoading // ignore: cast_nullable_to_non_nullable
-                      as bool,
-            isLoadingMore: null == isLoadingMore
-                ? _value.isLoadingMore
-                : isLoadingMore // ignore: cast_nullable_to_non_nullable
-                      as bool,
-            currentPage: null == currentPage
-                ? _value.currentPage
-                : currentPage // ignore: cast_nullable_to_non_nullable
-                      as int,
-            hasMore: null == hasMore
-                ? _value.hasMore
-                : hasMore // ignore: cast_nullable_to_non_nullable
-                      as bool,
-            error: freezed == error
-                ? _value.error
-                : error // ignore: cast_nullable_to_non_nullable
-                      as String?,
           )
           as $Val,
     );
@@ -111,14 +72,7 @@ abstract class _$$MyProgramsStateImplCopyWith<$Res>
   ) = __$$MyProgramsStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({
-    List<Program> programs,
-    bool isLoading,
-    bool isLoadingMore,
-    int currentPage,
-    bool hasMore,
-    String? error,
-  });
+  $Res call({List<Program> programs});
 }
 
 /// @nodoc
@@ -134,40 +88,13 @@ class __$$MyProgramsStateImplCopyWithImpl<$Res>
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? programs = null,
-    Object? isLoading = null,
-    Object? isLoadingMore = null,
-    Object? currentPage = null,
-    Object? hasMore = null,
-    Object? error = freezed,
-  }) {
+  $Res call({Object? programs = null}) {
     return _then(
       _$MyProgramsStateImpl(
         programs: null == programs
             ? _value._programs
             : programs // ignore: cast_nullable_to_non_nullable
                   as List<Program>,
-        isLoading: null == isLoading
-            ? _value.isLoading
-            : isLoading // ignore: cast_nullable_to_non_nullable
-                  as bool,
-        isLoadingMore: null == isLoadingMore
-            ? _value.isLoadingMore
-            : isLoadingMore // ignore: cast_nullable_to_non_nullable
-                  as bool,
-        currentPage: null == currentPage
-            ? _value.currentPage
-            : currentPage // ignore: cast_nullable_to_non_nullable
-                  as int,
-        hasMore: null == hasMore
-            ? _value.hasMore
-            : hasMore // ignore: cast_nullable_to_non_nullable
-                  as bool,
-        error: freezed == error
-            ? _value.error
-            : error // ignore: cast_nullable_to_non_nullable
-                  as String?,
       ),
     );
   }
@@ -176,14 +103,8 @@ class __$$MyProgramsStateImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$MyProgramsStateImpl implements _MyProgramsState {
-  const _$MyProgramsStateImpl({
-    final List<Program> programs = const [],
-    this.isLoading = false,
-    this.isLoadingMore = false,
-    this.currentPage = 1,
-    this.hasMore = true,
-    this.error,
-  }) : _programs = programs;
+  const _$MyProgramsStateImpl({final List<Program> programs = const []})
+    : _programs = programs;
 
   final List<Program> _programs;
   @override
@@ -195,23 +116,8 @@ class _$MyProgramsStateImpl implements _MyProgramsState {
   }
 
   @override
-  @JsonKey()
-  final bool isLoading;
-  @override
-  @JsonKey()
-  final bool isLoadingMore;
-  @override
-  @JsonKey()
-  final int currentPage;
-  @override
-  @JsonKey()
-  final bool hasMore;
-  @override
-  final String? error;
-
-  @override
   String toString() {
-    return 'MyProgramsState(programs: $programs, isLoading: $isLoading, isLoadingMore: $isLoadingMore, currentPage: $currentPage, hasMore: $hasMore, error: $error)';
+    return 'MyProgramsState(programs: $programs)';
   }
 
   @override
@@ -219,27 +125,12 @@ class _$MyProgramsStateImpl implements _MyProgramsState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$MyProgramsStateImpl &&
-            const DeepCollectionEquality().equals(other._programs, _programs) &&
-            (identical(other.isLoading, isLoading) ||
-                other.isLoading == isLoading) &&
-            (identical(other.isLoadingMore, isLoadingMore) ||
-                other.isLoadingMore == isLoadingMore) &&
-            (identical(other.currentPage, currentPage) ||
-                other.currentPage == currentPage) &&
-            (identical(other.hasMore, hasMore) || other.hasMore == hasMore) &&
-            (identical(other.error, error) || other.error == error));
+            const DeepCollectionEquality().equals(other._programs, _programs));
   }
 
   @override
-  int get hashCode => Object.hash(
-    runtimeType,
-    const DeepCollectionEquality().hash(_programs),
-    isLoading,
-    isLoadingMore,
-    currentPage,
-    hasMore,
-    error,
-  );
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(_programs));
 
   /// Create a copy of MyProgramsState
   /// with the given fields replaced by the non-null parameter values.
@@ -254,27 +145,11 @@ class _$MyProgramsStateImpl implements _MyProgramsState {
 }
 
 abstract class _MyProgramsState implements MyProgramsState {
-  const factory _MyProgramsState({
-    final List<Program> programs,
-    final bool isLoading,
-    final bool isLoadingMore,
-    final int currentPage,
-    final bool hasMore,
-    final String? error,
-  }) = _$MyProgramsStateImpl;
+  const factory _MyProgramsState({final List<Program> programs}) =
+      _$MyProgramsStateImpl;
 
   @override
   List<Program> get programs;
-  @override
-  bool get isLoading;
-  @override
-  bool get isLoadingMore;
-  @override
-  int get currentPage;
-  @override
-  bool get hasMore;
-  @override
-  String? get error;
 
   /// Create a copy of MyProgramsState
   /// with the given fields replaced by the non-null parameter values.

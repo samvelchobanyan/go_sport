@@ -3,7 +3,6 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:go_sport/core/di/repository_providers.dart';
 import 'package:go_sport/domain/entities/playlist.dart';
 import 'package:go_sport/domain/repositories/custom_playlist_repository.dart';
-import 'package:go_sport/domain/repositories/featured_playlist_repository.dart';
 import 'package:go_sport/domain/state/like_registry.dart';
 
 part 'my_playlists_state.freezed.dart';
@@ -18,40 +17,36 @@ class MyPlaylistsState with _$MyPlaylistsState {
 }
 
 class MyPlaylistsStateNotifier extends Notifier<MyPlaylistsState> {
-  late final FeaturedPlaylistRepository _featuredRepo;
   late final CustomPlaylistRepository _customRepo;
+  List<Playlist> _customPlaylists = const [];
 
   @override
   MyPlaylistsState build() {
-    _featuredRepo = ref.watch(featuredPlaylistRepositoryProvider);
     _customRepo = ref.watch(customPlaylistRepositoryProvider);
+
+    // Re-combine when registry's liked playlists change.
     ref.listen(
-      likeRegistryProvider.select((s) => s.playlistLikes),
+      likeRegistryProvider.select((s) => s.likedPlaylists),
       (_, next) {
-        if (state.playlists.isEmpty) return;
-        final kept = state.playlists.where((p) {
-          if (p.type == PlaylistType.custom) return true;
-          return next.containsKey(p.id);
-        }).toList();
-        if (kept.length != state.playlists.length) {
-          state = state.copyWith(playlists: kept);
-        }
+        state = state.copyWith(playlists: [...next, ..._customPlaylists]);
       },
     );
-    Future.microtask(() => loadFavorites());
-    return const MyPlaylistsState();
+
+    Future.microtask(loadFavorites);
+
+    final initialFeatured = ref.read(likeRegistryProvider).likedPlaylists;
+    return MyPlaylistsState(playlists: initialFeatured);
   }
 
+  /// Loads only custom playlists from API; featured-liked come from registry.
   Future<void> loadFavorites() async {
     state = state.copyWith(isLoading: true, error: null);
-
     try {
-      final results = await Future.wait([
-        _featuredRepo.getLikedFeaturedPlaylists(),
-        _customRepo.getCustomPlaylists(),
-      ]);
-      final playlists = [...results[0], ...results[1]];
-      state = state.copyWith(playlists: playlists, isLoading: false);
+      _customPlaylists = await _customRepo.getCustomPlaylists();
+      state = state.copyWith(
+        playlists: [..._likedFeatured, ..._customPlaylists],
+        isLoading: false,
+      );
     } catch (e) {
       state = state.copyWith(isLoading: false, error: e.toString());
     }
@@ -63,20 +58,24 @@ class MyPlaylistsStateNotifier extends Notifier<MyPlaylistsState> {
   }
 
   void removePlaylist(String id) {
-    final updated = state.playlists.where((p) => p.id != id).toList();
-    state = state.copyWith(playlists: updated);
+    _customPlaylists = _customPlaylists.where((p) => p.id != id).toList();
+    state = state.copyWith(playlists: [..._likedFeatured, ..._customPlaylists]);
   }
 
   void addPlaylist(Playlist playlist) {
-    state = state.copyWith(playlists: [playlist, ...state.playlists]);
+    _customPlaylists = [playlist, ..._customPlaylists];
+    state = state.copyWith(playlists: [..._likedFeatured, ..._customPlaylists]);
   }
 
   void updatePlaylist(Playlist playlist) {
-    final updated = state.playlists.map((p) {
-      return p.id == playlist.id ? playlist : p;
-    }).toList();
-    state = state.copyWith(playlists: updated);
+    _customPlaylists = _customPlaylists
+        .map((p) => p.id == playlist.id ? playlist : p)
+        .toList();
+    state = state.copyWith(playlists: [..._likedFeatured, ..._customPlaylists]);
   }
+
+  List<Playlist> get _likedFeatured =>
+      ref.read(likeRegistryProvider).likedPlaylists;
 }
 
 final myPlaylistsStateProvider =

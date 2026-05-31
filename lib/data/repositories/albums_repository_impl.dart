@@ -4,13 +4,11 @@ import 'package:go_sport/data/dto/track_dto.dart';
 import 'package:go_sport/domain/entities/album.dart';
 import 'package:go_sport/domain/entities/track.dart';
 import 'package:go_sport/domain/repositories/albums_repository.dart';
-import 'package:go_sport/domain/state/like_registry.dart';
 
 class AlbumsRepositoryImpl implements AlbumsRepository {
   final ApiClient _apiClient;
-  final LikeRegistry _registry;
 
-  AlbumsRepositoryImpl(this._apiClient, this._registry);
+  AlbumsRepositoryImpl(this._apiClient);
 
   @override
   Future<List<Album>> getFeaturedAlbums() async {
@@ -69,7 +67,6 @@ class AlbumsRepositoryImpl implements AlbumsRepository {
 
       return AlbumDto.fromJson(albumJson).toDomain();
     }).toList();
-    _registry.syncAlbumsLikes(albumList);
 
     final pageCount =
         response.data['meta']['pagination']['pageCount'] as int;

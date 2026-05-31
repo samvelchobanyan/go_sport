@@ -40,7 +40,6 @@ class ArtistDto {
       id: documentId,
       artistName: name,
       imageUrl: coverUrl,
-      isLiked: likeId != null,
       likeId: likeId,
     );
   }

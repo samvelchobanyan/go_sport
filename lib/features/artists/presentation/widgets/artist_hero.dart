@@ -6,11 +6,13 @@ import 'package:go_sport/domain/entities/artist.dart';
 
 class ArtistHero extends StatelessWidget {
   final Artist artist;
+  final bool isLiked;
   final VoidCallback onLikeTap;
 
   const ArtistHero({
     super.key,
     required this.artist,
+    required this.isLiked,
     required this.onLikeTap,
   });
 
@@ -60,7 +62,7 @@ class ArtistHero extends StatelessWidget {
                       child: DSHeartIcon(
                         color: DSColors.white,
                         size: 24,
-                        isFilled: artist.isLiked,
+                        isFilled: isLiked,
                       ),
                     ),
                   ),
