@@ -12,7 +12,6 @@ class TrackRepositoryMock implements TrackRepository {
           'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=800&q=80',
       duration: const Duration(minutes: 3, seconds: 20),
       audioUrl: '',
-      isLiked: true,
     ),
     Track(
       id: '2',
@@ -22,7 +21,6 @@ class TrackRepositoryMock implements TrackRepository {
           'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=800&q=80',
       duration: const Duration(minutes: 3, seconds: 23),
       audioUrl: '',
-      isLiked: false,
     ),
     Track(
       id: '3',
@@ -32,7 +30,6 @@ class TrackRepositoryMock implements TrackRepository {
           'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=800&q=80',
       duration: const Duration(minutes: 2, seconds: 58),
       audioUrl: '',
-      isLiked: true,
     ),
     Track(
       id: '4',
@@ -42,7 +39,6 @@ class TrackRepositoryMock implements TrackRepository {
           'https://images.unsplash.com/photo-1511379938547-c1f69b13d835?auto=format&fit=crop&w=800&q=80',
       duration: const Duration(minutes: 3, seconds: 34),
       audioUrl: '',
-      isLiked: false,
     ),
     Track(
       id: '5',
@@ -52,7 +48,6 @@ class TrackRepositoryMock implements TrackRepository {
           'https://images.unsplash.com/photo-1459749411175-04bf5292ceea?auto=format&fit=crop&w=800&q=80',
       duration: const Duration(minutes: 3, seconds: 31),
       audioUrl: '',
-      isLiked: true,
     ),
     Track(
       id: '6',
@@ -62,7 +57,6 @@ class TrackRepositoryMock implements TrackRepository {
           'https://images.unsplash.com/photo-1506157786151-b8491531f063?auto=format&fit=crop&w=800&q=80',
       duration: const Duration(minutes: 3, seconds: 21),
       audioUrl: '',
-      isLiked: false,
     ),
   ];
 

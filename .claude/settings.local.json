@@ -22,7 +22,16 @@
       "Read(//c/Users/samve/AppData/Local/Pub/Cache/hosted/**)",
       "Bash(cat >> *)",
       "Bash(findstr /s \"onTap:\\\\s*\\\\\\(\\\\\\)\\\\s*{}\" lib/features --include=\"*.dart\")",
-      "Bash(powershell -Command \"Get-Content C:\\\\knowledge\\\\flutter-kb\\\\log.md | Select-Object -Last 30\")"
+      "Bash(powershell -Command \"Get-Content C:\\\\knowledge\\\\flutter-kb\\\\log.md | Select-Object -Last 30\")",
+      "Bash(powershell -Command \"Get-Content 'C:\\\\flutter\\\\go_sport\\\\lib\\\\domain\\\\state\\\\like_registry.dart' | Select-Object -Skip 230 -First 200\")",
+      "Bash(powershell -Command \"Get-Content 'C:\\\\flutter\\\\go_sport\\\\lib\\\\features\\\\favorites\\\\presentation\\\\my_albums\\\\my_albums_controller.dart'\")",
+      "Bash(powershell -Command \"Get-Content 'C:\\\\flutter\\\\go_sport\\\\lib\\\\features\\\\albums\\\\presentation\\\\album\\\\album_screen.dart' | Select-Object -First 80\")",
+      "Bash(powershell -Command \"Get-Content 'C:\\\\flutter\\\\go_sport\\\\lib\\\\features\\\\albums\\\\presentation\\\\album\\\\album_screen.dart' | Select-Object -Skip 130 -First 30\")",
+      "Bash(powershell -Command \"Get-Content 'C:\\\\flutter\\\\go_sport\\\\lib\\\\features\\\\favorites\\\\presentation\\\\new_episodes\\\\new_episodes_controller.dart'\")",
+      "Bash(powershell -Command \"Get-ChildItem 'C:\\\\flutter\\\\go_sport\\\\assets\\\\icons' -Filter '*heart*'\")",
+      "Bash(git show *)",
+      "WebFetch(domain:pub.dev)",
+      "WebFetch(domain:raw.githubusercontent.com)"
     ],
     "additionalDirectories": [
       "C:\\knowledge\\flutter-kb"

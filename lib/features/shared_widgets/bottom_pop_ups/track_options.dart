@@ -115,7 +115,9 @@ void showTrackOptionsBottomSheet({
                         : s.likedTracks.any((t) => t.id == track.id)),
                   );
                   return ActionButton(
-                    icon: 'assets/icons/heart_bg.svg',
+                    icon: isLiked
+                        ? 'assets/icons/heart_bg.svg'
+                        : 'assets/icons/heart_bg_stroke.svg',
                     label: isLiked ? 'Liked' : 'Like',
                     onTap: () {
                       final registry = ref.read(likeRegistryProvider.notifier);

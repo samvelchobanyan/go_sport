@@ -24,7 +24,7 @@ dependencies:
     just_audio: ^0.9.42
 
     # Navigation
-    go_router: ^14.2.0
+    go_router: ^17.0.0
     audio_service: ^0.18.18
 
     # Network
