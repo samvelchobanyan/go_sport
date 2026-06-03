@@ -311,16 +311,14 @@ class _Chip extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
         decoration: BoxDecoration(
-          color: isActive
-              ? const Color.fromRGBO(64, 74, 195, 0.07)
-              : DSColors.transparent,
-          border: Border.all(color: DSColors.blue),
+          color: isActive ? DSColors.blue10 : DSColors.white,
+          border: isActive ? null : Border.all(color: DSColors.blue20),
           borderRadius: BorderRadius.circular(100),
         ),
         alignment: Alignment.center,
         child: Text(
           label,
-          style: context.subtitleMBold?.copyWith(color: DSColors.blue),
+          style: context.subtitleM?.copyWith(color: DSColors.blue),
         ),
       ),
     );
@@ -428,7 +426,7 @@ class _Section extends StatelessWidget {
       children: [
         Padding(
           padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-          child: Text(title, style: context.h2),
+          child: Text(title, style: context.h3),
         ),
         for (var i = 0; i < children.length; i++) ...[
           children[i],

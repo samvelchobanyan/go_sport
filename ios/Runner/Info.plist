@@ -51,5 +51,14 @@
 	<true/>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>We need access to your gallery to update your profile picture.</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.442164065269-04f54iconsiigunchhgr88h93taot1a9</string>
+			</array>
+		</dict>
+	</array>
 </dict>
 </plist>
