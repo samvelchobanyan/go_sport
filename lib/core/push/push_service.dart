@@ -13,6 +13,9 @@ class PushService {
   //   1. subscribe to FirebaseMessaging.onTokenRefresh while app is running
   //   2. call register() on every app start (idempotent via findByToken) to catch refreshes that happened while app was killed
   Future<void> register() async {
+    // iOS-specific: triggers registerForRemoteNotifications; idempotent on Android.
+    await _firebaseService.requestNotificationPermissions();
+
     final token = await _firebaseService.getDeviceToken();
     if (token == null || token.isEmpty) return;
 
