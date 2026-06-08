@@ -18,7 +18,11 @@
       "PowerShell(Get-Command flutter -ErrorAction SilentlyContinue)",
       "Read(//c//**)",
       "PowerShell($env:Path -split ';' | Where-Object { $_ -match 'dart|flutter' }; Get-Command dart -ErrorAction SilentlyContinue; Get-Command flutter -ErrorAction SilentlyContinue)",
-      "PowerShell(& \"C:\\\\flutter\\\\bin\\\\dart.bat\" run build_runner build --delete-conflicting-outputs 2>&1)"
+      "PowerShell(& \"C:\\\\flutter\\\\bin\\\\dart.bat\" run build_runner build --delete-conflicting-outputs 2>&1)",
+      "Bash(git push *)",
+      "Bash(git branch *)",
+      "Bash(git stash *)",
+      "PowerShell($paths = @\\(\"C:\\\\flutter\\\\bin\\\\dart.bat\",\"C:\\\\src\\\\flutter\\\\bin\\\\dart.bat\",\"C:\\\\tools\\\\flutter\\\\bin\\\\dart.bat\",\"$env:USERPROFILE\\\\flutter\\\\bin\\\\dart.bat\",\"$env:LOCALAPPDATA\\\\flutter\\\\bin\\\\dart.bat\",\"C:\\\\dev\\\\flutter\\\\bin\\\\dart.bat\"\\); $found = $paths | Where-Object { Test-Path $_ }; if \\($found\\) { Write-Output \"FOUND: $found\" } else { Write-Output \"not in common spots; searching...\"; Get-ChildItem -Path C:\\\\ -Filter flutter.bat -Recurse -ErrorAction SilentlyContinue -Depth 4 | Select-Object -First 3 -ExpandProperty FullName })"
     ]
   }
 }
