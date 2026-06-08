@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
-import 'dart:ui';
 
 class BottomNavBar extends StatelessWidget {
   final int currentIndex;
@@ -27,42 +26,41 @@ class BottomNavBar extends StatelessWidget {
       labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
       destinations: [
         NavigationDestination(
-          icon: SvgPicture.asset(
-            'assets/icons/home.svg',
-            width: 25,
-            height: 25,
-            colorFilter: ColorFilter.mode(
-              currentIndex == 0 ? DSColors.black : DSColors.gray50,
-              BlendMode.srcIn,
-            ),
-          ),
+          icon: _NavIcon(asset: 'assets/icons/home.svg', color: DSColors.gray50),
+          selectedIcon:
+              _NavIcon(asset: 'assets/icons/home_active.svg', color: DSColors.black),
           label: 'Home',
         ),
         NavigationDestination(
-          icon: SvgPicture.asset(
-            'assets/icons/music.svg',
-            width: 25,
-            height: 25,
-            colorFilter: ColorFilter.mode(
-              currentIndex == 1 ? DSColors.black : DSColors.gray50,
-              BlendMode.srcIn,
-            ),
-          ),
+          icon: _NavIcon(asset: 'assets/icons/music.svg', color: DSColors.gray50),
+          selectedIcon:
+              _NavIcon(asset: 'assets/icons/music_active.svg', color: DSColors.black),
           label: 'Music',
         ),
         NavigationDestination(
-          icon: SvgPicture.asset(
-            'assets/icons/radio.svg',
-            width: 25,
-            height: 25,
-            colorFilter: ColorFilter.mode(
-              currentIndex == 2 ? DSColors.black : DSColors.gray50,
-              BlendMode.srcIn,
-            ),
-          ),
+          icon: _NavIcon(asset: 'assets/icons/radio.svg', color: DSColors.gray50),
+          selectedIcon:
+              _NavIcon(asset: 'assets/icons/radio_active.svg', color: DSColors.black),
           label: 'Radio',
         ),
       ],
+    );
+  }
+}
+
+class _NavIcon extends StatelessWidget {
+  final String asset;
+  final Color color;
+
+  const _NavIcon({required this.asset, required this.color});
+
+  @override
+  Widget build(BuildContext context) {
+    return SvgPicture.asset(
+      asset,
+      width: 25,
+      height: 25,
+      colorFilter: ColorFilter.mode(color, BlendMode.srcIn),
     );
   }
 }

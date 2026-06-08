@@ -32,7 +32,10 @@ class MainShell extends ConsumerWidget {
           ),
           BottomNavBar(
             currentIndex: navigationShell.currentIndex,
-            onTap: (index) => navigationShell.goBranch(index),
+            onTap: (index) => navigationShell.goBranch(
+              index,
+              initialLocation: index == navigationShell.currentIndex,
+            ),
           ),
           if (isGuest)
             GuestTimerBar(
