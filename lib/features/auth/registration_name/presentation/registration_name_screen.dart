@@ -5,9 +5,14 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
+import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 import 'package:go_router/go_router.dart';
 import 'package:go_sport/domain/state/registration_state.dart';
 import 'package:go_sport/features/shared_widgets/input.dart';
+
+const double _cardHeight = 371;
+const double _cardOverlap = 25;
+const double _cardVerticalPadding = 40;
 
 class RegistrationNameScreen extends ConsumerStatefulWidget {
   const RegistrationNameScreen({super.key});
@@ -47,8 +52,8 @@ class _RegistrationNameScreenState
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final screenHeight = MediaQuery.of(context).size.height;
+    final screenSize = MediaQuery.of(context).size;
+    final imageHeight = screenSize.height - _cardHeight + _cardOverlap;
 
     ref.listen<RegistrationState>(registrationControllerProvider, (prev, next) {
       if (next.isSuccess) {
@@ -68,22 +73,22 @@ class _RegistrationNameScreenState
         backgroundColor: DSColors.white,
         body: Stack(
           children: [
-            // Background Image
-            Image.asset(
-              'assets/images/confirm_email_bg.png',
-              width: screenWidth,
-              height: screenHeight * 0.7,
-              fit: BoxFit.cover,
-              cacheHeight: (screenHeight * 0.7).toInt(),
-              cacheWidth: screenWidth.toInt(),
+            Positioned(
+              top: 0,
+              left: 0,
+              right: 0,
+              height: imageHeight,
+              child: Image.asset(
+                'assets/images/confirm_email_bg.png',
+                fit: BoxFit.cover,
+              ),
             ),
 
-            // Main Content Container
             Align(
               alignment: Alignment.bottomCenter,
               child: Container(
-                width: screenWidth,
-                padding: const EdgeInsets.only(top: 20, bottom: 0),
+                height: _cardHeight,
+                width: screenSize.width,
                 decoration: BoxDecoration(
                   color: DSColors.white,
                   borderRadius: const BorderRadius.only(
@@ -91,16 +96,19 @@ class _RegistrationNameScreenState
                     topRight: Radius.circular(DSRadius.m),
                   ),
                 ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: SingleChildScrollView(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: DSSpacing.m,
+                    vertical: _cardVerticalPadding / 2,
+                  ),
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      minHeight: _cardHeight - _cardVerticalPadding,
+                    ),
+                    child: IntrinsicHeight(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          // Header Row
                           Row(
                             children: [
                               SvgPicture.asset('assets/icons/user.svg'),
@@ -116,9 +124,8 @@ class _RegistrationNameScreenState
                             ),
                           ),
 
-                          const SizedBox(height: 32),
+                          const SizedBox(height: 20),
 
-                          // Name Input
                           CustomInput(
                             controller: _nameController,
                             label: 'Name',
@@ -128,7 +135,6 @@ class _RegistrationNameScreenState
 
                           const SizedBox(height: 16),
 
-                          // Surname Input
                           CustomInput(
                             controller: _surnameController,
                             label: 'Surname',
@@ -136,9 +142,8 @@ class _RegistrationNameScreenState
                             keyboardType: TextInputType.name,
                           ),
 
-                          const SizedBox(height: 16),
+                          const Spacer(),
 
-                          // Continue Button
                           ElevatedButton.icon(
                             onPressed: _onFinish,
                             icon: const Icon(
@@ -153,20 +158,16 @@ class _RegistrationNameScreenState
                             ),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: DSColors.blue,
-                              padding: const EdgeInsets.symmetric(vertical: 14),
+                              minimumSize: const Size.fromHeight(DSSpacing.xxl),
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(
-                                  DSRadius.xl,
-                                ),
+                                borderRadius: BorderRadius.circular(DSRadius.xl),
                               ),
                             ),
                           ),
-
-                          const SizedBox(height: 20),
                         ],
                       ),
                     ),
-                  ],
+                  ),
                 ),
               ),
             ),

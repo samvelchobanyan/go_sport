@@ -31,7 +31,11 @@
       "Bash(powershell -Command \"Get-ChildItem 'C:\\\\flutter\\\\go_sport\\\\assets\\\\icons' -Filter '*heart*'\")",
       "Bash(git show *)",
       "WebFetch(domain:pub.dev)",
-      "WebFetch(domain:raw.githubusercontent.com)"
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "PowerShell(& \"C:\\\\mobiledev\\\\flutter\\\\bin\\\\dart.bat\" analyze \"lib/features/auth/registration_email/presentation/registration_email_screen.dart\")",
+      "PowerShell(& \"C:\\\\mobiledev\\\\flutter\\\\bin\\\\dart.bat\" analyze \"lib/features/auth/registration_phone/presentation/registration_phone_screen.dart\" \"lib/features/auth/registration_name/presentation/registration_name_screen.dart\" \"lib/features/auth/create_password/presentation/create_password_screen.dart\")",
+      "PowerShell(& \"C:\\\\mobiledev\\\\flutter\\\\bin\\\\dart.bat\" analyze \"lib/features/auth/confirm_email/presentation/confirm_email_screen.dart\" \"lib/features/auth/confirm_phone/presentation/confirm_phone_screen.dart\")",
+      "PowerShell(& \"C:\\\\mobiledev\\\\flutter\\\\bin\\\\dart.bat\" analyze \"lib/features/auth/forgot_password/presentation/forgot_password_screen.dart\" \"lib/features/auth/check_email/presentation/check_email_screen.dart\" \"lib/features/auth/change_password/presentation/change_password_screen.dart\" \"lib/features/auth/confirm_change_password/presentation/confirm_change_password_screen.dart\")"
     ],
     "additionalDirectories": [
       "C:\\knowledge\\flutter-kb"

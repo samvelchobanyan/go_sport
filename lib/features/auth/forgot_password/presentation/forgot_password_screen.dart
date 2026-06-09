@@ -5,9 +5,14 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
+import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 import 'package:go_sport/domain/state/forgot_password_state.dart';
 import 'package:go_sport/features/shared_widgets/input.dart';
 import 'package:go_router/go_router.dart';
+
+const double _cardHeight = 371;
+const double _cardOverlap = 25;
+const double _cardVerticalPadding = 40;
 
 class ForgotPasswordScreen extends ConsumerStatefulWidget {
   const ForgotPasswordScreen({super.key});
@@ -18,7 +23,6 @@ class ForgotPasswordScreen extends ConsumerStatefulWidget {
 }
 
 class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
-  // 1. Create the controller
   final _emailController = TextEditingController();
 
   @override
@@ -30,9 +34,6 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
   void _onContinue() {
     final email = _emailController.text.trim();
 
-    print('click on continue');
-
-    // 2. Simple Validation Logic
     if (email.isEmpty) {
       ScaffoldMessenger.of(
         context,
@@ -47,7 +48,6 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
       return;
     }
 
-    // 3. Trigger the controller
     ref
         .read(forgotPasswordControllerProvider.notifier)
         .forgotPasswordOtp(email);
@@ -55,8 +55,8 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final screenHeight = MediaQuery.of(context).size.height;
+    final screenSize = MediaQuery.of(context).size;
+    final imageHeight = screenSize.height - _cardHeight + _cardOverlap;
 
     final state = ref.watch(forgotPasswordControllerProvider);
 
@@ -81,22 +81,22 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
         backgroundColor: DSColors.white,
         body: Stack(
           children: [
-            // Background Image (Top half)
-            Image.asset(
-              'assets/images/email_registration_bg.png',
-              width: screenWidth,
-              height: screenHeight * 0.7,
-              fit: BoxFit.cover,
-              cacheHeight: (screenHeight * 0.7).toInt(),
-              cacheWidth: screenWidth.toInt(),
+            Positioned(
+              top: 0,
+              left: 0,
+              right: 0,
+              height: imageHeight,
+              child: Image.asset(
+                'assets/images/email_registration_bg.png',
+                fit: BoxFit.cover,
+              ),
             ),
 
-            // Main Content Container
             Align(
               alignment: Alignment.bottomCenter,
               child: Container(
-                width: screenWidth,
-                padding: const EdgeInsets.only(top: 20, bottom: 0),
+                height: _cardHeight,
+                width: screenSize.width,
                 decoration: BoxDecoration(
                   color: DSColors.white,
                   borderRadius: const BorderRadius.only(
@@ -104,12 +104,16 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                     topRight: Radius.circular(DSRadius.m),
                   ),
                 ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: SingleChildScrollView(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: DSSpacing.m,
+                    vertical: _cardVerticalPadding / 2,
+                  ),
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      minHeight: _cardHeight - _cardVerticalPadding,
+                    ),
+                    child: IntrinsicHeight(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
@@ -132,7 +136,6 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
 
                           SizedBox(height: 20),
 
-                          // Email Input
                           CustomInput(
                             controller: _emailController,
                             label: 'Email',
@@ -140,13 +143,10 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                             keyboardType: TextInputType.emailAddress,
                           ),
 
-                          const SizedBox(height: 100),
+                          const Spacer(),
 
-                          // Continue Button
                           ElevatedButton.icon(
-                            onPressed: () {
-                              state.isLoading ? null : _onContinue();
-                            },
+                            onPressed: state.isLoading ? null : _onContinue,
                             icon: state.isLoading
                                 ? const SizedBox(
                                     width: 20,
@@ -168,19 +168,16 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                             ),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: DSColors.blue,
-                              padding: const EdgeInsets.symmetric(vertical: 14),
+                              minimumSize: const Size.fromHeight(DSSpacing.xxl),
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(
-                                  DSRadius.xl,
-                                ),
+                                borderRadius: BorderRadius.circular(DSRadius.xl),
                               ),
                             ),
                           ),
-                          const SizedBox(height: 24),
                         ],
                       ),
                     ),
-                  ],
+                  ),
                 ),
               ),
             ),

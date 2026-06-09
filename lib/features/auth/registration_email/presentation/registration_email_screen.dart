@@ -5,10 +5,24 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
+import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 import 'package:go_sport/domain/state/registration_state.dart';
 import 'package:go_sport/features/auth/login/presentation/login/login_controller.dart';
 import 'package:go_sport/features/shared_widgets/input.dart';
 import 'package:go_router/go_router.dart';
+
+/// Fixed height of the white card, taken directly from the design (not derived
+/// from the inner content). Shared across the registration flow so the card is
+/// the same height on every screen.
+const double _cardHeight = 371;
+
+/// How many px the card overlaps the image at the top (rounded corners zone).
+const double _cardOverlap = 25;
+
+/// Vertical padding inside the card (top + bottom) — used to set the
+/// SingleChildScrollView's minimum content height so Spacer() still works when
+/// the card is not scrolling.
+const double _cardVerticalPadding = 40;
 
 class RegistrationEmailScreen extends ConsumerStatefulWidget {
   const RegistrationEmailScreen({super.key});
@@ -20,7 +34,6 @@ class RegistrationEmailScreen extends ConsumerStatefulWidget {
 
 class _RegistrationEmailScreenState
     extends ConsumerState<RegistrationEmailScreen> {
-  // 1. Create the controller
   final _emailController = TextEditingController();
 
   @override
@@ -32,7 +45,6 @@ class _RegistrationEmailScreenState
   void _onContinue() {
     final email = _emailController.text.trim();
 
-    // 2. Simple Validation Logic
     if (email.isEmpty) {
       ScaffoldMessenger.of(
         context,
@@ -47,14 +59,15 @@ class _RegistrationEmailScreenState
       return;
     }
 
-    // 3. Trigger the controller
     ref.read(registrationControllerProvider.notifier).registerEmail(email);
   }
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final screenHeight = MediaQuery.of(context).size.height;
+    // MediaQuery.size is keyboard-independent — the image height is calculated
+    // once and never changes when the keyboard opens.
+    final screenSize = MediaQuery.of(context).size;
+    final imageHeight = screenSize.height - _cardHeight + _cardOverlap;
 
     final state = ref.watch(registrationControllerProvider);
 
@@ -71,7 +84,7 @@ class _RegistrationEmailScreenState
 
     ref.listen<LoginState>(loginControllerProvider, (previous, next) {
       if (next.isAuthenticated) {
-        context.go('/'); // Navigate to home
+        context.go('/');
       }
       if (next.error != null) {
         ScaffoldMessenger.of(
@@ -87,22 +100,51 @@ class _RegistrationEmailScreenState
         backgroundColor: DSColors.white,
         body: Stack(
           children: [
-            // Background Image (Top half)
-            Image.asset(
-              'assets/images/email_registration_bg.png',
-              width: screenWidth,
-              height: screenHeight * 0.7,
-              fit: BoxFit.cover,
-              cacheHeight: (screenHeight * 0.7).toInt(),
-              cacheWidth: screenWidth.toInt(),
+            // Background image — anchored to top, fixed keyboard-independent
+            // height. Stays in place while the card slides up over it.
+            Positioned(
+              top: 0,
+              left: 0,
+              right: 0,
+              height: imageHeight,
+              child: Image.asset(
+                'assets/images/email_registration_bg.png',
+                fit: BoxFit.cover,
+              ),
             ),
 
-            // Main Content Container
+            // Card — pinned to the bottom of the (keyboard-resized) body.
+            // resizeToAvoidBottomInset: true causes the Scaffold body to shrink
+            // when the keyboard opens, which pushes Align(bottomCenter) upward,
+            // making the card slide up over the image.
+            Positioned(
+              bottom: _cardHeight + 20,
+              left: DSSpacing.m,
+              child: GestureDetector(
+                onTap: () => context.go('/login'),
+                child: Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: const BoxDecoration(
+                    color: DSColors.white,
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(color: DSColors.gray10, blurRadius: 8),
+                    ],
+                  ),
+                  child: const Icon(
+                    Icons.arrow_back,
+                    color: DSColors.blue,
+                    size: 22,
+                  ),
+                ),
+              ),
+            ),
+
             Align(
               alignment: Alignment.bottomCenter,
               child: Container(
-                width: screenWidth,
-                padding: const EdgeInsets.only(top: 20, bottom: 0),
+                height: _cardHeight,
+                width: screenSize.width,
                 decoration: BoxDecoration(
                   color: DSColors.white,
                   borderRadius: const BorderRadius.only(
@@ -110,19 +152,30 @@ class _RegistrationEmailScreenState
                     topRight: Radius.circular(DSRadius.m),
                   ),
                 ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                // SingleChildScrollView is a safety net: normally the content
+                // fits and Spacer() pushes buttons to the bottom; if the card
+                // is pushed high enough that content overflows, scroll activates.
+                child: SingleChildScrollView(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: DSSpacing.m,
+                    vertical: _cardVerticalPadding / 2,
+                  ),
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      minHeight: _cardHeight - _cardVerticalPadding,
+                    ),
+                    child: IntrinsicHeight(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
+                          // Top content
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Icon(Icons.person_rounded, color: DSColors.blue),
+                              Icon(
+                                Icons.person_rounded,
+                                color: DSColors.blue,
+                              ),
                               SizedBox(width: 8),
                               Text('Registration', style: context.h2),
                             ],
@@ -138,7 +191,6 @@ class _RegistrationEmailScreenState
 
                           SizedBox(height: 20),
 
-                          // Email Input
                           CustomInput(
                             controller: _emailController,
                             label: 'Email',
@@ -146,11 +198,10 @@ class _RegistrationEmailScreenState
                             keyboardType: TextInputType.emailAddress,
                           ),
 
-                          const SizedBox(height: 50),
+                          const Spacer(),
 
                           // Continue Button
                           ElevatedButton.icon(
-                            // Disable button if loading
                             onPressed: state.isLoading ? null : _onContinue,
                             icon: state.isLoading
                                 ? const SizedBox(
@@ -173,11 +224,9 @@ class _RegistrationEmailScreenState
                             ),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: DSColors.blue,
-                              padding: const EdgeInsets.symmetric(vertical: 14),
+                              minimumSize: const Size.fromHeight(DSSpacing.xxl),
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(
-                                  DSRadius.xl,
-                                ),
+                                borderRadius: BorderRadius.circular(DSRadius.xl),
                               ),
                             ),
                           ),
@@ -187,14 +236,11 @@ class _RegistrationEmailScreenState
                           TextButton(
                             onPressed: () {},
                             style: TextButton.styleFrom(
-                              padding: const EdgeInsets.symmetric(vertical: 14),
+                              minimumSize: const Size.fromHeight(DSSpacing.xxl),
                               backgroundColor: DSColors.blue5,
-                              // This ensures no border is drawn
                               side: BorderSide.none,
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(
-                                  DSRadius.xl,
-                                ),
+                                borderRadius: BorderRadius.circular(DSRadius.xl),
                               ),
                             ),
                             child: Row(
@@ -213,11 +259,10 @@ class _RegistrationEmailScreenState
                               ],
                             ),
                           ),
-                          SizedBox(height: 20),
                         ],
                       ),
                     ),
-                  ],
+                  ),
                 ),
               ),
             ),
