@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
@@ -37,7 +38,11 @@ class _AlbumScreenState extends ConsumerState<AlbumScreen> {
         );
   }
 
-  void _onPlayTap(List<Track> tracks) {
+  void _onPlayTap(List<Track> tracks, bool isThisActiveSource) {
+    if (isThisActiveSource) {
+      ref.read(playerStateProvider.notifier).togglePlayPause();
+      return;
+    }
     if (tracks.isEmpty) return;
     ref
         .read(playerStateProvider.notifier)
@@ -57,6 +62,10 @@ class _AlbumScreenState extends ConsumerState<AlbumScreen> {
     final isLiked = ref.watch(
       likeRegistryProvider.select((s) => s.likedAlbums.any((a) => a.id == widget.album.id)),
     );
+    final isThisActiveSource = ref.watch(playerStateProvider.select((s) =>
+        s.source?.id == widget.album.id && !s.isRadioMode));
+    final isThisPlaying = ref.watch(playerStateProvider.select((s) =>
+        s.source?.id == widget.album.id && s.isPlaying && !s.isRadioMode));
     final screenHeight = MediaQuery.of(context).size.height;
     final expandedHeight = screenHeight * 0.5;
 
@@ -71,44 +80,21 @@ class _AlbumScreenState extends ConsumerState<AlbumScreen> {
             scrolledUnderElevation: 0,
             backgroundColor: DSColors.black.withValues(alpha: 0.9),
             leading: IconButton(
-              icon: Container(
-                width: 36,
-                height: 36,
-                decoration: BoxDecoration(
-                  color: DSColors.black.withValues(alpha: 0.3),
-                  shape: BoxShape.circle,
-                ),
-                child: const Icon(
-                  Icons.arrow_back,
-                  color: DSColors.white,
-                  size: 20,
-                ),
-              ),
+              icon: SvgPicture.asset('assets/icons/arrow-Left.svg'),
               onPressed: () => context.pop(),
             ),
             actions: [
               IconButton(
-                icon: Container(
-                  width: 36,
-                  height: 36,
-                  decoration: BoxDecoration(
-                    color: DSColors.black.withValues(alpha: 0.3),
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Icon(
-                    Icons.share,
-                    color: DSColors.white,
-                    size: 20,
-                  ),
-                ),
+                icon: SvgPicture.asset('assets/icons/share_no_bg.svg'),
                 onPressed: () {},
               ),
-              const SearchButton(decoration: true),
+              const SearchButton(iconColor: DSColors.white),
             ],
             flexibleSpace: FlexibleSpaceBar(
               background: AlbumHero(
                 album: widget.album,
                 isLiked: isLiked,
+                isPlaying: isThisPlaying,
                 onLikeTap: () => ref
                     .read(likeRegistryProvider.notifier)
                     .toggleAlbumLike(widget.album),
@@ -116,7 +102,7 @@ class _AlbumScreenState extends ConsumerState<AlbumScreen> {
                   final tracks = tracksState.mapOrNull(
                     data: (data) => data.tracks,
                   );
-                  if (tracks != null) _onPlayTap(tracks);
+                  if (tracks != null) _onPlayTap(tracks, isThisActiveSource);
                 },
               ),
             ),
@@ -177,6 +163,7 @@ class _AlbumScreenState extends ConsumerState<AlbumScreen> {
                           isPlaying: trackPlayingState,
                           onTap: () => _onTrackTap(tracks, index),
                           onMenuTap: () {},
+                          topPadding: index == 0 ? 0 : 12,
                         ),
                         if (index < tracks.length - 1)
                           const Padding(

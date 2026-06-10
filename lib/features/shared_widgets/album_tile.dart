@@ -46,8 +46,8 @@ class AlbumTile extends StatelessWidget {
                 borderRadius: BorderRadius.circular(DSRadius.s),
                 child: CachedNetworkImage(
                   imageUrl: imageUrl,
-                  width: 50,
-                  height: 50,
+                  width: 72,
+                  height: 72,
                   fit: BoxFit.cover,
                   placeholder: (context, url) =>
                       Container(width: 50, height: 50, color: DSColors.divider),

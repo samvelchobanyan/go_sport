@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
@@ -105,7 +106,12 @@ class _PlaylistScreenState extends ConsumerState<PlaylistScreen> {
     List<Track> tracks,
     String playlistTitle,
     String playlistImageUrl,
+    bool isThisActiveSource,
   ) {
+    if (isThisActiveSource) {
+      ref.read(playerStateProvider.notifier).togglePlayPause();
+      return;
+    }
     // skip if empty
     if (tracks.isEmpty) return;
 
@@ -160,6 +166,10 @@ class _PlaylistScreenState extends ConsumerState<PlaylistScreen> {
     final isLikedFromRegistry = ref.watch(
       likeRegistryProvider.select((s) => s.likedPlaylists.any((p) => p.id == widget.playlistId)),
     );
+    final isThisActiveSource = ref.watch(playerStateProvider.select((s) =>
+        s.source?.id == widget.playlistId && !s.isRadioMode));
+    final isThisPlaying = ref.watch(playerStateProvider.select((s) =>
+        s.source?.id == widget.playlistId && s.isPlaying && !s.isRadioMode));
     final pl = currentPlaylist;
     final screenHeight = MediaQuery.of(context).size.height;
     final expandedHeight = screenHeight * 0.5;
@@ -175,37 +185,13 @@ class _PlaylistScreenState extends ConsumerState<PlaylistScreen> {
             scrolledUnderElevation: 0,
             backgroundColor: DSColors.gray90,
             leading: IconButton(
-              icon: Container(
-                width: 36,
-                height: 36,
-                decoration: BoxDecoration(
-                  color: DSColors.gray30,
-                  shape: BoxShape.circle,
-                ),
-                child: const Icon(
-                  Icons.arrow_back,
-                  color: DSColors.white,
-                  size: 20,
-                ),
-              ),
+              icon: SvgPicture.asset('assets/icons/arrow-Left.svg'),
               onPressed: () => context.pop(),
             ),
             actions: [
               if (widget.type == PlaylistType.custom)
                 IconButton(
-                  icon: Container(
-                    width: 36,
-                    height: 36,
-                    decoration: BoxDecoration(
-                      color: DSColors.gray30,
-                      shape: BoxShape.circle,
-                    ),
-                    child: const Icon(
-                      Icons.settings,
-                      color: DSColors.white,
-                      size: 20,
-                    ),
-                  ),
+                  icon: const Icon(Icons.settings, color: DSColors.white, size: 24),
                   onPressed: () {
                     final pl = currentPlaylist;
                     final currentTracks = tracksState.mapOrNull(data: (d) => d.tracks) ?? [];
@@ -251,28 +237,15 @@ class _PlaylistScreenState extends ConsumerState<PlaylistScreen> {
                 )
               else
                 IconButton(
-                  icon: Container(
-                    width: 36,
-                    height: 36,
-                    decoration: BoxDecoration(
-                      color: DSColors.gray30,
-                      shape: BoxShape.circle,
-                    ),
-                    child: const Icon(
-                      Icons.share,
-                      color: DSColors.white,
-                      size: 20,
-                    ),
-                  ),
-                  onPressed: () {
-                    // TODO: Share playlist
-                  },
+                  icon: SvgPicture.asset('assets/icons/share_no_bg.svg'),
+                  onPressed: () {},
                 ),
             ],
             flexibleSpace: FlexibleSpaceBar(
               background: PlaylistHero(
                 playlist: pl,
                 isLiked: isLikedFromRegistry,
+                isPlaying: isThisPlaying,
                 showPlayButton: tracksState.mapOrNull(
                       data: (data) => data.tracks.isNotEmpty,
                     ) ??
@@ -296,6 +269,7 @@ class _PlaylistScreenState extends ConsumerState<PlaylistScreen> {
                       tracksValue,
                       pl.title,
                       pl.imageUrl,
+                      isThisActiveSource,
                     );
                   }
                 },
@@ -397,6 +371,7 @@ class _PlaylistScreenState extends ConsumerState<PlaylistScreen> {
                         TrackTile(
                           track: track,
                           isPlaying: trackPlayingState,
+                          topPadding: index == 0 ? 0 : 12,
                           onTap: () => _onTrackTap(
                             ref,
                             tracks,

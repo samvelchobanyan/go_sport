@@ -13,6 +13,7 @@ class AlbumTrackTile extends StatelessWidget {
   final VoidCallback onTap;
   final VoidCallback onMenuTap;
   final bool? isPlaying;
+  final double topPadding;
 
   const AlbumTrackTile({
     super.key,
@@ -21,6 +22,7 @@ class AlbumTrackTile extends StatelessWidget {
     required this.onTap,
     required this.onMenuTap,
     this.isPlaying,
+    this.topPadding = 12,
   });
 
   @override
@@ -28,7 +30,7 @@ class AlbumTrackTile extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        padding: EdgeInsets.only(left: 16, right: 16, top: topPadding, bottom: 12),
         child: Row(
           children: [
             TrackNumberBadge(index: index),

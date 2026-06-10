@@ -14,9 +14,8 @@ import 'package:go_sport/domain/state/player_state.dart';
 import 'package:go_sport/domain/state/player_state_selectors.dart';
 
 
-const double _kMiniPlayerHeight = 72.0;
-const double _kActivePanelWidthRatio = 0.8;
-const double _kInactivePanelWidthRatio = 0.2;
+const double _kMiniPlayerHeight = 55.0;
+const double _kInactivePanelWidth = 48.0;
 const Duration _kAnimationDuration = Duration(milliseconds: 300);
 const double _kProgressBarHeight = 2.0;
 const double _kProgressBarInset = 8.0;
@@ -75,7 +74,7 @@ class _MiniPlayerWidgetState extends ConsumerState<MiniPlayerWidget>
   Widget build(BuildContext context) {
     return Container(
       height: _kMiniPlayerHeight,
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 7),
+      padding: const EdgeInsets.only(left: 16, right: 16, top: 7),
       child: AnimatedBuilder(
         animation: _animationController,
         builder: (context, child) {
@@ -109,11 +108,9 @@ class _MiniPlayerWidgetState extends ConsumerState<MiniPlayerWidget>
     final screenWidth = MediaQuery.of(context).size.width;
     final availableWidth = screenWidth - 32 - 8; // minus horizontal padding (16*2) and gap (8)
 
-    // Calculate target widths
-    final activeWidth = availableWidth * _kActivePanelWidthRatio;
-    final inactiveWidth = availableWidth * _kInactivePanelWidthRatio;
+    final activeWidth = availableWidth - _kInactivePanelWidth;
+    const inactiveWidth = _kInactivePanelWidth;
 
-    // Interpolate width based on animation
     final animatedWidth = isMusicPanel
         ? lerpDouble(activeWidth, inactiveWidth, _animationController.value)!
         : lerpDouble(inactiveWidth, activeWidth, _animationController.value)!;
@@ -383,13 +380,13 @@ class _MiniPlayerWidgetState extends ConsumerState<MiniPlayerWidget>
                 final imageUrl = track?.imageUrl ?? swipeData.sourceImageUrl;
                 
                 return Padding(
-                  padding: const EdgeInsets.only(left: 7, right: 6),
+                  padding: const EdgeInsets.only(left: 7, right: 8),
                   child: Row(
                     children: [
                       // Album cover
                       Container(
-                        width: 44,
-                        height: 44,
+                        width: 34,
+                        height: 34,
                         decoration: BoxDecoration(
                           color: DSColors.white,
                           borderRadius: BorderRadius.circular(4.25),
@@ -407,34 +404,32 @@ class _MiniPlayerWidgetState extends ConsumerState<MiniPlayerWidget>
                       const SizedBox(width: 7),
                       // Text block
                       Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 7),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              trackTitle,
+                              style: context.subtitleM?.copyWith(
+                                fontWeight: FontWeight.bold,
+                                color: DSColors.black,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            if (artistName.isNotEmpty) ...[
+                              const SizedBox(height: 2),
                               Text(
-                                trackTitle,
+                                artistName,
                                 style: context.subtitleM?.copyWith(
                                   fontWeight: FontWeight.bold,
-                                  color: DSColors.black,
+                                  color: DSColors.gray70,
                                 ),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                               ),
-                              if (artistName.isNotEmpty) ...[
-                                const SizedBox(height: 2),
-                                Text(
-                                  artistName,
-                                  style: context.textL?.copyWith(
-                                    color: DSColors.gray70,
-                                  ),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ],
                             ],
-                          ),
+                          ],
                         ),
                       ),
                       const SizedBox(width: 8),
@@ -559,13 +554,13 @@ class _MiniPlayerWidgetState extends ConsumerState<MiniPlayerWidget>
         'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=300&q=80';
 
     return Padding(
-      padding: const EdgeInsets.only(left: 7, right: 6),
+      padding: const EdgeInsets.only(left: 7, right: 8),
       child: Row(
         children: [
           // Station cover
           Container(
-            width: 44,
-            height: 44,
+            width: 34,
+            height: 34,
             decoration: BoxDecoration(
               color: DSColors.white,
               borderRadius: BorderRadius.circular(4.25),
@@ -578,14 +573,12 @@ class _MiniPlayerWidgetState extends ConsumerState<MiniPlayerWidget>
           const SizedBox(width: 7),
           // Text block
           Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 7),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    radioTitle,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  radioTitle,
                     style: context.subtitleM?.copyWith(
                       fontWeight: FontWeight.bold,
                       color: DSColors.white,
@@ -603,7 +596,6 @@ class _MiniPlayerWidgetState extends ConsumerState<MiniPlayerWidget>
                     overflow: TextOverflow.ellipsis,
                   ),
                 ],
-              ),
             ),
           ),
           const SizedBox(width: 8),

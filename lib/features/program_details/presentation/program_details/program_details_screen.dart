@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
@@ -44,7 +45,11 @@ class _ProgramDetailsScreenState extends ConsumerState<ProgramDetailsScreen> {
     debugPrint('Track menu tapped at index: $index');
   }
 
-  void _onPlayTap(List<Track> episodes) {
+  void _onPlayTap(List<Track> episodes, bool isThisActiveSource) {
+    if (isThisActiveSource) {
+      ref.read(playerStateProvider.notifier).togglePlayPause();
+      return;
+    }
     if (episodes.isEmpty) return;
 
     ref
@@ -67,6 +72,10 @@ class _ProgramDetailsScreenState extends ConsumerState<ProgramDetailsScreen> {
     final isLiked = ref.watch(
       likeRegistryProvider.select((s) => s.likedPrograms.any((p) => p.id == widget.program.id)),
     );
+    final isThisActiveSource = ref.watch(playerStateProvider.select((s) =>
+        s.source?.id == widget.program.id && !s.isRadioMode));
+    final isThisPlaying = ref.watch(playerStateProvider.select((s) =>
+        s.source?.id == widget.program.id && s.isPlaying && !s.isRadioMode));
     final screenHeight = MediaQuery.of(context).size.height;
     final expandedHeight = screenHeight * 0.5;
 
@@ -83,46 +92,21 @@ class _ProgramDetailsScreenState extends ConsumerState<ProgramDetailsScreen> {
               scrolledUnderElevation: 0,
               backgroundColor: DSColors.black.withValues(alpha: 0.9),
               leading: IconButton(
-                icon: Container(
-                  width: 36,
-                  height: 36,
-                  decoration: BoxDecoration(
-                    color: DSColors.black.withValues(alpha: 0.3),
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Icon(
-                    Icons.arrow_back,
-                    color: DSColors.white,
-                    size: 20,
-                  ),
-                ),
+                icon: SvgPicture.asset('assets/icons/arrow-Left.svg'),
                 onPressed: () => context.pop(),
               ),
-
-              // todo check why page doesnt work
               actions: [
                 IconButton(
-                  icon: Container(
-                    width: 36,
-                    height: 36,
-                    decoration: BoxDecoration(
-                      color: DSColors.black.withValues(alpha: 0.3),
-                      shape: BoxShape.circle,
-                    ),
-                    child: const Icon(
-                      Icons.share,
-                      color: DSColors.white,
-                      size: 20,
-                    ),
-                  ),
+                  icon: SvgPicture.asset('assets/icons/share_no_bg.svg'),
                   onPressed: () {},
                 ),
-                const SearchButton(decoration: true),
+                const SearchButton(iconColor: DSColors.white),
               ],
               flexibleSpace: FlexibleSpaceBar(
                 background: ProgramHero(
                   program: widget.program,
                   isLiked: isLiked,
+                  isPlaying: isThisPlaying,
                   onLikeTap: () => ref
                       .read(likeRegistryProvider.notifier)
                       .toggleProgramLike(widget.program),
@@ -130,7 +114,7 @@ class _ProgramDetailsScreenState extends ConsumerState<ProgramDetailsScreen> {
                     final episodes = episodesState.mapOrNull(
                       data: (data) => data.episodes,
                     );
-                    if (episodes != null) _onPlayTap(episodes);
+                    if (episodes != null) _onPlayTap(episodes, isThisActiveSource);
                   },
                 ),
               ),
@@ -203,6 +187,7 @@ class _ProgramDetailsScreenState extends ConsumerState<ProgramDetailsScreen> {
                             episode: episode,
                             index: index + 1,
                             isPlaying: trackPlayingState,
+                            topPadding: index == 0 ? 0 : 12,
                             onTap: () => _onTrackTap(episodes, index),
                             onMenuTap: () => _onTrackMenuTap(index),
                           ),

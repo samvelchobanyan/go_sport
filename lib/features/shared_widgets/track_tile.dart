@@ -10,6 +10,7 @@ class TrackTile extends StatelessWidget {
   final VoidCallback onTap;
   final void Function(Track track) onMenuTap;
   final bool? isPlaying;
+  final double topPadding;
 
   const TrackTile({
     super.key,
@@ -17,6 +18,7 @@ class TrackTile extends StatelessWidget {
     required this.onTap,
     required this.onMenuTap,
     this.isPlaying,
+    this.topPadding = 12,
   });
 
   @override
@@ -24,7 +26,7 @@ class TrackTile extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        padding: EdgeInsets.only(left: 16, right: 16, top: topPadding, bottom: 12),
         child: Row(
           children: [
             // Track image

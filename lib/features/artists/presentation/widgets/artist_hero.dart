@@ -33,9 +33,9 @@ class ArtistHero extends StatelessWidget {
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               colors: [
+                Color.fromRGBO(0, 0, 0, 0.8),
                 DSColors.transparent,
-                Color.fromRGBO(0, 0, 0, 0.3),
-                Color.fromRGBO(0, 0, 0, 0.7),
+                Color.fromRGBO(0, 0, 0, 0.9),
               ],
               stops: [0.0, 0.5, 1.0],
             ),
@@ -45,7 +45,7 @@ class ArtistHero extends StatelessWidget {
         Align(
           alignment: Alignment.bottomCenter,
           child: Padding(
-            padding: const EdgeInsets.only(bottom: 60, left: 24, right: 24),
+            padding: const EdgeInsets.only(bottom: 44, left: 24, right: 24),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -55,13 +55,13 @@ class ArtistHero extends StatelessWidget {
                     width: 48,
                     height: 48,
                     decoration: BoxDecoration(
-                      color: DSColors.white.withValues(alpha: 0.2),
+                      color: DSColors.white.withValues(alpha: 0.4),
                       shape: BoxShape.circle,
                     ),
                     child: Center(
                       child: DSHeartIcon(
                         color: DSColors.white,
-                        size: 24,
+                        size: 32,
                         isFilled: isLiked,
                       ),
                     ),

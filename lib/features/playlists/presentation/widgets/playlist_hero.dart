@@ -8,6 +8,7 @@ import 'package:go_sport/domain/entities/playlist.dart';
 class PlaylistHero extends StatelessWidget {
   final Playlist playlist;
   final bool isLiked;
+  final bool isPlaying;
   final VoidCallback onActionTap;
   final VoidCallback onPlayTap;
   final bool showPlayButton;
@@ -16,6 +17,7 @@ class PlaylistHero extends StatelessWidget {
     super.key,
     required this.playlist,
     required this.isLiked,
+    required this.isPlaying,
     required this.onActionTap,
     required this.onPlayTap,
     this.showPlayButton = true,
@@ -50,9 +52,9 @@ class PlaylistHero extends StatelessWidget {
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               colors: [
+                Color.fromRGBO(0, 0, 0, 0.8),
                 DSColors.transparent,
-                Color.fromRGBO(0, 0, 0, 0.3),
-                Color.fromRGBO(0, 0, 0, 0.7),
+                Color.fromRGBO(0, 0, 0, 0.9),
               ],
               stops: [0.0, 0.5, 1.0],
             ),
@@ -63,7 +65,7 @@ class PlaylistHero extends StatelessWidget {
         Align(
           alignment: Alignment.bottomCenter,
           child: Padding(
-            padding: const EdgeInsets.only(bottom: 60, left: 24, right: 24),
+            padding: const EdgeInsets.only(bottom: 44, left: 24, right: 24),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -86,7 +88,7 @@ class PlaylistHero extends StatelessWidget {
                         width: 48,
                         height: 48,
                         decoration: BoxDecoration(
-                          color: DSColors.white20,
+                          color: DSColors.white.withValues(alpha: 0.4),
                           shape: BoxShape.circle,
                         ),
                         child: Center(
@@ -120,11 +122,13 @@ class PlaylistHero extends StatelessWidget {
                             color: DSColors.lime,
                             shape: BoxShape.circle,
                           ),
-                          child: const Center(
-                            child: Icon(
-                              Icons.play_arrow,
-                              color: DSColors.black,
-                              size: 32,
+                          child: Center(
+                            child: SvgPicture.asset(
+                              isPlaying
+                                  ? 'assets/icons/pause.svg'
+                                  : 'assets/icons/play.svg',
+                              width: 32,
+                              height: 32,
                             ),
                           ),
                         ),
