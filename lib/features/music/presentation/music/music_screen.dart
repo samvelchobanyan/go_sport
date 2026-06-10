@@ -235,7 +235,7 @@ class _MusicScreenState extends ConsumerState<MusicScreen> {
                               ),
                               if (featuredAlbums.isNotEmpty)
                                 SizedBox(
-                                  height: 260,
+                                  height: 240,
                                   child: ListView.builder(
                                     scrollDirection: Axis.horizontal,
                                     padding: const EdgeInsets.symmetric(
