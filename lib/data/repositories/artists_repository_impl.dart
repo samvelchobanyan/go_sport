@@ -44,6 +44,7 @@ class ArtistsRepositoryImpl implements ArtistsRepository {
     final artistList = data.map((e) {
       final entry = e as Map<String, dynamic>;
       final artistJson = entry['Artist'] as Map<String, dynamic>;
+      artistJson['Like'] = {'documentId': entry['documentId']};
       return ArtistDto.fromJson(artistJson).toDomain();
     }).toList();
 
