@@ -6,6 +6,7 @@ import 'package:go_sport/core/navigation/routes.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/domain/state/featured_playlists_state.dart';
 import 'package:go_sport/domain/state/like_registry.dart';
@@ -149,7 +150,7 @@ class _MusicScreenState extends ConsumerState<MusicScreen> {
                   floating: true,
 
                   leading: Padding(
-                    padding: const EdgeInsets.only(top: 8, bottom: 8, left: 16),
+                    padding: const EdgeInsets.only(top: DSSpacing.s8, bottom: DSSpacing.s8, left: DSSpacing.m),
                     child: UserAvatarButton(
                       imageUrl: null,
                       onTap: () {
@@ -170,7 +171,7 @@ class _MusicScreenState extends ConsumerState<MusicScreen> {
                           cardWidth: (screenWidth - 16 * 2 - 8) / 2,
                         )
                       : Padding(
-                          padding: const EdgeInsets.all(16),
+                          padding: const EdgeInsets.all(DSSpacing.m),
                           child: Wrap(
                             spacing: 8,
                             runSpacing: 8,
@@ -204,7 +205,7 @@ class _MusicScreenState extends ConsumerState<MusicScreen> {
                       ),
                     ),
                     clipBehavior: Clip.antiAlias,
-                    child: SizedBox(height: 16),
+                    child: SizedBox(height: DSSpacing.m),
                   ),
                 ),
 
@@ -281,7 +282,7 @@ class _MusicScreenState extends ConsumerState<MusicScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               const Padding(
-                                padding: EdgeInsets.symmetric(vertical: 16),
+                                padding: EdgeInsets.symmetric(vertical: DSSpacing.m),
                                 child: WaveSectionHeader(
                                   title: 'Featured artists',
                                   showAnimation: true,
@@ -297,7 +298,7 @@ class _MusicScreenState extends ConsumerState<MusicScreen> {
                                   itemCount: featuredArtists.length,
                                   itemBuilder: (context, index) {
                                     return Padding(
-                                      padding: const EdgeInsets.only(right: 16),
+                                      padding: const EdgeInsets.only(right: DSSpacing.m),
                                       child: ArtistCard(
                                         name: featuredArtists[index].artistName,
                                         imageUrl:

@@ -61,7 +61,7 @@ class RadioPlayerUpperContent extends ConsumerWidget {
             title: nowPlaying.title,
             artist: nowPlaying.artist,
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: DSSpacing.s8),
           _ProgramTimers(program: currentProgram),
           const Spacer(),
         ],
@@ -147,7 +147,7 @@ class _NowPlayingCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 14),
+      padding: const EdgeInsets.symmetric(horizontal: DSSpacing.s10, vertical: DSSpacing.s14),
       decoration: BoxDecoration(
         color: DSColors.white.withValues(alpha: 0.5),
         borderRadius: BorderRadius.circular(DSRadius.s),
@@ -177,7 +177,7 @@ class _NowPlayingCard extends StatelessWidget {
                     ),
             ),
           ),
-          const SizedBox(width: 8),
+          const SizedBox(width: DSSpacing.s8),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -190,7 +190,7 @@ class _NowPlayingCard extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                 ),
                 if (artist.isNotEmpty) ...[
-                  const SizedBox(height: 2),
+                  const SizedBox(height: DSSpacing.s),
                   Text(
                     artist,
                     style: context.textL?.copyWith(color: DSColors.gray60),
@@ -275,7 +275,7 @@ class _TimeBox extends StatelessWidget {
             label,
             style: context.textL?.copyWith(color: DSColors.blue),
           ),
-          const SizedBox(height: 2),
+          const SizedBox(height: DSSpacing.s),
           Text(
             value,
             style: context.subtitleM?.copyWith(color: DSColors.black),

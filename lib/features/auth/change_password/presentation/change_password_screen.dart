@@ -123,12 +123,12 @@ class _ChangePasswordScreenState extends ConsumerState<ChangePasswordScreen> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               SvgPicture.asset('assets/icons/lock.svg'),
-                              const SizedBox(width: 8),
+                              const SizedBox(width: DSSpacing.s8),
                               Text('Restore password', style: context.h2),
                             ],
                           ),
 
-                          const SizedBox(height: 14),
+                          const SizedBox(height: DSSpacing.s14),
                           Text(
                             'Your password must contain at least one special character',
                             style: context.bodyL?.copyWith(
@@ -136,7 +136,7 @@ class _ChangePasswordScreenState extends ConsumerState<ChangePasswordScreen> {
                             ),
                           ),
 
-                          const SizedBox(height: 16),
+                          const SizedBox(height: DSSpacing.m),
 
                           CustomInput(
                             controller: _passwordController,
@@ -146,7 +146,7 @@ class _ChangePasswordScreenState extends ConsumerState<ChangePasswordScreen> {
                             obscureText: true,
                           ),
 
-                          const SizedBox(height: 16),
+                          const SizedBox(height: DSSpacing.m),
 
                           CustomInput(
                             controller: _confirmPasswordController,
@@ -174,7 +174,7 @@ class _ChangePasswordScreenState extends ConsumerState<ChangePasswordScreen> {
                               backgroundColor: DSColors.blue,
                               minimumSize: const Size.fromHeight(DSSpacing.xxl),
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(DSRadius.xl),
+                                borderRadius: BorderRadius.circular(DSRadius.xxl),
                               ),
                             ),
                           ),

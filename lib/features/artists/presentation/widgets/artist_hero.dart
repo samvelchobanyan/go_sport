@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:go_sport/design_system/components/icons/ds_heart_icon.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_spacing.dart';
+import 'package:go_sport/design_system/foundations/ds_layout.dart';
+import 'package:go_sport/design_system/foundations/ds_icon_size.dart';
 import 'package:go_sport/domain/entities/artist.dart';
 
 class ArtistHero extends StatelessWidget {
@@ -45,7 +48,7 @@ class ArtistHero extends StatelessWidget {
         Align(
           alignment: Alignment.bottomCenter,
           child: Padding(
-            padding: const EdgeInsets.only(bottom: 44, left: 24, right: 24),
+            padding: const EdgeInsets.only(bottom: DSLayout.heroContentBottom, left: DSSpacing.l, right: DSSpacing.l),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -61,13 +64,13 @@ class ArtistHero extends StatelessWidget {
                     child: Center(
                       child: DSHeartIcon(
                         color: DSColors.white,
-                        size: 32,
+                        size: DSIconSize.s32,
                         isFilled: isLiked,
                       ),
                     ),
                   ),
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: DSSpacing.m),
                 Text(
                   artist.artistName,
                   style: context.h1?.copyWith(color: DSColors.white),

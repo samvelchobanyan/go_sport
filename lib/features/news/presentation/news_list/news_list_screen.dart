@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_spacing.dart';
+import 'package:go_sport/design_system/foundations/ds_layout.dart';
 import 'package:go_sport/domain/state/news_state.dart';
 import 'package:go_sport/features/home/presentation/home/widgets/news_item.dart';
 import 'package:go_sport/features/shared_widgets/dotted_divider.dart';
@@ -48,12 +50,12 @@ class NewsListScreen extends ConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text('Error loading news', style: context.subtitleLSemi),
-            const SizedBox(height: 8),
+            const SizedBox(height: DSSpacing.s8),
             Text(
               state.error!,
               style: context.textL?.copyWith(color: DSColors.gray60),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: DSSpacing.m),
             ElevatedButton(
               onPressed: () {
                 ref.read(newsStateProvider.notifier).loadNews();
@@ -74,7 +76,7 @@ class NewsListScreen extends ConsumerWidget {
     return RefreshIndicator(
       onRefresh: () => ref.read(newsStateProvider.notifier).refresh(),
       child: ListView.separated(
-        padding: const EdgeInsets.only(top: 16, bottom: 100),
+        padding: const EdgeInsets.only(top: DSSpacing.m, bottom: DSLayout.bottomBarClearance),
         itemCount: articles.length,
         separatorBuilder: (context, index) => const DottedDivider(),
         itemBuilder: (context, index) {

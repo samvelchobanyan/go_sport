@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/domain/entities/track.dart';
 
@@ -21,7 +22,7 @@ class AddTrackTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      padding: const EdgeInsets.symmetric(horizontal: DSSpacing.m, vertical: DSSpacing.s12),
       child: Row(
         children: [
           ClipRRect(
@@ -41,7 +42,7 @@ class AddTrackTile extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: DSSpacing.s12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -52,7 +53,7 @@ class AddTrackTile extends StatelessWidget {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
-                const SizedBox(height: 4),
+                const SizedBox(height: DSSpacing.xs),
                 Text(
                   track.artistName,
                   style: context.textL?.copyWith(color: DSColors.gray60),
@@ -62,7 +63,7 @@ class AddTrackTile extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: DSSpacing.s12),
           GestureDetector(
             onTap: onToggle,
             child: SvgPicture.asset(

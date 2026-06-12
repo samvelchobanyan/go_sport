@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_spacing.dart';
+import 'package:go_sport/design_system/foundations/ds_icon_size.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 
 class AlbumTile extends StatelessWidget {
@@ -26,13 +28,13 @@ class AlbumTile extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        padding: const EdgeInsets.symmetric(horizontal: DSSpacing.m, vertical: DSSpacing.s12),
         child: Row(
           children: [
             // Thumbnail image
             Container(
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(DSRadius.s),
                 boxShadow: [
                   BoxShadow(
                     color: DSColors.gray70,
@@ -58,13 +60,13 @@ class AlbumTile extends StatelessWidget {
                     child: const Icon(
                       Icons.error,
                       color: DSColors.gray50,
-                      size: 28,
+                      size: DSIconSize.s28,
                     ),
                   ),
                 ),
               ),
             ),
-            const SizedBox(width: 12),
+            const SizedBox(width: DSSpacing.s12),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -76,13 +78,13 @@ class AlbumTile extends StatelessWidget {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  const SizedBox(height: 2),
+                  const SizedBox(height: DSSpacing.s),
 
                   Text(
                     artistName,
                     style: context.textL?.copyWith(color: DSColors.gray60),
                   ),
-                  const SizedBox(height: 2),
+                  const SizedBox(height: DSSpacing.s),
                   Text(
                     releaseYear,
                     style: context.textL?.copyWith(color: DSColors.gray40),
@@ -90,7 +92,7 @@ class AlbumTile extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(width: 12),
+            const SizedBox(width: DSSpacing.s12),
 
             SvgPicture.asset(
               'assets/icons/arrow_right.svg',

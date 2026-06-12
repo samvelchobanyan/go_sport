@@ -3,6 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_radius.dart';
+import 'package:go_sport/design_system/foundations/ds_spacing.dart';
+import 'package:go_sport/design_system/foundations/ds_icon_size.dart';
 import 'package:go_sport/design_system/foundations/ds_typography.dart';
 
 class GuestTimerBar extends StatefulWidget {
@@ -53,7 +56,7 @@ class _GuestTimerBarState extends State<GuestTimerBar> {
   //         backgroundColor: DSColors.black.withValues(alpha: 0.9),
   //         body: Center(
   //           child: Padding(
-  //             padding: const EdgeInsets.symmetric(horizontal: 24),
+  //             padding: const EdgeInsets.symmetric(horizontal: DSSpacing.l),
   //             child: Column(
   //               mainAxisAlignment: MainAxisAlignment.center,
   //               children: [
@@ -62,18 +65,18 @@ class _GuestTimerBarState extends State<GuestTimerBar> {
   //                   color: DSColors.white,
   //                   size: 64,
   //                 ),
-  //                 const SizedBox(height: 24),
+  //                 const SizedBox(height: DSSpacing.l),
   //                 Text(
   //                   'Guest session expired',
   //                   style: DSTypography.h2.copyWith(color: DSColors.white),
   //                 ),
-  //                 const SizedBox(height: 12),
+  //                 const SizedBox(height: DSSpacing.s12),
   //                 Text(
   //                   'Register to continue using the app',
   //                   style: DSTypography.bodyL.copyWith(color: DSColors.gray50),
   //                   textAlign: TextAlign.center,
   //                 ),
-  //                 const SizedBox(height: 32),
+  //                 const SizedBox(height: DSSpacing.xl),
   //                 SizedBox(
   //                   width: double.infinity,
   //                   height: 48,
@@ -136,14 +139,14 @@ class _GuestTimerBarState extends State<GuestTimerBar> {
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
                   color: DSColors.white.withValues(alpha: 0.2),
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(DSRadius.l),
                 ),
                 child: Text(
                   _formatTime(_remaining),
                   style: DSTypography.textL.copyWith(color: DSColors.lime),
                 ),
               ),
-              const SizedBox(width: 10),
+              const SizedBox(width: DSSpacing.s10),
               Container(
                 width: 3,
                 height: 3,
@@ -152,21 +155,21 @@ class _GuestTimerBarState extends State<GuestTimerBar> {
                   shape: BoxShape.circle,
                 ),
               ),
-              const SizedBox(width: 10),
+              const SizedBox(width: DSSpacing.s10),
               SizedBox(
                 width: 101,
                 height: 33,
                 child: ElevatedButton.icon(
                   onPressed: widget.onRegisterTap,
-                  icon: const Icon(Icons.person, size: 18),
+                  icon: const Icon(Icons.person, size: DSIconSize.s20),
                   label: const Text('Register'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: DSColors.blue,
                     foregroundColor: DSColors.white,
-                    padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 8),
+                    padding: const EdgeInsets.symmetric(horizontal: DSSpacing.s12, vertical: DSSpacing.s8),
                     textStyle: DSTypography.fieldLabel.copyWith(color: DSColors.white),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
+                      borderRadius: BorderRadius.circular(DSRadius.l),
                     ),
                   ),
                 ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/features/shared_widgets/bottom_pop_ups/bottom_sheet_container.dart';
 
@@ -30,7 +31,7 @@ void showCreatePlaylistBottomSheet({
               style: context.h2,
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: DSSpacing.m),
             TextField(
               controller: controller,
               autofocus: true,
@@ -56,7 +57,7 @@ void showCreatePlaylistBottomSheet({
                 ),
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: DSSpacing.s20),
             SizedBox(
               width: double.infinity,
               height: 48,

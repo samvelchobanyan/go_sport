@@ -116,12 +116,12 @@ class _ConfirmChangePasswordScreenState
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               SvgPicture.asset('assets/icons/login_blue.svg'),
-                              const SizedBox(width: 8),
+                              const SizedBox(width: DSSpacing.s8),
                               Text('Password changed!', style: context.h2),
                             ],
                           ),
 
-                          const SizedBox(height: 14),
+                          const SizedBox(height: DSSpacing.s14),
                           Text(
                             'You can now login to app using your new password',
                             style: context.bodyL?.copyWith(
@@ -129,7 +129,7 @@ class _ConfirmChangePasswordScreenState
                             ),
                           ),
 
-                          const SizedBox(height: 16),
+                          const SizedBox(height: DSSpacing.m),
 
                           CustomInput(
                             label: 'Email',
@@ -138,7 +138,7 @@ class _ConfirmChangePasswordScreenState
                             keyboardType: TextInputType.emailAddress,
                           ),
 
-                          const SizedBox(height: 16),
+                          const SizedBox(height: DSSpacing.m),
 
                           CustomInput(
                             controller: _passwordController,
@@ -169,7 +169,7 @@ class _ConfirmChangePasswordScreenState
                               backgroundColor: DSColors.blue,
                               minimumSize: const Size.fromHeight(DSSpacing.xxl),
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(DSRadius.xl),
+                                borderRadius: BorderRadius.circular(DSRadius.xxl),
                               ),
                             ),
                           ),

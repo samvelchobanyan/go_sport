@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_icon_size.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 import 'package:go_sport/domain/state/registration_state.dart';
@@ -80,7 +81,7 @@ class _ConfirmPhoneScreenState extends ConsumerState<ConfirmPhoneScreen> {
               child: GestureDetector(
                 onTap: () => context.go('/registration-phone'),
                 child: Container(
-                  padding: const EdgeInsets.all(12),
+                  padding: const EdgeInsets.all(DSSpacing.s12),
                   decoration: const BoxDecoration(
                     color: DSColors.white,
                     shape: BoxShape.circle,
@@ -91,7 +92,7 @@ class _ConfirmPhoneScreenState extends ConsumerState<ConfirmPhoneScreen> {
                   child: const Icon(
                     Icons.arrow_back,
                     color: DSColors.blue,
-                    size: 22,
+                    size: DSIconSize.s24,
                   ),
                 ),
               ),
@@ -127,14 +128,14 @@ class _ConfirmPhoneScreenState extends ConsumerState<ConfirmPhoneScreen> {
                               SvgPicture.asset(
                                 'assets/icons/authorization.svg',
                               ),
-                              const SizedBox(width: 8),
+                              const SizedBox(width: DSSpacing.s8),
                               Text(
                                 'Please check your phone',
                                 style: context.h2,
                               ),
                             ],
                           ),
-                          const SizedBox(height: 14),
+                          const SizedBox(height: DSSpacing.s14),
                           Text(
                             'We have sent a confirmation code to',
                             style: context.bodyL?.copyWith(
@@ -149,7 +150,7 @@ class _ConfirmPhoneScreenState extends ConsumerState<ConfirmPhoneScreen> {
                             ),
                           ),
 
-                          const SizedBox(height: 24),
+                          const SizedBox(height: DSSpacing.l),
 
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -183,12 +184,12 @@ class _ConfirmPhoneScreenState extends ConsumerState<ConfirmPhoneScreen> {
                               backgroundColor: DSColors.blue,
                               minimumSize: const Size.fromHeight(DSSpacing.xxl),
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(DSRadius.xl),
+                                borderRadius: BorderRadius.circular(DSRadius.xxl),
                               ),
                             ),
                           ),
 
-                          const SizedBox(height: 8),
+                          const SizedBox(height: DSSpacing.s8),
 
                           TextButton(
                             onPressed: registrationState.isLoading
@@ -205,7 +206,7 @@ class _ConfirmPhoneScreenState extends ConsumerState<ConfirmPhoneScreen> {
                                   Icons.phone_rounded,
                                   color: DSColors.blue,
                                 ),
-                                const SizedBox(width: 8),
+                                const SizedBox(width: DSSpacing.s8),
                                 Text(
                                   'Resend Code',
                                   style: context.subtitleMBold?.copyWith(

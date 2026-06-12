@@ -121,12 +121,12 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               SvgPicture.asset('assets/icons/lock.svg'),
-                              SizedBox(width: 8),
+                              SizedBox(width: DSSpacing.s8),
                               Text('Restore password', style: context.h2),
                             ],
                           ),
 
-                          SizedBox(height: 14),
+                          SizedBox(height: DSSpacing.s14),
                           Text(
                             'We will send a password reset \nlink to your email',
                             style: context.bodyL?.copyWith(
@@ -134,7 +134,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                             ),
                           ),
 
-                          SizedBox(height: 20),
+                          SizedBox(height: DSSpacing.s20),
 
                           CustomInput(
                             controller: _emailController,
@@ -170,7 +170,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                               backgroundColor: DSColors.blue,
                               minimumSize: const Size.fromHeight(DSSpacing.xxl),
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(DSRadius.xl),
+                                borderRadius: BorderRadius.circular(DSRadius.xxl),
                               ),
                             ),
                           ),

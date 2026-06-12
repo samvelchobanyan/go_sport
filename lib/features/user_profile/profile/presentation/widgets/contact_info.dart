@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 
 class ContactInfoItem extends StatelessWidget {
   final IconData icon;
@@ -13,7 +14,7 @@ class ContactInfoItem extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Icon(icon, color: DSColors.gray70),
-        const SizedBox(width: 10),
+        const SizedBox(width: DSSpacing.s10),
         Expanded(child: Text(text, style: context.subtitleM)),
       ],
     );

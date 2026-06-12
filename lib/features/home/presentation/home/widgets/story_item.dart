@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_spacing.dart';
+import 'package:go_sport/design_system/foundations/ds_icon_size.dart';
 import 'package:go_sport/domain/entities/story.dart';
 
 class StoryItem extends StatelessWidget {
@@ -16,7 +18,7 @@ class StoryItem extends StatelessWidget {
       child: Container(
         width: 72,
         height: 72,
-        padding: const EdgeInsets.all(2),
+        padding: const EdgeInsets.all(DSSpacing.s),
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           gradient: !story.isViewed
@@ -49,7 +51,7 @@ class StoryItem extends StatelessWidget {
                     child: const Icon(
                       Icons.person,
                       color: DSColors.gray50,
-                      size: 28,
+                      size: DSIconSize.s28,
                     ),
                   ),
                   errorWidget: (context, url, error) => Container(
@@ -57,7 +59,7 @@ class StoryItem extends StatelessWidget {
                     child: const Icon(
                       Icons.error,
                       color: DSColors.gray50,
-                      size: 28,
+                      size: DSIconSize.s28,
                     ),
                   ),
                 ),

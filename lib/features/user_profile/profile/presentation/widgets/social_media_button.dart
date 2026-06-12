@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 
 class SocialMediaButton extends StatelessWidget {
   final Widget icon;
@@ -12,7 +13,7 @@ class SocialMediaButton extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.all(DSSpacing.s12),
         decoration: const BoxDecoration(
           color: DSColors.white,
           shape: BoxShape.circle,

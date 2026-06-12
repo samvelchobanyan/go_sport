@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/domain/entities/artist.dart';
 import 'package:go_sport/features/favorites/presentation/my_artists/my_artists_controller.dart';
@@ -79,7 +80,7 @@ class MyArtistsScreen extends ConsumerWidget {
             return const SizedBox.shrink();
           }
           return const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16),
+            padding: EdgeInsets.symmetric(horizontal: DSSpacing.m),
             child: DottedDivider(),
           );
         },
@@ -88,8 +89,8 @@ class MyArtistsScreen extends ConsumerWidget {
           return ClipRRect(
             borderRadius: index == 0
                 ? const BorderRadius.only(
-                    topLeft: Radius.circular(24),
-                    topRight: Radius.circular(24),
+                    topLeft: Radius.circular(DSRadius.xl),
+                    topRight: Radius.circular(DSRadius.xl),
                   )
                 : BorderRadius.zero,
             child: Container(

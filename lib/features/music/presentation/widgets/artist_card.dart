@@ -2,6 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_spacing.dart';
+import 'package:go_sport/design_system/foundations/ds_icon_size.dart';
 
 class ArtistCard extends StatelessWidget {
   final String name;
@@ -37,12 +39,12 @@ class ArtistCard extends StatelessWidget {
                 child: const Icon(
                   Icons.error,
                   color: DSColors.gray50,
-                  size: 28,
+                  size: DSIconSize.s28,
                 ),
               ),
             ),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: DSSpacing.s12),
           SizedBox(
             width: 120,
             child: Text(

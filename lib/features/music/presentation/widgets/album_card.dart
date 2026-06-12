@@ -2,6 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_spacing.dart';
+import 'package:go_sport/design_system/foundations/ds_icon_size.dart';
 import 'package:go_sport/features/shared_widgets/media_card_shell.dart';
 import 'package:go_sport/features/shared_widgets/count_badge.dart';
 
@@ -45,27 +47,27 @@ class AlbumCard extends StatelessWidget {
                     child: const Icon(
                       Icons.error,
                       color: DSColors.gray50,
-                      size: 28,
+                      size: DSIconSize.s28,
                     ),
                   ),
                 ),
               ),
             ),
-            const SizedBox(height: 6),
+            const SizedBox(height: DSSpacing.s6),
             Text(
               title,
               style: context.subtitleM,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: DSSpacing.xs),
             Text(
               artist,
               style: context.bodyL?.copyWith(color: DSColors.gray60),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
-            const SizedBox(height: 6),
+            const SizedBox(height: DSSpacing.s6),
             CountBadge(count: trackCount, type: CountBadgeType.tracks),
           ],
         ),

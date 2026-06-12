@@ -85,7 +85,7 @@ class _PlayerSeekBarState extends ConsumerState<PlayerSeekBar> {
                 : null,
           ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: DSSpacing.s8),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [

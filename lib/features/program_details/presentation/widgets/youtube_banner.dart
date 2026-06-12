@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 
 class YoutubeBanner extends StatelessWidget {
@@ -11,7 +12,7 @@ class YoutubeBanner extends StatelessWidget {
   Widget build(BuildContext context) {
     return SliverToBoxAdapter(
       child: Padding(
-        padding: EdgeInsets.only(right: 16, left: 16),
+        padding: EdgeInsets.only(right: DSSpacing.m, left: DSSpacing.m),
         child: Container(
           height: 64,
           decoration: BoxDecoration(
@@ -22,11 +23,11 @@ class YoutubeBanner extends StatelessWidget {
             ),
           ),
           child: Padding(
-            padding: const EdgeInsets.all(10),
+            padding: const EdgeInsets.all(DSSpacing.s10),
             child: Row(
               children: [
                 SvgPicture.asset('assets/icons/youtube_orange.svg'),
-                SizedBox(width: 14),
+                SizedBox(width: DSSpacing.s14),
                 Expanded(
                   child: Text(
                     'Watch all Episodes of the show on YouTube channel!',

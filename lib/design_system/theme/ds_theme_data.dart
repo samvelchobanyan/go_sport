@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../foundations/ds_colors.dart';
+import '../foundations/ds_radius.dart';
 import '../foundations/ds_typography.dart';
 
 class DSThemeData {
@@ -76,7 +77,7 @@ class DSThemeData {
         elevation: 0,
         margin: EdgeInsets.zero,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(DSRadius.m),
         ),
       ),
 

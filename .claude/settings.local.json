@@ -37,7 +37,10 @@
       "PowerShell(& \"C:\\\\mobiledev\\\\flutter\\\\bin\\\\dart.bat\" analyze \"lib/features/auth/confirm_email/presentation/confirm_email_screen.dart\" \"lib/features/auth/confirm_phone/presentation/confirm_phone_screen.dart\")",
       "PowerShell(& \"C:\\\\mobiledev\\\\flutter\\\\bin\\\\dart.bat\" analyze \"lib/features/auth/forgot_password/presentation/forgot_password_screen.dart\" \"lib/features/auth/check_email/presentation/check_email_screen.dart\" \"lib/features/auth/change_password/presentation/change_password_screen.dart\" \"lib/features/auth/confirm_change_password/presentation/confirm_change_password_screen.dart\")",
       "Bash(Select-String -Path \"c:\\\\flutter\\\\go_sport\\\\assets\\\\icons\\\\arrow-Left.svg\",\"c:\\\\flutter\\\\go_sport\\\\assets\\\\icons\\\\share_no_bg.svg\",\"c:\\\\flutter\\\\go_sport\\\\assets\\\\icons\\\\search.svg\" -Pattern \"width|height|viewBox\")",
-      "Bash(Select-Object -First 20)"
+      "Bash(Select-Object -First 20)",
+      "Bash(grep -oE '[0-9]+\\(\\\\.[0-9]+\\)?$')",
+      "Bash(awk '$1+0 >= 40')",
+      "Bash(sort -t: -k4 -n)"
     ],
     "additionalDirectories": [
       "C:\\knowledge\\flutter-kb"

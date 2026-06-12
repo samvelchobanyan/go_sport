@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 import 'package:go_sport/domain/entities/track.dart';
 import 'package:go_sport/domain/state/player_state.dart';
 import 'package:go_sport/features/radio/presentation/radio/radio_dashboard_controller.dart';
@@ -79,7 +80,7 @@ class RadioPageScreen extends ConsumerWidget {
                   // featured programs
                   SliverToBoxAdapter(
                     child: Padding(
-                      padding: EdgeInsets.symmetric(vertical: 26),
+                      padding: EdgeInsets.symmetric(vertical: DSSpacing.l),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -87,7 +88,7 @@ class RadioPageScreen extends ConsumerWidget {
                             title: 'Featured programs',
                             showAnimation: true,
                           ),
-                          SizedBox(height: 10),
+                          SizedBox(height: DSSpacing.s10),
                           if (featuredPrograms.isNotEmpty)
                             SizedBox(
                               height: 210,
@@ -100,7 +101,7 @@ class RadioPageScreen extends ConsumerWidget {
                                 itemBuilder: (programContext, index) {
                                   final program = featuredPrograms[index];
                                   return Padding(
-                                    padding: const EdgeInsets.only(right: 12),
+                                    padding: const EdgeInsets.only(right: DSSpacing.s12),
                                     child: ProgramCard(
                                       id: program.id,
                                       title: program.title,
@@ -156,7 +157,7 @@ class RadioPageScreen extends ConsumerWidget {
       return SliverToBoxAdapter(
         child: Center(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
+            padding: const EdgeInsets.symmetric(horizontal: DSSpacing.m),
             child: Text(
               'No featured episodes yet',
               style: context.subtitleLBold,
@@ -187,7 +188,7 @@ class RadioPageScreen extends ConsumerWidget {
 
             if (index < episodes.length - 1)
               const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16),
+                padding: EdgeInsets.symmetric(horizontal: DSSpacing.m),
                 child: DottedDivider(),
               ),
           ],

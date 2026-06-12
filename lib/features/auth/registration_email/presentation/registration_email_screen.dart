@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_icon_size.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 import 'package:go_sport/domain/state/registration_state.dart';
@@ -19,7 +20,7 @@ const double _cardHeight = 371;
 /// How many px the card overlaps the image at the top (rounded corners zone).
 const double _cardOverlap = 25;
 
-/// Vertical padding inside the card (top + bottom) — used to set the
+/// Vertical padding inside the card (top + bottom) â€” used to set the
 /// SingleChildScrollView's minimum content height so Spacer() still works when
 /// the card is not scrolling.
 const double _cardVerticalPadding = 40;
@@ -64,7 +65,7 @@ class _RegistrationEmailScreenState
 
   @override
   Widget build(BuildContext context) {
-    // MediaQuery.size is keyboard-independent — the image height is calculated
+    // MediaQuery.size is keyboard-independent â€” the image height is calculated
     // once and never changes when the keyboard opens.
     final screenSize = MediaQuery.of(context).size;
     final imageHeight = screenSize.height - _cardHeight + _cardOverlap;
@@ -100,7 +101,7 @@ class _RegistrationEmailScreenState
         backgroundColor: DSColors.white,
         body: Stack(
           children: [
-            // Background image — anchored to top, fixed keyboard-independent
+            // Background image â€” anchored to top, fixed keyboard-independent
             // height. Stays in place while the card slides up over it.
             Positioned(
               top: 0,
@@ -113,7 +114,7 @@ class _RegistrationEmailScreenState
               ),
             ),
 
-            // Card — pinned to the bottom of the (keyboard-resized) body.
+            // Card â€” pinned to the bottom of the (keyboard-resized) body.
             // resizeToAvoidBottomInset: true causes the Scaffold body to shrink
             // when the keyboard opens, which pushes Align(bottomCenter) upward,
             // making the card slide up over the image.
@@ -123,7 +124,7 @@ class _RegistrationEmailScreenState
               child: GestureDetector(
                 onTap: () => context.go('/login'),
                 child: Container(
-                  padding: const EdgeInsets.all(12),
+                  padding: const EdgeInsets.all(DSSpacing.s12),
                   decoration: const BoxDecoration(
                     color: DSColors.white,
                     shape: BoxShape.circle,
@@ -134,7 +135,7 @@ class _RegistrationEmailScreenState
                   child: const Icon(
                     Icons.arrow_back,
                     color: DSColors.blue,
-                    size: 22,
+                    size: DSIconSize.s24,
                   ),
                 ),
               ),
@@ -176,12 +177,12 @@ class _RegistrationEmailScreenState
                                 Icons.person_rounded,
                                 color: DSColors.blue,
                               ),
-                              SizedBox(width: 8),
+                              SizedBox(width: DSSpacing.s8),
                               Text('Registration', style: context.h2),
                             ],
                           ),
 
-                          SizedBox(height: 14),
+                          SizedBox(height: DSSpacing.s14),
                           Text(
                             'Create your account to get started and unlock all features',
                             style: context.bodyL?.copyWith(
@@ -189,7 +190,7 @@ class _RegistrationEmailScreenState
                             ),
                           ),
 
-                          SizedBox(height: 20),
+                          SizedBox(height: DSSpacing.s20),
 
                           CustomInput(
                             controller: _emailController,
@@ -226,11 +227,11 @@ class _RegistrationEmailScreenState
                               backgroundColor: DSColors.blue,
                               minimumSize: const Size.fromHeight(DSSpacing.xxl),
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(DSRadius.xl),
+                                borderRadius: BorderRadius.circular(DSRadius.xxl),
                               ),
                             ),
                           ),
-                          const SizedBox(height: 14),
+                          const SizedBox(height: DSSpacing.s14),
 
                           // Google Login Button
                           TextButton(
@@ -240,7 +241,7 @@ class _RegistrationEmailScreenState
                               backgroundColor: DSColors.blue5,
                               side: BorderSide.none,
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(DSRadius.xl),
+                                borderRadius: BorderRadius.circular(DSRadius.xxl),
                               ),
                             ),
                             child: Row(
@@ -249,7 +250,7 @@ class _RegistrationEmailScreenState
                                 SvgPicture.asset(
                                   'assets/icons/google_logo.svg',
                                 ),
-                                const SizedBox(width: 8),
+                                const SizedBox(width: DSSpacing.s8),
                                 Text(
                                   'Login with Google',
                                   style: context.subtitleLBold?.copyWith(

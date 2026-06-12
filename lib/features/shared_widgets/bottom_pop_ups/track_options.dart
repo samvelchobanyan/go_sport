@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/domain/entities/track.dart';
 import 'package:go_sport/domain/state/like_registry.dart';
@@ -54,7 +55,7 @@ void showTrackOptionsBottomSheet({
                   ),
                 ),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: DSSpacing.s12),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -67,7 +68,7 @@ void showTrackOptionsBottomSheet({
                       overflow: TextOverflow.ellipsis,
                     ),
                     if (track.artistName.isNotEmpty) ...[
-                      const SizedBox(height: 4),
+                      const SizedBox(height: DSSpacing.xs),
                       Text(
                         track.artistName,
                         style: context.textL?.copyWith(
@@ -82,9 +83,9 @@ void showTrackOptionsBottomSheet({
               ),
             ],
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: DSSpacing.s10),
           DottedDivider(color: DSColors.gray20),
-          const SizedBox(height: 10),
+          const SizedBox(height: DSSpacing.s10),
           // Action buttons
           Column(
             children: [
@@ -103,7 +104,7 @@ void showTrackOptionsBottomSheet({
                   }
                 },
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: DSSpacing.s10),
 
               // Like
               Consumer(
@@ -134,7 +135,7 @@ void showTrackOptionsBottomSheet({
 
               // Remove from this playlist
               if (onRemoveFromPlaylist != null) ...[
-                const SizedBox(height: 10),
+                const SizedBox(height: DSSpacing.s10),
                 ActionButton(
                   icon: 'assets/icons/delete_bg.svg',
                   label: 'Remove from this playlist',
@@ -144,7 +145,7 @@ void showTrackOptionsBottomSheet({
                   },
                 ),
               ],
-              const SizedBox(height: 10),
+              const SizedBox(height: DSSpacing.s10),
 
               // Share
               ActionButton(

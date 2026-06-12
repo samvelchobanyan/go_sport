@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 import 'package:go_sport/features/shared_widgets/count_badge.dart';
 import 'package:go_sport/features/shared_widgets/media_card_shell.dart';
 
@@ -26,7 +27,7 @@ class ProgramCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: SizedBox(
-        width: 140,
+        width: 152,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -43,14 +44,14 @@ class ProgramCard extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(height: 6),
+            const SizedBox(height: DSSpacing.s6),
             Text(
               title,
               style: context.subtitleM,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
             ),
-            const SizedBox(height: 6),
+            const SizedBox(height: DSSpacing.s6),
             CountBadge(count: episodeCount, type: CountBadgeType.programs),
           ],
         ),

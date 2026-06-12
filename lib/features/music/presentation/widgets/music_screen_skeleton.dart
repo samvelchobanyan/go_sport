@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/features/shared_widgets/wave_section_header.dart';
 
@@ -14,7 +15,7 @@ class MusicQuickActionsSkeleton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(DSSpacing.m),
       child: Wrap(
         spacing: 8,
         runSpacing: 8,
@@ -41,10 +42,10 @@ class MusicPlaylistsSkeletonSection extends StatelessWidget {
         height: 210,
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
-          padding: const EdgeInsets.symmetric(horizontal: 16),
+          padding: const EdgeInsets.symmetric(horizontal: DSSpacing.m),
           itemCount: 3,
           itemBuilder: (context, index) => const Padding(
-            padding: EdgeInsets.only(right: 12),
+            padding: EdgeInsets.only(right: DSSpacing.s12),
             child: _PlaylistCardSkeleton(),
           ),
         ),
@@ -64,10 +65,10 @@ class MusicAlbumsSkeletonSection extends StatelessWidget {
         height: 260,
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
-          padding: const EdgeInsets.symmetric(horizontal: 16),
+          padding: const EdgeInsets.symmetric(horizontal: DSSpacing.m),
           itemCount: 3,
           itemBuilder: (context, index) => const Padding(
-            padding: EdgeInsets.only(right: 12),
+            padding: EdgeInsets.only(right: DSSpacing.s12),
             child: _AlbumCardSkeleton(),
           ),
         ),
@@ -87,10 +88,10 @@ class MusicArtistsSkeletonSection extends StatelessWidget {
         height: 170,
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
-          padding: const EdgeInsets.symmetric(horizontal: 16),
+          padding: const EdgeInsets.symmetric(horizontal: DSSpacing.m),
           itemCount: 3,
           itemBuilder: (context, index) => const Padding(
-            padding: EdgeInsets.only(right: 16),
+            padding: EdgeInsets.only(right: DSSpacing.m),
             child: _ArtistCardSkeleton(),
           ),
         ),
@@ -116,7 +117,7 @@ class _MediaSectionSkeleton extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16),
+            padding: const EdgeInsets.symmetric(vertical: DSSpacing.m),
             child: WaveSectionHeader(
               title: title,
               showAnimation: true,
@@ -135,7 +136,7 @@ class _QuickActionCardSkeleton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(8),
+      padding: const EdgeInsets.all(DSSpacing.s8),
       decoration: BoxDecoration(
         color: DSColors.white80,
         borderRadius: BorderRadius.circular(DSRadius.s),
@@ -147,14 +148,14 @@ class _QuickActionCardSkeleton extends StatelessWidget {
             height: 44,
             borderRadius: 22,
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: DSSpacing.s12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: const [
                 _SkeletonBox(width: 92, height: 14, borderRadius: 4),
-                SizedBox(height: 6),
+                SizedBox(height: DSSpacing.s6),
                 _SkeletonBox(width: 72, height: 12, borderRadius: 4),
               ],
             ),
@@ -176,9 +177,9 @@ class _PlaylistCardSkeleton extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _SkeletonBox(width: 140, height: 140, borderRadius: 12),
-          SizedBox(height: 6),
+          SizedBox(height: DSSpacing.s6),
           _SkeletonBox(width: 116, height: 16, borderRadius: 4),
-          SizedBox(height: 6),
+          SizedBox(height: DSSpacing.s6),
           _SkeletonBox(width: 70, height: 20, borderRadius: 10),
         ],
       ),
@@ -197,11 +198,11 @@ class _AlbumCardSkeleton extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _SkeletonBox(width: 140, height: 140, borderRadius: 12),
-          SizedBox(height: 6),
+          SizedBox(height: DSSpacing.s6),
           _SkeletonBox(width: 112, height: 16, borderRadius: 4),
-          SizedBox(height: 4),
+          SizedBox(height: DSSpacing.xs),
           _SkeletonBox(width: 88, height: 14, borderRadius: 4),
-          SizedBox(height: 6),
+          SizedBox(height: DSSpacing.s6),
           _SkeletonBox(width: 70, height: 20, borderRadius: 10),
         ],
       ),
@@ -220,9 +221,9 @@ class _ArtistCardSkeleton extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           _SkeletonBox(width: 120, height: 120, borderRadius: 60),
-          SizedBox(height: 12),
+          SizedBox(height: DSSpacing.s12),
           _SkeletonBox(width: 92, height: 16, borderRadius: 4),
-          SizedBox(height: 6),
+          SizedBox(height: DSSpacing.s6),
           _SkeletonBox(width: 70, height: 16, borderRadius: 4),
         ],
       ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 import 'package:go_sport/features/shared_widgets/bottom_pop_ups/bottom_sheet_container.dart';
 
 void showDeleteConfirmBottomSheet({
@@ -44,7 +45,7 @@ void showDeleteConfirmBottomSheet({
                   label: Text('Yes, delete', style: context.subtitleLBold),
                 ),
               ),
-              const SizedBox(width: 10),
+              const SizedBox(width: DSSpacing.s10),
               Expanded(
                 child: ElevatedButton(
                   onPressed: () => Navigator.pop(context),

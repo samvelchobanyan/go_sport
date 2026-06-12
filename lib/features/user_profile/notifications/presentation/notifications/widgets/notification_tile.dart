@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 
 class NotificationTile extends StatelessWidget {
@@ -22,7 +23,7 @@ class NotificationTile extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 12),
+        padding: const EdgeInsets.symmetric(vertical: DSSpacing.s12),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -57,7 +58,7 @@ class NotificationTile extends StatelessWidget {
               ),
             ),
 
-            const SizedBox(width: 14),
+            const SizedBox(width: DSSpacing.s14),
 
             // Text Content
             Expanded(
@@ -71,7 +72,7 @@ class NotificationTile extends StatelessWidget {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  const SizedBox(height: 4),
+                  const SizedBox(height: DSSpacing.xs),
                   Text(
                     subtitle,
                     style: context.textL?.copyWith(color: DSColors.gray60),
@@ -82,9 +83,9 @@ class NotificationTile extends StatelessWidget {
               ),
             ),
 
-            const SizedBox(width: 8),
+            const SizedBox(width: DSSpacing.s8),
             Container(
-              padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 8),
+              padding: const EdgeInsets.symmetric(vertical: DSSpacing.s6, horizontal: DSSpacing.s8),
               decoration: BoxDecoration(
                 color: DSColors.blue10,
                 shape: BoxShape.circle,

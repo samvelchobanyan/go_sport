@@ -112,11 +112,11 @@ class _RegistrationNameScreenState
                           Row(
                             children: [
                               SvgPicture.asset('assets/icons/user.svg'),
-                              const SizedBox(width: 8),
+                              const SizedBox(width: DSSpacing.s8),
                               Text('Your name and surname', style: context.h2),
                             ],
                           ),
-                          const SizedBox(height: 14),
+                          const SizedBox(height: DSSpacing.s14),
                           Text(
                             'Please use only letters, no numbers or special characters',
                             style: context.bodyL?.copyWith(
@@ -124,7 +124,7 @@ class _RegistrationNameScreenState
                             ),
                           ),
 
-                          const SizedBox(height: 20),
+                          const SizedBox(height: DSSpacing.s20),
 
                           CustomInput(
                             controller: _nameController,
@@ -133,7 +133,7 @@ class _RegistrationNameScreenState
                             keyboardType: TextInputType.name,
                           ),
 
-                          const SizedBox(height: 16),
+                          const SizedBox(height: DSSpacing.m),
 
                           CustomInput(
                             controller: _surnameController,
@@ -160,7 +160,7 @@ class _RegistrationNameScreenState
                               backgroundColor: DSColors.blue,
                               minimumSize: const Size.fromHeight(DSSpacing.xxl),
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(DSRadius.xl),
+                                borderRadius: BorderRadius.circular(DSRadius.xxl),
                               ),
                             ),
                           ),

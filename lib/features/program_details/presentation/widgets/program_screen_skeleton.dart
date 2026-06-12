@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_spacing.dart';
+import 'package:go_sport/design_system/foundations/ds_layout.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 
 class ProgramScreenSkeleton extends StatelessWidget {
@@ -10,7 +12,7 @@ class ProgramScreenSkeleton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SliverPadding(
-      padding: const EdgeInsets.only(bottom: 100),
+      padding: const EdgeInsets.only(bottom: DSLayout.bottomBarClearance),
       sliver: SliverList(
         delegate: SliverChildBuilderDelegate((context, index) {
           return Column(
@@ -19,7 +21,7 @@ class ProgramScreenSkeleton extends StatelessWidget {
               _buildSkeleton(),
               if (index < itemCount - 1)
                 const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 24),
+                  padding: EdgeInsets.symmetric(horizontal: DSSpacing.l),
                   child: Divider(height: 1, thickness: 1, color: DSColors.gray20),
                 ),
             ],
@@ -31,7 +33,7 @@ class ProgramScreenSkeleton extends StatelessWidget {
 
   Widget _buildSkeleton() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      padding: const EdgeInsets.symmetric(horizontal: DSSpacing.m, vertical: DSSpacing.s12),
       child: Row(
         children: [
           Container(
@@ -42,7 +44,7 @@ class ProgramScreenSkeleton extends StatelessWidget {
               borderRadius: BorderRadius.circular(DSRadius.s),
             ),
           ),
-          const SizedBox(width: 10),
+          const SizedBox(width: DSSpacing.s10),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -52,28 +54,28 @@ class ProgramScreenSkeleton extends StatelessWidget {
                   height: 14,
                   decoration: BoxDecoration(
                     color: DSColors.gray20,
-                    borderRadius: BorderRadius.circular(4),
+                    borderRadius: BorderRadius.circular(DSRadius.xs),
                   ),
                 ),
-                const SizedBox(height: 6),
+                const SizedBox(height: DSSpacing.s6),
                 Container(
                   width: 100,
                   height: 12,
                   decoration: BoxDecoration(
                     color: DSColors.gray20,
-                    borderRadius: BorderRadius.circular(4),
+                    borderRadius: BorderRadius.circular(DSRadius.xs),
                   ),
                 ),
               ],
             ),
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: DSSpacing.s12),
           Container(
             width: 24,
             height: 24,
             decoration: BoxDecoration(
               color: DSColors.gray20,
-              borderRadius: BorderRadius.circular(4),
+              borderRadius: BorderRadius.circular(DSRadius.xs),
             ),
           ),
         ],

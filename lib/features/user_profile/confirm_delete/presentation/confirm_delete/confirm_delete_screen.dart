@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_sport/core/navigation/routes.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/features/shared_widgets/input.dart';
 import 'package:go_router/go_router.dart';
@@ -109,7 +110,7 @@ class _ConfirmDeleteScreenState extends ConsumerState<ConfirmDeleteScreen> {
                       style: context.subtitleLBold?.copyWith(fontSize: 18),
                       textAlign: TextAlign.center,
                     ),
-                    const SizedBox(height: 13),
+                    const SizedBox(height: DSSpacing.s12),
 
                     CustomInput(
                       label: 'Password',
@@ -125,9 +126,9 @@ class _ConfirmDeleteScreenState extends ConsumerState<ConfirmDeleteScreen> {
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           backgroundColor: DSColors.blue,
-                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          padding: const EdgeInsets.symmetric(vertical: DSSpacing.m),
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(DSRadius.xl),
+                            borderRadius: BorderRadius.circular(DSRadius.xxl),
                           ),
                         ),
 
@@ -153,7 +154,7 @@ class _ConfirmDeleteScreenState extends ConsumerState<ConfirmDeleteScreen> {
                       ),
                     ),
 
-                    const SizedBox(height: 20),
+                    const SizedBox(height: DSSpacing.s20),
                   ],
                 ),
               ),

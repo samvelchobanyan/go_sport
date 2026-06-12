@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 
 class ServiceCard extends StatelessWidget {
@@ -22,7 +23,7 @@ class ServiceCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+        padding: const EdgeInsets.symmetric(vertical: DSSpacing.s12, horizontal: DSSpacing.m),
         decoration: BoxDecoration(
           // Using a subtle background with your DS Blue
           color: DSColors.blue10,
@@ -46,16 +47,16 @@ class ServiceCard extends StatelessWidget {
                 const Icon(Icons.chevron_right, color: DSColors.blue),
               ],
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: DSSpacing.s8),
             Text(
               description,
               style: context.bodyL?.copyWith(
                 color: DSColors.gray70,
               ),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: DSSpacing.s12),
             Divider(color: DSColors.blue10, height: 1),
-            const SizedBox(height: 12),
+            const SizedBox(height: DSSpacing.s12),
             Row(
               children: [
                 Text(

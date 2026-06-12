@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_spacing.dart';
+import 'package:go_sport/design_system/foundations/ds_icon_size.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 
 class ProgramTile extends StatelessWidget {
@@ -24,13 +26,13 @@ class ProgramTile extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        padding: const EdgeInsets.symmetric(horizontal: DSSpacing.m, vertical: DSSpacing.s12),
         child: Row(
           children: [
             // Thumbnail image
             Container(
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(DSRadius.s),
                 boxShadow: [
                   BoxShadow(
                     color: DSColors.gray70,
@@ -56,13 +58,13 @@ class ProgramTile extends StatelessWidget {
                     child: const Icon(
                       Icons.error,
                       color: DSColors.gray50,
-                      size: 28,
+                      size: DSIconSize.s28,
                     ),
                   ),
                 ),
               ),
             ),
-            const SizedBox(width: 12),
+            const SizedBox(width: DSSpacing.s12),
             // Title and episode count badge
             Expanded(
               child: Column(
@@ -75,7 +77,7 @@ class ProgramTile extends StatelessWidget {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  const SizedBox(height: 4),
+                  const SizedBox(height: DSSpacing.xs),
                   // Episode count badge
                   Container(
                     padding: const EdgeInsets.symmetric(
@@ -95,7 +97,7 @@ class ProgramTile extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(width: 12),
+            const SizedBox(width: DSSpacing.s12),
 
             SvgPicture.asset(
               'assets/icons/arrow_right.svg',

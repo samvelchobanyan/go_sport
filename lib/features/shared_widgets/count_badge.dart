@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 
 enum CountBadgeType {
   tracks,
@@ -46,7 +47,7 @@ class CountBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+      padding: const EdgeInsets.symmetric(horizontal: DSSpacing.s6, vertical: DSSpacing.s),
       decoration: BoxDecoration(
         color: _backgroundColor,
         border: Border.all(color: _borderColor, width: 1),

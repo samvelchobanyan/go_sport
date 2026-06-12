@@ -116,19 +116,19 @@ class _CheckEmailScreenState extends ConsumerState<CheckEmailScreen> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Icon(Icons.email_rounded, color: DSColors.blue),
-                              SizedBox(width: 8),
+                              SizedBox(width: DSSpacing.s8),
                               Text('Check your email', style: context.h2),
                             ],
                           ),
 
-                          SizedBox(height: 14),
+                          SizedBox(height: DSSpacing.s14),
                           Text(
                             'The password reset link has been sent to \n${forgotPasswordState.email}',
                             style: context.bodyL?.copyWith(
                               color: DSColors.gray70,
                             ),
                           ),
-                          SizedBox(height: 20),
+                          SizedBox(height: DSSpacing.s20),
 
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -160,7 +160,7 @@ class _CheckEmailScreenState extends ConsumerState<CheckEmailScreen> {
                               backgroundColor: DSColors.blue,
                               minimumSize: const Size.fromHeight(DSSpacing.xxl),
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(DSRadius.xl),
+                                borderRadius: BorderRadius.circular(DSRadius.xxl),
                               ),
                             ),
                           ),

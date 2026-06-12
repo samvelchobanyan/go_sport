@@ -90,7 +90,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     // Main Content Container
                     Container(
                       width: screenWidth,
-                      padding: const EdgeInsets.only(top: 20, bottom: 0),
+                      padding: const EdgeInsets.only(top: DSSpacing.s20, bottom: 0),
                       decoration: BoxDecoration(
                         color: DSColors.white,
                         borderRadius: const BorderRadius.only(
@@ -115,12 +115,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                     SvgPicture.asset(
                                       'assets/icons/login_blue.svg',
                                     ),
-                                    SizedBox(width: 8),
+                                    SizedBox(width: DSSpacing.s8),
                                     Text('Login', style: context.h2),
                                   ],
                                 ),
 
-                                SizedBox(height: 15),
+                                SizedBox(height: DSSpacing.m),
 
                                 // Email Input
                                 CustomInput(
@@ -130,7 +130,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                   keyboardType: TextInputType.emailAddress,
                                 ),
 
-                                const SizedBox(height: 15),
+                                const SizedBox(height: DSSpacing.m),
 
                                 // Password Input
                                 CustomInput(
@@ -140,7 +140,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                   obscureText: true,
                                 ),
 
-                                const SizedBox(height: 7),
+                                const SizedBox(height: DSSpacing.s8),
 
                                 // Forgot Password
                                 Align(
@@ -157,7 +157,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                     ),
                                   ),
                                 ),
-                                const SizedBox(height: 14),
+                                const SizedBox(height: DSSpacing.s14),
 
                                 // Login Button
                                 ElevatedButton.icon(
@@ -189,12 +189,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                     ),
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(
-                                        DSRadius.xl,
+                                        DSRadius.xxl,
                                       ),
                                     ),
                                   ),
                                 ),
-                                const SizedBox(height: 14),
+                                const SizedBox(height: DSSpacing.s14),
 
                                 // Google Login Button
                                 TextButton(
@@ -213,7 +213,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                     side: BorderSide.none,
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(
-                                        DSRadius.xl,
+                                        DSRadius.xxl,
                                       ),
                                     ),
                                   ),
@@ -223,7 +223,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                       SvgPicture.asset(
                                         'assets/icons/google_logo.svg',
                                       ),
-                                      const SizedBox(width: 8),
+                                      const SizedBox(width: DSSpacing.s8),
                                       Text(
                                         'Login with Google',
                                         style: context.subtitleLBold?.copyWith(
@@ -234,7 +234,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                   ),
                                 ),
 
-                                const SizedBox(height: 20),
+                                const SizedBox(height: DSSpacing.s20),
 
                                 // Sign Up Row
                                 Row(
@@ -276,7 +276,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             ),
                           ),
 
-                          const SizedBox(height: 30),
+                          const SizedBox(height: DSSpacing.xl),
 
                           // Continue as Guest
                           SizedBox(

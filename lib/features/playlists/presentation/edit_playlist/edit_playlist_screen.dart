@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 import 'package:go_sport/domain/entities/playlist.dart';
 import 'package:go_sport/domain/entities/track.dart';
 import 'package:go_sport/features/playlists/presentation/playlist/custom_playlist_controller.dart';
@@ -111,7 +112,7 @@ class _EditPlaylistScreenState extends ConsumerState<EditPlaylistScreen> {
         actions: [
           _isSaving 
             ? const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20),
+                padding: EdgeInsets.symmetric(horizontal: DSSpacing.s20),
                 child: SizedBox(
                   width: 24, height: 24, 
                   child: CircularProgressIndicator(color: DSColors.blue, strokeWidth: 2),
@@ -121,7 +122,7 @@ class _EditPlaylistScreenState extends ConsumerState<EditPlaylistScreen> {
                 onTap: _onSave,
                 behavior: HitTestBehavior.opaque,
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  padding: const EdgeInsets.symmetric(horizontal: DSSpacing.m),
                   child: Center(
                     child: SvgPicture.asset(
                       'assets/icons/check_lime.svg',
@@ -141,7 +142,7 @@ class _EditPlaylistScreenState extends ConsumerState<EditPlaylistScreen> {
         // Обязательно отключаем дефолтные хэндлы, 
         // чтобы перетаскивалось только за наши гамбургеры в EditTrackTile
         buildDefaultDragHandles: false,
-        padding: const EdgeInsets.only(top: 8, bottom: 40), // Немного отступов
+        padding: const EdgeInsets.only(top: DSSpacing.s8, bottom: DSSpacing.s40), // Немного отступов
         itemCount: _editedTracks.length,
         onReorder: _onReorder,
         itemBuilder: (context, index) {

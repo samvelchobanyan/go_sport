@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/features/shared_widgets/live_wave_icon.dart';
 
@@ -11,7 +12,7 @@ class LiveBanner extends StatelessWidget {
   Widget build(BuildContext context) {
     return SliverToBoxAdapter(
       child: Padding(
-        padding: EdgeInsets.only(right: 16, left: 16, top: 18),
+        padding: EdgeInsets.only(right: DSSpacing.m, left: DSSpacing.m, top: DSSpacing.s18),
         child: Container(
           height: 64,
           decoration: BoxDecoration(
@@ -22,11 +23,11 @@ class LiveBanner extends StatelessWidget {
             ),
           ),
           child: Padding(
-            padding: const EdgeInsets.all(10),
+            padding: const EdgeInsets.all(DSSpacing.s10),
             child: Row(
               children: [
                 const AnimatedPlayWaves(),
-                SizedBox(width: 14),
+                SizedBox(width: DSSpacing.s14),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -34,7 +35,7 @@ class LiveBanner extends StatelessWidget {
                       'Listen Live Now',
                       style: context.h3?.copyWith(color: DSColors.white),
                     ),
-                    SizedBox(height: 4),
+                    SizedBox(height: DSSpacing.xs),
                     Text(
                       'We Get the Cup',
                       style: context.textL?.copyWith(color: DSColors.white),

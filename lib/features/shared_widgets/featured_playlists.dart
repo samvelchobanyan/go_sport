@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 import 'package:go_sport/domain/entities/playlist.dart';
 import 'package:go_sport/features/shared_widgets/playlist_card.dart';
 import 'package:go_sport/features/shared_widgets/wave_section_header.dart';
@@ -18,7 +19,7 @@ class FeaturedPlaylistsSection extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: EdgeInsets.only(bottom: 16),
+              padding: EdgeInsets.only(bottom: DSSpacing.m),
               child: WaveSectionHeader(
                 title: 'Featured playlists',
                 showAnimation: true,
@@ -29,12 +30,12 @@ class FeaturedPlaylistsSection extends StatelessWidget {
                 height: 210,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  padding: const EdgeInsets.symmetric(horizontal: DSSpacing.m),
                   itemCount: playlists.length,
                   itemBuilder: (context, index) {
                     final playlist = playlists[index];
                     return Padding(
-                      padding: const EdgeInsets.only(right: 12),
+                      padding: const EdgeInsets.only(right: DSSpacing.s12),
                       child: PlaylistCard(
                         playlist: playlist,
                       ),

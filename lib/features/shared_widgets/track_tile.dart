@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_spacing.dart';
+import 'package:go_sport/design_system/foundations/ds_icon_size.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/domain/entities/track.dart';
 import 'package:go_sport/shared/widgets/equalizer_indicator.dart';
@@ -26,7 +28,7 @@ class TrackTile extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Padding(
-        padding: EdgeInsets.only(left: 16, right: 16, top: topPadding, bottom: 12),
+        padding: EdgeInsets.only(left: DSSpacing.m, right: DSSpacing.m, top: topPadding, bottom: DSSpacing.s12),
         child: Row(
           children: [
             // Track image
@@ -59,7 +61,7 @@ class TrackTile extends StatelessWidget {
                     : Container(width: 48, height: 48, color: DSColors.gray20),
               ),
             ),
-            const SizedBox(width: 10),
+            const SizedBox(width: DSSpacing.s10),
 
             // Track info
             Expanded(child: _buildTrackContent(context)),
@@ -69,8 +71,8 @@ class TrackTile extends StatelessWidget {
               onTap: () => onMenuTap(track),
               behavior: HitTestBehavior.opaque,
               child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Icon(Icons.more_horiz, color: DSColors.gray60, size: 24),
+                padding: const EdgeInsets.all(DSSpacing.s8),
+                child: Icon(Icons.more_horiz, color: DSColors.gray60, size: DSIconSize.s24),
               ),
             ),
           ],
@@ -87,7 +89,7 @@ class TrackTile extends StatelessWidget {
           children: [
             if (isPlaying != null) ...[
               EqualizerIndicator(isPlaying: isPlaying!),
-              const SizedBox(width: 8),
+              const SizedBox(width: DSSpacing.s8),
             ],
             Expanded(
               child: Text(
@@ -101,7 +103,7 @@ class TrackTile extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: 2),
+        const SizedBox(height: DSSpacing.s),
         Text(
           track.artistName,
           style: context.textL?.copyWith(color: DSColors.gray60),

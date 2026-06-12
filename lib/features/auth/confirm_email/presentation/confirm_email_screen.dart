@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_icon_size.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 import 'package:go_router/go_router.dart';
@@ -93,7 +94,7 @@ class _ConfirmEmailScreenState extends ConsumerState<ConfirmEmailScreen> {
               child: GestureDetector(
                 onTap: () => context.go('/registration-email'),
                 child: Container(
-                  padding: const EdgeInsets.all(12),
+                  padding: const EdgeInsets.all(DSSpacing.s12),
                   decoration: const BoxDecoration(
                     color: DSColors.white,
                     shape: BoxShape.circle,
@@ -104,7 +105,7 @@ class _ConfirmEmailScreenState extends ConsumerState<ConfirmEmailScreen> {
                   child: const Icon(
                     Icons.arrow_back,
                     color: DSColors.blue,
-                    size: 22,
+                    size: DSIconSize.s24,
                   ),
                 ),
               ),
@@ -140,14 +141,14 @@ class _ConfirmEmailScreenState extends ConsumerState<ConfirmEmailScreen> {
                               SvgPicture.asset(
                                 'assets/icons/authorization.svg',
                               ),
-                              const SizedBox(width: 8),
+                              const SizedBox(width: DSSpacing.s8),
                               Text(
                                 'Please check your e-mail',
                                 style: context.h2,
                               ),
                             ],
                           ),
-                          const SizedBox(height: 14),
+                          const SizedBox(height: DSSpacing.s14),
                           Text(
                             'We have sent a confirmation code to',
                             style: context.bodyL?.copyWith(
@@ -162,7 +163,7 @@ class _ConfirmEmailScreenState extends ConsumerState<ConfirmEmailScreen> {
                             ),
                           ),
 
-                          const SizedBox(height: 24),
+                          const SizedBox(height: DSSpacing.l),
 
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -194,12 +195,12 @@ class _ConfirmEmailScreenState extends ConsumerState<ConfirmEmailScreen> {
                               backgroundColor: DSColors.blue,
                               minimumSize: const Size.fromHeight(DSSpacing.xxl),
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(DSRadius.xl),
+                                borderRadius: BorderRadius.circular(DSRadius.xxl),
                               ),
                             ),
                           ),
 
-                          const SizedBox(height: 8),
+                          const SizedBox(height: DSSpacing.s8),
 
                           TextButton(
                             onPressed: registrationState.isLoading
@@ -216,7 +217,7 @@ class _ConfirmEmailScreenState extends ConsumerState<ConfirmEmailScreen> {
                                   Icons.email_rounded,
                                   color: DSColors.blue,
                                 ),
-                                const SizedBox(width: 8),
+                                const SizedBox(width: DSSpacing.s8),
                                 Text(
                                   'Resend Code',
                                   style: context.subtitleMBold?.copyWith(

@@ -1,6 +1,8 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:go_sport/design_system/foundations/ds_spacing.dart';
+import 'package:go_sport/design_system/foundations/ds_layout.dart';
 import 'package:go_sport/design_system/components/skeleton/skeleton_box.dart';
 import 'package:go_sport/design_system/components/skeleton/skeleton_line.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
@@ -8,7 +10,7 @@ import 'package:go_sport/design_system/foundations/ds_radius.dart';
 class NewsListScreenSkeleton extends StatelessWidget {
   const NewsListScreenSkeleton({super.key});
 
-  static const _listPadding = EdgeInsets.only(top: 16, bottom: 100);
+  static const _listPadding = EdgeInsets.only(top: DSSpacing.m, bottom: DSLayout.bottomBarClearance);
 
   @override
   Widget build(BuildContext context) {
@@ -57,12 +59,12 @@ class _NewsItemSkeleton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Padding(
-      padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+      padding: EdgeInsets.symmetric(vertical: DSSpacing.s8, horizontal: DSSpacing.m),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           SkeletonBox(width: 84, height: 84, radius: DSRadius.s),
-          SizedBox(width: 11),
+          SizedBox(width: DSSpacing.s12),
           Expanded(
             child: _TitleSkeleton(),
           ),

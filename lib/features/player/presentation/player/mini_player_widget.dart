@@ -4,6 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'dart:ui';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_spacing.dart';
+import 'package:go_sport/design_system/foundations/ds_icon_size.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/components/icons/ds_heart_icon.dart';
@@ -74,7 +76,7 @@ class _MiniPlayerWidgetState extends ConsumerState<MiniPlayerWidget>
   Widget build(BuildContext context) {
     return Container(
       height: _kMiniPlayerHeight,
-      padding: const EdgeInsets.only(left: 16, right: 16, top: 7),
+      padding: const EdgeInsets.only(left: DSSpacing.m, right: DSSpacing.m, top: DSSpacing.s8),
       child: AnimatedBuilder(
         animation: _animationController,
         builder: (context, child) {
@@ -86,7 +88,7 @@ class _MiniPlayerWidgetState extends ConsumerState<MiniPlayerWidget>
                 isActive: !_isMusicMode,
                 onTap: !_isMusicMode ? widget.onOpenRadioPlayer : _toggleMode,
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: DSSpacing.s8),
               // Right panel (Music)
               _buildPanel(
                 isMusicPanel: true,
@@ -130,12 +132,12 @@ class _MiniPlayerWidgetState extends ConsumerState<MiniPlayerWidget>
                 child: isMusicPanel
                     ? const DSBitIcon(
                         color: DSColors.white,
-                        size: 24,
+                        size: DSIconSize.s24,
                         isAnimated: true,
                       )
                     : const DSWaveIcon(
                         color: DSColors.white,
-                        size: 24,
+                        size: DSIconSize.s24,
                         isAnimated: true,
                       ),
               ),
@@ -158,7 +160,7 @@ class _MiniPlayerWidgetState extends ConsumerState<MiniPlayerWidget>
       children: [
         // Main content
         Padding(
-          padding: const EdgeInsets.only(left: 7, right: 6),
+          padding: const EdgeInsets.only(left: DSSpacing.s8, right: DSSpacing.s6),
           child: Row(
             children: [
               // Album cover
@@ -167,7 +169,7 @@ class _MiniPlayerWidgetState extends ConsumerState<MiniPlayerWidget>
                 height: 44,
                 decoration: BoxDecoration(
                   color: DSColors.white,
-                  borderRadius: BorderRadius.circular(4.25),
+                  borderRadius: BorderRadius.circular(DSRadius.xs),
                   image: imageUrl != null
                       ? DecorationImage(
                           image: CachedNetworkImageProvider(imageUrl),
@@ -179,11 +181,11 @@ class _MiniPlayerWidgetState extends ConsumerState<MiniPlayerWidget>
                     ? const Icon(Icons.music_note, color: DSColors.gray40)
                     : null,
               ),
-              const SizedBox(width: 7),
+              const SizedBox(width: DSSpacing.s8),
               // Text block
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 7),
+                  padding: const EdgeInsets.symmetric(vertical: DSSpacing.s8),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -198,7 +200,7 @@ class _MiniPlayerWidgetState extends ConsumerState<MiniPlayerWidget>
                         overflow: TextOverflow.ellipsis,
                       ),
                       if (artistName.isNotEmpty) ...[
-                        const SizedBox(height: 2),
+                        const SizedBox(height: DSSpacing.s),
                         Text(
                           artistName,
                           style: context.textL?.copyWith(
@@ -212,7 +214,7 @@ class _MiniPlayerWidgetState extends ConsumerState<MiniPlayerWidget>
                   ),
                 ),
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: DSSpacing.s8),
               // Like icon
               Consumer(
                 builder: (context, ref, _) {
@@ -235,17 +237,17 @@ class _MiniPlayerWidgetState extends ConsumerState<MiniPlayerWidget>
                       }
                     },
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 7),
+                      padding: const EdgeInsets.symmetric(vertical: DSSpacing.s8),
                       child: DSHeartIcon(
                         color: DSColors.blue,
-                        size: 32,
+                        size: DSIconSize.s32,
                         isFilled: isLiked,
                       ),
                     ),
                   );
                 },
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: DSSpacing.s8),
               // Play/Pause icon
               GestureDetector(
                 onTap: () {
@@ -256,7 +258,7 @@ class _MiniPlayerWidgetState extends ConsumerState<MiniPlayerWidget>
                   }
                 },
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  padding: const EdgeInsets.symmetric(vertical: DSSpacing.s8),
                   child: AnimatedSwitcher(
                     duration: const Duration(milliseconds: 200),
                     transitionBuilder: (child, animation) {
@@ -271,7 +273,7 @@ class _MiniPlayerWidgetState extends ConsumerState<MiniPlayerWidget>
                             width: 32,
                             height: 32,
                             child: Padding(
-                              padding: const EdgeInsets.all(8),
+                              padding: const EdgeInsets.all(DSSpacing.s8),
                               child: CircularProgressIndicator(
                                 color: DSColors.blue,
                                 strokeWidth: 2,
@@ -380,7 +382,7 @@ class _MiniPlayerWidgetState extends ConsumerState<MiniPlayerWidget>
                 final imageUrl = track?.imageUrl ?? swipeData.sourceImageUrl;
                 
                 return Padding(
-                  padding: const EdgeInsets.only(left: 7, right: 8),
+                  padding: const EdgeInsets.only(left: DSSpacing.s8, right: DSSpacing.s8),
                   child: Row(
                     children: [
                       // Album cover
@@ -389,7 +391,7 @@ class _MiniPlayerWidgetState extends ConsumerState<MiniPlayerWidget>
                         height: 34,
                         decoration: BoxDecoration(
                           color: DSColors.white,
-                          borderRadius: BorderRadius.circular(4.25),
+                          borderRadius: BorderRadius.circular(DSRadius.xs),
                           image: imageUrl != null
                               ? DecorationImage(
                                   image: CachedNetworkImageProvider(imageUrl),
@@ -401,7 +403,7 @@ class _MiniPlayerWidgetState extends ConsumerState<MiniPlayerWidget>
                             ? const Icon(Icons.music_note, color: DSColors.gray40)
                             : null,
                       ),
-                      const SizedBox(width: 7),
+                      const SizedBox(width: DSSpacing.s8),
                       // Text block
                       Expanded(
                         child: Column(
@@ -418,7 +420,7 @@ class _MiniPlayerWidgetState extends ConsumerState<MiniPlayerWidget>
                               overflow: TextOverflow.ellipsis,
                             ),
                             if (artistName.isNotEmpty) ...[
-                              const SizedBox(height: 2),
+                              const SizedBox(height: DSSpacing.s),
                               Text(
                                 artistName,
                                 style: context.subtitleM?.copyWith(
@@ -432,7 +434,7 @@ class _MiniPlayerWidgetState extends ConsumerState<MiniPlayerWidget>
                           ],
                         ),
                       ),
-                      const SizedBox(width: 8),
+                      const SizedBox(width: DSSpacing.s8),
                       // Like icon
                       Consumer(
                         builder: (context, ref, _) {
@@ -457,17 +459,17 @@ class _MiniPlayerWidgetState extends ConsumerState<MiniPlayerWidget>
                               }
                             },
                             child: Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 7),
+                              padding: const EdgeInsets.symmetric(vertical: DSSpacing.s8),
                               child: DSHeartIcon(
                                 color: DSColors.blue,
-                                size: 32,
+                                size: DSIconSize.s32,
                                 isFilled: isLiked,
                               ),
                             ),
                           );
                         },
                       ),
-                      const SizedBox(width: 8),
+                      const SizedBox(width: DSSpacing.s8),
                       // Play/Pause icon
                       GestureDetector(
                         onTap: () {
@@ -478,7 +480,7 @@ class _MiniPlayerWidgetState extends ConsumerState<MiniPlayerWidget>
                           }
                         },
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8),
+                          padding: const EdgeInsets.symmetric(vertical: DSSpacing.s8),
                           child: AnimatedSwitcher(
                             duration: const Duration(milliseconds: 200),
                             transitionBuilder: (child, animation) {
@@ -493,7 +495,7 @@ class _MiniPlayerWidgetState extends ConsumerState<MiniPlayerWidget>
                                     width: 32,
                                     height: 32,
                                     child: Padding(
-                                      padding: const EdgeInsets.all(8),
+                                      padding: const EdgeInsets.all(DSSpacing.s8),
                                       child: CircularProgressIndicator(
                                         color: DSColors.blue,
                                         strokeWidth: 2,
@@ -554,7 +556,7 @@ class _MiniPlayerWidgetState extends ConsumerState<MiniPlayerWidget>
         'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=300&q=80';
 
     return Padding(
-      padding: const EdgeInsets.only(left: 7, right: 8),
+      padding: const EdgeInsets.only(left: DSSpacing.s8, right: DSSpacing.s8),
       child: Row(
         children: [
           // Station cover
@@ -563,14 +565,14 @@ class _MiniPlayerWidgetState extends ConsumerState<MiniPlayerWidget>
             height: 34,
             decoration: BoxDecoration(
               color: DSColors.white,
-              borderRadius: BorderRadius.circular(4.25),
+              borderRadius: BorderRadius.circular(DSRadius.xs),
               image: DecorationImage(
                 image: CachedNetworkImageProvider(radioImageUrl),
                 fit: BoxFit.cover,
               ),
             ),
           ),
-          const SizedBox(width: 7),
+          const SizedBox(width: DSSpacing.s8),
           // Text block
           Expanded(
             child: Column(
@@ -586,7 +588,7 @@ class _MiniPlayerWidgetState extends ConsumerState<MiniPlayerWidget>
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  const SizedBox(height: 2),
+                  const SizedBox(height: DSSpacing.s),
                   Text(
                     info.radioNowPlaying ?? 'Live broadcast',
                     style: context.textL?.copyWith(
@@ -598,7 +600,7 @@ class _MiniPlayerWidgetState extends ConsumerState<MiniPlayerWidget>
                 ],
             ),
           ),
-          const SizedBox(width: 8),
+          const SizedBox(width: DSSpacing.s8),
           // Play/Pause icon
           GestureDetector(
             onTap: () {
@@ -609,7 +611,7 @@ class _MiniPlayerWidgetState extends ConsumerState<MiniPlayerWidget>
               }
             },
             child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8),
+              padding: const EdgeInsets.symmetric(vertical: DSSpacing.s8),
               child: AnimatedSwitcher(
                 duration: const Duration(milliseconds: 200),
                 transitionBuilder: (child, animation) {
@@ -624,7 +626,7 @@ class _MiniPlayerWidgetState extends ConsumerState<MiniPlayerWidget>
                         width: 32,
                         height: 32,
                         child: Padding(
-                          padding: const EdgeInsets.all(6),
+                          padding: const EdgeInsets.all(DSSpacing.s6),
                           child: CircularProgressIndicator(
                             color: DSColors.lime,
                             strokeWidth: 2,

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_icon_size.dart';
 import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
@@ -39,10 +40,10 @@ class PlayerControlPanel extends ConsumerWidget {
             // Track info row
             _buildTrackInfo(context, ref, track),
 
-            const SizedBox(height: 25),
+            const SizedBox(height: DSSpacing.l),
 
             const PlayerSeekBar(),
-            const SizedBox(height: 40),
+            const SizedBox(height: DSSpacing.s40),
 
             // Playback controls
             _buildControls(context, ref, info.isPlaying, info.status),
@@ -57,7 +58,7 @@ class PlayerControlPanel extends ConsumerWidget {
               repeatMode: info.repeatMode,
             ),
 
-            const SizedBox(height: 16),
+            const SizedBox(height: DSSpacing.m),
 
             // Bottom safe area padding
             SizedBox(height: MediaQuery.of(context).padding.bottom),
@@ -96,7 +97,7 @@ class PlayerControlPanel extends ConsumerWidget {
           ),
         ),
 
-        const SizedBox(width: 8),
+        const SizedBox(width: DSSpacing.s8),
 
         // Title + Artist
         Expanded(
@@ -122,7 +123,7 @@ class PlayerControlPanel extends ConsumerWidget {
           ),
         ),
 
-        const SizedBox(width: 8),
+        const SizedBox(width: DSSpacing.s8),
 
         // Like button
         Consumer(
@@ -146,8 +147,8 @@ class PlayerControlPanel extends ConsumerWidget {
                 }
               },
               child: Container(
-                width: 48,
-                height: 48,
+                width: 40,
+                height: 40,
                 decoration: const BoxDecoration(
                   color: DSColors.white,
                   shape: BoxShape.circle,
@@ -155,7 +156,7 @@ class PlayerControlPanel extends ConsumerWidget {
                 child: Center(
                   child: DSHeartIcon(
                     color: DSColors.orange,
-                    size: 38,
+                    size: DSIconSize.s28,
                     isFilled: isLiked,
                   ),
                 ),

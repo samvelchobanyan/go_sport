@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/features/shared_widgets/input.dart';
 import 'package:go_router/go_router.dart';
@@ -113,7 +114,7 @@ class _ProfileChangePasswordScreenState
               child: Container(
                 height: screenHeight * 0.6,
                 width: screenWidth,
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(DSSpacing.m),
                 decoration: BoxDecoration(
                   color: DSColors.white,
                   borderRadius: const BorderRadius.only(
@@ -129,20 +130,20 @@ class _ProfileChangePasswordScreenState
                         color: DSColors.gray70,
                       ),
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: DSSpacing.m),
 
                     CustomInput(
                       label: 'Old password',
                       controller: _oldPasswordController,
                       obscureText: true,
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: DSSpacing.m),
                     CustomInput(
                       label: 'New password',
                       controller: _newPasswordController,
                       obscureText: true,
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: DSSpacing.m),
                     CustomInput(
                       label: 'Repeat new password',
                       controller: _confirmPasswordController,
@@ -173,15 +174,15 @@ class _ProfileChangePasswordScreenState
                         ),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: DSColors.blue,
-                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          padding: const EdgeInsets.symmetric(vertical: DSSpacing.m),
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(DSRadius.xl),
+                            borderRadius: BorderRadius.circular(DSRadius.xxl),
                           ),
                         ),
                         onPressed: state.isLoading ? null : _onSave,
                       ),
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: DSSpacing.s20),
                   ],
                 ),
               ),

@@ -4,6 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_spacing.dart';
+import 'package:go_sport/design_system/foundations/ds_icon_size.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/domain/entities/news_article.dart';
 import 'package:go_sport/domain/state/news_state.dart';
@@ -53,7 +55,7 @@ class NewsDetailScreen extends ConsumerWidget {
         ),
         actions: [
           Padding(
-            padding: const EdgeInsets.only(right: 16.0),
+            padding: const EdgeInsets.only(right: DSSpacing.m),
             child: Align(
               alignment: Alignment.center,
               child: Builder(
@@ -68,14 +70,14 @@ class NewsDetailScreen extends ConsumerWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(top: 6.0),
+                        padding: const EdgeInsets.only(top: DSSpacing.s6),
                         child: Container(
                           width: 14,
                           height: 2,
                           color: DSColors.orange,
                         ),
                       ),
-                      const SizedBox(width: 2),
+                      const SizedBox(width: DSSpacing.s),
                       Column(
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.end,
@@ -107,11 +109,11 @@ class NewsDetailScreen extends ConsumerWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 8),
+            const SizedBox(height: DSSpacing.s8),
 
             // Image
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24.0),
+              padding: const EdgeInsets.symmetric(horizontal: DSSpacing.l),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(DSRadius.s),
                 child: Hero(
@@ -133,33 +135,33 @@ class NewsDetailScreen extends ConsumerWidget {
                       child: const Icon(
                         Icons.error,
                         color: DSColors.gray50,
-                        size: 28,
+                        size: DSIconSize.s28,
                       ),
                     ),
                   ),
                 ),
               ),
             ),
-            const SizedBox(height: 14),
+            const SizedBox(height: DSSpacing.s14),
 
             // Title
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24.0),
+              padding: const EdgeInsets.symmetric(horizontal: DSSpacing.l),
               child: Text(article.title, style: context.h2),
             ),
-            const SizedBox(height: 15),
+            const SizedBox(height: DSSpacing.m),
 
             // Subtitle (quote)
             if (article.subtitle != null) ...[
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                padding: const EdgeInsets.symmetric(horizontal: DSSpacing.l),
                 child: Container(
                   decoration: BoxDecoration(
                     border: Border(
                       left: BorderSide(color: DSColors.blue, width: 3),
                     ),
                   ),
-                  padding: const EdgeInsets.only(left: 16),
+                  padding: const EdgeInsets.only(left: DSSpacing.m),
                   child: Text(
                     article.subtitle!,
                     style: context.subtitleM?.copyWith(
@@ -169,29 +171,29 @@ class NewsDetailScreen extends ConsumerWidget {
                   ),
                 ),
               ),
-              const SizedBox(height: 15),
+              const SizedBox(height: DSSpacing.m),
             ],
 
             // Content
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24.0),
+              padding: const EdgeInsets.symmetric(horizontal: DSSpacing.l),
               child: Text(
                 article.content,
                 style: context.bodyL?.copyWith(height: 1.6),
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: DSSpacing.m),
 
             // Divider
             const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 24.0),
+              padding: EdgeInsets.symmetric(horizontal: DSSpacing.l),
               child: DottedDivider(),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: DSSpacing.m),
 
             // Bottom buttons
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24.0),
+              padding: const EdgeInsets.symmetric(horizontal: DSSpacing.l),
               child: Row(
                 children: [
                   // Like button
@@ -213,11 +215,11 @@ class NewsDetailScreen extends ConsumerWidget {
                             ? Icons.thumb_up
                             : Icons.thumb_up_outlined,
                         color: DSColors.white,
-                        size: 24,
+                        size: DSIconSize.s24,
                       ),
                     ),
                   ),
-                  const SizedBox(width: 16),
+                  const SizedBox(width: DSSpacing.m),
 
                   // Share button
                   GestureDetector(
@@ -234,7 +236,7 @@ class NewsDetailScreen extends ConsumerWidget {
                       child: Icon(
                         Icons.share_outlined,
                         color: DSColors.black,
-                        size: 24,
+                        size: DSIconSize.s24,
                       ),
                     ),
                   ),
@@ -252,8 +254,8 @@ class NewsDetailScreen extends ConsumerWidget {
                     ),
                     child: Row(
                       children: [
-                        Icon(Icons.thumb_up, size: 16, color: DSColors.blue),
-                        const SizedBox(width: 6),
+                        Icon(Icons.thumb_up, size: DSIconSize.s16, color: DSColors.blue),
+                        const SizedBox(width: DSSpacing.s6),
                         Text(
                           '${article.likesCount}',
                           style: context.bodyL?.copyWith(
@@ -267,7 +269,7 @@ class NewsDetailScreen extends ConsumerWidget {
                 ],
               ),
             ),
-            const SizedBox(height: 21),
+            const SizedBox(height: DSSpacing.s20),
           ],
         ),
       ),

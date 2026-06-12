@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_router/go_router.dart';
 
@@ -36,7 +37,7 @@ class ExpiredGuestScreen extends StatelessWidget {
               alignment: Alignment.bottomCenter,
               child: Container(
                 width: screenWidth,
-                padding: const EdgeInsets.only(top: 20, bottom: 0),
+                padding: const EdgeInsets.only(top: DSSpacing.s20, bottom: 0),
                 decoration: BoxDecoration(
                   color: DSColors.white,
                   borderRadius: const BorderRadius.only(
@@ -49,7 +50,7 @@ class ExpiredGuestScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      padding: const EdgeInsets.symmetric(horizontal: DSSpacing.m),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
@@ -57,12 +58,12 @@ class ExpiredGuestScreen extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Icon(Icons.alarm, color: DSColors.blue),
-                              SizedBox(width: 8),
+                              SizedBox(width: DSSpacing.s8),
                               Text('Time is up !', style: context.h2),
                             ],
                           ),
 
-                          SizedBox(height: 14),
+                          SizedBox(height: DSSpacing.s14),
 
                           Text(
                             'Time for using the app in guest mode is up. Please register or login to continue using the app.',
@@ -89,15 +90,15 @@ class ExpiredGuestScreen extends StatelessWidget {
                             ),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: DSColors.blue,
-                              padding: const EdgeInsets.symmetric(vertical: 14),
+                              padding: const EdgeInsets.symmetric(vertical: DSSpacing.s14),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(
-                                  DSRadius.xl,
+                                  DSRadius.xxl,
                                 ),
                               ),
                             ),
                           ),
-                          const SizedBox(height: 14),
+                          const SizedBox(height: DSSpacing.s14),
 
                           // Login Button
                           TextButton(
@@ -105,13 +106,13 @@ class ExpiredGuestScreen extends StatelessWidget {
                               context.go('/login');
                             },
                             style: TextButton.styleFrom(
-                              padding: const EdgeInsets.symmetric(vertical: 14),
+                              padding: const EdgeInsets.symmetric(vertical: DSSpacing.s14),
                               backgroundColor: DSColors.blue5,
                               // This ensures no border is drawn
                               side: BorderSide.none,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(
-                                  DSRadius.xl,
+                                  DSRadius.xxl,
                                 ),
                               ),
                             ),
@@ -119,7 +120,7 @@ class ExpiredGuestScreen extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 SvgPicture.asset('assets/icons/login_blue.svg'),
-                                const SizedBox(width: 8),
+                                const SizedBox(width: DSSpacing.s8),
                                 Text(
                                   'Login',
                                   style: context.subtitleLBold?.copyWith(
@@ -130,7 +131,7 @@ class ExpiredGuestScreen extends StatelessWidget {
                             ),
                           ),
 
-                          const SizedBox(height: 24),
+                          const SizedBox(height: DSSpacing.l),
                         ],
                       ),
                     ),

@@ -3,6 +3,7 @@ import 'dart:math' as Math;
 import 'package:flutter/material.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 
 /// Заголовок секции с опциональным анимированным эквалайзером
 class WaveSectionHeader extends StatelessWidget {
@@ -18,7 +19,7 @@ class WaveSectionHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      padding: const EdgeInsets.symmetric(horizontal: DSSpacing.m),
       child: Row(
         children: [
           Text(
@@ -26,7 +27,7 @@ class WaveSectionHeader extends StatelessWidget {
             style: context.h2,
           ),
           if (showAnimation) ...[
-            const SizedBox(width: 5),
+            const SizedBox(width: DSSpacing.xs),
             const AnimatedEqualizer(),
           ],
         ],
@@ -160,12 +161,12 @@ class ExampleUsage extends StatelessWidget {
     return Scaffold(
       body: ListView(
         children: const [
-          SizedBox(height: 20),
+          SizedBox(height: DSSpacing.s20),
           WaveSectionHeader(
             title: 'Featured playlists',
             showAnimation: true,
           ),
-          SizedBox(height: 20),
+          SizedBox(height: DSSpacing.s20),
           WaveSectionHeader(
             title: 'Recent tracks',
             showAnimation: false,

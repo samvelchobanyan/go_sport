@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_spacing.dart';
+import 'package:go_sport/design_system/foundations/ds_layout.dart';
+import 'package:go_sport/design_system/foundations/ds_icon_size.dart';
 import 'package:go_sport/design_system/components/icons/ds_heart_icon.dart';
 import 'package:go_sport/domain/entities/playlist.dart';
 
@@ -65,7 +68,7 @@ class PlaylistHero extends StatelessWidget {
         Align(
           alignment: Alignment.bottomCenter,
           child: Padding(
-            padding: const EdgeInsets.only(bottom: 44, left: 24, right: 24),
+            padding: const EdgeInsets.only(bottom: DSLayout.heroContentBottom, left: DSSpacing.l, right: DSSpacing.l),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -77,7 +80,7 @@ class PlaylistHero extends StatelessWidget {
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: DSSpacing.l),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -104,14 +107,14 @@ class PlaylistHero extends StatelessWidget {
                                 )
                               : DSHeartIcon(
                                   color: DSColors.white,
-                                  size: 32,
+                                  size: DSIconSize.s32,
                                   isFilled: isLiked,
                                 ),
                         ),
                       ),
                     ),
                     if (showPlayButton) ...[
-                      const SizedBox(width: 16),
+                      const SizedBox(width: DSSpacing.m),
                       // Play button
                       GestureDetector(
                         onTap: onPlayTap,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_icon_size.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/domain/state/player_state.dart';
 
@@ -159,7 +160,7 @@ class _ArtworkCard extends StatelessWidget {
                   color: DSColors.gray20,
                   child: const Icon(
                     Icons.music_note,
-                    size: 48,
+                    size: DSIconSize.s48,
                     color: DSColors.gray50,
                   ),
                 ),

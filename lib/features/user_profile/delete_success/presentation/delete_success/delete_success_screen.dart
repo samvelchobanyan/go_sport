@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_router/go_router.dart';
 
@@ -80,7 +81,7 @@ class _DeleteSuccessScreenState extends ConsumerState<DeleteSuccessScreen> {
                 child: Column(
                   children: [
                     Text('Account Deleted', style: context.h2),
-                    const SizedBox(height: 12),
+                    const SizedBox(height: DSSpacing.s12),
                     Text(
                       'Your account has been deleted.\nWe will miss you.',
                       textAlign: TextAlign.center,
@@ -96,9 +97,9 @@ class _DeleteSuccessScreenState extends ConsumerState<DeleteSuccessScreen> {
                         icon: SvgPicture.asset('assets/icons/login.svg'),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: DSColors.blue,
-                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          padding: const EdgeInsets.symmetric(vertical: DSSpacing.m),
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(DSRadius.xl),
+                            borderRadius: BorderRadius.circular(DSRadius.xxl),
                           ),
                         ),
                         onPressed: () => context.go('/login'),
@@ -110,7 +111,7 @@ class _DeleteSuccessScreenState extends ConsumerState<DeleteSuccessScreen> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: DSSpacing.s20),
                   ],
                 ),
               ),

@@ -117,19 +117,19 @@ class _RegistrationPhoneScreenState
                                 Icons.phone_in_talk_rounded,
                                 color: DSColors.blue,
                               ),
-                              SizedBox(width: 8),
+                              SizedBox(width: DSSpacing.s8),
                               Text('Phone Number', style: context.h2),
                             ],
                           ),
 
-                          SizedBox(height: 10),
+                          SizedBox(height: DSSpacing.s10),
                           Text(
                             'We will send a one time password to your phone number via SMS',
                             style: context.bodyL?.copyWith(
                               color: DSColors.gray70,
                             ),
                           ),
-                          SizedBox(height: 20),
+                          SizedBox(height: DSSpacing.s20),
 
                           CustomInput(
                             controller: _phoneController,
@@ -166,11 +166,11 @@ class _RegistrationPhoneScreenState
                               backgroundColor: DSColors.blue,
                               minimumSize: const Size.fromHeight(DSSpacing.xxl),
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(DSRadius.xl),
+                                borderRadius: BorderRadius.circular(DSRadius.xxl),
                               ),
                             ),
                           ),
-                          const SizedBox(height: 14),
+                          const SizedBox(height: DSSpacing.s14),
 
                           TextButton(
                             onPressed: () {

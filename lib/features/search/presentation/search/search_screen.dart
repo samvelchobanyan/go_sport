@@ -5,6 +5,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_spacing.dart';
+import 'package:go_sport/design_system/foundations/ds_icon_size.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/domain/entities/album.dart';
 import 'package:go_sport/domain/entities/artist.dart';
@@ -108,14 +110,14 @@ class _Header extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(8, 8, 16, 8),
+      padding: const EdgeInsets.fromLTRB(DSSpacing.s8, DSSpacing.s8, DSSpacing.m, DSSpacing.s8),
       child: Row(
         children: [
           IconButton(
             onPressed: () => Navigator.of(context).pop(),
             icon: const Icon(
               Icons.keyboard_arrow_down,
-              size: 24,
+              size: DSIconSize.s24,
               color: DSColors.black,
             ),
           ),
@@ -169,7 +171,7 @@ class _SuffixIcon extends ConsumerWidget {
 
     if (hasQuery) {
       return IconButton(
-        icon: const Icon(Icons.close, color: DSColors.black, size: 20),
+        icon: const Icon(Icons.close, color: DSColors.black, size: DSIconSize.s20),
         onPressed: () {
           controller.clear();
           ref.read(searchControllerProvider.notifier).onQueryChanged('');
@@ -178,7 +180,7 @@ class _SuffixIcon extends ConsumerWidget {
     }
 
     return Padding(
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.all(DSSpacing.s12),
       child: SvgPicture.asset(
         'assets/icons/search.svg',
         width: 20,
@@ -228,21 +230,21 @@ class _FeaturedPlaylistsContent extends ConsumerWidget {
     }
 
     return ListView.separated(
-      padding: const EdgeInsets.only(top: 8, bottom: 24),
+      padding: const EdgeInsets.only(top: DSSpacing.s8, bottom: DSSpacing.l),
       itemCount: playlists.length + 1,
       separatorBuilder: (context, index) {
         if (index == 0 || index >= playlists.length) {
           return const SizedBox.shrink();
         }
         return const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16),
+          padding: EdgeInsets.symmetric(horizontal: DSSpacing.m),
           child: DottedDivider(),
         );
       },
       itemBuilder: (context, index) {
         if (index == 0) {
           return Padding(
-            padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
+            padding: const EdgeInsets.fromLTRB(DSSpacing.m, DSSpacing.s8, DSSpacing.m, DSSpacing.m),
             child: Text('Featured Playlists', style: context.h2),
           );
         }
@@ -273,9 +275,9 @@ class _CategoryChips extends ConsumerWidget {
       height: 48,
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        padding: const EdgeInsets.symmetric(horizontal: DSSpacing.m, vertical: DSSpacing.s8),
         itemCount: entries.length,
-        separatorBuilder: (_, __) => const SizedBox(width: 8),
+        separatorBuilder: (_, __) => const SizedBox(width: DSSpacing.s8),
         itemBuilder: (context, index) {
           final (category, label) = entries[index];
           final isActive = category == selected;
@@ -309,11 +311,11 @@ class _Chip extends StatelessWidget {
       onTap: onTap,
       behavior: HitTestBehavior.opaque,
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+        padding: const EdgeInsets.symmetric(horizontal: DSSpacing.m, vertical: DSSpacing.s6),
         decoration: BoxDecoration(
           color: isActive ? DSColors.blue10 : DSColors.white,
           border: isActive ? null : Border.all(color: DSColors.blue20),
-          borderRadius: BorderRadius.circular(100),
+          borderRadius: BorderRadius.circular(DSRadius.circular),
         ),
         alignment: Alignment.center,
         child: Text(
@@ -340,7 +342,7 @@ class _Results extends ConsumerWidget {
     if (state.error != null && !state.hasResults) {
       return Center(
         child: Padding(
-          padding: const EdgeInsets.all(24),
+          padding: const EdgeInsets.all(DSSpacing.l),
           child: Text(
             'Search failed. Please try again.',
             style: context.subtitleM?.copyWith(color: DSColors.gray60),
@@ -375,7 +377,7 @@ class _AllSections extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return ListView(
-      padding: const EdgeInsets.only(bottom: 24),
+      padding: const EdgeInsets.only(bottom: DSSpacing.l),
       children: [
         if (state.tracks.isNotEmpty)
           _Section(
@@ -425,14 +427,14 @@ class _Section extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+          padding: const EdgeInsets.fromLTRB(DSSpacing.m, DSSpacing.m, DSSpacing.m, DSSpacing.s8),
           child: Text(title, style: context.h3),
         ),
         for (var i = 0; i < children.length; i++) ...[
           children[i],
           if (i < children.length - 1)
             const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16),
+              padding: EdgeInsets.symmetric(horizontal: DSSpacing.m),
               child: DottedDivider(),
             ),
         ],
@@ -454,21 +456,21 @@ class _CategoryList extends ConsumerWidget {
 
     return ListView.separated(
       controller: scrollController,
-      padding: const EdgeInsets.only(top: 8, bottom: 24),
+      padding: const EdgeInsets.only(top: DSSpacing.s8, bottom: DSSpacing.l),
       itemCount: items.length + (showSpinner ? 1 : 0),
       separatorBuilder: (context, index) {
         if (index >= items.length - 1) {
           return const SizedBox.shrink();
         }
         return const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16),
+          padding: EdgeInsets.symmetric(horizontal: DSSpacing.m),
           child: DottedDivider(),
         );
       },
       itemBuilder: (context, index) {
         if (index >= items.length) {
           return const Padding(
-            padding: EdgeInsets.all(16),
+            padding: EdgeInsets.all(DSSpacing.m),
             child: Center(child: CircularProgressIndicator()),
           );
         }

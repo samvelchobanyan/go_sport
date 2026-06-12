@@ -4,6 +4,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_spacing.dart';
+import 'package:go_sport/design_system/foundations/ds_layout.dart';
+import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/domain/entities/program.dart';
 import 'package:go_sport/domain/entities/track.dart';
 import 'package:go_sport/domain/state/like_registry.dart';
@@ -125,14 +128,14 @@ class _ProgramDetailsScreenState extends ConsumerState<ProgramDetailsScreen> {
                   decoration: const BoxDecoration(
                     color: DSColors.white,
                     borderRadius: BorderRadius.vertical(
-                      top: Radius.circular(24),
+                      top: Radius.circular(DSRadius.xl),
                     ),
                   ),
                 ),
               ),
             ),
 
-            SizedBox(height: 18),
+            SizedBox(height: DSSpacing.s18),
             // orange youtube banner
             const YoutubeBanner(),
 
@@ -145,7 +148,7 @@ class _ProgramDetailsScreenState extends ConsumerState<ProgramDetailsScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text('Error: $message'),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: DSSpacing.m),
                       ElevatedButton(
                         onPressed: () => ref
                             .read(
@@ -171,7 +174,7 @@ class _ProgramDetailsScreenState extends ConsumerState<ProgramDetailsScreen> {
                 final playingTrackId = playerState.currentTrack?.id;
 
                 return SliverPadding(
-                  padding: const EdgeInsets.only(bottom: 100),
+                  padding: const EdgeInsets.only(bottom: DSLayout.bottomBarClearance),
                   sliver: SliverList(
                     delegate: SliverChildBuilderDelegate((context, index) {
                       final episode = episodes[index];
@@ -193,7 +196,7 @@ class _ProgramDetailsScreenState extends ConsumerState<ProgramDetailsScreen> {
                           ),
                           if (index < episodes.length - 1)
                             const Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 24),
+                              padding: EdgeInsets.symmetric(horizontal: DSSpacing.l),
                               child: DottedDivider(),
                             ),
                         ],

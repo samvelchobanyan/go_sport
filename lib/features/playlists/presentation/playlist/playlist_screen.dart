@@ -4,6 +4,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_spacing.dart';
+import 'package:go_sport/design_system/foundations/ds_layout.dart';
+import 'package:go_sport/design_system/foundations/ds_icon_size.dart';
+import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/domain/entities/playlist.dart';
 import 'package:go_sport/domain/entities/track.dart';
 import 'package:go_sport/domain/state/like_registry.dart';
@@ -191,7 +195,7 @@ class _PlaylistScreenState extends ConsumerState<PlaylistScreen> {
             actions: [
               if (widget.type == PlaylistType.custom)
                 IconButton(
-                  icon: const Icon(Icons.settings, color: DSColors.white, size: 24),
+                  icon: const Icon(Icons.settings, color: DSColors.white, size: DSIconSize.s24),
                   onPressed: () {
                     final pl = currentPlaylist;
                     final currentTracks = tracksState.mapOrNull(data: (d) => d.tracks) ?? [];
@@ -281,7 +285,7 @@ class _PlaylistScreenState extends ConsumerState<PlaylistScreen> {
                 height: 24,
                 decoration: const BoxDecoration(
                   color: DSColors.white,
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(DSRadius.xl)),
                 ),
               ),
             ),
@@ -289,7 +293,7 @@ class _PlaylistScreenState extends ConsumerState<PlaylistScreen> {
           tracksState.when(
             loading: () => const SliverToBoxAdapter(
               child: Padding(
-                padding: EdgeInsets.only(top: 24),
+                padding: EdgeInsets.only(top: DSSpacing.l),
                 child: Center(child: CircularProgressIndicator()),
               ),
             ),
@@ -303,7 +307,7 @@ class _PlaylistScreenState extends ConsumerState<PlaylistScreen> {
                       'Error: $message',
                       style: const TextStyle(color: DSColors.black),
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: DSSpacing.m),
                     ElevatedButton(
                       onPressed: () {
                         if (widget.type == PlaylistType.featured) {
@@ -327,7 +331,7 @@ class _PlaylistScreenState extends ConsumerState<PlaylistScreen> {
                 return SliverFillRemaining(
                   hasScrollBody: false,
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    padding: const EdgeInsets.symmetric(horizontal: DSSpacing.m),
                     child: Stack(
                       fit: StackFit.expand,
                       children: [
@@ -355,7 +359,7 @@ class _PlaylistScreenState extends ConsumerState<PlaylistScreen> {
               final playingTrackId = playerState.currentTrack?.id;
 
               return SliverPadding(
-                padding: const EdgeInsets.only(bottom: 100, top: 0),
+                padding: const EdgeInsets.only(bottom: DSLayout.bottomBarClearance, top: 0),
                 sliver: SliverList(
                   delegate: SliverChildBuilderDelegate((context, index) {
                     final track = tracks[index];
@@ -383,7 +387,7 @@ class _PlaylistScreenState extends ConsumerState<PlaylistScreen> {
                         ),
                         if (index < tracks.length - 1)
                           const Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 24),
+                            padding: EdgeInsets.symmetric(horizontal: DSSpacing.l),
                             child: DottedDivider(),
                           ),
                       ],
