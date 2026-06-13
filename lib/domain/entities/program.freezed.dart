@@ -21,6 +21,7 @@ mixin _$Program {
   String get title => throw _privateConstructorUsedError;
   String get imageUrl => throw _privateConstructorUsedError;
   int get episodeCount => throw _privateConstructorUsedError;
+  String? get youtubeUrl => throw _privateConstructorUsedError;
   String? get likeId => throw _privateConstructorUsedError;
 
   /// Create a copy of Program
@@ -39,6 +40,7 @@ abstract class $ProgramCopyWith<$Res> {
     String title,
     String imageUrl,
     int episodeCount,
+    String? youtubeUrl,
     String? likeId,
   });
 }
@@ -62,6 +64,7 @@ class _$ProgramCopyWithImpl<$Res, $Val extends Program>
     Object? title = null,
     Object? imageUrl = null,
     Object? episodeCount = null,
+    Object? youtubeUrl = freezed,
     Object? likeId = freezed,
   }) {
     return _then(
@@ -82,6 +85,10 @@ class _$ProgramCopyWithImpl<$Res, $Val extends Program>
                 ? _value.episodeCount
                 : episodeCount // ignore: cast_nullable_to_non_nullable
                       as int,
+            youtubeUrl: freezed == youtubeUrl
+                ? _value.youtubeUrl
+                : youtubeUrl // ignore: cast_nullable_to_non_nullable
+                      as String?,
             likeId: freezed == likeId
                 ? _value.likeId
                 : likeId // ignore: cast_nullable_to_non_nullable
@@ -105,6 +112,7 @@ abstract class _$$ProgramImplCopyWith<$Res> implements $ProgramCopyWith<$Res> {
     String title,
     String imageUrl,
     int episodeCount,
+    String? youtubeUrl,
     String? likeId,
   });
 }
@@ -127,6 +135,7 @@ class __$$ProgramImplCopyWithImpl<$Res>
     Object? title = null,
     Object? imageUrl = null,
     Object? episodeCount = null,
+    Object? youtubeUrl = freezed,
     Object? likeId = freezed,
   }) {
     return _then(
@@ -147,6 +156,10 @@ class __$$ProgramImplCopyWithImpl<$Res>
             ? _value.episodeCount
             : episodeCount // ignore: cast_nullable_to_non_nullable
                   as int,
+        youtubeUrl: freezed == youtubeUrl
+            ? _value.youtubeUrl
+            : youtubeUrl // ignore: cast_nullable_to_non_nullable
+                  as String?,
         likeId: freezed == likeId
             ? _value.likeId
             : likeId // ignore: cast_nullable_to_non_nullable
@@ -164,6 +177,7 @@ class _$ProgramImpl implements _Program {
     required this.title,
     required this.imageUrl,
     required this.episodeCount,
+    this.youtubeUrl,
     this.likeId,
   });
 
@@ -176,11 +190,13 @@ class _$ProgramImpl implements _Program {
   @override
   final int episodeCount;
   @override
+  final String? youtubeUrl;
+  @override
   final String? likeId;
 
   @override
   String toString() {
-    return 'Program(id: $id, title: $title, imageUrl: $imageUrl, episodeCount: $episodeCount, likeId: $likeId)';
+    return 'Program(id: $id, title: $title, imageUrl: $imageUrl, episodeCount: $episodeCount, youtubeUrl: $youtubeUrl, likeId: $likeId)';
   }
 
   @override
@@ -194,12 +210,21 @@ class _$ProgramImpl implements _Program {
                 other.imageUrl == imageUrl) &&
             (identical(other.episodeCount, episodeCount) ||
                 other.episodeCount == episodeCount) &&
+            (identical(other.youtubeUrl, youtubeUrl) ||
+                other.youtubeUrl == youtubeUrl) &&
             (identical(other.likeId, likeId) || other.likeId == likeId));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, id, title, imageUrl, episodeCount, likeId);
+  int get hashCode => Object.hash(
+    runtimeType,
+    id,
+    title,
+    imageUrl,
+    episodeCount,
+    youtubeUrl,
+    likeId,
+  );
 
   /// Create a copy of Program
   /// with the given fields replaced by the non-null parameter values.
@@ -216,6 +241,7 @@ abstract class _Program implements Program {
     required final String title,
     required final String imageUrl,
     required final int episodeCount,
+    final String? youtubeUrl,
     final String? likeId,
   }) = _$ProgramImpl;
 
@@ -227,6 +253,8 @@ abstract class _Program implements Program {
   String get imageUrl;
   @override
   int get episodeCount;
+  @override
+  String? get youtubeUrl;
   @override
   String? get likeId;
 

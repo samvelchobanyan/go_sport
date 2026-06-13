@@ -32,6 +32,9 @@ dependencies:
     flutter_secure_storage: ^9.2.2
     image_picker: ^1.2.1
 
+    # External links
+    url_launcher: ^6.3.0
+
     # Push Notifications
     firebase_messaging: 16.3.0
     firebase_core: 4.10.0

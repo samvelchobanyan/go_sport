@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
@@ -81,6 +82,7 @@ class _ProgramDetailsScreenState extends ConsumerState<ProgramDetailsScreen> {
         s.source?.id == widget.program.id && s.isPlaying && !s.isRadioMode));
     final screenHeight = MediaQuery.of(context).size.height;
     final expandedHeight = screenHeight * 0.5;
+    final youtubeUrl = widget.program.youtubeUrl;
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.light,
@@ -135,9 +137,14 @@ class _ProgramDetailsScreenState extends ConsumerState<ProgramDetailsScreen> {
               ),
             ),
 
-            SizedBox(height: DSSpacing.s18),
-            // orange youtube banner
-            const YoutubeBanner(),
+            // orange youtube banner — only when the program has a YouTube link
+            if (youtubeUrl != null && youtubeUrl.isNotEmpty)
+              YoutubeBanner(
+                onTap: () => launchUrl(
+                  Uri.parse(youtubeUrl),
+                  mode: LaunchMode.externalApplication,
+                ),
+              ),
 
             episodesState.when(
               loading: () => const ProgramScreenSkeleton(),
@@ -190,7 +197,7 @@ class _ProgramDetailsScreenState extends ConsumerState<ProgramDetailsScreen> {
                             episode: episode,
                             index: index + 1,
                             isPlaying: trackPlayingState,
-                            topPadding: index == 0 ? 0 : 12,
+                            topPadding: index == 0 ? 20 : 12,
                             onTap: () => _onTrackTap(episodes, index),
                             onMenuTap: () => _onTrackMenuTap(index),
                           ),

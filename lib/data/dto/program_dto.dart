@@ -15,6 +15,7 @@ class ProgramDto {
   final String name;
   final _CoverDto? cover;
   final int cnt;
+  final String? youtube;
   final String? likeId;
 
   ProgramDto({
@@ -22,6 +23,7 @@ class ProgramDto {
     required this.name,
     required this.cover,
     required this.cnt,
+    this.youtube,
     this.likeId,
   });
 
@@ -35,6 +37,7 @@ class ProgramDto {
           ? _CoverDto.fromJson(json['Cover'] as Map<String, dynamic>)
           : null,
       cnt: json['cnt'] as int? ?? 0,
+      youtube: json['Youtube'] as String?,
       likeId: likeJson?['documentId'] as String?,
     );
   }
@@ -45,6 +48,7 @@ class ProgramDto {
       title: name,
       imageUrl: cover?.url ?? '',
       episodeCount: cnt,
+      youtubeUrl: youtube,
       likeId: likeId,
     );
   }
