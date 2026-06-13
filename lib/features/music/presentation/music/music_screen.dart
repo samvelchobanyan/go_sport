@@ -139,127 +139,190 @@ class _MusicScreenState extends ConsumerState<MusicScreen> {
 
               return false;
             },
-            child: CustomScrollView(
-              // controller: _scrollController,
-              slivers: [
-                /// 🔹 AppBar
-                SliverAppBar(
-                  backgroundColor: DSColors.white.withValues(alpha: appBarOpacity),
-                  elevation: 0,
-                  pinned: true,
-                  floating: true,
-
-                  leading: Padding(
-                    padding: const EdgeInsets.only(top: DSSpacing.s8, bottom: DSSpacing.s8, left: DSSpacing.m),
-                    child: UserAvatarButton(
-                      imageUrl: null,
-                      onTap: () {
-                        context.push(AppRoutes.profile);
-                      },
+            child: RefreshIndicator(
+              onRefresh: () => Future.wait([
+                ref.read(musicStateProvider.notifier).refresh(),
+                ref.read(featuredPlaylistsStateProvider.notifier).refresh(),
+              ]),
+              child: CustomScrollView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                // controller: _scrollController,
+                slivers: [
+                  /// 🔹 AppBar
+                  SliverAppBar(
+                    backgroundColor: DSColors.white.withValues(
+                      alpha: appBarOpacity,
                     ),
-                  ),
-                  title: Text('Music', style: context.h2),
-                  centerTitle: true,
-                  actions: [
-                    const SearchButton(),
-                  ],
-                ),
+                    elevation: 0,
+                    pinned: true,
+                    floating: true,
 
-                SliverToBoxAdapter(
-                  child: showQuickActionsSkeleton
-                      ? MusicQuickActionsSkeleton(
-                          cardWidth: (screenWidth - 16 * 2 - 8) / 2,
-                        )
-                      : Padding(
-                          padding: const EdgeInsets.all(DSSpacing.m),
-                          child: Wrap(
-                            spacing: 8,
-                            runSpacing: 8,
-                            children: cards.map((card) {
-                              return SizedBox(
-                                width: (screenWidth - 16 * 2 - 8) / 2,
-                                child: MusicQuickActionCard(
-                                  icon: card['icon'] as SvgPicture,
-                                  title: card['title'] as String,
-                                  subtitle: card['subtitle'] as String,
-                                  onTap: () {
-                                    final onTap =
-                                        card['onTap'] as VoidCallback?;
-                                    if (onTap != null) onTap();
-                                  },
-                                ),
-                              );
-                            }).toList(),
-                          ),
-                        ),
-                ),
-
-                // rounded corners box
-                SliverToBoxAdapter(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: DSColors.white,
-                      borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(DSRadius.m),
-                        topRight: Radius.circular(DSRadius.m),
+                    leading: Padding(
+                      padding: const EdgeInsets.only(
+                        top: DSSpacing.s8,
+                        bottom: DSSpacing.s8,
+                        left: DSSpacing.m,
+                      ),
+                      child: UserAvatarButton(
+                        imageUrl: null,
+                        onTap: () {
+                          context.push(AppRoutes.profile);
+                        },
                       ),
                     ),
-                    clipBehavior: Clip.antiAlias,
-                    child: SizedBox(height: DSSpacing.m),
+                    title: Text('Music', style: context.h2),
+                    centerTitle: true,
+                    actions: [const SearchButton()],
                   ),
-                ),
 
-                // playlist section
-                showPlaylistsSkeleton
-                    ? const SliverToBoxAdapter(
-                        child: MusicPlaylistsSkeletonSection(),
-                      )
-                    : FeaturedPlaylistsSection(playlists: playlists),
+                  SliverToBoxAdapter(
+                    child: showQuickActionsSkeleton
+                        ? MusicQuickActionsSkeleton(
+                            cardWidth: (screenWidth - 16 * 2 - 8) / 2,
+                          )
+                        : Padding(
+                            padding: const EdgeInsets.all(DSSpacing.m),
+                            child: Wrap(
+                              spacing: 8,
+                              runSpacing: 8,
+                              children: cards.map((card) {
+                                return SizedBox(
+                                  width: (screenWidth - 16 * 2 - 8) / 2,
+                                  child: MusicQuickActionCard(
+                                    icon: card['icon'] as SvgPicture,
+                                    title: card['title'] as String,
+                                    subtitle: card['subtitle'] as String,
+                                    onTap: () {
+                                      final onTap =
+                                          card['onTap'] as VoidCallback?;
+                                      if (onTap != null) onTap();
+                                    },
+                                  ),
+                                );
+                              }).toList(),
+                            ),
+                          ),
+                  ),
 
-                // albums title
-                SliverToBoxAdapter(
-                  child: showAlbumsSkeleton
-                      ? const MusicAlbumsSkeletonSection()
-                      : Container(
-                          color: DSColors.white,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 16,
+                  // rounded corners box
+                  SliverToBoxAdapter(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: DSColors.white,
+                        borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(DSRadius.m),
+                          topRight: Radius.circular(DSRadius.m),
+                        ),
+                      ),
+                      clipBehavior: Clip.antiAlias,
+                      child: SizedBox(height: DSSpacing.m),
+                    ),
+                  ),
+
+                  // playlist section
+                  showPlaylistsSkeleton
+                      ? const SliverToBoxAdapter(
+                          child: MusicPlaylistsSkeletonSection(),
+                        )
+                      : FeaturedPlaylistsSection(playlists: playlists),
+
+                  // albums title
+                  SliverToBoxAdapter(
+                    child: showAlbumsSkeleton
+                        ? const MusicAlbumsSkeletonSection()
+                        : Container(
+                            color: DSColors.white,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 16,
+                                  ),
+                                  child: WaveSectionHeader(
+                                    title: 'Featured albums',
+                                    showAnimation: true,
+                                  ),
                                 ),
-                                child: WaveSectionHeader(
-                                  title: 'Featured albums',
-                                  showAnimation: true,
+                                if (featuredAlbums.isNotEmpty)
+                                  SizedBox(
+                                    height: 240,
+                                    child: ListView.builder(
+                                      scrollDirection: Axis.horizontal,
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 16,
+                                      ),
+                                      itemCount: featuredAlbums.length,
+                                      itemBuilder: (context, index) {
+                                        return Padding(
+                                          padding: const EdgeInsets.only(
+                                            right: 12,
+                                          ),
+                                          child: AlbumCard(
+                                            id: featuredAlbums[index].id,
+                                            title: featuredAlbums[index].title,
+                                            artist:
+                                                featuredAlbums[index].artist,
+                                            imageUrl:
+                                                featuredAlbums[index].imageUrl,
+                                            trackCount: featuredAlbums[index]
+                                                .trackCount,
+                                            onTap: () {
+                                              context.push(
+                                                '/music/album/${featuredAlbums[index].id}',
+                                                extra: featuredAlbums[index],
+                                              );
+                                            },
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                              ],
+                            ),
+                          ),
+                  ),
+
+                  // featured artists section
+                  SliverToBoxAdapter(
+                    child: showArtistsSkeleton
+                        ? const MusicArtistsSkeletonSection()
+                        : Container(
+                            color: DSColors.white,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Padding(
+                                  padding: EdgeInsets.symmetric(
+                                    vertical: DSSpacing.m,
+                                  ),
+                                  child: WaveSectionHeader(
+                                    title: 'Featured artists',
+                                    showAnimation: true,
+                                  ),
                                 ),
-                              ),
-                              if (featuredAlbums.isNotEmpty)
                                 SizedBox(
-                                  height: 240,
+                                  height: 170,
                                   child: ListView.builder(
                                     scrollDirection: Axis.horizontal,
                                     padding: const EdgeInsets.symmetric(
                                       horizontal: 16,
                                     ),
-                                    itemCount: featuredAlbums.length,
+                                    itemCount: featuredArtists.length,
                                     itemBuilder: (context, index) {
                                       return Padding(
                                         padding: const EdgeInsets.only(
-                                          right: 12,
+                                          right: DSSpacing.m,
                                         ),
-                                        child: AlbumCard(
-                                          id: featuredAlbums[index].id,
-                                          title: featuredAlbums[index].title,
-                                          artist: featuredAlbums[index].artist,
+                                        child: ArtistCard(
+                                          name:
+                                              featuredArtists[index].artistName,
                                           imageUrl:
-                                              featuredAlbums[index].imageUrl,
-                                          trackCount:
-                                              featuredAlbums[index].trackCount,
+                                              featuredArtists[index].imageUrl,
                                           onTap: () {
                                             context.push(
-                                              '/music/album/${featuredAlbums[index].id}',
-                                              extra: featuredAlbums[index],
+                                              '/music/artist/${featuredArtists[index].id}',
+                                              extra: featuredArtists[index],
                                             );
                                           },
                                         ),
@@ -267,58 +330,12 @@ class _MusicScreenState extends ConsumerState<MusicScreen> {
                                     },
                                   ),
                                 ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                ),
-
-                // featured artists section
-                SliverToBoxAdapter(
-                  child: showArtistsSkeleton
-                      ? const MusicArtistsSkeletonSection()
-                      : Container(
-                          color: DSColors.white,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Padding(
-                                padding: EdgeInsets.symmetric(vertical: DSSpacing.m),
-                                child: WaveSectionHeader(
-                                  title: 'Featured artists',
-                                  showAnimation: true,
-                                ),
-                              ),
-                              SizedBox(
-                                height: 170,
-                                child: ListView.builder(
-                                  scrollDirection: Axis.horizontal,
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 16,
-                                  ),
-                                  itemCount: featuredArtists.length,
-                                  itemBuilder: (context, index) {
-                                    return Padding(
-                                      padding: const EdgeInsets.only(right: DSSpacing.m),
-                                      child: ArtistCard(
-                                        name: featuredArtists[index].artistName,
-                                        imageUrl:
-                                            featuredArtists[index].imageUrl,
-                                        onTap: () {
-                                          context.push(
-                                            '/music/artist/${featuredArtists[index].id}',
-                                            extra: featuredArtists[index],
-                                          );
-                                        },
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                ),
-              ],
+                  ),
+                ],
+              ),
             ),
           ),
         ],

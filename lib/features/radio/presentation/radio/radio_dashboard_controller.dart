@@ -49,6 +49,10 @@ class RadioDashboardController
       state = state.copyWith(isLoading: false, error: e.toString());
     }
   }
+
+  /// Pull-to-refresh: reloads without clearing, so current content stays
+  /// visible while fetching and is replaced atomically when data arrives.
+  Future<void> refresh() => load();
 }
 
 final radioStateProvider =

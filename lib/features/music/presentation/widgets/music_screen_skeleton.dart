@@ -144,9 +144,9 @@ class _QuickActionCardSkeleton extends StatelessWidget {
       child: Row(
         children: [
           const _SkeletonBox(
-            width: 44,
-            height: 44,
-            borderRadius: 22,
+            width: DSSpacing.s40,
+            height: DSSpacing.s40,
+            borderRadius: 20,
           ),
           const SizedBox(width: DSSpacing.s12),
           Expanded(
