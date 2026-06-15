@@ -98,7 +98,7 @@ class MyPlaylistsScreen extends ConsumerWidget {
     }
 
     return ListView.separated(
-      padding: const EdgeInsets.only(top: DSSpacing.m, bottom: DSSpacing.m),
+      padding: const EdgeInsets.only(bottom: DSSpacing.m),
       itemCount: playlists.length,
       separatorBuilder: (context, index) => const Padding(
         padding: EdgeInsets.symmetric(horizontal: DSSpacing.m),
@@ -108,6 +108,7 @@ class MyPlaylistsScreen extends ConsumerWidget {
         final playlist = playlists[index];
         return PlaylistTile(
           playlist: playlist,
+          topPadding: index == 0 ? 20 : 8,
         );
       },
     );

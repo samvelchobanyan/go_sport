@@ -14,6 +14,7 @@ class EpisodeTile extends StatelessWidget {
   final VoidCallback onTap;
   final VoidCallback onMenuTap;
   final bool? isPlaying;
+  final double topPadding;
 
   const EpisodeTile({
     super.key,
@@ -21,6 +22,7 @@ class EpisodeTile extends StatelessWidget {
     required this.onTap,
     required this.onMenuTap,
     this.isPlaying,
+    this.topPadding = 8,
   });
 
   String _formatDuration(Duration duration) {
@@ -52,7 +54,7 @@ class EpisodeTile extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: DSSpacing.m, vertical: DSSpacing.s8),
+        padding: EdgeInsets.only(left: DSSpacing.m, right: DSSpacing.m, top: topPadding, bottom: DSSpacing.s8),
         child: SizedBox(
           height: 52,
           child: Row(

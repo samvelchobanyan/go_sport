@@ -12,12 +12,14 @@ class ProgramTile extends StatelessWidget {
   final String title;
   final int episodeCount;
   final VoidCallback onTap;
+  final double topPadding;
 
   const ProgramTile({
     required this.imageUrl,
     required this.title,
     required this.episodeCount,
     required this.onTap,
+    this.topPadding = 8,
     super.key,
   });
 
@@ -25,8 +27,9 @@ class ProgramTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
+      behavior: HitTestBehavior.opaque,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: DSSpacing.m, vertical: DSSpacing.s12),
+        padding: EdgeInsets.only(left: DSSpacing.m, right: DSSpacing.m, top: topPadding, bottom: DSSpacing.s8),
         child: Row(
           children: [
             // Thumbnail image

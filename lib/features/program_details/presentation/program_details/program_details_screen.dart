@@ -197,7 +197,7 @@ class _ProgramDetailsScreenState extends ConsumerState<ProgramDetailsScreen> {
                             episode: episode,
                             index: index + 1,
                             isPlaying: trackPlayingState,
-                            topPadding: index == 0 ? 20 : 12,
+                            topPadding: index == 0 ? 20 : 8,
                             onTap: () => _onTrackTap(episodes, index),
                             onMenuTap: () => _onTrackMenuTap(index),
                           ),

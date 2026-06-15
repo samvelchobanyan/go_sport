@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
@@ -29,11 +30,20 @@ class TokenStorage {
   bool get choseGuest => _choseGuest;
 
   Future<void> init() async {
-    _cachedAccessToken = await _secureStorage.read(key: _accessTokenKey);
-    _cachedRefreshToken = await _secureStorage.read(key: _refreshTokenKey);
+    try {
+      _cachedAccessToken = await _secureStorage.read(key: _accessTokenKey);
+      _cachedRefreshToken = await _secureStorage.read(key: _refreshTokenKey);
 
-    final guestFlag = await _secureStorage.read(key: _choseGuestKey);
-    _choseGuest = guestFlag == 'true';
+      final guestFlag = await _secureStorage.read(key: _choseGuestKey);
+      _choseGuest = guestFlag == 'true';
+    } on PlatformException {
+      // Secure storage unreadable (e.g. Android Keystore reset → BadPaddingException).
+      // Wipe the corrupt entries and fall back to unauthenticated (ADR-005).
+      await _secureStorage.deleteAll();
+      _cachedAccessToken = null;
+      _cachedRefreshToken = null;
+      _choseGuest = false;
+    }
   }
 
   Future<void> setChoseGuest() async {

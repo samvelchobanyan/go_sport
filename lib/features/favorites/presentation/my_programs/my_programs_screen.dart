@@ -75,7 +75,7 @@ class MyProgramsScreen extends ConsumerWidget {
       onRefresh: () => ref.read(myProgramsStateProvider.notifier).refresh(),
       child: ListView.separated(
         physics: const AlwaysScrollableScrollPhysics(),
-        padding: const EdgeInsets.only(top: DSSpacing.m, bottom: DSSpacing.m),
+        padding: const EdgeInsets.only(bottom: DSSpacing.m),
         itemCount: programs.length,
         separatorBuilder: (context, index) {
           if (index >= programs.length - 1) {
@@ -92,6 +92,7 @@ class MyProgramsScreen extends ConsumerWidget {
             imageUrl: program.imageUrl,
             title: program.title,
             episodeCount: program.episodeCount,
+            topPadding: index == 0 ? 20 : 8,
             onTap: () => context.push(
               '/music/program/${program.id}',
               extra: program,

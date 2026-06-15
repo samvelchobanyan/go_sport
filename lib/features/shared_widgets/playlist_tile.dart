@@ -11,9 +11,11 @@ import 'package:go_sport/domain/entities/playlist.dart';
 
 class PlaylistTile extends StatelessWidget {
   final Playlist playlist;
+  final double topPadding;
 
   const PlaylistTile({
     required this.playlist,
+    this.topPadding = 8,
     super.key,
   });
 
@@ -24,8 +26,9 @@ class PlaylistTile extends StatelessWidget {
         '/music/playlist/${playlist.id}?type=${playlist.type.name}',
         extra: playlist,
       ),
+      behavior: HitTestBehavior.opaque,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: DSSpacing.m, vertical: DSSpacing.s12),
+        padding: EdgeInsets.only(left: DSSpacing.m, right: DSSpacing.m, top: topPadding, bottom: DSSpacing.s8),
         child: Row(
           children: [
             // Thumbnail image

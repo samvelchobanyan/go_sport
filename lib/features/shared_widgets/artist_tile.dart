@@ -10,15 +10,17 @@ import 'package:go_sport/domain/entities/artist.dart';
 
 class ArtistTile extends StatelessWidget {
   final Artist artist;
+  final double topPadding;
 
-  const ArtistTile({required this.artist, super.key});
+  const ArtistTile({required this.artist, this.topPadding = 8, super.key});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => context.push('/music/artist/${artist.id}', extra: artist),
+      behavior: HitTestBehavior.opaque,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: DSSpacing.m, vertical: DSSpacing.s12),
+        padding: EdgeInsets.only(left: DSSpacing.m, right: DSSpacing.m, top: topPadding, bottom: DSSpacing.s8),
         child: Row(
           children: [
             Container(

@@ -166,7 +166,7 @@ class _AlbumScreenState extends ConsumerState<AlbumScreen> {
                           isPlaying: trackPlayingState,
                           onTap: () => _onTrackTap(tracks, index),
                           onMenuTap: () {},
-                          topPadding: index == 0 ? 0 : 12,
+                          topPadding: index == 0 ? 0 : 8,
                         ),
                         if (index < tracks.length - 1)
                           const Padding(

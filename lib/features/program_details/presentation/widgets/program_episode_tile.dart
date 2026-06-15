@@ -24,7 +24,7 @@ class ProgramEpisodeTile extends StatelessWidget {
     required this.onTap,
     required this.onMenuTap,
     this.isPlaying,
-    this.topPadding = 12,
+    this.topPadding = 8,
   });
 
   @override
@@ -32,7 +32,7 @@ class ProgramEpisodeTile extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Padding(
-        padding: EdgeInsets.only(left: DSSpacing.m, right: DSSpacing.m, top: topPadding, bottom: DSSpacing.s12),
+        padding: EdgeInsets.only(left: DSSpacing.m, right: DSSpacing.m, top: topPadding, bottom: DSSpacing.s8),
         child: Row(
           children: [
             TrackNumberBadge(index: index),

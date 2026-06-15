@@ -119,6 +119,7 @@ class MyFavoritesScreen extends ConsumerWidget {
           return TrackTile(
             track: track,
             isPlaying: trackPlayingState,
+            topPadding: index == 0 ? 20 : 8,
             onTap: () => _onTrackTap(ref, songs, index),
             onMenuTap: (track) => showTrackOptionsBottomSheet(
               context: context,

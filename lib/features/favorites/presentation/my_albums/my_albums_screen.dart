@@ -75,7 +75,7 @@ class MyAlbumsScreen extends ConsumerWidget {
       onRefresh: () => ref.read(myAlbumsStateProvider.notifier).refresh(),
       child: ListView.separated(
         physics: const AlwaysScrollableScrollPhysics(),
-        padding: const EdgeInsets.only(top: DSSpacing.m, bottom: DSSpacing.m),
+        padding: const EdgeInsets.only(bottom: DSSpacing.m),
         itemCount: albums.length,
         separatorBuilder: (context, index) {
           if (index >= albums.length - 1) {
@@ -93,6 +93,7 @@ class MyAlbumsScreen extends ConsumerWidget {
             albumName: album.title,
             artistName: album.artist,
             releaseYear: album.releaseYear,
+            topPadding: index == 0 ? 20 : 8,
             onTap: () => context.push(
               '/music/album/${album.id}',
               extra: album,

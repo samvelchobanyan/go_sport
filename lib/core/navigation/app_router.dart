@@ -221,12 +221,9 @@ GoRouter createAppRouter(TokenStorage tokenStorage) {
                   ),
                   GoRoute(
                     path: 'news/:id',
-                    pageBuilder: (context, state) {
+                    builder: (context, state) {
                       final id = state.pathParameters['id']!;
-                      return fadeSlidePage(
-                        state: state,
-                        child: NewsDetailScreen(articleId: id),
-                      );
+                      return NewsDetailScreen(articleId: id);
                     },
                   ),
                 ],
@@ -245,20 +242,17 @@ GoRouter createAppRouter(TokenStorage tokenStorage) {
                   //playlist route
                   GoRoute(
                     path: 'playlist/:id',
-                    pageBuilder: (context, state) {
+                    builder: (context, state) {
                       final id = state.pathParameters['id']!;
                       final typeStr = state.uri.queryParameters['type'];
                       final type = typeStr == 'custom'
                           ? PlaylistType.custom
                           : PlaylistType.featured;
                       final playlist = state.extra as Playlist?;
-                      return fadeSlidePage(
-                        state: state,
-                        child: PlaylistScreen(
-                          playlistId: id,
-                          type: type,
-                          playlist: playlist,
-                        ),
+                      return PlaylistScreen(
+                        playlistId: id,
+                        type: type,
+                        playlist: playlist,
                       );
                     },
                   ),

@@ -94,6 +94,7 @@ class NewEpisodesScreen extends ConsumerWidget {
       onRefresh: () => ref.read(newEpisodesStateProvider.notifier).refresh(),
       child: ListView.separated(
         physics: const AlwaysScrollableScrollPhysics(),
+        padding: const EdgeInsets.only(bottom: DSSpacing.m),
         itemCount: episodes.length,
         separatorBuilder: (context, index) {
           if (index >= episodes.length - 1) {
@@ -111,23 +112,13 @@ class NewEpisodesScreen extends ConsumerWidget {
               ? playerState.isPlaying && playerState.isRadioMode == false
               : null;
 
-          return ClipRRect(
-            borderRadius: index == 0
-                ? const BorderRadius.only(
-                    topLeft: Radius.circular(DSRadius.xl),
-                    topRight: Radius.circular(DSRadius.xl),
-                  )
-                : BorderRadius.zero,
-            child: Container(
-              color: DSColors.white,
-              child: EpisodeTile(
-                episode: episode,
-                isPlaying: trackPlayingState,
-                onTap: () => _onTrackTap(ref, episodes, index),
-                onMenuTap: () =>
-                    debugPrint('Episode icon tapped for: ${episode.id}'),
-              ),
-            ),
+          return EpisodeTile(
+            episode: episode,
+            isPlaying: trackPlayingState,
+            topPadding: index == 0 ? 20 : 8,
+            onTap: () => _onTrackTap(ref, episodes, index),
+            onMenuTap: () =>
+                debugPrint('Episode icon tapped for: ${episode.id}'),
           );
         },
       ),

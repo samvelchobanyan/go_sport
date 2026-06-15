@@ -9,6 +9,7 @@ class NotificationTile extends StatelessWidget {
   final String subtitle;
   final String imagePath;
   final VoidCallback onTap;
+  final double topPadding;
 
   const NotificationTile({
     super.key,
@@ -16,6 +17,7 @@ class NotificationTile extends StatelessWidget {
     required this.subtitle,
     required this.imagePath,
     required this.onTap,
+    this.topPadding = 8,
   });
 
   @override
@@ -23,7 +25,7 @@ class NotificationTile extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: DSSpacing.s12),
+        padding: EdgeInsets.only(top: topPadding, bottom: DSSpacing.s8),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [

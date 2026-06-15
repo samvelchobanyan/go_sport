@@ -74,6 +74,7 @@ class MyArtistsScreen extends ConsumerWidget {
       onRefresh: () => ref.read(myArtistsStateProvider.notifier).refresh(),
       child: ListView.separated(
         physics: const AlwaysScrollableScrollPhysics(),
+        padding: const EdgeInsets.only(bottom: DSSpacing.m),
         itemCount: artists.length,
         separatorBuilder: (context, index) {
           if (index >= artists.length - 1) {
@@ -86,17 +87,9 @@ class MyArtistsScreen extends ConsumerWidget {
         },
         itemBuilder: (context, index) {
           final artist = artists[index];
-          return ClipRRect(
-            borderRadius: index == 0
-                ? const BorderRadius.only(
-                    topLeft: Radius.circular(DSRadius.xl),
-                    topRight: Radius.circular(DSRadius.xl),
-                  )
-                : BorderRadius.zero,
-            child: Container(
-              color: DSColors.white,
-              child: ArtistTile(artist: artist),
-            ),
+          return ArtistTile(
+            artist: artist,
+            topPadding: index == 0 ? 20 : 8,
           );
         },
       ),

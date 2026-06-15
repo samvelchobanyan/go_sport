@@ -375,7 +375,7 @@ class _PlaylistScreenState extends ConsumerState<PlaylistScreen> {
                         TrackTile(
                           track: track,
                           isPlaying: trackPlayingState,
-                          topPadding: index == 0 ? 0 : 12,
+                          topPadding: index == 0 ? 0 : 8,
                           onTap: () => _onTrackTap(
                             ref,
                             tracks,

@@ -11,18 +11,20 @@ class AddTrackTile extends StatelessWidget {
   final Track track;
   final bool isSelected;
   final VoidCallback onToggle;
+  final double topPadding;
 
   const AddTrackTile({
     super.key,
     required this.track,
     required this.isSelected,
     required this.onToggle,
+    this.topPadding = 8,
   });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: DSSpacing.m, vertical: DSSpacing.s12),
+      padding: EdgeInsets.only(left: DSSpacing.m, right: DSSpacing.m, top: topPadding, bottom: DSSpacing.s8),
       child: Row(
         children: [
           ClipRRect(

@@ -11,12 +11,14 @@ class EditTrackTile extends StatelessWidget {
   final Track track;
   final VoidCallback onDelete;
   final int index;
+  final double topPadding;
 
   const EditTrackTile({
     super.key,
     required this.track,
     required this.onDelete,
     required this.index,
+    this.topPadding = 8,
   });
 
   @override
@@ -24,7 +26,7 @@ class EditTrackTile extends StatelessWidget {
     return Padding(
       // Убираем вертикальный padding, он будет компенсироваться контейнером ReorderableListView,
       // или добавляем его так же как в TrackTile (vertical: 12)
-      padding: const EdgeInsets.symmetric(horizontal: DSSpacing.m, vertical: DSSpacing.s12),
+      padding: EdgeInsets.only(left: DSSpacing.m, right: DSSpacing.m, top: topPadding, bottom: DSSpacing.s8),
       child: Row(
         children: [
           // Кнопка удаления (Оранжевый круг с прозрачностью 10%)
