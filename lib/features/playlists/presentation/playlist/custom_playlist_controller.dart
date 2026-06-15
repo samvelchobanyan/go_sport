@@ -14,7 +14,54 @@ class CustomPlaylistNotifier
   @override
   PlaylistDetailsState build(String arg) {
     _repository = ref.watch(customPlaylistRepositoryProvider);
+
+    // Глобальный myPlaylistsState — единственный владелец состава плейлиста.
+    // Слушаем состав именно нашего плейлиста; когда он меняется снаружи
+    // (например, "Add to playlist" с другого экрана) — пересобираем треки.
+    ref.listen(
+      myPlaylistsStateProvider.select(
+        (s) =>
+            s.playlists.where((p) => p.id == arg).firstOrNull?.trackDocIds ??
+            const <String>[],
+      ),
+      (_, next) => _onCompositionChanged(next),
+    );
+
     return const PlaylistDetailsState.loading();
+  }
+
+  /// Реагирует на изменение состава плейлиста в глобальном стейте.
+  /// Защита от самоподрыва: если новый состав совпадает с уже
+  /// отрисованными локально треками (наша же правка вернулась через
+  /// глобальный) — ничего не делаем.
+  Future<void> _onCompositionChanged(List<String> docIds) async {
+    final current = state;
+    if (current is! PlaylistDetailsData) return;
+
+    final localIds = current.tracks.map((t) => t.id).toSet();
+    if (localIds.length == docIds.length && localIds.containsAll(docIds)) {
+      return;
+    }
+    await _reconcileFromGlobal();
+  }
+
+  /// Перезапрашивает полные треки и берёт свежий Playlist (с верным
+  /// trackCount) из глобального — чтобы список и счётчик на экране
+  /// были согласованы.
+  Future<void> _reconcileFromGlobal() async {
+    final updated = ref
+        .read(myPlaylistsStateProvider)
+        .playlists
+        .where((p) => p.id == arg)
+        .firstOrNull;
+    if (updated == null) return;
+
+    try {
+      final tracks = await _repository.getCustomPlaylistTracks(arg);
+      state = PlaylistDetailsState.data(playlist: updated, tracks: tracks);
+    } catch (_) {
+      // Фоновое обновление — при ошибке оставляем текущий снимок.
+    }
   }
 
   Future<void> init(Playlist? initialPlaylist) async {
@@ -115,7 +162,13 @@ class CustomPlaylistNotifier
     final current = state;
     if (current is! PlaylistDetailsData) return;
 
-    final merged = [...current.tracks, ...newTracks];
+    // Дедуп: не добавляем треки, которые уже в плейлисте.
+    final existingIds = current.tracks.map((t) => t.id).toSet();
+    final unique =
+        newTracks.where((t) => !existingIds.contains(t.id)).toList();
+    if (unique.isEmpty) return;
+
+    final merged = [...current.tracks, ...unique];
     state = current.copyWith(
       playlist: current.playlist.copyWith(trackCount: merged.length),
       tracks: merged,

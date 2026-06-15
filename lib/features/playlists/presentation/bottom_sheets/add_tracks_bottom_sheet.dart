@@ -13,6 +13,7 @@ import 'package:go_sport/features/playlists/presentation/widgets/add_track_tile.
 void showAddTracksBottomSheet({
   required BuildContext context,
   required void Function(List<Track> tracks) onSave,
+  Set<String> existingTrackIds = const {},
 }) {
   showModalBottomSheet(
     context: context,
@@ -20,14 +21,21 @@ void showAddTracksBottomSheet({
     useRootNavigator: true,
     useSafeArea: true,
     backgroundColor: DSColors.transparent,
-    builder: (context) => _AddTracksSheet(onSave: onSave),
+    builder: (context) => _AddTracksSheet(
+      onSave: onSave,
+      existingTrackIds: existingTrackIds,
+    ),
   );
 }
 
 class _AddTracksSheet extends ConsumerStatefulWidget {
   final void Function(List<Track> tracks) onSave;
+  final Set<String> existingTrackIds;
 
-  const _AddTracksSheet({required this.onSave});
+  const _AddTracksSheet({
+    required this.onSave,
+    required this.existingTrackIds,
+  });
 
   @override
   ConsumerState<_AddTracksSheet> createState() => _AddTracksSheetState();
@@ -191,11 +199,13 @@ class _AddTracksSheetState extends ConsumerState<_AddTracksSheet> {
                           }
 
                           final track = state.tracks[index];
+                          final alreadyAdded =
+                              widget.existingTrackIds.contains(track.id);
                           return AddTrackTile(
                             track: track,
-                            isSelected: state.selectedTrackIds.contains(
-                              track.id,
-                            ),
+                            isSelected: alreadyAdded ||
+                                state.selectedTrackIds.contains(track.id),
+                            enabled: !alreadyAdded,
                             onToggle: () => ref
                                 .read(addTracksControllerProvider.notifier)
                                 .toggleTrack(track.id),

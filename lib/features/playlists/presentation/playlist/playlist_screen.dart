@@ -175,6 +175,8 @@ class _PlaylistScreenState extends ConsumerState<PlaylistScreen> {
     final isThisPlaying = ref.watch(playerStateProvider.select((s) =>
         s.source?.id == widget.playlistId && s.isPlaying && !s.isRadioMode));
     final pl = currentPlaylist;
+    final currentTracks =
+        tracksState.mapOrNull(data: (d) => d.tracks) ?? const <Track>[];
     final screenHeight = MediaQuery.of(context).size.height;
     final expandedHeight = screenHeight * 0.5;
 
@@ -198,11 +200,12 @@ class _PlaylistScreenState extends ConsumerState<PlaylistScreen> {
                   icon: const Icon(Icons.settings, color: DSColors.white, size: DSIconSize.s24),
                   onPressed: () {
                     final pl = currentPlaylist;
-                    final currentTracks = tracksState.mapOrNull(data: (d) => d.tracks) ?? [];
                     showPlaylistBottomSheet(
                       context: context,
                       onAddTracks: () => showAddTracksBottomSheet(
                         context: context,
+                        existingTrackIds:
+                            currentTracks.map((t) => t.id).toSet(),
                         onSave: (tracks) => ref
                             .read(customPlaylistControllerProvider(widget.playlistId).notifier)
                             .addTracks(tracks),
@@ -215,7 +218,6 @@ class _PlaylistScreenState extends ConsumerState<PlaylistScreen> {
                             .rename(newName),
                       ),
                       onEdit: () {
-                        context.pop();
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -257,6 +259,8 @@ class _PlaylistScreenState extends ConsumerState<PlaylistScreen> {
                 onActionTap: widget.type == PlaylistType.custom
                     ? () => showAddTracksBottomSheet(
                           context: context,
+                          existingTrackIds:
+                              currentTracks.map((t) => t.id).toSet(),
                           onSave: (tracks) => ref
                               .read(customPlaylistControllerProvider(widget.playlistId)
                                   .notifier)

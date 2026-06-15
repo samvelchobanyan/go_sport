@@ -13,12 +13,17 @@ class AddTrackTile extends StatelessWidget {
   final VoidCallback onToggle;
   final double topPadding;
 
+  /// Когда трек уже в плейлисте — тап игнорируется (трек показывается
+  /// с галочкой как выбранный, но «снять» его здесь нельзя).
+  final bool enabled;
+
   const AddTrackTile({
     super.key,
     required this.track,
     required this.isSelected,
     required this.onToggle,
     this.topPadding = 8,
+    this.enabled = true,
   });
 
   @override
@@ -67,7 +72,7 @@ class AddTrackTile extends StatelessWidget {
           ),
           const SizedBox(width: DSSpacing.s12),
           GestureDetector(
-            onTap: onToggle,
+            onTap: enabled ? onToggle : null,
             child: SvgPicture.asset(
               isSelected
                   ? 'assets/icons/added.svg'
