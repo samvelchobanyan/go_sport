@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_sport/core/navigation/routes.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_router/go_router.dart';
 import 'package:go_sport/domain/state/user_state.dart';
@@ -91,7 +92,7 @@ class _DeleteScreenState extends ConsumerState<DeleteScreen> {
                       style: context.subtitleLBold?.copyWith(fontSize: 18),
                       textAlign: TextAlign.center,
                     ),
-                    const SizedBox(height: 13),
+                    const SizedBox(height: DSSpacing.s12),
 
                     Text(
                       'All your data, favorite artists, albums, \nplaylists, songs and programs will be \ndeleted.  It won’t be possible \nto recover your data.',
@@ -114,9 +115,9 @@ class _DeleteScreenState extends ConsumerState<DeleteScreen> {
                         ),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: DSColors.orange,
-                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          padding: const EdgeInsets.symmetric(vertical: DSSpacing.m),
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(DSRadius.xl),
+                            borderRadius: BorderRadius.circular(DSRadius.xxl),
                           ),
                         ),
                         onPressed: userState.isLoading
@@ -124,15 +125,15 @@ class _DeleteScreenState extends ConsumerState<DeleteScreen> {
                             : () => confirmDelete(),
                       ),
                     ),
-                    SizedBox(height: 14),
+                    SizedBox(height: DSSpacing.s14),
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           backgroundColor: DSColors.blue,
-                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          padding: const EdgeInsets.symmetric(vertical: DSSpacing.m),
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(DSRadius.xl),
+                            borderRadius: BorderRadius.circular(DSRadius.xxl),
                           ),
                         ),
                         onPressed: () => context.pop(),
@@ -144,7 +145,7 @@ class _DeleteScreenState extends ConsumerState<DeleteScreen> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: DSSpacing.s20),
                   ],
                 ),
               ),

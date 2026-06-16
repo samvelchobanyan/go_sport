@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_spacing.dart';
+import 'package:go_sport/design_system/foundations/ds_icon_size.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/core/navigation/routes.dart';
 import 'package:go_sport/domain/entities/playlist.dart';
@@ -134,21 +136,21 @@ class HomeScreen extends ConsumerWidget {
     if (hasError && stories.isEmpty && news.isEmpty && playlists.isEmpty) {
       return Center(
         child: Padding(
-          padding: const EdgeInsets.all(24.0),
+          padding: const EdgeInsets.all(DSSpacing.l),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Icon(
                 Icons.error_outline,
                 color: DSColors.errorColor,
-                size: 48,
+                size: DSIconSize.s48,
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: DSSpacing.m),
               Text(
                 errorMessage ?? 'Error loading data',
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: DSSpacing.l),
               ElevatedButton(
                 onPressed: () => _refresh(ref),
                 child: const Text('Повторить запрос'),
@@ -165,7 +167,7 @@ class HomeScreen extends ConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Text('Контента пока нет'),
-            const SizedBox(height: 16),
+            const SizedBox(height: DSSpacing.m),
             TextButton(
               onPressed: () => _refresh(ref),
               child: const Text('Обновить'),
@@ -185,7 +187,7 @@ class HomeScreen extends ConsumerWidget {
             pinned: true,
             floating: true,
             leading: Padding(
-              padding: const EdgeInsets.only(top: 8, bottom: 8, left: 16),
+              padding: const EdgeInsets.only(top: DSSpacing.s8, bottom: DSSpacing.s8, left: DSSpacing.m),
               child: UserAvatarButton(
                 imageUrl: null,
                 onTap: () {
@@ -205,15 +207,15 @@ class HomeScreen extends ConsumerWidget {
             SliverToBoxAdapter(
               child: Container(
                 height: 90,
-                margin: const EdgeInsets.only(top: 10),
+                margin: const EdgeInsets.only(top: DSSpacing.s10),
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  padding: const EdgeInsets.symmetric(horizontal: DSSpacing.m),
                   itemCount: stories.length,
                   itemBuilder: (context, index) {
                     final story = stories[index];
                     return Padding(
-                      padding: const EdgeInsets.only(right: 8),
+                      padding: const EdgeInsets.only(right: DSSpacing.s8),
                       child: StoryItem(
                         story: story,
                         onTap: () => _openStoryOverlay(context, ref, story),
@@ -226,7 +228,7 @@ class HomeScreen extends ConsumerWidget {
 
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.only(top: 24, bottom: 32),
+              padding: const EdgeInsets.only(top: DSSpacing.l, bottom: DSSpacing.xl),
               child: PodcastBanner(
                 onTap: () {
                   // TODO: навигация
@@ -242,20 +244,20 @@ class HomeScreen extends ConsumerWidget {
           if (news.isNotEmpty)
             SliverToBoxAdapter(
               child: Padding(
-                padding: const EdgeInsets.only(top: 32, bottom: 10),
+                padding: const EdgeInsets.only(top: DSSpacing.xl, bottom: DSSpacing.s10),
                 child: GestureDetector(
                   onTap: () {
                     context.push('/news');
                   },
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    padding: const EdgeInsets.symmetric(horizontal: DSSpacing.m),
                     child: Row(
                       children: [
                         Text('News', style: context.h2),
-                        const SizedBox(width: 8),
+                        const SizedBox(width: DSSpacing.s8),
                         Icon(
                           Icons.arrow_forward_ios,
-                          size: 16,
+                          size: DSIconSize.s16,
                           color: DSColors.black,
                         ),
                       ],
@@ -281,11 +283,11 @@ class HomeScreen extends ConsumerWidget {
                       },
                     ),
                     if (!isLast) ...[
-                      const SizedBox(height: 10),
+                      const SizedBox(height: DSSpacing.s10),
 
                       const DottedDivider(),
 
-                      const SizedBox(height: 10),
+                      const SizedBox(height: DSSpacing.s10),
                     ],
                   ],
                 );

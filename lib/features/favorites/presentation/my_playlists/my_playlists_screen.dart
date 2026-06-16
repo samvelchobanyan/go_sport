@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:go_sport/core/di/repository_providers.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/domain/entities/playlist.dart';
 import 'package:go_sport/domain/state/my_playlists_state.dart';
@@ -97,16 +98,17 @@ class MyPlaylistsScreen extends ConsumerWidget {
     }
 
     return ListView.separated(
-      padding: const EdgeInsets.only(top: 16, bottom: 16),
+      padding: const EdgeInsets.only(bottom: DSSpacing.m),
       itemCount: playlists.length,
       separatorBuilder: (context, index) => const Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16),
+        padding: EdgeInsets.symmetric(horizontal: DSSpacing.m),
         child: DottedDivider(),
       ),
       itemBuilder: (context, index) {
         final playlist = playlists[index];
         return PlaylistTile(
           playlist: playlist,
+          topPadding: index == 0 ? 20 : 8,
         );
       },
     );
@@ -125,7 +127,7 @@ class MyPlaylistsScreen extends ConsumerWidget {
             'Failed to load favorite playlists',
             style: context.subtitleLBold,
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: DSSpacing.s8),
           ElevatedButton(
             onPressed: () =>
                 ref.read(myPlaylistsStateProvider.notifier).refresh(),

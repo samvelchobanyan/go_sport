@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/domain/entities/program.dart';
 import 'package:go_sport/features/favorites/presentation/my_programs/my_programs_controller.dart';
@@ -74,14 +75,14 @@ class MyProgramsScreen extends ConsumerWidget {
       onRefresh: () => ref.read(myProgramsStateProvider.notifier).refresh(),
       child: ListView.separated(
         physics: const AlwaysScrollableScrollPhysics(),
-        padding: const EdgeInsets.only(top: 16, bottom: 16),
+        padding: const EdgeInsets.only(bottom: DSSpacing.m),
         itemCount: programs.length,
         separatorBuilder: (context, index) {
           if (index >= programs.length - 1) {
             return const SizedBox.shrink();
           }
           return const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16),
+            padding: EdgeInsets.symmetric(horizontal: DSSpacing.m),
             child: DottedDivider(),
           );
         },
@@ -91,6 +92,7 @@ class MyProgramsScreen extends ConsumerWidget {
             imageUrl: program.imageUrl,
             title: program.title,
             episodeCount: program.episodeCount,
+            topPadding: index == 0 ? 20 : 8,
             onTap: () => context.push(
               '/music/program/${program.id}',
               extra: program,

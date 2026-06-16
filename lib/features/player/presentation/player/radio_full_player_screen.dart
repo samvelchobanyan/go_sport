@@ -95,7 +95,7 @@ class _TopBar extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(width: 48), // balances the leading IconButton
+          const SizedBox(width: DSSpacing.xxl), // balances the leading IconButton
         ],
       ),
     );

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/features/schedule/presentation/schedule/schedule_controller.dart';
 
@@ -20,7 +21,7 @@ class DatesCarousel extends ConsumerWidget {
         height: 64,
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
-          padding: const EdgeInsets.symmetric(horizontal: 16),
+          padding: const EdgeInsets.symmetric(horizontal: DSSpacing.m),
           itemCount: 14,
           itemBuilder: (context, index) {
             final date = startDate.add(Duration(days: index));
@@ -36,7 +37,7 @@ class DatesCarousel extends ConsumerWidget {
               },
               child: Container(
                 width: 64,
-                margin: const EdgeInsets.only(right: 12),
+                margin: const EdgeInsets.only(right: DSSpacing.s12),
                 decoration: BoxDecoration(
                   color: isSelected ? DSColors.lime : DSColors.white,
                   border: Border.all(

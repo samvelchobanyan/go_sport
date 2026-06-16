@@ -23,6 +23,7 @@ class BottomNavBar extends StatelessWidget {
       shadowColor: DSColors.transparent,
       surfaceTintColor: DSColors.transparent,
       height: 59,
+      labelPadding: const EdgeInsets.only(top: 0),
       labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
       destinations: [
         NavigationDestination(

@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/domain/entities/album.dart';
 import 'package:go_sport/features/favorites/presentation/my_albums/my_albums_controller.dart';
@@ -74,14 +75,14 @@ class MyAlbumsScreen extends ConsumerWidget {
       onRefresh: () => ref.read(myAlbumsStateProvider.notifier).refresh(),
       child: ListView.separated(
         physics: const AlwaysScrollableScrollPhysics(),
-        padding: const EdgeInsets.only(top: 16, bottom: 16),
+        padding: const EdgeInsets.only(bottom: DSSpacing.m),
         itemCount: albums.length,
         separatorBuilder: (context, index) {
           if (index >= albums.length - 1) {
             return const SizedBox.shrink();
           }
           return const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16),
+            padding: EdgeInsets.symmetric(horizontal: DSSpacing.m),
             child: DottedDivider(),
           );
         },
@@ -92,6 +93,7 @@ class MyAlbumsScreen extends ConsumerWidget {
             albumName: album.title,
             artistName: album.artist,
             releaseYear: album.releaseYear,
+            topPadding: index == 0 ? 20 : 8,
             onTap: () => context.push(
               '/music/album/${album.id}',
               extra: album,

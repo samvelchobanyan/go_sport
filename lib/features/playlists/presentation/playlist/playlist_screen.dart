@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_spacing.dart';
+import 'package:go_sport/design_system/foundations/ds_layout.dart';
+import 'package:go_sport/design_system/foundations/ds_icon_size.dart';
+import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/domain/entities/playlist.dart';
 import 'package:go_sport/domain/entities/track.dart';
 import 'package:go_sport/domain/state/like_registry.dart';
@@ -105,7 +110,12 @@ class _PlaylistScreenState extends ConsumerState<PlaylistScreen> {
     List<Track> tracks,
     String playlistTitle,
     String playlistImageUrl,
+    bool isThisActiveSource,
   ) {
+    if (isThisActiveSource) {
+      ref.read(playerStateProvider.notifier).togglePlayPause();
+      return;
+    }
     // skip if empty
     if (tracks.isEmpty) return;
 
@@ -160,7 +170,13 @@ class _PlaylistScreenState extends ConsumerState<PlaylistScreen> {
     final isLikedFromRegistry = ref.watch(
       likeRegistryProvider.select((s) => s.likedPlaylists.any((p) => p.id == widget.playlistId)),
     );
+    final isThisActiveSource = ref.watch(playerStateProvider.select((s) =>
+        s.source?.id == widget.playlistId && !s.isRadioMode));
+    final isThisPlaying = ref.watch(playerStateProvider.select((s) =>
+        s.source?.id == widget.playlistId && s.isPlaying && !s.isRadioMode));
     final pl = currentPlaylist;
+    final currentTracks =
+        tracksState.mapOrNull(data: (d) => d.tracks) ?? const <Track>[];
     final screenHeight = MediaQuery.of(context).size.height;
     final expandedHeight = screenHeight * 0.5;
 
@@ -175,44 +191,21 @@ class _PlaylistScreenState extends ConsumerState<PlaylistScreen> {
             scrolledUnderElevation: 0,
             backgroundColor: DSColors.gray90,
             leading: IconButton(
-              icon: Container(
-                width: 36,
-                height: 36,
-                decoration: BoxDecoration(
-                  color: DSColors.gray30,
-                  shape: BoxShape.circle,
-                ),
-                child: const Icon(
-                  Icons.arrow_back,
-                  color: DSColors.white,
-                  size: 20,
-                ),
-              ),
+              icon: SvgPicture.asset('assets/icons/arrow-Left.svg'),
               onPressed: () => context.pop(),
             ),
             actions: [
               if (widget.type == PlaylistType.custom)
                 IconButton(
-                  icon: Container(
-                    width: 36,
-                    height: 36,
-                    decoration: BoxDecoration(
-                      color: DSColors.gray30,
-                      shape: BoxShape.circle,
-                    ),
-                    child: const Icon(
-                      Icons.settings,
-                      color: DSColors.white,
-                      size: 20,
-                    ),
-                  ),
+                  icon: const Icon(Icons.settings, color: DSColors.white, size: DSIconSize.s24),
                   onPressed: () {
                     final pl = currentPlaylist;
-                    final currentTracks = tracksState.mapOrNull(data: (d) => d.tracks) ?? [];
                     showPlaylistBottomSheet(
                       context: context,
                       onAddTracks: () => showAddTracksBottomSheet(
                         context: context,
+                        existingTrackIds:
+                            currentTracks.map((t) => t.id).toSet(),
                         onSave: (tracks) => ref
                             .read(customPlaylistControllerProvider(widget.playlistId).notifier)
                             .addTracks(tracks),
@@ -225,7 +218,6 @@ class _PlaylistScreenState extends ConsumerState<PlaylistScreen> {
                             .rename(newName),
                       ),
                       onEdit: () {
-                        context.pop();
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -251,28 +243,15 @@ class _PlaylistScreenState extends ConsumerState<PlaylistScreen> {
                 )
               else
                 IconButton(
-                  icon: Container(
-                    width: 36,
-                    height: 36,
-                    decoration: BoxDecoration(
-                      color: DSColors.gray30,
-                      shape: BoxShape.circle,
-                    ),
-                    child: const Icon(
-                      Icons.share,
-                      color: DSColors.white,
-                      size: 20,
-                    ),
-                  ),
-                  onPressed: () {
-                    // TODO: Share playlist
-                  },
+                  icon: SvgPicture.asset('assets/icons/share_no_bg.svg'),
+                  onPressed: () {},
                 ),
             ],
             flexibleSpace: FlexibleSpaceBar(
               background: PlaylistHero(
                 playlist: pl,
                 isLiked: isLikedFromRegistry,
+                isPlaying: isThisPlaying,
                 showPlayButton: tracksState.mapOrNull(
                       data: (data) => data.tracks.isNotEmpty,
                     ) ??
@@ -280,6 +259,8 @@ class _PlaylistScreenState extends ConsumerState<PlaylistScreen> {
                 onActionTap: widget.type == PlaylistType.custom
                     ? () => showAddTracksBottomSheet(
                           context: context,
+                          existingTrackIds:
+                              currentTracks.map((t) => t.id).toSet(),
                           onSave: (tracks) => ref
                               .read(customPlaylistControllerProvider(widget.playlistId)
                                   .notifier)
@@ -296,6 +277,7 @@ class _PlaylistScreenState extends ConsumerState<PlaylistScreen> {
                       tracksValue,
                       pl.title,
                       pl.imageUrl,
+                      isThisActiveSource,
                     );
                   }
                 },
@@ -307,7 +289,7 @@ class _PlaylistScreenState extends ConsumerState<PlaylistScreen> {
                 height: 24,
                 decoration: const BoxDecoration(
                   color: DSColors.white,
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(DSRadius.xl)),
                 ),
               ),
             ),
@@ -315,7 +297,7 @@ class _PlaylistScreenState extends ConsumerState<PlaylistScreen> {
           tracksState.when(
             loading: () => const SliverToBoxAdapter(
               child: Padding(
-                padding: EdgeInsets.only(top: 24),
+                padding: EdgeInsets.only(top: DSSpacing.l),
                 child: Center(child: CircularProgressIndicator()),
               ),
             ),
@@ -329,7 +311,7 @@ class _PlaylistScreenState extends ConsumerState<PlaylistScreen> {
                       'Error: $message',
                       style: const TextStyle(color: DSColors.black),
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: DSSpacing.m),
                     ElevatedButton(
                       onPressed: () {
                         if (widget.type == PlaylistType.featured) {
@@ -353,7 +335,7 @@ class _PlaylistScreenState extends ConsumerState<PlaylistScreen> {
                 return SliverFillRemaining(
                   hasScrollBody: false,
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    padding: const EdgeInsets.symmetric(horizontal: DSSpacing.m),
                     child: Stack(
                       fit: StackFit.expand,
                       children: [
@@ -381,7 +363,7 @@ class _PlaylistScreenState extends ConsumerState<PlaylistScreen> {
               final playingTrackId = playerState.currentTrack?.id;
 
               return SliverPadding(
-                padding: const EdgeInsets.only(bottom: 100, top: 0),
+                padding: const EdgeInsets.only(bottom: DSLayout.bottomBarClearance, top: 0),
                 sliver: SliverList(
                   delegate: SliverChildBuilderDelegate((context, index) {
                     final track = tracks[index];
@@ -397,6 +379,7 @@ class _PlaylistScreenState extends ConsumerState<PlaylistScreen> {
                         TrackTile(
                           track: track,
                           isPlaying: trackPlayingState,
+                          topPadding: index == 0 ? 0 : 8,
                           onTap: () => _onTrackTap(
                             ref,
                             tracks,
@@ -408,7 +391,7 @@ class _PlaylistScreenState extends ConsumerState<PlaylistScreen> {
                         ),
                         if (index < tracks.length - 1)
                           const Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 24),
+                            padding: EdgeInsets.symmetric(horizontal: DSSpacing.l),
                             child: DottedDivider(),
                           ),
                       ],

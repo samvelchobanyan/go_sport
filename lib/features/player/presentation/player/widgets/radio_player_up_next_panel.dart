@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/domain/state/current_program_state.dart';
 import 'package:go_sport/domain/state/schedule_state.dart';
@@ -28,7 +29,7 @@ class RadioPlayerUpNextPanel extends ConsumerWidget {
         loading: () => const _Skeleton(),
         error: (message) => Center(
           child: Padding(
-            padding: const EdgeInsets.all(24),
+            padding: const EdgeInsets.all(DSSpacing.l),
             child: Text(
               message,
               style: context.bodyL?.copyWith(color: DSColors.gray60),
@@ -43,7 +44,7 @@ class RadioPlayerUpNextPanel extends ConsumerWidget {
           if (upcoming.isEmpty) {
             return Center(
               child: Padding(
-                padding: const EdgeInsets.all(24),
+                padding: const EdgeInsets.all(DSSpacing.l),
                 child: Text(
                   'No upcoming programs',
                   style: context.bodyL?.copyWith(color: DSColors.gray60),
@@ -73,7 +74,7 @@ class _Skeleton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 22, bottom: 22, left: 16, right: 16),
+      padding: const EdgeInsets.only(top: DSSpacing.s22, bottom: DSSpacing.s22, left: DSSpacing.m, right: DSSpacing.m),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -85,7 +86,7 @@ class _Skeleton extends StatelessWidget {
               borderRadius: BorderRadius.circular(DSRadius.xs),
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: DSSpacing.m),
           for (var i = 0; i < 5; i++) ...[
             Row(
               children: [
@@ -97,7 +98,7 @@ class _Skeleton extends StatelessWidget {
                     borderRadius: BorderRadius.circular(DSRadius.xs),
                   ),
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: DSSpacing.s12),
                 Expanded(
                   child: Container(
                     height: 14,
@@ -109,7 +110,7 @@ class _Skeleton extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: DSSpacing.m),
           ],
         ],
       ),

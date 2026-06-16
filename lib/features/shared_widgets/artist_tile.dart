@@ -4,19 +4,23 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_spacing.dart';
+import 'package:go_sport/design_system/foundations/ds_icon_size.dart';
 import 'package:go_sport/domain/entities/artist.dart';
 
 class ArtistTile extends StatelessWidget {
   final Artist artist;
+  final double topPadding;
 
-  const ArtistTile({required this.artist, super.key});
+  const ArtistTile({required this.artist, this.topPadding = 8, super.key});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => context.push('/music/artist/${artist.id}', extra: artist),
+      behavior: HitTestBehavior.opaque,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        padding: EdgeInsets.only(left: DSSpacing.m, right: DSSpacing.m, top: topPadding, bottom: DSSpacing.s8),
         child: Row(
           children: [
             Container(
@@ -46,13 +50,13 @@ class ArtistTile extends StatelessWidget {
                     child: const Icon(
                       Icons.error,
                       color: DSColors.gray50,
-                      size: 28,
+                      size: DSIconSize.s28,
                     ),
                   ),
                 ),
               ),
             ),
-            const SizedBox(width: 12),
+            const SizedBox(width: DSSpacing.s12),
             Expanded(
               child: SizedBox(
                 width: 120,

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_spacing.dart';
+import 'package:go_sport/design_system/foundations/ds_icon_size.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/domain/entities/track.dart';
 
@@ -9,12 +11,14 @@ class EditTrackTile extends StatelessWidget {
   final Track track;
   final VoidCallback onDelete;
   final int index;
+  final double topPadding;
 
   const EditTrackTile({
     super.key,
     required this.track,
     required this.onDelete,
     required this.index,
+    this.topPadding = 8,
   });
 
   @override
@@ -22,7 +26,7 @@ class EditTrackTile extends StatelessWidget {
     return Padding(
       // Убираем вертикальный padding, он будет компенсироваться контейнером ReorderableListView,
       // или добавляем его так же как в TrackTile (vertical: 12)
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      padding: EdgeInsets.only(left: DSSpacing.m, right: DSSpacing.m, top: topPadding, bottom: DSSpacing.s8),
       child: Row(
         children: [
           // Кнопка удаления (Оранжевый круг с прозрачностью 10%)
@@ -49,7 +53,7 @@ class EditTrackTile extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: DSSpacing.s12),
 
           // Обложка трека (Такая же как в TrackTile)
           Container(
@@ -78,7 +82,7 @@ class EditTrackTile extends StatelessWidget {
                   : Container(width: 48, height: 48, color: DSColors.gray20),
             ),
           ),
-          const SizedBox(width: 10),
+          const SizedBox(width: DSSpacing.s10),
 
           // Инфо трека
           Expanded(
@@ -94,7 +98,7 @@ class EditTrackTile extends StatelessWidget {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
-                const SizedBox(height: 2),
+                const SizedBox(height: DSSpacing.s),
                 Text(
                   track.artistName,
                   style: context.textL?.copyWith(color: DSColors.gray60),
@@ -104,17 +108,17 @@ class EditTrackTile extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(width: 10),
+          const SizedBox(width: DSSpacing.s10),
 
           // Drag Handle (Гамбургер / 3 полоски прямо из material icons)
           ReorderableDragStartListener(
             index: index,
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(DSSpacing.s8),
               child: Icon(
                 Icons.menu,
                 color: DSColors.black,
-                size: 24,
+                size: DSIconSize.s24,
               ),
             ),
           ),

@@ -6,6 +6,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_spacing.dart';
+import 'package:go_sport/design_system/foundations/ds_layout.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/domain/entities/track.dart';
 import 'package:go_sport/features/favorites/presentation/my_favorites/my_favorites_controller.dart';
@@ -96,14 +98,14 @@ class MyFavoritesScreen extends ConsumerWidget {
       onRefresh: () => ref.read(myFavoritesStateProvider.notifier).refresh(),
       child: ListView.separated(
         physics: const AlwaysScrollableScrollPhysics(),
-        padding: const EdgeInsets.only(bottom: 100),
+        padding: const EdgeInsets.only(bottom: DSLayout.bottomBarClearance),
         itemCount: songs.length,
         separatorBuilder: (context, index) {
           if (index >= songs.length - 1) {
             return const SizedBox.shrink();
           }
           return const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16),
+            padding: EdgeInsets.symmetric(horizontal: DSSpacing.m),
             child: DottedDivider(),
           );
         },
@@ -117,6 +119,7 @@ class MyFavoritesScreen extends ConsumerWidget {
           return TrackTile(
             track: track,
             isPlaying: trackPlayingState,
+            topPadding: index == 0 ? 20 : 8,
             onTap: () => _onTrackTap(ref, songs, index),
             onMenuTap: (track) => showTrackOptionsBottomSheet(
               context: context,

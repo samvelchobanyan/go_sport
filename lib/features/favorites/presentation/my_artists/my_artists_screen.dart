@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/domain/entities/artist.dart';
 import 'package:go_sport/features/favorites/presentation/my_artists/my_artists_controller.dart';
@@ -73,29 +74,22 @@ class MyArtistsScreen extends ConsumerWidget {
       onRefresh: () => ref.read(myArtistsStateProvider.notifier).refresh(),
       child: ListView.separated(
         physics: const AlwaysScrollableScrollPhysics(),
+        padding: const EdgeInsets.only(bottom: DSSpacing.m),
         itemCount: artists.length,
         separatorBuilder: (context, index) {
           if (index >= artists.length - 1) {
             return const SizedBox.shrink();
           }
           return const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16),
+            padding: EdgeInsets.symmetric(horizontal: DSSpacing.m),
             child: DottedDivider(),
           );
         },
         itemBuilder: (context, index) {
           final artist = artists[index];
-          return ClipRRect(
-            borderRadius: index == 0
-                ? const BorderRadius.only(
-                    topLeft: Radius.circular(24),
-                    topRight: Radius.circular(24),
-                  )
-                : BorderRadius.zero,
-            child: Container(
-              color: DSColors.white,
-              child: ArtistTile(artist: artist),
-            ),
+          return ArtistTile(
+            artist: artist,
+            topPadding: index == 0 ? 20 : 8,
           );
         },
       ),

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_spacing.dart';
+import 'package:go_sport/design_system/foundations/ds_icon_size.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/domain/entities/playlist.dart';
 import 'package:go_sport/features/shared_widgets/bottom_pop_ups/bottom_sheet_container.dart';
@@ -50,7 +52,7 @@ class _AddToPlaylistBottomSheet extends ConsumerWidget {
         children: [
           // Шапка: Cancel - My Playlists - Save
           Padding(
-            padding: const EdgeInsets.fromLTRB(16, 0, 16, 14),
+            padding: const EdgeInsets.fromLTRB(DSSpacing.m, 0, DSSpacing.m, DSSpacing.s14),
             child: Stack(
               alignment: Alignment.center,
               children: [
@@ -100,7 +102,7 @@ class _AddToPlaylistBottomSheet extends ConsumerWidget {
 
           // Кнопка "+ Create a playlist"
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
+            padding: const EdgeInsets.symmetric(horizontal: DSSpacing.m),
             child: SizedBox(
               width: double.infinity,
               height: 48,
@@ -114,10 +116,10 @@ class _AddToPlaylistBottomSheet extends ConsumerWidget {
                   elevation: 0,
                   shadowColor: Colors.transparent,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(100), // Овальная по макету
+                    borderRadius: BorderRadius.circular(DSRadius.circular), // Овальная по макету
                   ),
                 ),
-                icon: const Icon(Icons.add, color: DSColors.blue, size: 20),
+                icon: const Icon(Icons.add, color: DSColors.blue, size: DSIconSize.s20),
                 label: Text(
                   'Create a playlist',
                   style: context.subtitleLBold?.copyWith(color: DSColors.blue),
@@ -126,12 +128,12 @@ class _AddToPlaylistBottomSheet extends ConsumerWidget {
             ),
           ),
 
-          const SizedBox(height: 24),
+          const SizedBox(height: DSSpacing.l),
 
           // Показываем ошибку, если есть
           if (state.error != null)
             Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(DSSpacing.m),
               child: Text(
                 state.error!,
                 style: context.bodyL?.copyWith(color: DSColors.errorColor),
@@ -152,7 +154,7 @@ class _AddToPlaylistBottomSheet extends ConsumerWidget {
                       )
                     : ListView.builder(
                         itemCount: state.playlists.length,
-                        padding: const EdgeInsets.only(bottom: 24),
+                        padding: const EdgeInsets.only(bottom: DSSpacing.l),
                         itemBuilder: (context, index) {
                           final playlist = state.playlists[index];
                           final isSelected = state.selectedIds.contains(playlist.id);
@@ -220,7 +222,7 @@ class _PlaylistSelectionTile extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: DSSpacing.s12),
           
           // Название и бейджик треков
           Expanded(
@@ -234,10 +236,10 @@ class _PlaylistSelectionTile extends StatelessWidget {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
-                const SizedBox(height: 4),
+                const SizedBox(height: DSSpacing.xs),
                 // Оранжевый бейджик как в PlaylistTile
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                  padding: const EdgeInsets.symmetric(horizontal: DSSpacing.s6, vertical: DSSpacing.s),
                   decoration: BoxDecoration(
                     color: DSColors.orange.withValues(alpha: 0.05),
                     borderRadius: BorderRadius.circular(DSRadius.m),
@@ -252,7 +254,7 @@ class _PlaylistSelectionTile extends StatelessWidget {
             ),
           ),
           
-          const SizedBox(width: 12),
+          const SizedBox(width: DSSpacing.s12),
           
           // Чекбокс
           Container(
@@ -264,10 +266,10 @@ class _PlaylistSelectionTile extends StatelessWidget {
                 color: isSelected ? DSColors.blue : DSColors.gray20,
                 width: 2,
               ),
-              borderRadius: BorderRadius.circular(4),
+              borderRadius: BorderRadius.circular(DSRadius.xs),
             ),
             child: isSelected
-                ? const Icon(Icons.check, color: DSColors.white, size: 16)
+                ? const Icon(Icons.check, color: DSColors.white, size: DSIconSize.s16)
                 : null,
           ),
         ],

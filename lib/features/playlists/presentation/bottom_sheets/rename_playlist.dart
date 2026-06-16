@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/features/shared_widgets/bottom_pop_ups/bottom_sheet_container.dart';
 
@@ -30,7 +31,7 @@ void showRenamePlaylistBottomSheet({
               'Rename Playlist',
               style: context.h2,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: DSSpacing.m),
             TextField(
               controller: controller,
               autofocus: true,
@@ -56,7 +57,7 @@ void showRenamePlaylistBottomSheet({
                 ),
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: DSSpacing.s20),
             Row(
               children: [
                 Expanded(
@@ -69,7 +70,7 @@ void showRenamePlaylistBottomSheet({
                     child: Text('Cancel', style: context.subtitleLBold),
                   ),
                 ),
-                const SizedBox(width: 10),
+                const SizedBox(width: DSSpacing.s10),
                 Expanded(
                   child: ElevatedButton.icon(
                     onPressed: () {

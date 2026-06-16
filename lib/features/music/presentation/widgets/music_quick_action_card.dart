@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 
 class MusicQuickActionCard extends StatelessWidget {
@@ -22,7 +23,7 @@ class MusicQuickActionCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.all(8),
+        padding: const EdgeInsets.all(DSSpacing.s8),
         decoration: BoxDecoration(
           color: DSColors.white80,
           borderRadius: BorderRadius.circular(DSRadius.s),
@@ -30,13 +31,13 @@ class MusicQuickActionCard extends StatelessWidget {
         child: Row(
           children: [
             icon,
-            const SizedBox(width: 12),
+            const SizedBox(width: DSSpacing.s12),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(title, style: context.subtitleMBold),
-                const SizedBox(height: 2),
+                const SizedBox(height: DSSpacing.s),
                 Text(
                   subtitle,
                   style: context.label?.copyWith(color: DSColors.gray60),

@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/core/auth/auth_state.dart';
 import 'package:go_sport/core/navigation/routes.dart';
@@ -45,12 +46,12 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text('Failed to load profile', style: context.subtitleLSemi),
-              const SizedBox(height: 8),
+              const SizedBox(height: DSSpacing.s8),
               Text(
                 userState.error!,
                 style: context.textL?.copyWith(color: DSColors.gray60),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: DSSpacing.m),
               ElevatedButton(
                 onPressed: () => ref.read(userStateProvider.notifier).getUser(),
                 child: const Text('Retry'),
@@ -82,7 +83,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               onPressed: () => context.push(AppRoutes.notifications),
               icon: SvgPicture.asset('assets/icons/bell_blue.svg'),
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: DSSpacing.s8),
           ],
         ),
         body: CustomScrollView(
@@ -92,7 +93,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const SizedBox(height: 20),
+                  const SizedBox(height: DSSpacing.s20),
                   Container(
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
@@ -103,19 +104,19 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                       size: 100,
                     ),
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: DSSpacing.s12),
                   Text(
                     '${user.name} ${user.surname}',
                     style: context.bodyL,
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: DSSpacing.s8),
                   Text(
                     user.email,
                     style: context.textL,
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 4),
+                  const SizedBox(height: DSSpacing.xs),
                   Text(
                     user.phone != null
                         ? '+${user.phone}'
@@ -123,7 +124,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                     style: context.textL,
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: DSSpacing.l),
                 ],
               ),
             ),
@@ -141,7 +142,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                   ),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(DSSpacing.m),
                   child: Column(
                     children: [
                       // Clickable Banner
@@ -160,13 +161,13 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                               ),
 
                               Padding(
-                                padding: const EdgeInsets.all(10),
+                                padding: const EdgeInsets.all(DSSpacing.s10),
                                 child: Row(
                                   children: [
                                     SvgPicture.asset(
                                       'assets/icons/case_bg.svg',
                                     ),
-                                    const SizedBox(width: 14),
+                                    const SizedBox(width: DSSpacing.s14),
                                     Text(
                                       'Services for\nbusiness',
                                       style: context.h1?.copyWith(
@@ -186,7 +187,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: DSSpacing.s20),
 
                       // Menu of actions
                       ActionRow(
@@ -195,7 +196,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                         onTap: () => context.push(AppRoutes.editProfile),
                       ),
 
-                      const SizedBox(height: 12),
+                      const SizedBox(height: DSSpacing.s12),
                       if (user.provider != 'google')
                         Column(
                           children: [
@@ -208,7 +209,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                                   context.push(AppRoutes.profileChangePassword),
                             ),
 
-                            const SizedBox(height: 12),
+                            const SizedBox(height: DSSpacing.s12),
                           ],
                         ),
 
@@ -221,9 +222,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                         },
                       ),
 
-                      const SizedBox(height: 24),
+                      const SizedBox(height: DSSpacing.l),
                       const DottedDivider(),
-                      const SizedBox(height: 24),
+                      const SizedBox(height: DSSpacing.l),
 
                       // Contact Us Container
                       Container(
@@ -244,30 +245,30 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                                 color: DSColors.blue,
                               ),
                             ),
-                            const SizedBox(height: 12),
+                            const SizedBox(height: DSSpacing.s12),
                             ContactInfoItem(
                               icon: Icons.location_on_sharp,
                               text: '0002 Yrevan, Hanrapetutyan street 4',
                             ),
-                            const SizedBox(height: 12),
+                            const SizedBox(height: DSSpacing.s12),
 
                             ContactInfoItem(
                               icon: Icons.phone_in_talk_rounded,
                               text: '+010 96 456 456',
                             ),
-                            const SizedBox(height: 12),
+                            const SizedBox(height: DSSpacing.s12),
 
                             ContactInfoItem(
                               icon: Icons.email_rounded,
                               text: 'Info@gosport.fm',
                             ),
-                            const SizedBox(height: 12),
+                            const SizedBox(height: DSSpacing.s12),
 
                             ContactInfoItem(
                               icon: Icons.language,
                               text: 'gosport.fm',
                             ),
-                            const SizedBox(height: 24),
+                            const SizedBox(height: DSSpacing.l),
 
                             // Social Media Icons
                             Text(
@@ -276,7 +277,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                                 color: DSColors.blue,
                               ),
                             ),
-                            SizedBox(height: 6),
+                            SizedBox(height: DSSpacing.s6),
                             Row(
                               children: [
                                 SocialMediaButton(
@@ -286,14 +287,14 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                                   ),
                                   onTap: () => {},
                                 ),
-                                const SizedBox(width: 10),
+                                const SizedBox(width: DSSpacing.s10),
                                 SocialMediaButton(
                                   icon: SvgPicture.asset(
                                     'assets/icons/youtube_blue.svg',
                                   ),
                                   onTap: () => {},
                                 ),
-                                const SizedBox(width: 10),
+                                const SizedBox(width: DSSpacing.s10),
                                 SocialMediaButton(
                                   icon: SvgPicture.asset(
                                     'assets/icons/inst.svg',
@@ -305,9 +306,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                           ],
                         ),
                       ),
-                      const SizedBox(height: 24),
+                      const SizedBox(height: DSSpacing.l),
                       DottedDivider(),
-                      const SizedBox(height: 24),
+                      const SizedBox(height: DSSpacing.l),
                       ActionRow(
                         icon: SvgPicture.asset(
                           'assets/icons/delete_orange_bg.svg',
@@ -316,7 +317,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                         onTap: () => context.push(AppRoutes.deleteAccount),
                       ),
 
-                      const SizedBox(height: 24),
+                      const SizedBox(height: DSSpacing.l),
                     ],
                   ),
                 ),

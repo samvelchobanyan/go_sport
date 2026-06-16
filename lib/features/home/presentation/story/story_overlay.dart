@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_icon_size.dart';
 import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
@@ -57,7 +58,7 @@ class StoryOverlay extends StatelessWidget {
                   color: DSColors.white90,
                   shape: BoxShape.circle,
                 ),
-                child: Icon(Icons.close, size: 24, color: DSColors.black),
+                child: Icon(Icons.close, size: DSIconSize.s24, color: DSColors.black),
               ),
             ),
           ),
@@ -91,7 +92,7 @@ class StoryOverlay extends StatelessWidget {
                         style: context.h2?.copyWith(color: DSColors.white),
                       ),
 
-                      const SizedBox(height: 10),
+                      const SizedBox(height: DSSpacing.s10),
 
                       // Description
                       Text(
@@ -103,7 +104,7 @@ class StoryOverlay extends StatelessWidget {
 
                       // CTA Button
                       Padding(
-                        padding: const EdgeInsets.all(24),
+                        padding: const EdgeInsets.all(DSSpacing.l),
                         child: SizedBox(
                           width: double.infinity,
                           child: GestureDetector(
@@ -117,7 +118,7 @@ class StoryOverlay extends StatelessWidget {
                               decoration: BoxDecoration(
                                 color: DSColors.lime,
                                 borderRadius: BorderRadius.circular(
-                                  DSRadius.xl,
+                                  DSRadius.xxl,
                                 ),
                               ),
                               child: Row(
@@ -125,10 +126,10 @@ class StoryOverlay extends StatelessWidget {
                                 children: [
                                   Icon(
                                     Icons.campaign,
-                                    size: 20,
+                                    size: DSIconSize.s20,
                                     color: DSColors.black,
                                   ),
-                                  const SizedBox(width: 8),
+                                  const SizedBox(width: DSSpacing.s8),
                                   Text(
                                     story.ctaLabel,
                                     style: context.subtitleLBold?.copyWith(

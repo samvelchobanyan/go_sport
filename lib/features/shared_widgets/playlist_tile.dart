@@ -4,14 +4,18 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_spacing.dart';
+import 'package:go_sport/design_system/foundations/ds_icon_size.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/domain/entities/playlist.dart';
 
 class PlaylistTile extends StatelessWidget {
   final Playlist playlist;
+  final double topPadding;
 
   const PlaylistTile({
     required this.playlist,
+    this.topPadding = 8,
     super.key,
   });
 
@@ -22,14 +26,15 @@ class PlaylistTile extends StatelessWidget {
         '/music/playlist/${playlist.id}?type=${playlist.type.name}',
         extra: playlist,
       ),
+      behavior: HitTestBehavior.opaque,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        padding: EdgeInsets.only(left: DSSpacing.m, right: DSSpacing.m, top: topPadding, bottom: DSSpacing.s8),
         child: Row(
           children: [
             // Thumbnail image
             Container(
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(DSRadius.s),
                 boxShadow: [
                   BoxShadow(
                     color: DSColors.gray70,
@@ -62,13 +67,13 @@ class PlaylistTile extends StatelessWidget {
                           child: const Icon(
                             Icons.error,
                             color: DSColors.gray50,
-                            size: 28,
+                            size: DSIconSize.s28,
                           ),
                         ),
                       ),
               ),
             ),
-            const SizedBox(width: 12),
+            const SizedBox(width: DSSpacing.s12),
             // Title and episode count badge
             Expanded(
               child: Column(
@@ -81,7 +86,7 @@ class PlaylistTile extends StatelessWidget {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  const SizedBox(height: 4),
+                  const SizedBox(height: DSSpacing.xs),
                   // Episode count badge
                   Container(
                     padding: const EdgeInsets.symmetric(
@@ -103,7 +108,7 @@ class PlaylistTile extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(width: 12),
+            const SizedBox(width: DSSpacing.s12),
 
             SvgPicture.asset(
               'assets/icons/arrow_right.svg',

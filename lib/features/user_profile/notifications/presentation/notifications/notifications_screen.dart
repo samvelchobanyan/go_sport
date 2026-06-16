@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 import 'package:go_sport/features/shared_widgets/dotted_divider.dart';
 import 'package:go_sport/features/user_profile/notifications/presentation/notifications/widgets/notification_tile.dart';
 
@@ -65,7 +66,7 @@ class NotificationsScreen extends StatelessWidget {
         body: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
           child: Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(DSSpacing.m),
             child: Column(
               children: [
                 ...dummyNotifications.asMap().entries.map((entry) {
@@ -82,7 +83,7 @@ class NotificationsScreen extends StatelessWidget {
                       ),
                       if (index != dummyNotifications.length - 1)
                         const Padding(
-                          padding: EdgeInsets.symmetric(vertical: 8.0),
+                          padding: EdgeInsets.symmetric(vertical: DSSpacing.s8),
                           child: DottedDivider(),
                         ),
                     ],

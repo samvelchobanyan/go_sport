@@ -3,6 +3,9 @@ import 'package:go_sport/design_system/components/skeleton/skeleton_box.dart';
 import 'package:go_sport/design_system/components/skeleton/skeleton_circle.dart';
 import 'package:go_sport/design_system/components/skeleton/skeleton_line.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_spacing.dart';
+import 'package:go_sport/design_system/foundations/ds_layout.dart';
+import 'package:go_sport/design_system/foundations/ds_icon_size.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/features/shared_widgets/user_avatar_button.dart';
 
@@ -48,7 +51,7 @@ class _RadioAppBarSliver extends StatelessWidget {
       centerTitle: true,
       actions: const [
         Padding(
-          padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+          padding: EdgeInsets.symmetric(vertical: DSSpacing.s12, horizontal: DSSpacing.m),
           child: SkeletonBox(width: 24, height: 24, radius: DSRadius.xs),
         ),
       ],
@@ -63,7 +66,7 @@ class _LiveBannerSkeletonSliver extends StatelessWidget {
   Widget build(BuildContext context) {
     return SliverToBoxAdapter(
       child: Padding(
-        padding: const EdgeInsets.only(top: 18, left: 16, right: 16),
+        padding: const EdgeInsets.only(top: DSSpacing.s18, left: DSSpacing.m, right: DSSpacing.m),
         child: LayoutBuilder(
           builder: (context, constraints) {
             return Stack(
@@ -74,18 +77,18 @@ class _LiveBannerSkeletonSliver extends StatelessWidget {
                   radius: DSRadius.s,
                 ),
                 const Padding(
-                  padding: EdgeInsets.all(10),
+                  padding: EdgeInsets.all(DSSpacing.s10),
                   child: Row(
                     children: [
-                      SkeletonCircle(size: 28),
-                      SizedBox(width: 14),
+                      SkeletonCircle(size: DSIconSize.s28),
+                      SizedBox(width: DSSpacing.s14),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             SkeletonLine(width: 120, height: 16),
-                            SizedBox(height: 6),
+                            SizedBox(height: DSSpacing.s6),
                             SkeletonLine(width: 92, height: 12),
                           ],
                         ),
@@ -109,12 +112,12 @@ class _ProgramsSectionSkeletonSliver extends StatelessWidget {
   Widget build(BuildContext context) {
     return SliverToBoxAdapter(
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 26),
+        padding: const EdgeInsets.symmetric(vertical: DSSpacing.l),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: const [
             _SectionHeaderSkeleton(),
-            SizedBox(height: 10),
+            SizedBox(height: DSSpacing.s10),
             _ProgramsCarouselSkeleton(),
           ],
         ),
@@ -140,11 +143,11 @@ class _SectionHeaderSkeleton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16),
+      padding: EdgeInsets.symmetric(horizontal: DSSpacing.m),
       child: Row(
         children: [
           SkeletonLine(width: 180, height: 18),
-          SizedBox(width: 5),
+          SizedBox(width: DSSpacing.xs),
           SkeletonBox(width: 16, height: 17, radius: DSRadius.xs),
         ],
       ),
@@ -161,9 +164,9 @@ class _ProgramsCarouselSkeleton extends StatelessWidget {
       height: 210,
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.symmetric(horizontal: 16),
+        padding: const EdgeInsets.symmetric(horizontal: DSSpacing.m),
         itemCount: 3,
-        separatorBuilder: (context, index) => const SizedBox(width: 12),
+        separatorBuilder: (context, index) => const SizedBox(width: DSSpacing.s12),
         itemBuilder: (context, index) => const _ProgramCardSkeleton(),
       ),
     );
@@ -181,11 +184,11 @@ class _ProgramCardSkeleton extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SkeletonBox(width: 140, height: 140, radius: DSRadius.l),
-          SizedBox(height: 6),
+          SizedBox(height: DSSpacing.s6),
           SkeletonLine(width: 132, height: 14),
-          SizedBox(height: 4),
+          SizedBox(height: DSSpacing.xs),
           SkeletonLine(width: 96, height: 14),
-          SizedBox(height: 6),
+          SizedBox(height: DSSpacing.s6),
           SkeletonBox(width: 72, height: 20, radius: 10),
         ],
       ),
@@ -199,7 +202,7 @@ class _EpisodesListSkeletonSliver extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SliverPadding(
-      padding: const EdgeInsets.only(bottom: 100),
+      padding: const EdgeInsets.only(bottom: DSLayout.bottomBarClearance),
       sliver: SliverList(
         delegate: SliverChildBuilderDelegate(
           (context, index) {
@@ -207,7 +210,7 @@ class _EpisodesListSkeletonSliver extends StatelessWidget {
               children: const [
                 _EpisodeTileSkeleton(),
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  padding: EdgeInsets.symmetric(horizontal: DSSpacing.m),
                   child: SkeletonLine(width: double.infinity, height: 1),
                 ),
               ],
@@ -226,22 +229,22 @@ class _EpisodeTileSkeleton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      padding: EdgeInsets.symmetric(horizontal: DSSpacing.m, vertical: DSSpacing.s12),
       child: Row(
         children: [
           SkeletonBox(width: 48, height: 48, radius: DSRadius.xs),
-          SizedBox(width: 10),
+          SizedBox(width: DSSpacing.s10),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SkeletonLine(width: double.infinity, height: 14),
-                SizedBox(height: 6),
+                SizedBox(height: DSSpacing.s6),
                 SkeletonLine(width: 110, height: 12),
               ],
             ),
           ),
-          SizedBox(width: 12),
+          SizedBox(width: DSSpacing.s12),
           SkeletonBox(width: 24, height: 24, radius: 4),
         ],
       ),

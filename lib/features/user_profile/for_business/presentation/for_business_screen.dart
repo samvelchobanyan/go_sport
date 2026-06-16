@@ -6,6 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/design_system/foundations/ds_typography.dart';
 import 'package:go_sport/features/user_profile/for_business/presentation/widgets/service_card.dart';
@@ -31,7 +32,7 @@ class ForBusinessScreen extends StatelessWidget {
         ),
         body: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(DSSpacing.m),
             child: Column(
               children: [
                 // Banner
@@ -52,11 +53,11 @@ class ForBusinessScreen extends StatelessWidget {
                         ),
 
                         Padding(
-                          padding: const EdgeInsets.all(10),
+                          padding: const EdgeInsets.all(DSSpacing.s10),
                           child: Row(
                             children: [
                               SvgPicture.asset('assets/icons/phone_lime.svg'),
-                              const SizedBox(width: 14),
+                              const SizedBox(width: DSSpacing.s14),
                               Text(
                                 'How can we \nreach you ?',
                                 style: context.h1?.copyWith(
@@ -76,38 +77,38 @@ class ForBusinessScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: DSSpacing.l),
 
                 // Services Cards
                 Text('Services', style: DSTypography.h2),
-                SizedBox(height: 10),
+                SizedBox(height: DSSpacing.s10),
                 const ServiceCard(
                   title: 'Premium Subscription',
                   description:
                       'Unlock exclusive content and premium features for your business',
                   price: '\$99/month',
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: DSSpacing.m),
                 const ServiceCard(
                   title: 'Analytics Dashboard',
                   description:
                       'Get detailed insights and analytics for your content',
                   price: '\$49/month',
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: DSSpacing.m),
                 const ServiceCard(
                   title: 'Custom Branding',
                   description:
                       'Customize your brand with white-label solutions',
                   price: '\$199/month',
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: DSSpacing.m),
                 const ServiceCard(
                   title: 'Priority Support',
                   description: '24/7 dedicated support team for your business',
                   price: '\$29/month',
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: DSSpacing.l),
               ],
             ),
           ),

@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_spacing.dart';
+import 'package:go_sport/design_system/foundations/ds_icon_size.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 
 class AlbumTile extends StatelessWidget {
@@ -11,6 +13,7 @@ class AlbumTile extends StatelessWidget {
   final String artistName;
   final String releaseYear;
   final VoidCallback onTap;
+  final double topPadding;
 
   const AlbumTile({
     required this.imageUrl,
@@ -18,6 +21,7 @@ class AlbumTile extends StatelessWidget {
     required this.artistName,
     required this.releaseYear,
     required this.onTap,
+    this.topPadding = 8,
     super.key,
   });
 
@@ -25,14 +29,15 @@ class AlbumTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
+      behavior: HitTestBehavior.opaque,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        padding: EdgeInsets.only(left: DSSpacing.m, right: DSSpacing.m, top: topPadding, bottom: DSSpacing.s8),
         child: Row(
           children: [
             // Thumbnail image
             Container(
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(DSRadius.s),
                 boxShadow: [
                   BoxShadow(
                     color: DSColors.gray70,
@@ -46,8 +51,8 @@ class AlbumTile extends StatelessWidget {
                 borderRadius: BorderRadius.circular(DSRadius.s),
                 child: CachedNetworkImage(
                   imageUrl: imageUrl,
-                  width: 50,
-                  height: 50,
+                  width: 72,
+                  height: 72,
                   fit: BoxFit.cover,
                   placeholder: (context, url) =>
                       Container(width: 50, height: 50, color: DSColors.divider),
@@ -58,13 +63,13 @@ class AlbumTile extends StatelessWidget {
                     child: const Icon(
                       Icons.error,
                       color: DSColors.gray50,
-                      size: 28,
+                      size: DSIconSize.s28,
                     ),
                   ),
                 ),
               ),
             ),
-            const SizedBox(width: 12),
+            const SizedBox(width: DSSpacing.s12),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -76,13 +81,13 @@ class AlbumTile extends StatelessWidget {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  const SizedBox(height: 2),
+                  const SizedBox(height: DSSpacing.s),
 
                   Text(
                     artistName,
                     style: context.textL?.copyWith(color: DSColors.gray60),
                   ),
-                  const SizedBox(height: 2),
+                  const SizedBox(height: DSSpacing.s),
                   Text(
                     releaseYear,
                     style: context.textL?.copyWith(color: DSColors.gray40),
@@ -90,7 +95,7 @@ class AlbumTile extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(width: 12),
+            const SizedBox(width: DSSpacing.s12),
 
             SvgPicture.asset(
               'assets/icons/arrow_right.svg',

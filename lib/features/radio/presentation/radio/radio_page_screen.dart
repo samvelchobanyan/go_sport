@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 import 'package:go_sport/domain/entities/track.dart';
 import 'package:go_sport/domain/state/player_state.dart';
 import 'package:go_sport/features/radio/presentation/radio/radio_dashboard_controller.dart';
@@ -36,109 +37,120 @@ class RadioPageScreen extends ConsumerWidget {
         backgroundColor: DSColors.white,
         body: showInitialSkeleton
             ? const RadioPageSkeleton()
-            : CustomScrollView(
-                slivers: [
-                  SliverAppBar(
-                    backgroundColor: DSColors.white,
-                    elevation: 0,
-                    pinned: true,
-                    floating: true,
+            : RefreshIndicator(
+                onRefresh: () =>
+                    ref.read(radioStateProvider.notifier).refresh(),
+                child: CustomScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  slivers: [
+                    SliverAppBar(
+                      backgroundColor: DSColors.white,
+                      elevation: 0,
+                      pinned: true,
+                      floating: true,
 
-                    leading: Padding(
-                      padding: const EdgeInsets.only(
-                        top: 8,
-                        bottom: 8,
-                        left: 16,
-                      ),
-                      child: UserAvatarButton(
-                        imageUrl: null,
-                        onTap: () {
-                          context.push('/profile');
-                        },
-                      ),
-                    ),
-                    title: Text('Radio', style: context.h2),
-                    centerTitle: true,
-                    actions: [
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                          vertical: 8,
-                          horizontal: 16,
+                      leading: Padding(
+                        padding: const EdgeInsets.only(
+                          top: 8,
+                          bottom: 8,
+                          left: 16,
                         ),
-                        child: GestureDetector(
-                          onTap: () => {context.push('/radio/schedule')},
-                          child: SvgPicture.asset('assets/icons/calendar.svg', width: 24, height: 24),
+                        child: UserAvatarButton(
+                          imageUrl: null,
+                          onTap: () {
+                            context.push('/profile');
+                          },
                         ),
                       ),
-                    ],
-                  ),
-
-                  // orange banner
-                  LiveBanner(),
-
-                  // featured programs
-                  SliverToBoxAdapter(
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(vertical: 26),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          WaveSectionHeader(
-                            title: 'Featured programs',
-                            showAnimation: true,
+                      title: Text('Radio', style: context.h2),
+                      centerTitle: true,
+                      actions: [
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                            vertical: 8,
+                            horizontal: 16,
                           ),
-                          SizedBox(height: 10),
-                          if (featuredPrograms.isNotEmpty)
-                            SizedBox(
-                              height: 210,
-                              child: ListView.builder(
-                                scrollDirection: Axis.horizontal,
+                          child: GestureDetector(
+                            onTap: () => {context.push('/radio/schedule')},
+                            child: SvgPicture.asset(
+                              'assets/icons/calendar.svg',
+                              width: 24,
+                              height: 24,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    // orange banner
+                    LiveBanner(),
+
+                    // featured programs
+                    SliverToBoxAdapter(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(vertical: DSSpacing.l),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            WaveSectionHeader(
+                              title: 'Featured programs',
+                              showAnimation: true,
+                            ),
+                            SizedBox(height: DSSpacing.s10),
+                            if (featuredPrograms.isNotEmpty)
+                              SizedBox(
+                                height: 210,
+                                child: ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 16,
+                                  ),
+                                  itemCount: featuredPrograms.length,
+                                  itemBuilder: (programContext, index) {
+                                    final program = featuredPrograms[index];
+                                    return Padding(
+                                      padding: const EdgeInsets.only(
+                                        right: DSSpacing.s12,
+                                      ),
+                                      child: ProgramCard(
+                                        id: program.id,
+                                        title: program.title,
+                                        imageUrl: program.imageUrl,
+                                        episodeCount: program.episodeCount,
+                                        onTap: () => context.push(
+                                          '/music/program/${program.id}',
+                                          extra: program,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              )
+                            else
+                              Padding(
                                 padding: const EdgeInsets.symmetric(
                                   horizontal: 16,
+                                  vertical: 8,
                                 ),
-                                itemCount: featuredPrograms.length,
-                                itemBuilder: (programContext, index) {
-                                  final program = featuredPrograms[index];
-                                  return Padding(
-                                    padding: const EdgeInsets.only(right: 12),
-                                    child: ProgramCard(
-                                      id: program.id,
-                                      title: program.title,
-                                      imageUrl: program.imageUrl,
-                                      episodeCount: program.episodeCount,
-                                      onTap: () => context.push(
-                                        '/music/program/${program.id}',
-                                        extra: program,
-                                      ),
-                                    ),
-                                  );
-                                },
+                                child: Text(
+                                  'No featured programs available.',
+                                  style: TextStyle(color: DSColors.gray60),
+                                ),
                               ),
-                            )
-                          else
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 16,
-                                vertical: 8,
-                              ),
-                              child: Text(
-                                'No featured programs available.',
-                                style: TextStyle(color: DSColors.gray60),
-                              ),
-                            ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
-                  ),
 
-                  SliverToBoxAdapter(
-                    child: WaveSectionHeader(
-                      title: 'Featured episodes',
-                      showAnimation: true,
+                    SliverToBoxAdapter(
+                      child: WaveSectionHeader(
+                        title: 'Featured episodes',
+                        showAnimation: true,
+                      ),
                     ),
-                  ),
-                  _buildEpisodesList(ref, featuredEpisodes, context),
-                ],
+                    _buildEpisodesList(ref, featuredEpisodes, context),
+                  ],
+                ),
               ),
       ),
     );
@@ -156,7 +168,7 @@ class RadioPageScreen extends ConsumerWidget {
       return SliverToBoxAdapter(
         child: Center(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
+            padding: const EdgeInsets.symmetric(horizontal: DSSpacing.m),
             child: Text(
               'No featured episodes yet',
               style: context.subtitleLBold,
@@ -187,7 +199,7 @@ class RadioPageScreen extends ConsumerWidget {
 
             if (index < episodes.length - 1)
               const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16),
+                padding: EdgeInsets.symmetric(horizontal: DSSpacing.m),
                 child: DottedDivider(),
               ),
           ],

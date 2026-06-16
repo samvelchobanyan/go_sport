@@ -4,6 +4,8 @@ import 'package:go_sport/design_system/components/skeleton/skeleton_box.dart';
 import 'package:go_sport/design_system/components/skeleton/skeleton_circle.dart';
 import 'package:go_sport/design_system/components/skeleton/skeleton_line.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_spacing.dart';
+import 'package:go_sport/design_system/foundations/ds_icon_size.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 
 class NewsDetailScreenSkeleton extends StatelessWidget {
@@ -21,7 +23,7 @@ class NewsDetailScreenSkeleton extends StatelessWidget {
         ),
         actions: const [
           Padding(
-            padding: EdgeInsets.only(right: 16.0),
+            padding: EdgeInsets.only(right: DSSpacing.m),
             child: Align(
               alignment: Alignment.center,
               child: _AuthorSkeleton(),
@@ -33,49 +35,49 @@ class NewsDetailScreenSkeleton extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 8),
+            SizedBox(height: DSSpacing.s8),
 
             // Image
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 24.0),
+              padding: EdgeInsets.symmetric(horizontal: DSSpacing.l),
               child: _ImageSkeleton(),
             ),
-            SizedBox(height: 14),
+            SizedBox(height: DSSpacing.s14),
 
             // Title
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 24.0),
+              padding: EdgeInsets.symmetric(horizontal: DSSpacing.l),
               child: _TitleSkeleton(),
             ),
-            SizedBox(height: 15),
+            SizedBox(height: DSSpacing.m),
 
             // Subtitle quote
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 24.0),
+              padding: EdgeInsets.symmetric(horizontal: DSSpacing.l),
               child: _QuoteSkeleton(),
             ),
-            SizedBox(height: 15),
+            SizedBox(height: DSSpacing.m),
 
             // Content
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 24.0),
+              padding: EdgeInsets.symmetric(horizontal: DSSpacing.l),
               child: _ContentSkeleton(),
             ),
-            SizedBox(height: 16),
+            SizedBox(height: DSSpacing.m),
 
             // Divider (replaces DottedDivider)
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 24.0),
+              padding: EdgeInsets.symmetric(horizontal: DSSpacing.l),
               child: SkeletonLine(width: double.infinity, height: 1),
             ),
-            SizedBox(height: 16),
+            SizedBox(height: DSSpacing.m),
 
             // Bottom actions
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 24.0),
+              padding: EdgeInsets.symmetric(horizontal: DSSpacing.l),
               child: _BottomActionsSkeleton(),
             ),
-            SizedBox(height: 21),
+            SizedBox(height: DSSpacing.s20),
           ],
         ),
       ),
@@ -93,14 +95,14 @@ class _AuthorSkeleton extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.only(top: 6.0),
+          padding: const EdgeInsets.only(top: DSSpacing.s6),
           child: SkeletonBox(
             width: 14,
             height: 2,
             radius: DSRadius.xs,
           ),
         ),
-        const SizedBox(width: 2),
+        const SizedBox(width: DSSpacing.s),
         const Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.end,
@@ -165,7 +167,7 @@ class _QuoteSkeleton extends StatelessWidget {
         ),
       ),
       child: const Padding(
-        padding: EdgeInsets.only(left: 16),
+        padding: EdgeInsets.only(left: DSSpacing.m),
         child: _QuoteLinesSkeleton(),
       ),
     );
@@ -219,9 +221,9 @@ class _BottomActionsSkeleton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        const SkeletonCircle(size: 48),
-        const SizedBox(width: 16),
-        const SkeletonCircle(size: 48),
+        const SkeletonCircle(size: DSIconSize.s48),
+        const SizedBox(width: DSSpacing.m),
+        const SkeletonCircle(size: DSIconSize.s48),
         const Spacer(),
         DecoratedBox(
           decoration: BoxDecoration(
@@ -229,11 +231,11 @@ class _BottomActionsSkeleton extends StatelessWidget {
             borderRadius: BorderRadius.circular(DSRadius.l),
           ),
           child: const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            padding: EdgeInsets.symmetric(horizontal: DSSpacing.m, vertical: DSSpacing.s8),
             child: Row(
               children: [
-                SkeletonCircle(size: 16),
-                SizedBox(width: 6),
+                SkeletonCircle(size: DSIconSize.s16),
+                SizedBox(width: DSSpacing.s6),
                 SkeletonLine(width: 24),
               ],
             ),

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/features/shared_widgets/bottom_pop_ups/bottom_sheet_container.dart';
 import 'package:go_sport/domain/entities/track.dart';
@@ -12,6 +13,7 @@ import 'package:go_sport/features/playlists/presentation/widgets/add_track_tile.
 void showAddTracksBottomSheet({
   required BuildContext context,
   required void Function(List<Track> tracks) onSave,
+  Set<String> existingTrackIds = const {},
 }) {
   showModalBottomSheet(
     context: context,
@@ -19,14 +21,21 @@ void showAddTracksBottomSheet({
     useRootNavigator: true,
     useSafeArea: true,
     backgroundColor: DSColors.transparent,
-    builder: (context) => _AddTracksSheet(onSave: onSave),
+    builder: (context) => _AddTracksSheet(
+      onSave: onSave,
+      existingTrackIds: existingTrackIds,
+    ),
   );
 }
 
 class _AddTracksSheet extends ConsumerStatefulWidget {
   final void Function(List<Track> tracks) onSave;
+  final Set<String> existingTrackIds;
 
-  const _AddTracksSheet({required this.onSave});
+  const _AddTracksSheet({
+    required this.onSave,
+    required this.existingTrackIds,
+  });
 
   @override
   ConsumerState<_AddTracksSheet> createState() => _AddTracksSheetState();
@@ -72,7 +81,7 @@ class _AddTracksSheetState extends ConsumerState<_AddTracksSheet> {
         children: [
           // Header
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            padding: const EdgeInsets.symmetric(horizontal: DSSpacing.m, vertical: DSSpacing.s8),
             child: Stack(
               alignment: Alignment.center,
               children: [
@@ -114,7 +123,7 @@ class _AddTracksSheetState extends ConsumerState<_AddTracksSheet> {
 
           // Search field
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            padding: const EdgeInsets.symmetric(horizontal: DSSpacing.m, vertical: DSSpacing.s8),
             child: TextField(
               controller: _searchController,
               style: Theme.of(context).textTheme.bodyMedium,
@@ -133,7 +142,7 @@ class _AddTracksSheetState extends ConsumerState<_AddTracksSheet> {
                   vertical: 14,
                 ),
                 suffixIcon: Padding(
-                  padding: const EdgeInsets.all(12),
+                  padding: const EdgeInsets.all(DSSpacing.s12),
                   child: SvgPicture.asset(
                     'assets/icons/search.svg',
                     width: 20,
@@ -150,7 +159,7 @@ class _AddTracksSheetState extends ConsumerState<_AddTracksSheet> {
 
           // Section title
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            padding: const EdgeInsets.symmetric(horizontal: DSSpacing.m, vertical: DSSpacing.s8),
             child: Align(
               alignment: Alignment.centerLeft,
               child: Text(
@@ -182,7 +191,7 @@ class _AddTracksSheetState extends ConsumerState<_AddTracksSheet> {
                         itemBuilder: (context, index) {
                           if (index >= state.tracks.length) {
                             return const Padding(
-                              padding: EdgeInsets.all(16),
+                              padding: EdgeInsets.all(DSSpacing.m),
                               child: Center(
                                 child: CircularProgressIndicator(),
                               ),
@@ -190,11 +199,13 @@ class _AddTracksSheetState extends ConsumerState<_AddTracksSheet> {
                           }
 
                           final track = state.tracks[index];
+                          final alreadyAdded =
+                              widget.existingTrackIds.contains(track.id);
                           return AddTrackTile(
                             track: track,
-                            isSelected: state.selectedTrackIds.contains(
-                              track.id,
-                            ),
+                            isSelected: alreadyAdded ||
+                                state.selectedTrackIds.contains(track.id),
+                            enabled: !alreadyAdded,
                             onToggle: () => ref
                                 .read(addTracksControllerProvider.notifier)
                                 .toggleTrack(track.id),

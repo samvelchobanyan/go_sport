@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 
 class ActionRow extends StatelessWidget {
@@ -18,11 +19,11 @@ class ActionRow extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8.0),
+        padding: const EdgeInsets.symmetric(vertical: DSSpacing.s8),
         child: Row(
           children: [
             icon,
-            const SizedBox(width: 10),
+            const SizedBox(width: DSSpacing.s10),
             Expanded(child: Text(text, style: context.subtitleMBold)),
           ],
         ),

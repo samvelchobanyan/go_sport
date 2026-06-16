@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_spacing.dart';
+import 'package:go_sport/design_system/foundations/ds_icon_size.dart';
 import 'package:go_sport/domain/entities/track.dart';
 import 'package:go_sport/features/shared_widgets/bottom_pop_ups/track_options.dart';
 import 'package:go_sport/features/playlists/presentation/bottom_sheets/add_to_playlist_bottom_sheet.dart';
@@ -13,6 +15,7 @@ class ProgramEpisodeTile extends StatelessWidget {
   final VoidCallback onTap;
   final VoidCallback onMenuTap;
   final bool? isPlaying;
+  final double topPadding;
 
   const ProgramEpisodeTile({
     super.key,
@@ -21,6 +24,7 @@ class ProgramEpisodeTile extends StatelessWidget {
     required this.onTap,
     required this.onMenuTap,
     this.isPlaying,
+    this.topPadding = 8,
   });
 
   @override
@@ -28,11 +32,11 @@ class ProgramEpisodeTile extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        padding: EdgeInsets.only(left: DSSpacing.m, right: DSSpacing.m, top: topPadding, bottom: DSSpacing.s8),
         child: Row(
           children: [
             TrackNumberBadge(index: index),
-            const SizedBox(width: 10),
+            const SizedBox(width: DSSpacing.s10),
             Expanded(child: _buildEpisodeContent(context)),
             GestureDetector(
               onTap: () {
@@ -48,8 +52,8 @@ class ProgramEpisodeTile extends StatelessWidget {
               },
               behavior: HitTestBehavior.opaque,
               child: const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Icon(Icons.more_horiz, color: DSColors.gray60, size: 24),
+                padding: EdgeInsets.all(DSSpacing.s8),
+                child: Icon(Icons.more_horiz, color: DSColors.gray60, size: DSIconSize.s24),
               ),
             ),
           ],
@@ -66,7 +70,7 @@ class ProgramEpisodeTile extends StatelessWidget {
           children: [
             if (isPlaying != null) ...[
               EqualizerIndicator(isPlaying: isPlaying!),
-              const SizedBox(width: 8),
+              const SizedBox(width: DSSpacing.s8),
             ],
             Expanded(
               child: Text(
@@ -80,7 +84,7 @@ class ProgramEpisodeTile extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: 2),
+        const SizedBox(height: DSSpacing.s),
         Row(
           children: [
             if (episode.releaseDate != null)

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 
 class CustomInput extends StatelessWidget {
@@ -29,7 +30,7 @@ class CustomInput extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         Text(label, style: context.fieldLabel),
-        SizedBox(height: 4),
+        SizedBox(height: DSSpacing.xs),
         Container(
           decoration: BoxDecoration(
             color: DSColors.blue10,
@@ -40,7 +41,7 @@ class CustomInput extends StatelessWidget {
             children: [
               if (prefix == true)
                 Padding(
-                  padding: const EdgeInsets.only(left: 12),
+                  padding: const EdgeInsets.only(left: DSSpacing.s12),
                   child: Text(
                     '+374',
                     style: context.subtitleM?.copyWith(

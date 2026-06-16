@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/domain/entities/track.dart';
 import 'package:go_sport/domain/state/player_state.dart';
@@ -93,13 +94,14 @@ class NewEpisodesScreen extends ConsumerWidget {
       onRefresh: () => ref.read(newEpisodesStateProvider.notifier).refresh(),
       child: ListView.separated(
         physics: const AlwaysScrollableScrollPhysics(),
+        padding: const EdgeInsets.only(bottom: DSSpacing.m),
         itemCount: episodes.length,
         separatorBuilder: (context, index) {
           if (index >= episodes.length - 1) {
             return const SizedBox.shrink();
           }
           return const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16),
+            padding: EdgeInsets.symmetric(horizontal: DSSpacing.m),
             child: DottedDivider(),
           );
         },
@@ -110,23 +112,13 @@ class NewEpisodesScreen extends ConsumerWidget {
               ? playerState.isPlaying && playerState.isRadioMode == false
               : null;
 
-          return ClipRRect(
-            borderRadius: index == 0
-                ? const BorderRadius.only(
-                    topLeft: Radius.circular(24),
-                    topRight: Radius.circular(24),
-                  )
-                : BorderRadius.zero,
-            child: Container(
-              color: DSColors.white,
-              child: EpisodeTile(
-                episode: episode,
-                isPlaying: trackPlayingState,
-                onTap: () => _onTrackTap(ref, episodes, index),
-                onMenuTap: () =>
-                    debugPrint('Episode icon tapped for: ${episode.id}'),
-              ),
-            ),
+          return EpisodeTile(
+            episode: episode,
+            isPlaying: trackPlayingState,
+            topPadding: index == 0 ? 20 : 8,
+            onTap: () => _onTrackTap(ref, episodes, index),
+            onMenuTap: () =>
+                debugPrint('Episode icon tapped for: ${episode.id}'),
           );
         },
       ),

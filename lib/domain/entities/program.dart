@@ -9,6 +9,7 @@ class Program with _$Program {
     required String title,
     required String imageUrl,
     required int episodeCount,
+    String? youtubeUrl,
     String? likeId,
   }) = _Program;
 }

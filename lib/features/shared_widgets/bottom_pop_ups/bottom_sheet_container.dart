@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 
 class BottomSheetContainer extends StatelessWidget {
@@ -11,7 +12,7 @@ class BottomSheetContainer extends StatelessWidget {
     super.key,
     required this.child,
     this.height,
-    this.padding = const EdgeInsets.all(16),
+    this.padding = const EdgeInsets.all(DSSpacing.m),
   });
 
   @override
@@ -30,7 +31,7 @@ class BottomSheetContainer extends StatelessWidget {
         children: [
           // Drag handle
           Padding(
-            padding: const EdgeInsets.only(top: 12, bottom: 16),
+            padding: const EdgeInsets.only(top: DSSpacing.s12, bottom: DSSpacing.m),
             child: Container(
               width: 40,
               height: 4,

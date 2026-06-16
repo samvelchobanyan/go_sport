@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 import 'package:go_sport/domain/entities/playlist.dart';
 import 'media_card_shell.dart';
 import 'count_badge.dart';
@@ -37,14 +38,14 @@ class PlaylistCard extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(height: 6),
+            const SizedBox(height: DSSpacing.s6),
             Text(
               playlist.title,
               style: context.subtitleM,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
             ),
-            const SizedBox(height: 6),
+            const SizedBox(height: DSSpacing.s6),
             CountBadge(count: playlist.trackCount, type: CountBadgeType.tracks),
           ],
         ),

@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:go_sport/design_system/components/icons/ds_notification_icon.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_spacing.dart';
+import 'package:go_sport/design_system/foundations/ds_icon_size.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/domain/entities/scheduled_program.dart';
 
@@ -28,7 +30,7 @@ class ScheduleTile extends StatelessWidget {
         "${program.endDate.hour}:${program.endDate.minute.toString().padLeft(2, '0')}";
 
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
+      padding: const EdgeInsets.symmetric(vertical: DSSpacing.s8),
       child: Row(
         children: [
           ClipRRect(
@@ -47,12 +49,12 @@ class ScheduleTile extends StatelessWidget {
                 child: const Icon(
                   Icons.error,
                   color: DSColors.gray50,
-                  size: 28,
+                  size: DSIconSize.s28,
                 ),
               ),
             ),
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: DSSpacing.s12),
 
           Expanded(
             child: Row(
@@ -66,7 +68,7 @@ class ScheduleTile extends StatelessWidget {
                   ),
                 ),
                 if (isLive) ...[
-                  const SizedBox(width: 6),
+                  const SizedBox(width: DSSpacing.s6),
                   Container(
                     width: 6,
                     height: 6,
@@ -80,18 +82,18 @@ class ScheduleTile extends StatelessWidget {
             ),
           ),
 
-          const SizedBox(width: 8),
+          const SizedBox(width: DSSpacing.s8),
 
           Text(
             '$startTime - $endTime',
             style: context.bodyL?.copyWith(color: DSColors.gray50),
           ),
-          const SizedBox(width: 4),
+          const SizedBox(width: DSSpacing.xs),
           GestureDetector(
             onTap: onSubscribeToggle,
             behavior: HitTestBehavior.opaque,
             child: Padding(
-              padding: const EdgeInsets.all(4),
+              padding: const EdgeInsets.all(DSSpacing.xs),
               child: DSNotificationIcon(
                 color: DSColors.blue,
                 isFilled: isSubscribed,

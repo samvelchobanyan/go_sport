@@ -4,7 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
-import 'package:go_sport/features/program_details/presentation/widgets/youtube_banner.dart';
+import 'package:go_sport/design_system/foundations/ds_spacing.dart';
+import 'package:go_sport/features/shared_widgets/live_banner.dart';
 import 'package:go_sport/features/schedule/presentation/widgets/dates_carousel.dart';
 import 'package:go_sport/domain/state/schedule_state.dart';
 import 'package:go_sport/features/shared_widgets/schedule_list.dart';
@@ -44,12 +45,12 @@ class ScheduleScreen extends ConsumerWidget {
               centerTitle: true,
             ),
 
-            SizedBox(height: 10),
+            const SliverToBoxAdapter(child: SizedBox(height: DSSpacing.s10)),
             DatesCarousel(today: today),
 
-            SizedBox(height: 26),
-            // orange youtube banner
-            YoutubeBanner(),
+            const SliverToBoxAdapter(child: SizedBox(height: DSSpacing.l)),
+            // live radio banner
+            LiveBanner(),
 
             state.when(
               loading: () => const SliverFillRemaining(

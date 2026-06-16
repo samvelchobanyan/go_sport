@@ -7,6 +7,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/features/shared_widgets/input.dart';
 import 'package:go_router/go_router.dart';
@@ -104,7 +105,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
               onPressed: () => {},
               icon: SvgPicture.asset('assets/icons/bell_blue.svg'),
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: DSSpacing.s8),
           ],
         ),
         body: CustomScrollView(
@@ -113,7 +114,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
             SliverToBoxAdapter(
               child: Column(
                 children: [
-                  const SizedBox(height: 25),
+                  const SizedBox(height: DSSpacing.l),
                   GestureDetector(
                     onTap: _pickImage,
                     child: Container(
@@ -173,7 +174,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 40),
+                  const SizedBox(height: DSSpacing.s40),
                 ],
               ),
             ),
@@ -190,11 +191,11 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                   ),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(DSSpacing.m),
                   child: Column(
                     children: [
                       CustomInput(label: 'Name', controller: _nameController),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: DSSpacing.m),
                       CustomInput(
                         label: 'Surname',
                         controller: _surnameController,
@@ -207,9 +208,9 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                         child: ElevatedButton.icon(
                           style: ElevatedButton.styleFrom(
                             backgroundColor: DSColors.blue,
-                            padding: const EdgeInsets.symmetric(vertical: 14),
+                            padding: const EdgeInsets.symmetric(vertical: DSSpacing.s14),
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(DSRadius.xl),
+                              borderRadius: BorderRadius.circular(DSRadius.xxl),
                             ),
                           ),
                           onPressed: editState.isLoading ? null : _onSave,
@@ -230,7 +231,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: DSSpacing.s20),
                     ],
                   ),
                 ),

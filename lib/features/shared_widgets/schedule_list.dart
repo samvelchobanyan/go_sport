@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/domain/entities/scheduled_program.dart';
@@ -23,7 +24,7 @@ class ScheduleList extends ConsumerWidget {
     final subscribedIds = ref.watch(programRemindersProvider);
 
     return SliverPadding(
-      padding: const EdgeInsets.only(top: 22, bottom: 22, left: 16, right: 16),
+      padding: const EdgeInsets.only(top: DSSpacing.s22, bottom: DSSpacing.s22, left: DSSpacing.m, right: DSSpacing.m),
       sliver: SliverList(
         delegate: SliverChildBuilderDelegate(
           (context, index) {
@@ -32,7 +33,7 @@ class ScheduleList extends ConsumerWidget {
             }
 
             if (index == 1) {
-              return const SizedBox(height: 16);
+              return const SizedBox(height: DSSpacing.m);
             }
 
             final programIndex = index - 2;

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -21,7 +22,7 @@ class ActionButton extends StatelessWidget {
       child: Row(
         children: [
           SvgPicture.asset(icon, width: 32, height: 32),
-          const SizedBox(width: 10),
+          const SizedBox(width: DSSpacing.s10),
           Text(
             label,
             style: context.subtitleMBold,

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_icon_size.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
+import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 import 'package:go_sport/domain/entities/track.dart';
 import 'package:go_sport/features/shared_widgets/bottom_pop_ups/track_options.dart';
 import 'package:go_sport/features/playlists/presentation/bottom_sheets/add_to_playlist_bottom_sheet.dart';
@@ -12,6 +14,7 @@ class EpisodeTile extends StatelessWidget {
   final VoidCallback onTap;
   final VoidCallback onMenuTap;
   final bool? isPlaying;
+  final double topPadding;
 
   const EpisodeTile({
     super.key,
@@ -19,6 +22,7 @@ class EpisodeTile extends StatelessWidget {
     required this.onTap,
     required this.onMenuTap,
     this.isPlaying,
+    this.topPadding = 8,
   });
 
   String _formatDuration(Duration duration) {
@@ -50,9 +54,11 @@ class EpisodeTile extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-        child: Row(
-          children: [
+        padding: EdgeInsets.only(left: DSSpacing.m, right: DSSpacing.m, top: topPadding, bottom: DSSpacing.s8),
+        child: SizedBox(
+          height: 52,
+          child: Row(
+            children: [
             // episode image
             Container(
               decoration: BoxDecoration(
@@ -80,7 +86,7 @@ class EpisodeTile extends StatelessWidget {
                     : Container(width: 48, height: 48, color: DSColors.gray20),
               ),
             ),
-            const SizedBox(width: 10),
+            const SizedBox(width: DSSpacing.s10),
 
             // Track info
             Expanded(child: _buildEpisodeContent(context)),
@@ -100,11 +106,12 @@ class EpisodeTile extends StatelessWidget {
               },
               behavior: HitTestBehavior.opaque,
               child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Icon(Icons.more_horiz, color: DSColors.gray60, size: 24),
+                padding: const EdgeInsets.all(DSSpacing.s8),
+                child: Icon(Icons.more_horiz, color: DSColors.gray60, size: DSIconSize.s24),
               ),
             ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -118,7 +125,7 @@ class EpisodeTile extends StatelessWidget {
           children: [
             if (isPlaying != null) ...[
               EqualizerIndicator(isPlaying: isPlaying!),
-              const SizedBox(width: 8),
+              const SizedBox(width: DSSpacing.s8),
             ],
             Expanded(
               child: Column(
@@ -132,7 +139,7 @@ class EpisodeTile extends StatelessWidget {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  const SizedBox(height: 4),
+                  const SizedBox(height: DSSpacing.xs),
                   Row(
                     children: [
                       if (episode.releaseDate != null)

@@ -5,9 +5,14 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
+import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 import 'package:go_sport/domain/state/registration_state.dart';
 import 'package:go_sport/features/shared_widgets/input.dart';
 import 'package:go_router/go_router.dart';
+
+const double _cardHeight = 371;
+const double _cardOverlap = 25;
+const double _cardVerticalPadding = 40;
 
 class CreatePasswordScreen extends ConsumerStatefulWidget {
   const CreatePasswordScreen({super.key});
@@ -47,14 +52,13 @@ class _CreatePasswordScreenState extends ConsumerState<CreatePasswordScreen> {
       return;
     }
 
-    // Call your controller here
     ref.read(registrationControllerProvider.notifier).setPassword(password);
   }
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final screenHeight = MediaQuery.of(context).size.height;
+    final screenSize = MediaQuery.of(context).size;
+    final imageHeight = screenSize.height - _cardHeight + _cardOverlap;
 
     ref.listen<RegistrationState>(registrationControllerProvider, (prev, next) {
       if (next.isSuccess) {
@@ -70,26 +74,26 @@ class _CreatePasswordScreenState extends ConsumerState<CreatePasswordScreen> {
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.dark,
       child: Scaffold(
-        backgroundColor: DSColors.white,
         resizeToAvoidBottomInset: true,
+        backgroundColor: DSColors.white,
         body: Stack(
           children: [
-            // Background Image (Top half)
-            Image.asset(
-              'assets/images/create_password_bg.png',
-              width: screenWidth,
-              height: screenHeight * 0.7,
-              fit: BoxFit.cover,
-              cacheHeight: (screenHeight * 0.7).toInt(),
-              cacheWidth: screenWidth.toInt(),
+            Positioned(
+              top: 0,
+              left: 0,
+              right: 0,
+              height: imageHeight,
+              child: Image.asset(
+                'assets/images/create_password_bg.png',
+                fit: BoxFit.cover,
+              ),
             ),
 
-            // Main Content Container
             Align(
               alignment: Alignment.bottomCenter,
               child: Container(
-                width: screenWidth,
-                padding: const EdgeInsets.only(top: 20, bottom: 0),
+                height: _cardHeight,
+                width: screenSize.width,
                 decoration: BoxDecoration(
                   color: DSColors.white,
                   borderRadius: const BorderRadius.only(
@@ -97,12 +101,16 @@ class _CreatePasswordScreenState extends ConsumerState<CreatePasswordScreen> {
                     topRight: Radius.circular(DSRadius.m),
                   ),
                 ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: SingleChildScrollView(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: DSSpacing.m,
+                    vertical: _cardVerticalPadding / 2,
+                  ),
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      minHeight: _cardHeight - _cardVerticalPadding,
+                    ),
+                    child: IntrinsicHeight(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
@@ -110,7 +118,7 @@ class _CreatePasswordScreenState extends ConsumerState<CreatePasswordScreen> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               SvgPicture.asset('assets/icons/lock.svg'),
-                              const SizedBox(width: 8),
+                              const SizedBox(width: DSSpacing.s8),
                               Text(
                                 'Please create a password',
                                 style: context.h2,
@@ -118,7 +126,7 @@ class _CreatePasswordScreenState extends ConsumerState<CreatePasswordScreen> {
                             ],
                           ),
 
-                          const SizedBox(height: 14),
+                          const SizedBox(height: DSSpacing.s14),
                           Text(
                             'Your password must contain at least one special character',
                             style: context.bodyL?.copyWith(
@@ -126,9 +134,8 @@ class _CreatePasswordScreenState extends ConsumerState<CreatePasswordScreen> {
                             ),
                           ),
 
-                          const SizedBox(height: 16),
+                          const SizedBox(height: DSSpacing.m),
 
-                          // Password Input
                           CustomInput(
                             controller: _passwordController,
                             label: 'Password',
@@ -137,9 +144,8 @@ class _CreatePasswordScreenState extends ConsumerState<CreatePasswordScreen> {
                             obscureText: true,
                           ),
 
-                          const SizedBox(height: 16),
+                          const SizedBox(height: DSSpacing.m),
 
-                          // Confirm Password Input
                           CustomInput(
                             controller: _confirmPasswordController,
                             label: 'Repeat Password',
@@ -148,9 +154,8 @@ class _CreatePasswordScreenState extends ConsumerState<CreatePasswordScreen> {
                             obscureText: true,
                           ),
 
-                          const SizedBox(height: 25),
+                          const Spacer(),
 
-                          // Continue Button
                           ElevatedButton.icon(
                             onPressed: _onContinue,
                             icon: const Icon(
@@ -165,19 +170,16 @@ class _CreatePasswordScreenState extends ConsumerState<CreatePasswordScreen> {
                             ),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: DSColors.blue,
-                              padding: const EdgeInsets.symmetric(vertical: 14),
+                              minimumSize: const Size.fromHeight(DSSpacing.xxl),
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(
-                                  DSRadius.xl,
-                                ),
+                                borderRadius: BorderRadius.circular(DSRadius.xxl),
                               ),
                             ),
                           ),
-                          const SizedBox(height: 20),
                         ],
                       ),
                     ),
-                  ],
+                  ),
                 ),
               ),
             ),

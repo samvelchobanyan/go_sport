@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 import 'package:go_sport/features/shared_widgets/search_button.dart';
 
 class MyCategoriesHeader extends StatelessWidget {
@@ -47,7 +48,7 @@ class MyCategoriesHeader extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+              padding: const EdgeInsets.symmetric(horizontal: DSSpacing.m, vertical: DSSpacing.s20),
               child: _MyCategoriesHeaderContent(
                 iconPath: iconPath,
                 title: title,
@@ -91,14 +92,14 @@ class _MyCategoriesHeaderContent extends StatelessWidget {
           child: Row(
             children: [
               SvgPicture.asset(iconPath, width: 40, height: 40),
-              const SizedBox(width: 12),
+              const SizedBox(width: DSSpacing.s12),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(title, style: context.h2),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: DSSpacing.xs),
                     Text('$itemCount $subtitle', style: context.textL),
                   ],
                 ),
@@ -107,7 +108,7 @@ class _MyCategoriesHeaderContent extends StatelessWidget {
           ),
         ),
         if (actionIcon != null) ...[
-          const SizedBox(width: 12),
+          const SizedBox(width: DSSpacing.s12),
           GestureDetector(
             onTap: onActionIconTap,
             child: Container(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 import 'package:go_sport/features/shared_widgets/bottom_pop_ups/action_button.dart';
 import 'package:go_sport/features/shared_widgets/bottom_pop_ups/bottom_sheet_container.dart';
 
@@ -27,7 +28,7 @@ void showPlaylistBottomSheet({
               onAddTracks();
             },
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: DSSpacing.s10),
           ActionButton(
             icon: 'assets/icons/edit.svg',
             label: 'Edit playlist',
@@ -36,7 +37,7 @@ void showPlaylistBottomSheet({
               onEdit();
             },
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: DSSpacing.s10),
           ActionButton(
             icon: 'assets/icons/edit.svg',
             label: 'Rename playlist',
@@ -45,7 +46,7 @@ void showPlaylistBottomSheet({
               onRename();
             },
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: DSSpacing.s10),
           ActionButton(
             icon: 'assets/icons/delete_bg.svg',
             label: 'Delete playlist',
