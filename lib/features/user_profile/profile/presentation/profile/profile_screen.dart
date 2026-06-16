@@ -97,7 +97,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                   Container(
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      border: Border.all(color: DSColors.white, width: 12),
+                      border: Border.all(color: DSColors.white50, width: 12),
                     ),
                     child: UserAvatarButton(
                       imageUrl: user.avatar,
@@ -107,7 +107,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                   const SizedBox(height: DSSpacing.s12),
                   Text(
                     '${user.name} ${user.surname}',
-                    style: context.bodyL,
+                    style: context.h3,
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: DSSpacing.s8),
@@ -187,7 +187,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: DSSpacing.s20),
+                      const SizedBox(height: DSSpacing.s14),
 
                       // Menu of actions
                       ActionRow(
@@ -196,7 +196,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                         onTap: () => context.push(AppRoutes.editProfile),
                       ),
 
-                      const SizedBox(height: DSSpacing.s12),
                       if (user.provider != 'google')
                         Column(
                           children: [
@@ -208,8 +207,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                               onTap: () =>
                                   context.push(AppRoutes.profileChangePassword),
                             ),
-
-                            const SizedBox(height: DSSpacing.s12),
                           ],
                         ),
 
