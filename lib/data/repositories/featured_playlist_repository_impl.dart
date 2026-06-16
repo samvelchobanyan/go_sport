@@ -33,6 +33,7 @@ class FeaturedPlaylistRepositoryImpl implements FeaturedPlaylistRepository {
       queryParameters: {
         'populate[Tracks][populate][Album][populate]': 'Cover',
         'populate[Tracks][populate][File][populate]': '*',
+        'populate[Tracks][populate][Artists][fields][0]': 'Name',
         'populate[Cover][populate]': '*',
       },
     );

@@ -206,8 +206,8 @@ class HomeScreen extends ConsumerWidget {
           if (stories.isNotEmpty)
             SliverToBoxAdapter(
               child: Container(
-                height: 90,
-                margin: const EdgeInsets.only(top: DSSpacing.s10),
+                height: 72,
+                margin: const EdgeInsets.only(top: DSSpacing.s18),
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   padding: const EdgeInsets.symmetric(horizontal: DSSpacing.m),
@@ -282,13 +282,7 @@ class HomeScreen extends ConsumerWidget {
                         context.push('/news/${article.id}');
                       },
                     ),
-                    if (!isLast) ...[
-                      const SizedBox(height: DSSpacing.s10),
-
-                      const DottedDivider(),
-
-                      const SizedBox(height: DSSpacing.s10),
-                    ],
+                    if (!isLast) const DottedDivider(),
                   ],
                 );
               }, childCount: news.length > 3 ? 3 : news.length),

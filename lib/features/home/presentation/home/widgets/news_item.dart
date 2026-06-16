@@ -38,27 +38,24 @@ class NewsItem extends StatelessWidget {
               ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(DSRadius.s),
-                child: Hero(
-                  tag: 'newsImage:${article.id}',
-                  child: CachedNetworkImage(
-                    imageUrl: article.imageUrl,
+                child: CachedNetworkImage(
+                  imageUrl: article.imageUrl,
+                  width: 84,
+                  height: 84,
+                  fit: BoxFit.cover,
+                  placeholder: (context, url) => Container(
                     width: 84,
                     height: 84,
-                    fit: BoxFit.cover,
-                    placeholder: (context, url) => Container(
-                      width: 84,
-                      height: 84,
-                      color: DSColors.divider,
-                    ),
-                    errorWidget: (context, url, error) => Container(
-                      width: 84,
-                      height: 84,
-                      color: DSColors.gray20,
-                      child: const Icon(
-                        Icons.error,
-                        color: DSColors.gray50,
-                        size: DSIconSize.s28,
-                      ),
+                    color: DSColors.divider,
+                  ),
+                  errorWidget: (context, url, error) => Container(
+                    width: 84,
+                    height: 84,
+                    color: DSColors.gray20,
+                    child: const Icon(
+                      Icons.error,
+                      color: DSColors.gray50,
+                      size: DSIconSize.s28,
                     ),
                   ),
                 ),

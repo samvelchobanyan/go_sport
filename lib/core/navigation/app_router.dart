@@ -214,10 +214,7 @@ GoRouter createAppRouter(TokenStorage tokenStorage) {
                   // News routes (nested in Home branch)
                   GoRoute(
                     path: 'news',
-                    pageBuilder: (context, state) => fadeSlidePage(
-                      state: state,
-                      child: const NewsListScreen(),
-                    ),
+                    builder: (context, state) => const NewsListScreen(),
                   ),
                   GoRoute(
                     path: 'news/:id',
@@ -259,23 +256,17 @@ GoRouter createAppRouter(TokenStorage tokenStorage) {
                   // Album route
                   GoRoute(
                     path: 'album/:id',
-                    pageBuilder: (context, state) {
+                    builder: (context, state) {
                       final album = state.extra as Album;
-                      return fadeSlidePage(
-                        state: state,
-                        child: AlbumScreen(album: album),
-                      );
+                      return AlbumScreen(album: album);
                     },
                   ),
                   // Artist route
                   GoRoute(
                     path: 'artist/:id',
-                    pageBuilder: (context, state) {
+                    builder: (context, state) {
                       final artist = state.extra as Artist;
-                      return fadeSlidePage(
-                        state: state,
-                        child: ArtistScreen(artist: artist),
-                      );
+                      return ArtistScreen(artist: artist);
                     },
                   ),
                   // Favorites route
@@ -313,12 +304,9 @@ GoRouter createAppRouter(TokenStorage tokenStorage) {
                   // Program details route
                   GoRoute(
                     path: 'program/:id',
-                    pageBuilder: (context, state) {
+                    builder: (context, state) {
                       final program = state.extra as Program;
-                      return fadeSlidePage(
-                        state: state,
-                        child: ProgramDetailsScreen(program: program),
-                      );
+                      return ProgramDetailsScreen(program: program);
                     },
                   ),
                 ],
