@@ -4,11 +4,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
-import 'package:go_sport/design_system/foundations/ds_icon_size.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 import 'package:go_sport/domain/state/registration_state.dart';
 import 'package:go_sport/features/auth/login/presentation/login/login_controller.dart';
+import 'package:go_sport/features/shared_widgets/round_back_button.dart';
 import 'package:go_sport/features/shared_widgets/input.dart';
 import 'package:go_router/go_router.dart';
 
@@ -101,8 +101,7 @@ class _RegistrationEmailScreenState
         backgroundColor: DSColors.white,
         body: Stack(
           children: [
-            // Background image â€” anchored to top, fixed keyboard-independent
-            // height. Stays in place while the card slides up over it.
+    
             Positioned(
               top: 0,
               left: 0,
@@ -114,32 +113,7 @@ class _RegistrationEmailScreenState
               ),
             ),
 
-            // Card â€” pinned to the bottom of the (keyboard-resized) body.
-            // resizeToAvoidBottomInset: true causes the Scaffold body to shrink
-            // when the keyboard opens, which pushes Align(bottomCenter) upward,
-            // making the card slide up over the image.
-            Positioned(
-              bottom: _cardHeight + 20,
-              left: DSSpacing.m,
-              child: GestureDetector(
-                onTap: () => context.go('/login'),
-                child: Container(
-                  padding: const EdgeInsets.all(DSSpacing.s12),
-                  decoration: const BoxDecoration(
-                    color: DSColors.white,
-                    shape: BoxShape.circle,
-                    boxShadow: [
-                      BoxShadow(color: DSColors.gray10, blurRadius: 8),
-                    ],
-                  ),
-                  child: const Icon(
-                    Icons.arrow_back,
-                    color: DSColors.blue,
-                    size: DSIconSize.s24,
-                  ),
-                ),
-              ),
-            ),
+            RoundBackButton(cardHeight: _cardHeight, goBackTo: '/login'),
 
             Align(
               alignment: Alignment.bottomCenter,
@@ -153,9 +127,7 @@ class _RegistrationEmailScreenState
                     topRight: Radius.circular(DSRadius.m),
                   ),
                 ),
-                // SingleChildScrollView is a safety net: normally the content
-                // fits and Spacer() pushes buttons to the bottom; if the card
-                // is pushed high enough that content overflows, scroll activates.
+              
                 child: SingleChildScrollView(
                   padding: EdgeInsets.symmetric(
                     horizontal: DSSpacing.m,

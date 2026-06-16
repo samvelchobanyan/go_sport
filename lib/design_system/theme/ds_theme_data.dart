@@ -43,7 +43,6 @@ class DSThemeData {
         headlineMedium:
             DSTypography.h2, // 21px — Заголовки секций (Featured, Latest)
         headlineSmall: DSTypography.h3, // 18px — Подзаголовки
-
         // ========================================================
         // TITLES (Элементы списков - Montserrat)
         // Иерархия: 14px -> 13px Bold -> 13px SemiBold
@@ -52,17 +51,17 @@ class DSThemeData {
             DSTypography.subtitleLBold, // 14px Bold (Названия треков, альбомов)
         titleMedium: DSTypography.subtitleMBold, // 13px Bold (Вторичный акцент)
         titleSmall: DSTypography.subtitleM, // 13px SemiBold (Мелкий заголовок)
-
         // ========================================================
         // BODY (Основной контент - Montserrat)
         // ========================================================
         bodyLarge:
             DSTypography.subtitleLSemi, // 14px SemiBold (Вступления, акценты)
-
         // [ВАЖНО] Дефолтный стиль для всего текста в приложении
         bodyMedium: DSTypography.bodyL, // 13px Medium (Основной текст)
 
         bodySmall: DSTypography.textL, // 12px SemiBold (Мелкие подписи)
+        // armTitle: DSTypography.armBodyL,
+        // armText: DSTypography.armTextL,
 
         // ========================================================
         // LABELS (Интерфейс и кнопки - Montserrat)

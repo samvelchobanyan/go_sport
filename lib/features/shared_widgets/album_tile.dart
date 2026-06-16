@@ -55,10 +55,10 @@ class AlbumTile extends StatelessWidget {
                   height: 72,
                   fit: BoxFit.cover,
                   placeholder: (context, url) =>
-                      Container(width: 50, height: 50, color: DSColors.divider),
+                      Container(width: 72, height: 72, color: DSColors.divider),
                   errorWidget: (context, url, error) => Container(
-                    width: 50,
-                    height: 50,
+                    width: 72,
+                    height: 72,
                     color: DSColors.gray20,
                     child: const Icon(
                       Icons.error,

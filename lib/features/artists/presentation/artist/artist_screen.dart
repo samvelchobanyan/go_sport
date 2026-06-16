@@ -68,7 +68,7 @@ class _ArtistScreenState extends ConsumerState<ArtistScreen> {
             bottom: PreferredSize(
               preferredSize: const Size.fromHeight(24),
               child: Container(
-                height: 24,
+                height: 20,
                 decoration: const BoxDecoration(
                   color: DSColors.white,
                   borderRadius: BorderRadius.vertical(top: Radius.circular(DSRadius.xl)),
@@ -134,7 +134,7 @@ class _ArtistScreenState extends ConsumerState<ArtistScreen> {
                           ),
                           if (index < albums.length - 1)
                             const Padding(
-                              padding: EdgeInsets.symmetric(horizontal: DSSpacing.l),
+                              padding: EdgeInsets.symmetric(horizontal: DSSpacing.m),
                               child: DottedDivider(),
                             ),
                         ],

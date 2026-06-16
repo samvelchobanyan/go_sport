@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
@@ -206,16 +207,20 @@ class NewsDetailScreen extends ConsumerWidget {
                     child: Container(
                       width: 48,
                       height: 48,
+                      alignment: Alignment.center,
                       decoration: BoxDecoration(
-                        color: DSColors.blue,
+                        color: article.isLiked ? DSColors.blue : DSColors.white,
                         shape: BoxShape.circle,
+                        border: article.isLiked
+                            ? Border.all(color: DSColors.blue, width: 1)
+                            : Border.all(color: DSColors.blue20, width: 1),
                       ),
-                      child: Icon(
+                      child: SvgPicture.asset(
                         article.isLiked
-                            ? Icons.thumb_up
-                            : Icons.thumb_up_outlined,
-                        color: DSColors.white,
-                        size: DSIconSize.s24,
+                            ? 'assets/icons/thumb_up_outlined.svg'
+                            : 'assets/icons/thumb_up.svg',
+                        width: DSIconSize.s24,
+                        height: DSIconSize.s24,
                       ),
                     ),
                   ),
@@ -230,12 +235,12 @@ class NewsDetailScreen extends ConsumerWidget {
                       width: 48,
                       height: 48,
                       decoration: BoxDecoration(
-                        color: DSColors.divider,
+                        color: DSColors.blue10,
                         shape: BoxShape.circle,
                       ),
                       child: Icon(
                         Icons.share_outlined,
-                        color: DSColors.black,
+                        color: DSColors.blue,
                         size: DSIconSize.s24,
                       ),
                     ),
@@ -249,17 +254,20 @@ class NewsDetailScreen extends ConsumerWidget {
                       vertical: 8,
                     ),
                     decoration: BoxDecoration(
-                      border: Border.all(color: DSColors.divider, width: 1),
-                      borderRadius: BorderRadius.circular(DSRadius.l),
+                      border: Border.all(color: DSColors.blue20, width: 1),
+                      borderRadius: BorderRadius.circular(DSRadius.s),
                     ),
                     child: Row(
                       children: [
-                        Icon(Icons.thumb_up, size: DSIconSize.s16, color: DSColors.blue),
+                        SvgPicture.asset(
+                          'assets/icons/thumb_up.svg',
+                          width: DSIconSize.s20,
+                        ),
                         const SizedBox(width: DSSpacing.s6),
                         Text(
                           '${article.likesCount}',
                           style: context.bodyL?.copyWith(
-                            color: DSColors.black,
+                            color: DSColors.blue,
                             fontWeight: FontWeight.w600,
                           ),
                         ),

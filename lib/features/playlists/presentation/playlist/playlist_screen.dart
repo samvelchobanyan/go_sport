@@ -391,7 +391,7 @@ class _PlaylistScreenState extends ConsumerState<PlaylistScreen> {
                         ),
                         if (index < tracks.length - 1)
                           const Padding(
-                            padding: EdgeInsets.symmetric(horizontal: DSSpacing.l),
+                            padding: EdgeInsets.symmetric(horizontal: DSSpacing.m),
                             child: DottedDivider(),
                           ),
                       ],
