@@ -98,24 +98,15 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       border: Border.all(color: DSColors.white50, width: 12),
-<<<<<<< HEAD
                     ),
-                    child: UserAvatarButton(
-                      imageUrl: user.avatar,
-                      size: 100,
-=======
->>>>>>> anna_design
-                    ),
+
                     child: UserAvatarButton(imageUrl: user.avatar, size: 100),
                   ),
                   const SizedBox(height: DSSpacing.s12),
                   Text(
                     '${user.name} ${user.surname}',
-<<<<<<< HEAD
-                    style: context.h3,
-=======
                     style: context.subtitleLBold?.copyWith(fontSize: 18),
->>>>>>> anna_design
+
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: DSSpacing.s8),
