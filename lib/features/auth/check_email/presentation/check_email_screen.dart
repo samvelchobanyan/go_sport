@@ -9,6 +9,7 @@ import 'package:go_sport/core/navigation/routes.dart';
 import 'package:go_sport/domain/state/forgot_password_state.dart';
 import 'package:go_sport/features/shared_widgets/auth_number_box.dart';
 import 'package:go_router/go_router.dart';
+import 'package:go_sport/features/shared_widgets/round_back_button.dart';
 
 const double _cardHeight = 371;
 const double _cardOverlap = 25;
@@ -87,6 +88,11 @@ class _CheckEmailScreenState extends ConsumerState<CheckEmailScreen> {
               ),
             ),
 
+            RoundBackButton(
+              cardHeight: _cardHeight,
+              goBackTo: '/login',
+            ),
+
             Align(
               alignment: Alignment.bottomCenter,
               child: Container(
@@ -160,7 +166,9 @@ class _CheckEmailScreenState extends ConsumerState<CheckEmailScreen> {
                               backgroundColor: DSColors.blue,
                               minimumSize: const Size.fromHeight(DSSpacing.xxl),
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(DSRadius.xxl),
+                                borderRadius: BorderRadius.circular(
+                                  DSRadius.xxl,
+                                ),
                               ),
                             ),
                           ),

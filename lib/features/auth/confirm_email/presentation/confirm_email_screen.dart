@@ -4,12 +4,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
-import 'package:go_sport/design_system/foundations/ds_icon_size.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 import 'package:go_router/go_router.dart';
 import 'package:go_sport/domain/state/registration_state.dart';
 import 'package:go_sport/features/shared_widgets/auth_number_box.dart';
+import 'package:go_sport/features/shared_widgets/round_back_button.dart';
 
 const double _cardHeight = 371;
 const double _cardOverlap = 25;
@@ -88,27 +88,31 @@ class _ConfirmEmailScreenState extends ConsumerState<ConfirmEmailScreen> {
             // Back button floats above the card; Positioned(bottom) is
             // relative to the Stack (body), so it slides up with the card
             // when the keyboard opens.
-            Positioned(
-              bottom: _cardHeight + 20,
-              left: DSSpacing.m,
-              child: GestureDetector(
-                onTap: () => context.go('/registration-email'),
-                child: Container(
-                  padding: const EdgeInsets.all(DSSpacing.s12),
-                  decoration: const BoxDecoration(
-                    color: DSColors.white,
-                    shape: BoxShape.circle,
-                    boxShadow: [
-                      BoxShadow(color: DSColors.gray10, blurRadius: 8),
-                    ],
-                  ),
-                  child: const Icon(
-                    Icons.arrow_back,
-                    color: DSColors.blue,
-                    size: DSIconSize.s24,
-                  ),
-                ),
-              ),
+            // Positioned(
+            //   bottom: _cardHeight + 20,
+            //   left: DSSpacing.m,
+            //   child: GestureDetector(
+            //     onTap: () => context.go('/registration-email'),
+            //     child: Container(
+            //       padding: const EdgeInsets.all(DSSpacing.s12),
+            //       decoration: const BoxDecoration(
+            //         color: DSColors.white,
+            //         shape: BoxShape.circle,
+            //         boxShadow: [
+            //           BoxShadow(color: DSColors.gray10, blurRadius: 8),
+            //         ],
+            //       ),
+            //       child: const Icon(
+            //         Icons.arrow_back,
+            //         color: DSColors.blue,
+            //         size: DSIconSize.s24,
+            //       ),
+            //     ),
+            //   ),
+            // ),
+            RoundBackButton(
+              cardHeight: _cardHeight,
+              goBackTo: '/registration-email',
             ),
 
             Align(
@@ -195,7 +199,9 @@ class _ConfirmEmailScreenState extends ConsumerState<ConfirmEmailScreen> {
                               backgroundColor: DSColors.blue,
                               minimumSize: const Size.fromHeight(DSSpacing.xxl),
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(DSRadius.xxl),
+                                borderRadius: BorderRadius.circular(
+                                  DSRadius.xxl,
+                                ),
                               ),
                             ),
                           ),
@@ -213,10 +219,7 @@ class _ConfirmEmailScreenState extends ConsumerState<ConfirmEmailScreen> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Icon(
-                                  Icons.email_rounded,
-                                  color: DSColors.blue,
-                                ),
+                                Icon(Icons.email_rounded, color: DSColors.blue),
                                 const SizedBox(width: DSSpacing.s8),
                                 Text(
                                   'Resend Code',

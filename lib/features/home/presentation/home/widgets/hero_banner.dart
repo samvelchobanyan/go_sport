@@ -8,7 +8,7 @@ import 'package:go_sport/design_system/foundations/ds_radius.dart';
 class PodcastBanner extends StatelessWidget {
   final VoidCallback? onTap;
 
-  const PodcastBanner({
+  const  PodcastBanner({
     super.key,
     this.onTap,
   });

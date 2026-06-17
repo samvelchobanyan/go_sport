@@ -63,12 +63,20 @@ class _AlbumScreenState extends ConsumerState<AlbumScreen> {
   Widget build(BuildContext context) {
     final tracksState = ref.watch(albumControllerProvider(widget.album.id));
     final isLiked = ref.watch(
-      likeRegistryProvider.select((s) => s.likedAlbums.any((a) => a.id == widget.album.id)),
+      likeRegistryProvider.select(
+        (s) => s.likedAlbums.any((a) => a.id == widget.album.id),
+      ),
     );
-    final isThisActiveSource = ref.watch(playerStateProvider.select((s) =>
-        s.source?.id == widget.album.id && !s.isRadioMode));
-    final isThisPlaying = ref.watch(playerStateProvider.select((s) =>
-        s.source?.id == widget.album.id && s.isPlaying && !s.isRadioMode));
+    final isThisActiveSource = ref.watch(
+      playerStateProvider.select(
+        (s) => s.source?.id == widget.album.id && !s.isRadioMode,
+      ),
+    );
+    final isThisPlaying = ref.watch(
+      playerStateProvider.select(
+        (s) => s.source?.id == widget.album.id && s.isPlaying && !s.isRadioMode,
+      ),
+    );
     final screenHeight = MediaQuery.of(context).size.height;
     final expandedHeight = screenHeight * 0.5;
 
@@ -115,7 +123,9 @@ class _AlbumScreenState extends ConsumerState<AlbumScreen> {
                 height: 24,
                 decoration: const BoxDecoration(
                   color: DSColors.white,
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(DSRadius.xl)),
+                  borderRadius: BorderRadius.vertical(
+                    top: Radius.circular(DSRadius.xl),
+                  ),
                 ),
               ),
             ),
@@ -147,7 +157,9 @@ class _AlbumScreenState extends ConsumerState<AlbumScreen> {
               final playingTrackId = playerState.currentTrack?.id;
 
               return SliverPadding(
-                padding: const EdgeInsets.only(bottom: DSLayout.bottomBarClearance),
+                padding: const EdgeInsets.only(
+                  bottom: DSLayout.bottomBarClearance,
+                ),
                 sliver: SliverList(
                   delegate: SliverChildBuilderDelegate((context, index) {
                     final track = tracks[index];
@@ -170,7 +182,9 @@ class _AlbumScreenState extends ConsumerState<AlbumScreen> {
                         ),
                         if (index < tracks.length - 1)
                           const Padding(
-                            padding: EdgeInsets.symmetric(horizontal: DSSpacing.l),
+                            padding: EdgeInsets.symmetric(
+                              horizontal: DSSpacing.m,
+                            ),
                             child: DottedDivider(),
                           ),
                       ],

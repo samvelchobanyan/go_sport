@@ -18,15 +18,12 @@ class ActionRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: DSSpacing.s8),
-        child: Row(
-          children: [
-            icon,
-            const SizedBox(width: DSSpacing.s10),
-            Expanded(child: Text(text, style: context.subtitleMBold)),
-          ],
-        ),
+      child: Row(
+        children: [
+          icon,
+          const SizedBox(width: DSSpacing.s10),
+          Expanded(child: Text(text, style: context.subtitleMBold)),
+        ],
       ),
     );
   }
