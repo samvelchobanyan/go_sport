@@ -57,7 +57,12 @@ class _StoryOverlayState extends ConsumerState<StoryOverlay>
         if (status == AnimationStatus.completed) _next();
       });
 
-    _markCurrentViewed();
+    // Мутация провайдера — после кадра, не в initState
+    // (иначе Riverpod кинет "modify a provider while building").
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      _markCurrentViewed();
+    });
     _controller.forward();
   }
 
