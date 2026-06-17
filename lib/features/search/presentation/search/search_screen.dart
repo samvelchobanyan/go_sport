@@ -248,7 +248,17 @@ class _FeaturedPlaylistsContent extends ConsumerWidget {
             child: Text('Featured Playlists', style: context.h2),
           );
         }
-        return PlaylistTile(playlist: playlists[index - 1]);
+        final playlist = playlists[index - 1];
+        return PlaylistTile(
+          playlist: playlist,
+          onTap: () {
+            context.push(
+              '/music/playlist/${playlist.id}?type=${playlist.type.name}',
+              extra: playlist,
+            );
+            Navigator.of(context).pop();
+          },
+        );
       },
     );
   }
@@ -394,14 +404,30 @@ class _AllSections extends ConsumerWidget {
         if (state.artists.isNotEmpty)
           _Section(
             title: 'Artists',
-            children:
-                state.artists.map((a) => ArtistTile(artist: a)).toList(),
+            children: state.artists
+                .map((a) => ArtistTile(
+                      artist: a,
+                      onTap: () {
+                        context.push('/music/artist/${a.id}', extra: a);
+                        Navigator.of(context).pop();
+                      },
+                    ))
+                .toList(),
           ),
         if (state.playlists.isNotEmpty)
           _Section(
             title: 'Playlists',
             children: state.playlists
-                .map((p) => PlaylistTile(playlist: p))
+                .map((p) => PlaylistTile(
+                      playlist: p,
+                      onTap: () {
+                        context.push(
+                          '/music/playlist/${p.id}?type=${p.type.name}',
+                          extra: p,
+                        );
+                        Navigator.of(context).pop();
+                      },
+                    ))
                 .toList(),
           ),
         if (state.programs.isNotEmpty)
@@ -474,7 +500,7 @@ class _CategoryList extends ConsumerWidget {
             child: Center(child: CircularProgressIndicator()),
           );
         }
-        return _rowFor(items[index], state);
+        return _rowFor(context, items[index], state);
       },
     );
   }
@@ -494,7 +520,7 @@ class _CategoryList extends ConsumerWidget {
     }
   }
 
-  Widget _rowFor(dynamic item, SearchState s) {
+  Widget _rowFor(BuildContext context, dynamic item, SearchState s) {
     if (item is Track) {
       return _TrackRow(track: item, queue: s.tracks);
     }
@@ -502,13 +528,28 @@ class _CategoryList extends ConsumerWidget {
       return _AlbumRow(album: item);
     }
     if (item is Artist) {
-      return ArtistTile(artist: item);
+      return ArtistTile(
+        artist: item,
+        onTap: () {
+          context.push('/music/artist/${item.id}', extra: item);
+          Navigator.of(context).pop();
+        },
+      );
     }
     if (item is Program) {
       return _ProgramRow(program: item);
     }
     if (item is Playlist) {
-      return PlaylistTile(playlist: item);
+      return PlaylistTile(
+        playlist: item,
+        onTap: () {
+          context.push(
+            '/music/playlist/${item.id}?type=${item.type.name}',
+            extra: item,
+          );
+          Navigator.of(context).pop();
+        },
+      );
     }
     return const SizedBox.shrink();
   }
@@ -567,7 +608,10 @@ class _AlbumRow extends StatelessWidget {
       albumName: album.title,
       artistName: album.artist,
       releaseYear: album.releaseYear,
-      onTap: () => context.push('/music/album/${album.id}', extra: album),
+      onTap: () {
+        context.push('/music/album/${album.id}', extra: album);
+        Navigator.of(context).pop();
+      },
     );
   }
 }
@@ -583,8 +627,10 @@ class _ProgramRow extends StatelessWidget {
       imageUrl: program.imageUrl,
       title: program.title,
       episodeCount: program.episodeCount,
-      onTap: () =>
-          context.push('/music/program/${program.id}', extra: program),
+      onTap: () {
+        context.push('/music/program/${program.id}', extra: program);
+        Navigator.of(context).pop();
+      },
     );
   }
 }

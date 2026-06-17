@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_icon_size.dart';
@@ -6,21 +7,117 @@ import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/domain/entities/story.dart';
+import 'package:go_sport/domain/state/stories_state.dart';
 
-class StoryOverlay extends StatelessWidget {
+import 'widgets/story_progress_bar.dart';
+
+/// Duration each story is shown before auto-advancing to the next one.
+const Duration _kStoryDuration = Duration(seconds: 7);
+
+/// Left third of the screen is the "previous" tap zone, the rest is "next".
+const double _kPrevZoneFraction = 1 / 3;
+
+/// Full-screen story viewer with auto-advance, tap navigation and hold-to-pause.
+///
+/// Reads the story list from [storiesStateProvider] once on open and drives the
+/// viewing session locally: current index + a single [AnimationController] that
+/// both times the 7s auto-advance and fills the active progress segment. Marks
+/// each shown story as viewed via the notifier (mirrors how the player carousel
+/// reads/pushes its domain state). Navigation away is delegated via [onAction].
+class StoryOverlay extends ConsumerStatefulWidget {
   const StoryOverlay({
     super.key,
-    required this.story,
+    required this.initialIndex,
     required this.onClose,
     required this.onAction,
   });
 
-  final Story story;
+  final int initialIndex;
   final VoidCallback onClose;
   final void Function(String targetType, String targetId) onAction;
 
   @override
+  ConsumerState<StoryOverlay> createState() => _StoryOverlayState();
+}
+
+class _StoryOverlayState extends ConsumerState<StoryOverlay>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller;
+  late final List<Story> _stories;
+  late int _index;
+
+  @override
+  void initState() {
+    super.initState();
+    _stories = ref.read(storiesStateProvider).storiesList;
+    _index = widget.initialIndex;
+
+    _controller = AnimationController(vsync: this, duration: _kStoryDuration)
+      ..addStatusListener((status) {
+        if (status == AnimationStatus.completed) _next();
+      });
+
+    _markCurrentViewed();
+    _controller.forward();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  void _markCurrentViewed() {
+    ref
+        .read(storiesStateProvider.notifier)
+        .markAsViewed(_stories[_index].id);
+  }
+
+  void _restartTimer() {
+    _controller
+      ..reset()
+      ..forward();
+  }
+
+  void _next() {
+    // Past the last story → close the viewer.
+    if (_index >= _stories.length - 1) {
+      widget.onClose();
+      return;
+    }
+    setState(() => _index++);
+    _markCurrentViewed();
+    _restartTimer();
+  }
+
+  void _prev() {
+    // On the first story tapping "back" does nothing — stay put.
+    if (_index == 0) return;
+    setState(() => _index--);
+    _markCurrentViewed();
+    _restartTimer();
+  }
+
+  void _pause() => _controller.stop();
+
+  void _resume() {
+    if (!_controller.isAnimating) _controller.forward();
+  }
+
+  void _onTapUp(TapUpDetails details) {
+    final width = MediaQuery.of(context).size.width;
+    if (details.localPosition.dx < width * _kPrevZoneFraction) {
+      _prev();
+    } else {
+      _next();
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final story = _stories[_index];
+    final topInset = MediaQuery.of(context).padding.top;
+
     return Scaffold(
       backgroundColor: DSColors.transparent,
       body: Stack(
@@ -28,6 +125,7 @@ class StoryOverlay extends StatelessWidget {
           // Background image (full screen, including system areas)
           Positioned.fill(
             child: CachedNetworkImage(
+              key: ValueKey(story.id),
               imageUrl: story.imageUrl,
               fit: BoxFit.cover,
               placeholder: (context, url) => Container(
@@ -36,7 +134,7 @@ class StoryOverlay extends StatelessWidget {
               ),
               errorWidget: (context, url, error) => Container(
                 color: DSColors.gray20,
-                child: Icon(
+                child: const Icon(
                   Icons.broken_image,
                   size: 64,
                   color: DSColors.gray50,
@@ -45,20 +143,68 @@ class StoryOverlay extends StatelessWidget {
             ),
           ),
 
+          // Tap zones (left = prev, right = next) + hold-to-pause
+          Positioned.fill(
+            child: GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTapUp: _onTapUp,
+              onLongPressStart: (_) => _pause(),
+              onLongPressEnd: (_) => _resume(),
+            ),
+          ),
+
+          // Top scrim so progress bar / close button read on any photo
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            child: IgnorePointer(
+              child: Container(
+                height: topInset + 80,
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [DSColors.gray50, DSColors.transparent],
+                  ),
+                ),
+              ),
+            ),
+          ),
+
+          // Segmented progress bar
+          Positioned(
+            top: topInset + DSSpacing.s8,
+            left: DSSpacing.m,
+            right: DSSpacing.m,
+            child: AnimatedBuilder(
+              animation: _controller,
+              builder: (context, _) => StoryProgressBar(
+                count: _stories.length,
+                currentIndex: _index,
+                progress: _controller.value,
+              ),
+            ),
+          ),
+
           // Close button (top-right, respecting safe area)
           Positioned(
-            top: MediaQuery.of(context).padding.top + DSSpacing.m,
+            top: topInset + DSSpacing.l,
             right: DSSpacing.m,
             child: GestureDetector(
-              onTap: onClose,
+              onTap: widget.onClose,
               child: Container(
                 width: 44,
                 height: 44,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: DSColors.white90,
                   shape: BoxShape.circle,
                 ),
-                child: Icon(Icons.close, size: DSIconSize.s24, color: DSColors.black),
+                child: const Icon(
+                  Icons.close,
+                  size: DSIconSize.s24,
+                  color: DSColors.black,
+                ),
               ),
             ),
           ),
@@ -69,7 +215,7 @@ class StoryOverlay extends StatelessWidget {
             right: 0,
             bottom: 0,
             child: Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
@@ -108,7 +254,7 @@ class StoryOverlay extends StatelessWidget {
                         child: SizedBox(
                           width: double.infinity,
                           child: GestureDetector(
-                            onTap: () => onAction(
+                            onTap: () => widget.onAction(
                               story.ctaTargetType,
                               story.ctaTargetId,
                             ),
@@ -124,7 +270,7 @@ class StoryOverlay extends StatelessWidget {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Icon(
+                                  const Icon(
                                     Icons.campaign,
                                     size: DSIconSize.s20,
                                     color: DSColors.black,
@@ -144,8 +290,8 @@ class StoryOverlay extends StatelessWidget {
                       ),
 
                       SizedBox(
-                        height:
-                            MediaQuery.of(context).padding.bottom + DSSpacing.l,
+                        height: MediaQuery.of(context).padding.bottom +
+                            DSSpacing.l,
                       ),
                     ],
                   ),

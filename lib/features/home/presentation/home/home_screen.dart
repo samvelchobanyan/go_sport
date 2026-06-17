@@ -54,10 +54,7 @@ class HomeScreen extends ConsumerWidget {
     }
   }
 
-  void _openStoryOverlay(BuildContext context, WidgetRef ref, Story story) {
-    // Mark story as viewed
-    ref.read(storiesStateProvider.notifier).markAsViewed(story.id);
-
+  void _openStoryOverlay(BuildContext context, int initialIndex) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -68,7 +65,7 @@ class HomeScreen extends ConsumerWidget {
       builder: (modalContext) => MediaQuery(
         data: MediaQuery.of(context),
         child: StoryOverlay(
-          story: story,
+          initialIndex: initialIndex,
           onClose: () => Navigator.of(modalContext).pop(),
           onAction: (targetType, targetId) {
             Navigator.of(modalContext).pop();
@@ -218,7 +215,7 @@ class HomeScreen extends ConsumerWidget {
                       padding: const EdgeInsets.only(right: DSSpacing.s8),
                       child: StoryItem(
                         story: story,
-                        onTap: () => _openStoryOverlay(context, ref, story),
+                        onTap: () => _openStoryOverlay(context, index),
                       ),
                     );
                   },

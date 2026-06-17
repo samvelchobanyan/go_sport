@@ -109,6 +109,10 @@ class MyPlaylistsScreen extends ConsumerWidget {
         return PlaylistTile(
           playlist: playlist,
           topPadding: index == 0 ? 20 : 8,
+          onTap: () => context.push(
+            '/music/playlist/${playlist.id}?type=${playlist.type.name}',
+            extra: playlist,
+          ),
         );
       },
     );

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_spacing.dart';
@@ -90,6 +91,7 @@ class MyArtistsScreen extends ConsumerWidget {
           return ArtistTile(
             artist: artist,
             topPadding: index == 0 ? 20 : 8,
+            onTap: () => context.push('/music/artist/${artist.id}', extra: artist),
           );
         },
       ),

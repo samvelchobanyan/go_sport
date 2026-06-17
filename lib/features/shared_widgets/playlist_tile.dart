@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
@@ -11,10 +10,12 @@ import 'package:go_sport/domain/entities/playlist.dart';
 
 class PlaylistTile extends StatelessWidget {
   final Playlist playlist;
+  final VoidCallback onTap;
   final double topPadding;
 
   const PlaylistTile({
     required this.playlist,
+    required this.onTap,
     this.topPadding = 8,
     super.key,
   });
@@ -22,10 +23,7 @@ class PlaylistTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => context.push(
-        '/music/playlist/${playlist.id}?type=${playlist.type.name}',
-        extra: playlist,
-      ),
+      onTap: onTap,
       behavior: HitTestBehavior.opaque,
       child: Padding(
         padding: EdgeInsets.only(left: DSSpacing.m, right: DSSpacing.m, top: topPadding, bottom: DSSpacing.s8),
