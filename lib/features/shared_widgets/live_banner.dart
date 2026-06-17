@@ -12,7 +12,11 @@ class LiveBanner extends StatelessWidget {
   Widget build(BuildContext context) {
     return SliverToBoxAdapter(
       child: Padding(
-        padding: EdgeInsets.only(right: DSSpacing.m, left: DSSpacing.m, top: DSSpacing.s18),
+        padding: EdgeInsets.only(
+          right: DSSpacing.m,
+          left: DSSpacing.m,
+          top: DSSpacing.s18,
+        ),
         child: Container(
           height: 64,
           decoration: BoxDecoration(

@@ -82,7 +82,20 @@ flutter:
               - asset: assets/fonts/montserrat/Montserrat-Bold.ttf
                 weight: 700
 
-        - family: Noah # Используем для акцентных заголовков
+        - family: Montserratarm
+          fonts:
+              - asset: assets/fonts/montserrat/Montserratarm-Thin.otf
+                weight: 100
+              - asset: assets/fonts/montserrat/Montserratarm-Light.ttf
+                weight: 400
+              - asset: assets/fonts/montserrat/Montserratarm-Regular.ttf
+                weight: 500
+              - asset: assets/fonts/montserrat/Montserratarm-Medium.ttf
+                weight: 600
+              - asset: assets/fonts/montserrat/Montserratarm-SemiBold.ttf
+                weight: 700
+                
+        - family: Noah
           fonts:
               - asset: assets/fonts/noah/Noh95_Am.ttf
                 weight: 500

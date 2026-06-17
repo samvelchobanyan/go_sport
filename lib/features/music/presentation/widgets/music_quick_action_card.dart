@@ -31,7 +31,7 @@ class MusicQuickActionCard extends StatelessWidget {
         child: Row(
           children: [
             icon,
-            const SizedBox(width: DSSpacing.s12),
+            const SizedBox(width: DSSpacing.s8),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,

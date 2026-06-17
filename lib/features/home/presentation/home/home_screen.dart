@@ -187,7 +187,11 @@ class HomeScreen extends ConsumerWidget {
             pinned: true,
             floating: true,
             leading: Padding(
-              padding: const EdgeInsets.only(top: DSSpacing.s8, bottom: DSSpacing.s8, left: DSSpacing.m),
+              padding: const EdgeInsets.only(
+                top: DSSpacing.s8,
+                bottom: DSSpacing.s8,
+                left: DSSpacing.m,
+              ),
               child: UserAvatarButton(
                 imageUrl: null,
                 onTap: () {
@@ -197,9 +201,7 @@ class HomeScreen extends ConsumerWidget {
             ),
             title: SvgPicture.asset('assets/icons/app_logo.svg', height: 40),
             centerTitle: true,
-            actions: [
-              const SearchButton(),
-            ],
+            actions: [const SearchButton()],
           ),
 
           // Stories Row
@@ -228,7 +230,10 @@ class HomeScreen extends ConsumerWidget {
 
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.only(top: DSSpacing.l, bottom: DSSpacing.xl),
+              padding: const EdgeInsets.only(
+                top: DSSpacing.l,
+                bottom: DSSpacing.xl,
+              ),
               child: PodcastBanner(
                 onTap: () {
                   // TODO: навигация
@@ -244,13 +249,18 @@ class HomeScreen extends ConsumerWidget {
           if (news.isNotEmpty)
             SliverToBoxAdapter(
               child: Padding(
-                padding: const EdgeInsets.only(top: DSSpacing.xl, bottom: DSSpacing.s10),
+                padding: const EdgeInsets.only(
+                  top: DSSpacing.xl,
+                  bottom: DSSpacing.s10,
+                ),
                 child: GestureDetector(
                   onTap: () {
                     context.push('/news');
                   },
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: DSSpacing.m),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: DSSpacing.m,
+                    ),
                     child: Row(
                       children: [
                         Text('News', style: context.h2),
@@ -282,7 +292,15 @@ class HomeScreen extends ConsumerWidget {
                         context.push('/news/${article.id}');
                       },
                     ),
-                    if (!isLast) const DottedDivider(),
+                    if (!isLast) ...[
+                      const Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: DSSpacing.m,
+                          vertical: DSSpacing.s10,
+                        ),
+                        child: DottedDivider(),
+                      ),
+                    ],
                   ],
                 );
               }, childCount: news.length > 3 ? 3 : news.length),

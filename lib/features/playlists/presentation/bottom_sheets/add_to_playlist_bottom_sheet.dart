@@ -10,7 +10,6 @@ import 'package:go_sport/features/shared_widgets/bottom_pop_ups/bottom_sheet_con
 import 'package:go_sport/domain/entities/track.dart';
 
 import 'add_to_playlist_controller.dart';
-import 'create_playlist.dart'; // Предполагаем, что этот файл существует для создания
 
 void showAddToPlaylistBottomSheet({
   required BuildContext context,

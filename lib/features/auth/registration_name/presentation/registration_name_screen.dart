@@ -79,7 +79,7 @@ class _RegistrationNameScreenState
               right: 0,
               height: imageHeight,
               child: Image.asset(
-                'assets/images/confirm_email_bg.png',
+                'assets/images/registration_name.png',
                 fit: BoxFit.cover,
               ),
             ),

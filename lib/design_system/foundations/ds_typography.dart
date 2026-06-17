@@ -43,7 +43,8 @@ class DSTypography {
     letterSpacing: 0,
     leadingDistribution: TextLeadingDistribution.even,
     color: DSColors.black,
-  ); 
+    fontFamilyFallback: ['Montserratarm'],
+  );
 
   static const TextStyle subtitleLSemi = TextStyle(
     fontFamily: 'Montserrat',
@@ -53,6 +54,7 @@ class DSTypography {
     letterSpacing: 0,
     leadingDistribution: TextLeadingDistribution.even,
     color: DSColors.black,
+    fontFamilyFallback: ['Montserratarm'],
   );
 
   // ===== Body / Text =====
@@ -65,6 +67,7 @@ class DSTypography {
     letterSpacing: 0,
     leadingDistribution: TextLeadingDistribution.even,
     color: DSColors.black,
+    fontFamilyFallback: ['Montserratarm'],
   );
 
   static const TextStyle subtitleM = TextStyle(
@@ -75,6 +78,7 @@ class DSTypography {
     letterSpacing: 0,
     leadingDistribution: TextLeadingDistribution.even,
     color: DSColors.black,
+    fontFamilyFallback: ['Montserratarm'],
   );
 
   static const TextStyle textL = TextStyle(
@@ -85,6 +89,7 @@ class DSTypography {
     letterSpacing: 0,
     leadingDistribution: TextLeadingDistribution.even,
     color: DSColors.black,
+    fontFamilyFallback: ['Montserratarm'],
   );
 
   static const TextStyle bodyL = TextStyle(
@@ -95,6 +100,7 @@ class DSTypography {
     letterSpacing: 0,
     leadingDistribution: TextLeadingDistribution.even,
     color: DSColors.black,
+    fontFamilyFallback: ['Montserratarm'],
   );
 
   // ===== Labels =====
@@ -107,6 +113,7 @@ class DSTypography {
     letterSpacing: 0,
     leadingDistribution: TextLeadingDistribution.even,
     color: DSColors.black,
+    fontFamilyFallback: ['Montserratarm'],
   );
 
   static const TextStyle fieldLabel = TextStyle(
@@ -117,6 +124,7 @@ class DSTypography {
     letterSpacing: 0,
     leadingDistribution: TextLeadingDistribution.even,
     color: DSColors.black,
+    fontFamilyFallback: ['Montserratarm'],
   );
 
   static const TextStyle navLabel = TextStyle(
@@ -127,5 +135,106 @@ class DSTypography {
     letterSpacing: 0,
     leadingDistribution: TextLeadingDistribution.even,
     color: DSColors.black,
+    fontFamilyFallback: ['Montserratarm'],
   );
+
+  // Armenian font styles
+  // static const TextStyle armSubtitleLBold = TextStyle(
+  //   fontFamily: 'Montserratarm',
+  //   fontSize: 14,
+  //   fontWeight: FontWeight.w700,
+  //   height: 1.29, // 18 / 14
+  //   letterSpacing: 0,
+  //   leadingDistribution: TextLeadingDistribution.even,
+  //   color: DSColors.black,
+  //   fontFamilyFallback: ['Montserrat'],
+  // );
+
+  // static const TextStyle armSubtitleLSemi = TextStyle(
+  //   fontFamily: 'Montserratarm',
+  //   fontSize: 14,
+  //   fontWeight: FontWeight.w600,
+  //   height: 1.29,
+  //   letterSpacing: 0,
+  //   leadingDistribution: TextLeadingDistribution.even,
+  //   color: DSColors.black,
+  //   fontFamilyFallback: ['Montserrat'],
+  // );
+
+  // static const TextStyle armSubtitleMBold = TextStyle(
+  //   fontFamily: 'Montserratarm',
+  //   fontSize: 13,
+  //   fontWeight: FontWeight.w700,
+  //   height: 1.38, // 18 / 13
+  //   letterSpacing: 0,
+  //   leadingDistribution: TextLeadingDistribution.even,
+  //   color: DSColors.black,
+  //   fontFamilyFallback: ['Montserrat'],
+  // );
+
+  // static const TextStyle armSubtitleM = TextStyle(
+  //   fontFamily: 'Montserratarm',
+  //   fontSize: 13,
+  //   fontWeight: FontWeight.w600,
+  //   height: 1.38,
+  //   letterSpacing: 0,
+  //   leadingDistribution: TextLeadingDistribution.even,
+  //   color: DSColors.black,
+  //   fontFamilyFallback: ['Montserrat'],
+  // );
+
+  // static const TextStyle armBodyL = TextStyle(
+  //   fontFamily: 'Montserratarm',
+  //   fontSize: 13,
+  //   fontWeight: FontWeight.w500,
+  //   height: 1.54,
+  //   letterSpacing: 0,
+  //   leadingDistribution: TextLeadingDistribution.even,
+  //   color: DSColors.black,
+  //   fontFamilyFallback: ['Montserrat'],
+  // );
+
+  // static const TextStyle armTextL = TextStyle(
+  //   fontFamily: 'Montserratarm',
+  //   fontSize: 12,
+  //   fontWeight: FontWeight.w600,
+  //   height: 1.33,
+  //   letterSpacing: 0,
+  //   leadingDistribution: TextLeadingDistribution.even,
+  //   color: DSColors.black,
+  //   fontFamilyFallback: ['Montserrat'],
+  // );
+
+  // static const TextStyle armLabel = TextStyle(
+  //   fontFamily: 'Montserratarm',
+  //   fontSize: 11,
+  //   fontWeight: FontWeight.w500,
+  //   height: 1.36,
+  //   letterSpacing: 0,
+  //   leadingDistribution: TextLeadingDistribution.even,
+  //   color: DSColors.black,
+  //   fontFamilyFallback: ['Montserrat'],
+  // );
+
+  // static const TextStyle armFieldLabel = TextStyle(
+  //   fontFamily: 'Montserratarm',
+  //   fontSize: 11,
+  //   fontWeight: FontWeight.w600,
+  //   height: 1.36,
+  //   letterSpacing: 0,
+  //   leadingDistribution: TextLeadingDistribution.even,
+  //   color: DSColors.black,
+  //   fontFamilyFallback: ['Montserrat'],
+  // );
+
+  // static const TextStyle armNavLabel = TextStyle(
+  //   fontFamily: 'Montserratarm',
+  //   fontSize: 10,
+  //   fontWeight: FontWeight.w600,
+  //   height: 1.2,
+  //   letterSpacing: 0,
+  //   leadingDistribution: TextLeadingDistribution.even,
+  //   color: DSColors.black,
+  //   fontFamilyFallback: ['Montserrat'],
+  // );
 }

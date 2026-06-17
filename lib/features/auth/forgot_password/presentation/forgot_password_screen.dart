@@ -7,6 +7,7 @@ import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 import 'package:go_sport/domain/state/forgot_password_state.dart';
+import 'package:go_sport/features/shared_widgets/round_back_button.dart';
 import 'package:go_sport/features/shared_widgets/input.dart';
 import 'package:go_router/go_router.dart';
 
@@ -92,6 +93,8 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
               ),
             ),
 
+  
+            RoundBackButton(cardHeight: _cardHeight, goBackTo: '/login'),
             Align(
               alignment: Alignment.bottomCenter,
               child: Container(
@@ -170,7 +173,9 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                               backgroundColor: DSColors.blue,
                               minimumSize: const Size.fromHeight(DSSpacing.xxl),
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(DSRadius.xxl),
+                                borderRadius: BorderRadius.circular(
+                                  DSRadius.xxl,
+                                ),
                               ),
                             ),
                           ),

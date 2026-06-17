@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_icon_size.dart';
 import 'package:go_sport/design_system/foundations/ds_spacing.dart';
@@ -52,13 +53,17 @@ class StoryOverlay extends StatelessWidget {
             child: GestureDetector(
               onTap: onClose,
               child: Container(
-                width: 44,
-                height: 44,
+                width: 40,
+                height: 40,
                 decoration: BoxDecoration(
-                  color: DSColors.white90,
+                  color: const Color.fromARGB(136, 255, 255, 255),
                   shape: BoxShape.circle,
                 ),
-                child: Icon(Icons.close, size: DSIconSize.s24, color: DSColors.black),
+                child: Icon(
+                  Icons.close,
+                  size: DSIconSize.s24,
+                  color: DSColors.black,
+                ),
               ),
             ),
           ),
@@ -82,7 +87,7 @@ class StoryOverlay extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: DSSpacing.l),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       const SizedBox(height: 80),
 
@@ -103,42 +108,27 @@ class StoryOverlay extends StatelessWidget {
                       const SizedBox(height: DSSpacing.l),
 
                       // CTA Button
-                      Padding(
-                        padding: const EdgeInsets.all(DSSpacing.l),
-                        child: SizedBox(
-                          width: double.infinity,
-                          child: GestureDetector(
-                            onTap: () => onAction(
-                              story.ctaTargetType,
-                              story.ctaTargetId,
-                            ),
-                            child: Container(
-                              width: double.infinity,
-                              height: 56,
-                              decoration: BoxDecoration(
-                                color: DSColors.lime,
-                                borderRadius: BorderRadius.circular(
-                                  DSRadius.xxl,
+                      GestureDetector(
+                        onTap: () =>
+                            onAction(story.ctaTargetType, story.ctaTargetId),
+                        child: Container(
+                          height: 48,
+                          decoration: BoxDecoration(
+                            color: DSColors.lime,
+                            borderRadius: BorderRadius.circular(DSRadius.xxl),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SvgPicture.asset('assets/icons/volume.svg'),
+                              const SizedBox(width: DSSpacing.s8),
+                              Text(
+                                story.ctaLabel,
+                                style: context.subtitleLBold?.copyWith(
+                                  color: DSColors.blue,
                                 ),
                               ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    Icons.campaign,
-                                    size: DSIconSize.s20,
-                                    color: DSColors.black,
-                                  ),
-                                  const SizedBox(width: DSSpacing.s8),
-                                  Text(
-                                    story.ctaLabel,
-                                    style: context.subtitleLBold?.copyWith(
-                                      color: DSColors.black,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
+                            ],
                           ),
                         ),
                       ),

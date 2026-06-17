@@ -29,9 +29,7 @@ class NewsListScreen extends ConsumerWidget {
         ),
         title: Text('News', style: context.h2),
         centerTitle: true,
-        actions: [
-          const SearchButton(),
-        ],
+        actions: [const SearchButton()],
       ),
       body: _buildBody(context, ref, newsState),
     );
@@ -76,9 +74,12 @@ class NewsListScreen extends ConsumerWidget {
     return RefreshIndicator(
       onRefresh: () => ref.read(newsStateProvider.notifier).refresh(),
       child: ListView.separated(
-        padding: const EdgeInsets.only(top: DSSpacing.m, bottom: DSLayout.bottomBarClearance),
+        padding: const EdgeInsets.only(bottom: DSLayout.bottomBarClearance),
         itemCount: articles.length,
-        separatorBuilder: (context, index) => const DottedDivider(),
+        separatorBuilder: (context, index) => const Padding(
+          padding: EdgeInsets.symmetric(horizontal: DSSpacing.m),
+          child: DottedDivider(),
+        ),
         itemBuilder: (context, index) {
           final article = articles[index];
           return NewsItem(
