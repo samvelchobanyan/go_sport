@@ -12,7 +12,7 @@ class SearchButton extends StatelessWidget {
   const SearchButton({
     super.key,
     this.onTap,
-    this.size = 20,
+    this.size = 24,
     this.iconColor = DSColors.black,
     this.decoration = false,
   });

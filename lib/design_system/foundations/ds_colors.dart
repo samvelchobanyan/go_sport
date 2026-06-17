@@ -45,6 +45,7 @@ class DSColors {
   static const white80 = Color(0xCCFFFFFF); // 80% Transparency (0.8)
   static const white50 = Color(0x80FFFFFF); // 50% Transparency (0.5)
   static const white20 = Color(0x33FFFFFF); // 20% Transparency (0.2)
+  static const white10 = Color(0x1AFFFFFF); // 10% Transparency (0.1)
 
   static const divider = gray20; // rgba(245,245,247,1)
 

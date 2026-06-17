@@ -97,17 +97,14 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                   Container(
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      border: Border.all(color: DSColors.white, width: 12),
+                      border: Border.all(color: DSColors.white50, width: 12),
                     ),
-                    child: UserAvatarButton(
-                      imageUrl: user.avatar,
-                      size: 100,
-                    ),
+                    child: UserAvatarButton(imageUrl: user.avatar, size: 100),
                   ),
                   const SizedBox(height: DSSpacing.s12),
                   Text(
                     '${user.name} ${user.surname}',
-                    style: context.bodyL,
+                    style: context.subtitleLBold?.copyWith(fontSize: 18),
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: DSSpacing.s8),
@@ -191,7 +188,10 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
 
                       // Menu of actions
                       ActionRow(
-                        icon: SvgPicture.asset('assets/icons/edit.svg'),
+                        icon: SvgPicture.asset(
+                          'assets/icons/edit.svg',
+                          width: 32,
+                        ),
                         text: 'Edit Profile',
                         onTap: () => context.push(AppRoutes.editProfile),
                       ),
@@ -203,6 +203,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                             ActionRow(
                               icon: SvgPicture.asset(
                                 'assets/icons/lock_bg.svg',
+                                width: 32,
                               ),
                               text: 'Change Password',
                               onTap: () =>
@@ -214,7 +215,10 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                         ),
 
                       ActionRow(
-                        icon: SvgPicture.asset('assets/icons/logout_bg.svg'),
+                        icon: SvgPicture.asset(
+                          'assets/icons/logout_bg.svg',
+                          width: 32,
+                        ),
                         text: 'Logout',
                         onTap: () async {
                           await ref.read(authProvider.notifier).logout();
@@ -247,25 +251,37 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                             ),
                             const SizedBox(height: DSSpacing.s12),
                             ContactInfoItem(
-                              icon: Icons.location_on_sharp,
+                              icon: SvgPicture.asset(
+                                'assets/icons/pin.svg',
+                                width: 16,
+                              ),
                               text: '0002 Yrevan, Hanrapetutyan street 4',
                             ),
                             const SizedBox(height: DSSpacing.s12),
 
                             ContactInfoItem(
-                              icon: Icons.phone_in_talk_rounded,
+                              icon: SvgPicture.asset(
+                                'assets/icons/phone.svg',
+                                width: 20,
+                              ),
                               text: '+010 96 456 456',
                             ),
                             const SizedBox(height: DSSpacing.s12),
 
                             ContactInfoItem(
-                              icon: Icons.email_rounded,
+                              icon: SvgPicture.asset(
+                                'assets/icons/email.svg',
+                                width: 16,
+                              ),
                               text: 'Info@gosport.fm',
                             ),
                             const SizedBox(height: DSSpacing.s12),
 
                             ContactInfoItem(
-                              icon: Icons.language,
+                              icon: SvgPicture.asset(
+                                'assets/icons/world.svg',
+                                width: 20,
+                              ),
                               text: 'gosport.fm',
                             ),
                             const SizedBox(height: DSSpacing.l),
