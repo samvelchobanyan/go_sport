@@ -42,81 +42,86 @@ class _DeleteSuccessScreenState extends ConsumerState<DeleteSuccessScreen> {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
 
-    return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle.dark,
-      child: Scaffold(
-        extendBodyBehindAppBar: true,
-        // Removed leading arrow because the account is gone
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          automaticallyImplyLeading: false, // Prevents default back button
-          title: SvgPicture.asset('assets/icons/app_logo.svg', height: 36),
-          centerTitle: true,
-        ),
-        body: Stack(
-          children: [
-            Image.asset(
-              'assets/images/delete_success.png',
-              width: screenWidth,
-              height: screenHeight * 0.5,
-              fit: BoxFit.cover,
-            ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Container(
-                height: screenHeight * 0.6,
+    return PopScope(
+      canPop: false,
+      child: AnnotatedRegion<SystemUiOverlayStyle>(
+        value: SystemUiOverlayStyle.dark,
+        child: Scaffold(
+          extendBodyBehindAppBar: true,
+          // Removed leading arrow because the account is gone
+          appBar: AppBar(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            automaticallyImplyLeading: false, // Prevents default back button
+            title: SvgPicture.asset('assets/icons/app_logo.svg', height: 36),
+            centerTitle: true,
+          ),
+          body: Stack(
+            children: [
+              Image.asset(
+                'assets/images/delete_success.png',
                 width: screenWidth,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 36,
-                  vertical: 33,
-                ),
-                decoration: BoxDecoration(
-                  color: DSColors.white,
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(DSRadius.m),
-                    topRight: Radius.circular(DSRadius.m),
+                height: screenHeight * 0.5,
+                fit: BoxFit.cover,
+              ),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Container(
+                  height: screenHeight * 0.6,
+                  width: screenWidth,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 36,
+                    vertical: 33,
+                  ),
+                  decoration: BoxDecoration(
+                    color: DSColors.white,
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(DSRadius.m),
+                      topRight: Radius.circular(DSRadius.m),
+                    ),
+                  ),
+                  child: Column(
+                    children: [
+                      Text('Account Deleted', style: context.h2),
+                      const SizedBox(height: DSSpacing.s12),
+                      Text(
+                        'Your account has been deleted.\nWe will miss you.',
+                        textAlign: TextAlign.center,
+                        style: context.subtitleMBold?.copyWith(
+                          color: DSColors.gray70,
+                        ),
+                      ),
+                      const Spacer(),
+                      // Action Button
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton.icon(
+                          icon: SvgPicture.asset('assets/icons/login.svg'),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: DSColors.blue,
+                            padding: const EdgeInsets.symmetric(
+                              vertical: DSSpacing.m,
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(DSRadius.xxl),
+                            ),
+                          ),
+                          onPressed: () => context.go('/login'),
+                          label: Text(
+                            "Back to Login",
+                            style: context.subtitleLBold?.copyWith(
+                              color: DSColors.lime,
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: DSSpacing.s20),
+                    ],
                   ),
                 ),
-                child: Column(
-                  children: [
-                    Text('Account Deleted', style: context.h2),
-                    const SizedBox(height: DSSpacing.s12),
-                    Text(
-                      'Your account has been deleted.\nWe will miss you.',
-                      textAlign: TextAlign.center,
-                      style: context.subtitleMBold?.copyWith(
-                        color: DSColors.gray70,
-                      ),
-                    ),
-                    const Spacer(),
-                    // Action Button
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton.icon(
-                        icon: SvgPicture.asset('assets/icons/login.svg'),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: DSColors.blue,
-                          padding: const EdgeInsets.symmetric(vertical: DSSpacing.m),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(DSRadius.xxl),
-                          ),
-                        ),
-                        onPressed: () => context.go('/login'),
-                        label: Text(
-                          "Back to Login",
-                          style: context.subtitleLBold?.copyWith(
-                            color: DSColors.lime,
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: DSSpacing.s20),
-                  ],
-                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
