@@ -31,21 +31,18 @@ class AlbumTile extends StatelessWidget {
       onTap: onTap,
       behavior: HitTestBehavior.opaque,
       child: Padding(
-        padding: EdgeInsets.only(left: DSSpacing.m, right: DSSpacing.m, top: topPadding, bottom: DSSpacing.s8),
+        padding: EdgeInsets.only(
+          left: DSSpacing.m,
+          right: DSSpacing.m,
+          top: topPadding,
+          bottom: DSSpacing.s8,
+        ),
         child: Row(
           children: [
             // Thumbnail image
             Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(DSRadius.s),
-                boxShadow: [
-                  BoxShadow(
-                    color: DSColors.gray70,
-                    blurRadius: 6,
-                    spreadRadius: -2, // reduces shadow spread on sides
-                    offset: const Offset(0, 4),
-                  ),
-                ],
               ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(DSRadius.s),

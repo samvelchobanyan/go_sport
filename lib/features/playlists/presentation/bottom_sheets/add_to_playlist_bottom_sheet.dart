@@ -36,7 +36,7 @@ class _AddToPlaylistBottomSheet extends ConsumerWidget {
     final notifier = ref.read(addToPlaylistControllerProvider(track).notifier);
 
     final topPadding = MediaQuery.paddingOf(context).top;
-    
+
     // Кнопка Save активна только если мы не в процессе сохранения
     // и если что-то реально изменилось (добавлено или удалено)
     final hasChanges =
@@ -51,7 +51,12 @@ class _AddToPlaylistBottomSheet extends ConsumerWidget {
         children: [
           // Шапка: Cancel - My Playlists - Save
           Padding(
-            padding: const EdgeInsets.fromLTRB(DSSpacing.m, 0, DSSpacing.m, DSSpacing.s14),
+            padding: const EdgeInsets.fromLTRB(
+              DSSpacing.m,
+              0,
+              DSSpacing.m,
+              DSSpacing.s14,
+            ),
             child: Stack(
               alignment: Alignment.center,
               children: [
@@ -60,11 +65,15 @@ class _AddToPlaylistBottomSheet extends ConsumerWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     GestureDetector(
-                      onTap: state.isSaving ? null : () => Navigator.pop(context),
+                      onTap: state.isSaving
+                          ? null
+                          : () => Navigator.pop(context),
                       child: Text(
                         'Cancel',
                         style: context.subtitleM?.copyWith(
-                          color: state.isSaving ? DSColors.gray40 : DSColors.black,
+                          color: state.isSaving
+                              ? DSColors.gray40
+                              : DSColors.black,
                         ),
                       ),
                     ),
@@ -89,7 +98,9 @@ class _AddToPlaylistBottomSheet extends ConsumerWidget {
                           : Text(
                               'Save',
                               style: context.subtitleM?.copyWith(
-                                color: canSave ? DSColors.blue : DSColors.gray40,
+                                color: canSave
+                                    ? DSColors.blue
+                                    : DSColors.gray40,
                               ),
                             ),
                     ),
@@ -115,10 +126,16 @@ class _AddToPlaylistBottomSheet extends ConsumerWidget {
                   elevation: 0,
                   shadowColor: Colors.transparent,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(DSRadius.circular), // Овальная по макету
+                    borderRadius: BorderRadius.circular(
+                      DSRadius.circular,
+                    ), // Овальная по макету
                   ),
                 ),
-                icon: const Icon(Icons.add, color: DSColors.blue, size: DSIconSize.s20),
+                icon: const Icon(
+                  Icons.add,
+                  color: DSColors.blue,
+                  size: DSIconSize.s20,
+                ),
                 label: Text(
                   'Create a playlist',
                   style: context.subtitleLBold?.copyWith(color: DSColors.blue),
@@ -145,32 +162,36 @@ class _AddToPlaylistBottomSheet extends ConsumerWidget {
             child: state.isLoading
                 ? const Center(child: CircularProgressIndicator())
                 : state.playlists.isEmpty
-                    ? Center(
-                        child: Text(
-                          'No custom playlists found',
-                          style: context.bodyL?.copyWith(color: DSColors.gray60),
-                        ),
-                      )
-                    : ListView.builder(
-                        itemCount: state.playlists.length,
-                        padding: const EdgeInsets.only(bottom: DSSpacing.l),
-                        itemBuilder: (context, index) {
-                          final playlist = state.playlists[index];
-                          final isSelected = state.selectedIds.contains(playlist.id);
+                ? Center(
+                    child: Text(
+                      'No custom playlists found',
+                      style: context.bodyL?.copyWith(color: DSColors.gray60),
+                    ),
+                  )
+                : ListView.builder(
+                    itemCount: state.playlists.length,
+                    padding: const EdgeInsets.only(bottom: DSSpacing.l),
+                    itemBuilder: (context, index) {
+                      final playlist = state.playlists[index];
+                      final isSelected = state.selectedIds.contains(
+                        playlist.id,
+                      );
 
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 16, vertical: 8),
-                            child: _PlaylistSelectionTile(
-                              playlist: playlist,
-                              isSelected: isSelected,
-                              onTap: state.isSaving
-                                  ? null
-                                  : () => notifier.toggle(playlist.id),
-                            ),
-                          );
-                        },
-                      ),
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 8,
+                        ),
+                        child: _PlaylistSelectionTile(
+                          playlist: playlist,
+                          isSelected: isSelected,
+                          onTap: state.isSaving
+                              ? null
+                              : () => notifier.toggle(playlist.id),
+                        ),
+                      );
+                    },
+                  ),
           ),
         ],
       ),
@@ -200,19 +221,12 @@ class _PlaylistSelectionTile extends StatelessWidget {
           Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(DSRadius.s),
-              boxShadow: [
-                BoxShadow(
-                  color: DSColors.black.withValues(alpha: 0.7),
-                  blurRadius: 6,
-                  spreadRadius: -2,
-                  offset: const Offset(0, 4),
-                ),
-              ],
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(DSRadius.s),
               child: Image.asset(
-                playlist.imageUrl, // Кастомные плейлисты используют локальные ассеты
+                playlist
+                    .imageUrl, // Кастомные плейлисты используют локальные ассеты
                 width: 50,
                 height: 50,
                 fit: BoxFit.cover,
@@ -222,7 +236,7 @@ class _PlaylistSelectionTile extends StatelessWidget {
             ),
           ),
           const SizedBox(width: DSSpacing.s12),
-          
+
           // Название и бейджик треков
           Expanded(
             child: Column(
@@ -238,11 +252,16 @@ class _PlaylistSelectionTile extends StatelessWidget {
                 const SizedBox(height: DSSpacing.xs),
                 // Оранжевый бейджик как в PlaylistTile
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: DSSpacing.s6, vertical: DSSpacing.s),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: DSSpacing.s6,
+                    vertical: DSSpacing.s,
+                  ),
                   decoration: BoxDecoration(
                     color: DSColors.orange.withValues(alpha: 0.05),
                     borderRadius: BorderRadius.circular(DSRadius.m),
-                    border: Border.all(color: DSColors.orange.withValues(alpha: 0.3)),
+                    border: Border.all(
+                      color: DSColors.orange.withValues(alpha: 0.3),
+                    ),
                   ),
                   child: Text(
                     '${playlist.trackCount} track${playlist.trackCount != 1 ? 's' : ''}',
@@ -252,9 +271,9 @@ class _PlaylistSelectionTile extends StatelessWidget {
               ],
             ),
           ),
-          
+
           const SizedBox(width: DSSpacing.s12),
-          
+
           // Чекбокс
           Container(
             width: 24,
@@ -268,7 +287,11 @@ class _PlaylistSelectionTile extends StatelessWidget {
               borderRadius: BorderRadius.circular(DSRadius.xs),
             ),
             child: isSelected
-                ? const Icon(Icons.check, color: DSColors.white, size: DSIconSize.s16)
+                ? const Icon(
+                    Icons.check,
+                    color: DSColors.white,
+                    size: DSIconSize.s16,
+                  )
                 : null,
           ),
         ],

@@ -28,21 +28,18 @@ class TrackTile extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Padding(
-        padding: EdgeInsets.only(left: DSSpacing.m, right: DSSpacing.m, top: topPadding, bottom: DSSpacing.s8),
+        padding: EdgeInsets.only(
+          left: DSSpacing.m,
+          right: DSSpacing.m,
+          top: topPadding,
+          bottom: DSSpacing.s8,
+        ),
         child: Row(
           children: [
             // Track image
             Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(DSRadius.xs),
-                boxShadow: [
-                  BoxShadow(
-                    color: DSColors.gray70,
-                    blurRadius: 6,
-                    spreadRadius: -2, // prevents shadow from appearing on sides
-                    offset: const Offset(0, 4), // pushes shadow down
-                  ),
-                ],
               ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(DSRadius.xs),
@@ -72,7 +69,11 @@ class TrackTile extends StatelessWidget {
               behavior: HitTestBehavior.opaque,
               child: Padding(
                 padding: const EdgeInsets.all(DSSpacing.s8),
-                child: Icon(Icons.more_horiz, color: DSColors.gray60, size: DSIconSize.s24),
+                child: Icon(
+                  Icons.more_horiz,
+                  color: DSColors.gray60,
+                  size: DSIconSize.s24,
+                ),
               ),
             ),
           ],

@@ -9,7 +9,6 @@ class NotificationTile extends StatelessWidget {
   final String subtitle;
   final String imagePath;
   final VoidCallback onTap;
-  final double topPadding;
 
   const NotificationTile({
     super.key,
@@ -17,7 +16,6 @@ class NotificationTile extends StatelessWidget {
     required this.subtitle,
     required this.imagePath,
     required this.onTap,
-    this.topPadding = 8,
   });
 
   @override
@@ -25,37 +23,22 @@ class NotificationTile extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Container(
-        padding: EdgeInsets.only(top: topPadding, bottom: DSSpacing.s8),
+        padding: EdgeInsets.symmetric(vertical: DSSpacing.s8),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            DecoratedBox(
-              decoration: BoxDecoration(
-                boxShadow: [
-                  BoxShadow(
-                    color: DSColors.gray10,
-                    blurRadius: 8,
-                    spreadRadius: 0,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
-              ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(DSRadius.s),
-                child: Image.asset(
-                  imagePath,
+            ClipRRect(
+              borderRadius: BorderRadius.circular(DSRadius.s),
+              child: Image.asset(
+                imagePath,
+                width: 52,
+                height: 52,
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) => Container(
                   width: 52,
                   height: 52,
-                  fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) => Container(
-                    width: 52,
-                    height: 52,
-                    color: DSColors.blue10,
-                    child: const Icon(
-                      Icons.notifications,
-                      color: DSColors.blue,
-                    ),
-                  ),
+                  color: DSColors.blue10,
+                  child: const Icon(Icons.notifications, color: DSColors.blue),
                 ),
               ),
             ),
@@ -87,7 +70,10 @@ class NotificationTile extends StatelessWidget {
 
             const SizedBox(width: DSSpacing.s8),
             Container(
-              padding: const EdgeInsets.symmetric(vertical: DSSpacing.s6, horizontal: DSSpacing.s8),
+              padding: const EdgeInsets.symmetric(
+                vertical: DSSpacing.s6,
+                horizontal: DSSpacing.s8,
+              ),
               decoration: BoxDecoration(
                 color: DSColors.blue10,
                 shape: BoxShape.circle,

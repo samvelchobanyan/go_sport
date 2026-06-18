@@ -82,10 +82,11 @@ class NotificationsScreen extends StatelessWidget {
                         onTap: () {},
                       ),
                       if (index != dummyNotifications.length - 1)
-                        const Padding(
-                          padding: EdgeInsets.symmetric(vertical: DSSpacing.s8),
-                          child: DottedDivider(),
-                        ),
+                        // const Padding(
+                        //   padding: EdgeInsets.symmetric(vertical: DSSpacing.s8),
+                        //   child: 
+                          DottedDivider(),
+                        // ),
                     ],
                   );
                 }),

@@ -26,7 +26,12 @@ class EditTrackTile extends StatelessWidget {
     return Padding(
       // Убираем вертикальный padding, он будет компенсироваться контейнером ReorderableListView,
       // или добавляем его так же как в TrackTile (vertical: 12)
-      padding: EdgeInsets.only(left: DSSpacing.m, right: DSSpacing.m, top: topPadding, bottom: DSSpacing.s8),
+      padding: EdgeInsets.only(
+        left: DSSpacing.m,
+        right: DSSpacing.m,
+        top: topPadding,
+        bottom: DSSpacing.s8,
+      ),
       child: Row(
         children: [
           // Кнопка удаления (Оранжевый круг с прозрачностью 10%)
@@ -59,14 +64,6 @@ class EditTrackTile extends StatelessWidget {
           Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(DSRadius.xs),
-              boxShadow: [
-                BoxShadow(
-                  color: DSColors.black.withValues(alpha: 0.7),
-                  blurRadius: 6,
-                  spreadRadius: -2,
-                  offset: const Offset(0, 4),
-                ),
-              ],
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(DSRadius.xs),
@@ -76,8 +73,11 @@ class EditTrackTile extends StatelessWidget {
                       width: 48,
                       height: 48,
                       fit: BoxFit.cover,
-                      errorBuilder: (_, __, ___) =>
-                          Container(width: 48, height: 48, color: DSColors.gray20),
+                      errorBuilder: (_, __, ___) => Container(
+                        width: 48,
+                        height: 48,
+                        color: DSColors.gray20,
+                      ),
                     )
                   : Container(width: 48, height: 48, color: DSColors.gray20),
             ),
@@ -92,9 +92,7 @@ class EditTrackTile extends StatelessWidget {
               children: [
                 Text(
                   track.title,
-                  style: context.subtitleM?.copyWith(
-                    color: DSColors.black,
-                  ),
+                  style: context.subtitleM?.copyWith(color: DSColors.black),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),

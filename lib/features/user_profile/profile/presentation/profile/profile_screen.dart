@@ -78,6 +78,10 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           centerTitle: true,
           backgroundColor: Colors.transparent,
           elevation: 0,
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back, color: DSColors.black),
+            onPressed: () => context.canPop() ? context.pop() : context.go('/'),
+          ),
           actions: [
             IconButton(
               onPressed: () => context.push(AppRoutes.notifications),

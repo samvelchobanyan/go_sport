@@ -293,9 +293,10 @@ class HomeScreen extends ConsumerWidget {
                       const Padding(
                         padding: EdgeInsets.symmetric(
                           horizontal: DSSpacing.m,
-                          vertical: DSSpacing.s10,
+                          // vertical: DSSpacing.s10,
                         ),
-                        child: DottedDivider(),
+                        child:
+                         DottedDivider(),
                       ),
                     ],
                   ],

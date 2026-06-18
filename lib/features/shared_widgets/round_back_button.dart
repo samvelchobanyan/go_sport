@@ -26,7 +26,6 @@ class RoundBackButton extends StatelessWidget {
           decoration: const BoxDecoration(
             color: DSColors.white,
             shape: BoxShape.circle,
-            boxShadow: [BoxShadow(color: DSColors.gray10, blurRadius: 8)],
           ),
           child: const Icon(
             Icons.arrow_back,

@@ -31,7 +31,10 @@ class BottomSheetContainer extends StatelessWidget {
         children: [
           // Drag handle
           Padding(
-            padding: const EdgeInsets.only(top: DSSpacing.s12, bottom: DSSpacing.m),
+            padding: const EdgeInsets.only(
+              top: DSSpacing.s12,
+              bottom: DSSpacing.m,
+            ),
             child: Container(
               width: 40,
               height: 4,
@@ -45,13 +48,22 @@ class BottomSheetContainer extends StatelessWidget {
           if (height != null)
             Expanded(
               child: Padding(
-                padding: padding,
+                padding: EdgeInsets.only(
+                  left: DSSpacing.m,
+                  right: DSSpacing.m,
+                  bottom: DSSpacing.l,
+                ),
                 child: child,
               ),
             )
           else
             Padding(
-              padding: padding,
+              padding: EdgeInsets.only(
+                left: DSSpacing.m,
+                right: DSSpacing.m,
+                bottom: DSSpacing.l,
+              ),
+
               child: child,
             ),
         ],

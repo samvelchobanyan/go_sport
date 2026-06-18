@@ -41,20 +41,10 @@ class DatesCarousel extends ConsumerWidget {
                 decoration: BoxDecoration(
                   color: isSelected ? DSColors.lime : DSColors.white,
                   border: Border.all(
-                    color: isSelected
-                        ? DSColors.lime
-                        : DSColors.blue30,
+                    color: isSelected ? DSColors.lime : DSColors.blue30,
                     width: 1,
                   ),
                   borderRadius: BorderRadius.circular(DSRadius.s),
-                  boxShadow: [
-                    if (isSelected)
-                      BoxShadow(
-                        color: DSColors.lime.withValues(alpha: 0.6),
-                        blurRadius: 8,
-                        offset: const Offset(0, 4),
-                      ),
-                  ],
                 ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,

@@ -54,62 +54,70 @@ class EpisodeTile extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Padding(
-        padding: EdgeInsets.only(left: DSSpacing.m, right: DSSpacing.m, top: topPadding, bottom: DSSpacing.s8),
+        padding: EdgeInsets.only(
+          left: DSSpacing.m,
+          right: DSSpacing.m,
+          top: topPadding,
+          bottom: DSSpacing.s8,
+        ),
         child: SizedBox(
           height: 52,
           child: Row(
             children: [
-            // episode image
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(DSRadius.xs),
-                boxShadow: [
-                  BoxShadow(
-                    color: DSColors.gray70,
-                    blurRadius: 6,
-                    spreadRadius: -2, // prevents shadow from appearing on sides
-                    offset: const Offset(0, 4), // pushes shadow down
-                  ),
-                ],
+              // episode image
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(DSRadius.xs),
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(DSRadius.xs),
+                  child: episode.imageUrl != null
+                      ? Image.network(
+                          episode.imageUrl!,
+                          width: 48,
+                          height: 48,
+                          fit: BoxFit.cover,
+                          errorBuilder: (_, __, ___) => Container(
+                            width: 48,
+                            height: 48,
+                            color: DSColors.gray20,
+                          ),
+                        )
+                      : Container(
+                          width: 48,
+                          height: 48,
+                          color: DSColors.gray20,
+                        ),
+                ),
               ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(DSRadius.xs),
-                child: episode.imageUrl != null
-                    ? Image.network(
-                        episode.imageUrl!,
-                        width: 48,
-                        height: 48,
-                        fit: BoxFit.cover,
-                        errorBuilder: (_, __, ___) =>
-                            Container(width: 48, height: 48, color: DSColors.gray20),
-                      )
-                    : Container(width: 48, height: 48, color: DSColors.gray20),
-              ),
-            ),
-            const SizedBox(width: DSSpacing.s10),
+              const SizedBox(width: DSSpacing.s10),
 
-            // Track info
-            Expanded(child: _buildEpisodeContent(context)),
+              // Track info
+              Expanded(child: _buildEpisodeContent(context)),
 
-            // Menu button
-            GestureDetector(
-              onTap: () {
-                onMenuTap(); //in case something different should happen
-                showTrackOptionsBottomSheet(
-                  context: context,
-                  track: episode,
-                  onAddToPlaylist: () => showAddToPlaylistBottomSheet(
+              // Menu button
+              GestureDetector(
+                onTap: () {
+                  onMenuTap(); //in case something different should happen
+                  showTrackOptionsBottomSheet(
                     context: context,
                     track: episode,
+                    onAddToPlaylist: () => showAddToPlaylistBottomSheet(
+                      context: context,
+                      track: episode,
+                    ),
+                  );
+                },
+                behavior: HitTestBehavior.opaque,
+                child: Padding(
+                  padding: const EdgeInsets.all(DSSpacing.s8),
+                  child: Icon(
+                    Icons.more_horiz,
+                    color: DSColors.gray60,
+                    size: DSIconSize.s24,
                   ),
-                );
-              },
-              behavior: HitTestBehavior.opaque,
-              child: Padding(
-                padding: const EdgeInsets.all(DSSpacing.s8),
-                child: Icon(Icons.more_horiz, color: DSColors.gray60, size: DSIconSize.s24),
+                ),
               ),
-            ),
             ],
           ),
         ),

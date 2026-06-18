@@ -19,7 +19,10 @@ class NewsItem extends StatelessWidget {
       onTap: onTap,
       borderRadius: BorderRadius.circular(DSRadius.s),
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: DSSpacing.s8, horizontal: DSSpacing.m),
+        padding: const EdgeInsets.symmetric(
+          vertical: DSSpacing.s8,
+          horizontal: DSSpacing.m,
+        ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -27,14 +30,6 @@ class NewsItem extends StatelessWidget {
             Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(DSRadius.s),
-                boxShadow: [
-                  BoxShadow(
-                    color: DSColors.black.withValues(alpha: 0.20),
-                    offset: const Offset(3, 6),
-                    blurRadius: 5,
-                    spreadRadius: 0,
-                  ),
-                ],
               ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(DSRadius.s),
@@ -43,11 +38,8 @@ class NewsItem extends StatelessWidget {
                   width: 84,
                   height: 84,
                   fit: BoxFit.cover,
-                  placeholder: (context, url) => Container(
-                    width: 84,
-                    height: 84,
-                    color: DSColors.divider,
-                  ),
+                  placeholder: (context, url) =>
+                      Container(width: 84, height: 84, color: DSColors.divider),
                   errorWidget: (context, url, error) => Container(
                     width: 84,
                     height: 84,

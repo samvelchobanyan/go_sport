@@ -85,31 +85,6 @@ class _ConfirmEmailScreenState extends ConsumerState<ConfirmEmailScreen> {
               ),
             ),
 
-            // Back button floats above the card; Positioned(bottom) is
-            // relative to the Stack (body), so it slides up with the card
-            // when the keyboard opens.
-            // Positioned(
-            //   bottom: _cardHeight + 20,
-            //   left: DSSpacing.m,
-            //   child: GestureDetector(
-            //     onTap: () => context.go('/registration-email'),
-            //     child: Container(
-            //       padding: const EdgeInsets.all(DSSpacing.s12),
-            //       decoration: const BoxDecoration(
-            //         color: DSColors.white,
-            //         shape: BoxShape.circle,
-            //         boxShadow: [
-            //           BoxShadow(color: DSColors.gray10, blurRadius: 8),
-            //         ],
-            //       ),
-            //       child: const Icon(
-            //         Icons.arrow_back,
-            //         color: DSColors.blue,
-            //         size: DSIconSize.s24,
-            //       ),
-            //     ),
-            //   ),
-            // ),
             RoundBackButton(
               cardHeight: _cardHeight,
               goBackTo: '/registration-email',

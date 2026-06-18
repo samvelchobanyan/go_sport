@@ -31,14 +31,6 @@ void showTrackOptionsBottomSheet({
               Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(DSRadius.xs),
-                  boxShadow: [
-                    BoxShadow(
-                      color: DSColors.gray70,
-                      blurRadius: 6,
-                      spreadRadius: -2,
-                      offset: const Offset(0, 4),
-                    ),
-                  ],
                 ),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(DSRadius.xs),
@@ -71,9 +63,7 @@ void showTrackOptionsBottomSheet({
                       const SizedBox(height: DSSpacing.xs),
                       Text(
                         track.artistName,
-                        style: context.textL?.copyWith(
-                          color: DSColors.gray60,
-                        ),
+                        style: context.textL?.copyWith(color: DSColors.gray60),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -111,13 +101,15 @@ void showTrackOptionsBottomSheet({
                 builder: (context, ref, _) {
                   final isEpisode = track.releaseDate != null;
                   final isLiked = ref.watch(
-                    likeRegistryProvider.select((s) => isEpisode
-                        ? s.likedEpisodes.any((e) => e.id == track.id)
-                        : s.likedTracks.any((t) => t.id == track.id)),
+                    likeRegistryProvider.select(
+                      (s) => isEpisode
+                          ? s.likedEpisodes.any((e) => e.id == track.id)
+                          : s.likedTracks.any((t) => t.id == track.id),
+                    ),
                   );
                   return ActionButton(
                     icon: isLiked
-                        ? 'assets/icons/heart_bg.svg'
+                        ? 'assets/icons/heart_bg_darker.svg'
                         : 'assets/icons/heart_bg_stroke.svg',
                     label: isLiked ? 'Liked' : 'Like',
                     onTap: () {
@@ -127,7 +119,7 @@ void showTrackOptionsBottomSheet({
                       } else {
                         registry.toggleTrackLike(track);
                       }
-                      Navigator.pop(context);
+                      // Navigator.pop(context);
                     },
                   );
                 },
