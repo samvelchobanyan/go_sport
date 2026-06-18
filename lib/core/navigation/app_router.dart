@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:go_sport/core/auth/token_storage.dart';
 import 'package:go_sport/core/navigation/main_shell.dart';
-import 'package:go_sport/core/navigation/page_transitions.dart';
 import 'package:go_sport/core/navigation/routes.dart';
 import 'package:go_sport/features/auth/change_password/presentation/change_password_screen.dart';
 import 'package:go_sport/features/auth/check_email/presentation/check_email_screen.dart';
@@ -128,45 +127,35 @@ GoRouter createAppRouter(TokenStorage tokenStorage) {
 
       GoRoute(
         path: AppRoutes.profile,
-        pageBuilder: (context, state) =>
-            fadeSlidePage(state: state, child: const ProfileScreen()),
+        builder: (context, state) => const ProfileScreen(),
         routes: [
           GoRoute(
             path: 'for-business',
-            pageBuilder: (context, state) =>
-                fadeSlidePage(state: state, child: const ForBusinessScreen()),
+            builder: (context, state) => const ForBusinessScreen(),
           ),
           GoRoute(
             path: 'edit-profile',
-            pageBuilder: (context, state) =>
-                fadeSlidePage(state: state, child: const EditProfileScreen()),
+            builder: (context, state) => const EditProfileScreen(),
           ),
           GoRoute(
             path: 'change-password',
-            pageBuilder: (context, state) => fadeSlidePage(
-              state: state,
-              child: const ProfileChangePasswordScreen(),
-            ),
+            builder: (context, state) => const ProfileChangePasswordScreen(),
           ),
           GoRoute(
             path: 'delete-account',
-            pageBuilder: (context, state) =>
-                fadeSlidePage(state: state, child: const DeleteScreen()),
+            builder: (context, state) => const DeleteScreen(),
           ),
           GoRoute(
             path: 'confirm-delete',
-            pageBuilder: (context, state) =>
-                fadeSlidePage(state: state, child: const ConfirmDeleteScreen()),
+            builder: (context, state) => const ConfirmDeleteScreen(),
           ),
           GoRoute(
             path: 'delete-success',
-            pageBuilder: (context, state) =>
-                fadeSlidePage(state: state, child: const DeleteSuccessScreen()),
+            builder: (context, state) => const DeleteSuccessScreen(),
           ),
           GoRoute(
             path: 'notifications',
-            pageBuilder: (context, state) =>
-                fadeSlidePage(state: state, child: const NotificationsScreen()),
+            builder: (context, state) => const NotificationsScreen(),
           ),
         ],
       ),
