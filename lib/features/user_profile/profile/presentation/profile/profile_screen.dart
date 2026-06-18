@@ -225,7 +225,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                         },
                       ),
 
-                      const SizedBox(height: DSSpacing.l),
+                      const SizedBox(height: DSSpacing.s14),
                       const DottedDivider(),
                       const SizedBox(height: DSSpacing.l),
 
@@ -323,7 +323,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                       ),
                       const SizedBox(height: DSSpacing.l),
                       DottedDivider(),
-                      const SizedBox(height: DSSpacing.l),
+                      const SizedBox(height: DSSpacing.s14),
                       ActionRow(
                         icon: SvgPicture.asset(
                           'assets/icons/delete_orange_bg.svg',

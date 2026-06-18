@@ -34,19 +34,16 @@ class PlaylistHero extends StatelessWidget {
       fit: StackFit.expand,
       children: [
         // Background image
-        Hero(
-          tag: 'playlist-image-${playlist.id}',
-          child: isCustom
-              ? Image.asset(
-                  'assets/images/custom_playlist_cover.png',
-                  fit: BoxFit.cover,
-                )
-              : Image.network(
-                  playlist.imageUrl,
-                  fit: BoxFit.cover,
-                  errorBuilder: (_, __, ___) => Container(color: DSColors.gray40),
-                ),
-        ),
+        isCustom
+            ? Image.asset(
+                'assets/images/custom_playlist_cover.png',
+                fit: BoxFit.cover,
+              )
+            : Image.network(
+                playlist.imageUrl,
+                fit: BoxFit.cover,
+                errorBuilder: (_, __, ___) => Container(color: DSColors.gray40),
+              ),
 
         // Gradient overlay
         const DecoratedBox(

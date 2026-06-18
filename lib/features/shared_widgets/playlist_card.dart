@@ -28,14 +28,11 @@ class PlaylistCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             MediaCardShell(
-              child: Hero(
-                tag: 'playlist-image-${playlist.id}',
-                child: Image.network(
-                  playlist.imageUrl,
-                  fit: BoxFit.cover,
-                  errorBuilder: (_, __, ___) =>
-                      Container(color: DSColors.gray20),
-                ),
+              child: Image.network(
+                playlist.imageUrl,
+                fit: BoxFit.cover,
+                errorBuilder: (_, __, ___) =>
+                    Container(color: DSColors.gray20),
               ),
             ),
             const SizedBox(height: DSSpacing.s6),

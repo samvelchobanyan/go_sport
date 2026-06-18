@@ -288,16 +288,7 @@ class HomeScreen extends ConsumerWidget {
                       onTap: () {
                         context.push('/news/${article.id}');
                       },
-                    ),
-                    if (!isLast) ...[
-                      const Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: DSSpacing.m,
-                          vertical: DSSpacing.s10,
-                        ),
-                        child: DottedDivider(),
-                      ),
-                    ],
+                    ),                   
                   ],
                 );
               }, childCount: news.length > 3 ? 3 : news.length),
