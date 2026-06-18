@@ -10,6 +10,10 @@ import 'package:go_sport/features/shared_widgets/input.dart';
 import 'package:go_router/go_router.dart';
 import 'package:go_sport/features/user_profile/change_password/presentation/change_password/change_password_controller.dart';
 
+const double _cardHeight = 600;
+const double _cardOverlap = 25;
+const double _cardVerticalPadding = 40;
+
 class ProfileChangePasswordScreen extends ConsumerStatefulWidget {
   const ProfileChangePasswordScreen({super.key});
 
@@ -65,8 +69,8 @@ class _ProfileChangePasswordScreenState
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(changePasswordControllerProvider);
-    final screenWidth = MediaQuery.of(context).size.width;
-    final screenHeight = MediaQuery.of(context).size.height;
+    final screenSize = MediaQuery.of(context).size;
+    final imageHeight = screenSize.height - _cardHeight + _cardOverlap;
 
     ref.listen<ChangePasswordState>(changePasswordControllerProvider, (
       previous,
@@ -100,21 +104,23 @@ class _ProfileChangePasswordScreenState
         ),
         body: Stack(
           children: [
-            Image.asset(
-              'assets/images/change_password.png',
-              width: screenWidth,
-              height: screenHeight * 0.5,
-              fit: BoxFit.cover,
-              cacheHeight: (screenHeight * 0.5).toInt(),
-              cacheWidth: screenWidth.toInt(),
+            Positioned(
+              top: 0,
+              left: 0,
+              right: 0,
+              height: imageHeight,
+              child: Image.asset(
+                'assets/images/change_password.png',
+                fit: BoxFit.cover,
+                alignment: Alignment.topCenter,
+              ),
             ),
 
             Align(
               alignment: Alignment.bottomCenter,
               child: Container(
-                height: screenHeight * 0.6,
-                width: screenWidth,
-                padding: const EdgeInsets.all(DSSpacing.m),
+                height: _cardHeight,
+                width: screenSize.width,
                 decoration: BoxDecoration(
                   color: DSColors.white,
                   borderRadius: const BorderRadius.only(
@@ -122,68 +128,80 @@ class _ProfileChangePasswordScreenState
                     topRight: Radius.circular(DSRadius.m),
                   ),
                 ),
-                child: Column(
-                  children: [
-                    Text(
-                      'Your password must contain at least one special character',
-                      style: context.subtitleMBold?.copyWith(
-                        color: DSColors.gray70,
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: DSSpacing.m,
+                    vertical: _cardVerticalPadding / 2,
+                  ),
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(
+                      minHeight: _cardHeight - _cardVerticalPadding,
+                    ),
+                    child: IntrinsicHeight(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Text(
+                            'Your password must contain at least one special character',
+                            style: context.subtitleMBold?.copyWith(
+                              color: DSColors.gray70,
+                            ),
+                          ),
+                          const SizedBox(height: DSSpacing.m),
+
+                          CustomInput(
+                            label: 'Old password',
+                            controller: _oldPasswordController,
+                            obscureText: true,
+                          ),
+                          const SizedBox(height: DSSpacing.m),
+                          CustomInput(
+                            label: 'New password',
+                            controller: _newPasswordController,
+                            obscureText: true,
+                          ),
+                          const SizedBox(height: DSSpacing.m),
+                          CustomInput(
+                            label: 'Repeat new password',
+                            controller: _confirmPasswordController,
+                            obscureText: true,
+                          ),
+
+                          const Spacer(),
+
+                          // Action Button
+                          ElevatedButton.icon(
+                            icon: state.isLoading
+                                ? const SizedBox(
+                                    width: 20,
+                                    height: 20,
+                                    child: CircularProgressIndicator(
+                                      color: DSColors.lime,
+                                      strokeWidth: 2,
+                                    ),
+                                  )
+                                : SvgPicture.asset(
+                                    'assets/icons/check_lime.svg',
+                                  ),
+                            label: Text(
+                              "Change Password",
+                              style: context.subtitleLBold?.copyWith(
+                                color: DSColors.lime,
+                              ),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: DSColors.blue,
+                              minimumSize: const Size.fromHeight(DSSpacing.xxl),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(DSRadius.xxl),
+                              ),
+                            ),
+                            onPressed: state.isLoading ? null : _onSave,
+                          ),
+                        ],
                       ),
                     ),
-                    const SizedBox(height: DSSpacing.m),
-
-                    CustomInput(
-                      label: 'Old password',
-                      controller: _oldPasswordController,
-                      obscureText: true,
-                    ),
-                    const SizedBox(height: DSSpacing.m),
-                    CustomInput(
-                      label: 'New password',
-                      controller: _newPasswordController,
-                      obscureText: true,
-                    ),
-                    const SizedBox(height: DSSpacing.m),
-                    CustomInput(
-                      label: 'Repeat new password',
-                      controller: _confirmPasswordController,
-                      obscureText: true,
-                    ),
-
-                    const Spacer(),
-
-                    // Action Button
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton.icon(
-                        icon: state.isLoading
-                            ? const SizedBox(
-                                width: 20,
-                                height: 20,
-                                child: CircularProgressIndicator(
-                                  color: DSColors.lime,
-                                  strokeWidth: 2,
-                                ),
-                              )
-                            : SvgPicture.asset('assets/icons/check_lime.svg'),
-                        label: Text(
-                          "Change Password",
-                          style: context.subtitleLBold?.copyWith(
-                            color: DSColors.lime,
-                          ),
-                        ),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: DSColors.blue,
-                          padding: const EdgeInsets.symmetric(vertical: DSSpacing.m),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(DSRadius.xxl),
-                          ),
-                        ),
-                        onPressed: state.isLoading ? null : _onSave,
-                      ),
-                    ),
-                    const SizedBox(height: DSSpacing.s20),
-                  ],
+                  ),
                 ),
               ),
             ),

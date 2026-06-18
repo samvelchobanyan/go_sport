@@ -81,6 +81,7 @@ class _RegistrationNameScreenState
               child: Image.asset(
                 'assets/images/registration_name.png',
                 fit: BoxFit.cover,
+                alignment: Alignment.topCenter,
               ),
             ),
 

@@ -90,6 +90,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
               child: Image.asset(
                 'assets/images/email_registration_bg.png',
                 fit: BoxFit.cover,
+                alignment: Alignment.topCenter,
               ),
             ),
 

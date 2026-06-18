@@ -82,6 +82,7 @@ class _RegistrationPhoneScreenState
               child: Image.asset(
                 'assets/images/phone_registration_bg.png',
                 fit: BoxFit.cover,
+                alignment: Alignment.topCenter,
               ),
             ),
 

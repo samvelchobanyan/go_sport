@@ -82,6 +82,7 @@ class _ConfirmEmailScreenState extends ConsumerState<ConfirmEmailScreen> {
               child: Image.asset(
                 'assets/images/confirm_email_bg.png',
                 fit: BoxFit.cover,
+                alignment: Alignment.topCenter,
               ),
             ),
 
