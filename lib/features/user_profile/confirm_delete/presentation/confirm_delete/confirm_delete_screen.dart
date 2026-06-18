@@ -10,6 +10,10 @@ import 'package:go_sport/features/shared_widgets/input.dart';
 import 'package:go_router/go_router.dart';
 import 'package:go_sport/features/user_profile/confirm_delete/presentation/confirm_delete/confirm_delete_controller.dart';
 
+const double _cardHeight = 430;
+const double _cardOverlap = 25;
+const double _cardVerticalPadding = 40;
+
 class ConfirmDeleteScreen extends ConsumerStatefulWidget {
   const ConfirmDeleteScreen({super.key});
 
@@ -44,8 +48,8 @@ class _ConfirmDeleteScreenState extends ConsumerState<ConfirmDeleteScreen> {
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(deleteUserControllerProvider);
-    final screenWidth = MediaQuery.of(context).size.width;
-    final screenHeight = MediaQuery.of(context).size.height;
+    final screenSize = MediaQuery.of(context).size;
+    final imageHeight = screenSize.height - _cardHeight + _cardOverlap;
 
     ref.listen<ConfirmDeleteState>(deleteUserControllerProvider, (
       previous,
@@ -56,7 +60,6 @@ class _ConfirmDeleteScreenState extends ConsumerState<ConfirmDeleteScreen> {
           context,
         ).showSnackBar(SnackBar(content: Text(next.error!)));
       }
-      print('next $next');
 
       if (next.isSuccess && !(previous?.isSuccess ?? false)) {
         context.push(AppRoutes.deleteSuccess);
@@ -77,24 +80,23 @@ class _ConfirmDeleteScreenState extends ConsumerState<ConfirmDeleteScreen> {
         ),
         body: Stack(
           children: [
-            Image.asset(
-              'assets/images/confirm_delete.png',
-              width: screenWidth,
-              height: screenHeight * 0.5,
-              fit: BoxFit.cover,
-              cacheHeight: (screenHeight * 0.5).toInt(),
-              cacheWidth: screenWidth.toInt(),
+            Positioned(
+              top: 0,
+              left: 0,
+              right: 0,
+              height: imageHeight,
+              child: Image.asset(
+                'assets/images/confirm_delete.png',
+                fit: BoxFit.cover,
+                alignment: Alignment.topCenter,
+              ),
             ),
 
             Align(
               alignment: Alignment.bottomCenter,
               child: Container(
-                height: screenHeight * 0.6,
-                width: screenWidth,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 36,
-                  vertical: 33,
-                ),
+                height: _cardHeight,
+                width: screenSize.width,
                 decoration: BoxDecoration(
                   color: DSColors.white,
                   borderRadius: const BorderRadius.only(
@@ -102,60 +104,64 @@ class _ConfirmDeleteScreenState extends ConsumerState<ConfirmDeleteScreen> {
                     topRight: Radius.circular(DSRadius.m),
                   ),
                 ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Please enter your password \nto delete your account',
-                      style: context.subtitleLBold?.copyWith(fontSize: 18),
-                      textAlign: TextAlign.center,
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: DSSpacing.m,
+                    vertical: _cardVerticalPadding / 2,
+                  ),
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(
+                      minHeight: _cardHeight - _cardVerticalPadding,
                     ),
-                    const SizedBox(height: DSSpacing.s12),
-
-                    CustomInput(
-                      label: 'Password',
-                      controller: _passwordController,
-                      obscureText: true,
-                    ),
-
-                    const Spacer(),
-
-                    // Action Button
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: DSColors.blue,
-                          padding: const EdgeInsets.symmetric(vertical: DSSpacing.m),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(DSRadius.xxl),
+                    child: IntrinsicHeight(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Text(
+                            'Please enter your password \nto delete your account',
+                            style: context.subtitleLBold?.copyWith(fontSize: 18),
+                            textAlign: TextAlign.center,
                           ),
-                        ),
+                          const SizedBox(height: DSSpacing.s12),
 
-                        // onPressed: state.isLoading
-                        //     ? null
-                        //     : () => context.push('/profile/delete-success'),
-                        onPressed: state.isLoading ? null : () => deleteUser(),
-                        child: state.isLoading
-                            ? const SizedBox(
-                                height: 20,
-                                width: 20,
-                                child: CircularProgressIndicator(
-                                  color: DSColors.lime,
-                                  strokeWidth: 2,
-                                ),
-                              )
-                            : Text(
-                                "Confirm",
-                                style: context.subtitleLBold?.copyWith(
-                                  color: DSColors.lime,
-                                ),
+                          CustomInput(
+                            label: 'Password',
+                            controller: _passwordController,
+                            obscureText: true,
+                          ),
+
+                          const Spacer(),
+
+                          // Action Button
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: DSColors.blue,
+                              minimumSize: const Size.fromHeight(DSSpacing.xxl),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(DSRadius.xxl),
                               ),
+                            ),
+                            onPressed: state.isLoading ? null : () => deleteUser(),
+                            child: state.isLoading
+                                ? const SizedBox(
+                                    height: 20,
+                                    width: 20,
+                                    child: CircularProgressIndicator(
+                                      color: DSColors.lime,
+                                      strokeWidth: 2,
+                                    ),
+                                  )
+                                : Text(
+                                    "Confirm",
+                                    style: context.subtitleLBold?.copyWith(
+                                      color: DSColors.lime,
+                                    ),
+                                  ),
+                          ),
+                        ],
                       ),
                     ),
-
-                    const SizedBox(height: DSSpacing.s20),
-                  ],
+                  ),
                 ),
               ),
             ),

@@ -91,6 +91,7 @@ class _ChangePasswordScreenState extends ConsumerState<ChangePasswordScreen> {
               child: Image.asset(
                 'assets/images/create_password_bg.png',
                 fit: BoxFit.cover,
+                alignment: Alignment.topCenter,
               ),
             ),
 

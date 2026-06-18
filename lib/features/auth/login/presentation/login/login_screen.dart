@@ -79,6 +79,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                     'assets/images/login_bg.png',
                                   ),
                                   fit: BoxFit.cover,
+                                  alignment: Alignment.topCenter,
                                 ),
                               ),
                             ),
