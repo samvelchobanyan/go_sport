@@ -20,7 +20,7 @@ class DSHeartIcon extends StatelessWidget {
         ? 'assets/icons/heart_fill.svg' 
         : 'assets/icons/heart_stroke.svg',
       colorFilter: ColorFilter.mode(
-        color.withValues(alpha: 0.6),
+        color,
         BlendMode.srcIn,
       ),
       width: size,

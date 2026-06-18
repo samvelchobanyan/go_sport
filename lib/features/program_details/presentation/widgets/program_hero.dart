@@ -46,9 +46,9 @@ class ProgramHero extends StatelessWidget {
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               colors: [
-                Color.fromRGBO(0, 0, 0, 0.8),
+                Color.fromRGBO(0, 0, 0, 1.0),
                 DSColors.transparent,
-                Color.fromRGBO(0, 0, 0, 0.9),
+                Color.fromRGBO(0, 0, 0, 1.0),
               ],
               stops: [0.0, 0.5, 1.0],
             ),
@@ -82,7 +82,7 @@ class ProgramHero extends StatelessWidget {
                         width: 48,
                         height: 48,
                         decoration: BoxDecoration(
-                          color: DSColors.white.withValues(alpha: 0.4),
+                          color: DSColors.white.withValues(alpha: 0.25),
                           shape: BoxShape.circle,
                         ),
                         child: Center(
