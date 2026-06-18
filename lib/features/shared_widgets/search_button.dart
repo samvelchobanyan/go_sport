@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 import 'package:go_sport/features/search/presentation/search/search_screen.dart';
 
 class SearchButton extends StatelessWidget {
@@ -44,6 +45,7 @@ class SearchButton extends StatelessWidget {
 
     return IconButton(
       icon: iconWidget,
+      padding: EdgeInsets.only(right: DSSpacing.m),
       onPressed: onTap ?? () => showSearchBottomSheet(context),
     );
   }

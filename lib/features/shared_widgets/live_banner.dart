@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:go_sport/design_system/components/icons/ds_wave_icon.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
-import 'package:go_sport/features/shared_widgets/live_wave_icon.dart';
 
 class LiveBanner extends StatelessWidget {
   const LiveBanner({super.key});
@@ -30,7 +30,7 @@ class LiveBanner extends StatelessWidget {
             padding: const EdgeInsets.all(DSSpacing.s10),
             child: Row(
               children: [
-                const AnimatedPlayWaves(),
+                const DSWaveIcon(isAnimated: true),
                 SizedBox(width: DSSpacing.s14),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

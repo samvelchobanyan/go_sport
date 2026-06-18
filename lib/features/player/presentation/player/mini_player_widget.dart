@@ -147,8 +147,8 @@ class _MiniPlayerWidgetState extends ConsumerState<MiniPlayerWidget>
                         isAnimated: true,
                       )
                     : const DSWaveIcon(
-                        color: DSColors.white,
-                        size: DSIconSize.s24,
+                        // color: DSColors.white,
+                        // size: DSIconSize.s24,
                         isAnimated: true,
                       ),
               ),

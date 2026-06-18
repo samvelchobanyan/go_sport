@@ -18,10 +18,13 @@ class DatesCarousel extends ConsumerWidget {
 
     return SliverToBoxAdapter(
       child: SizedBox(
-        height: 64,
+        height: 88,
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
-          padding: const EdgeInsets.symmetric(horizontal: DSSpacing.m),
+          padding: const EdgeInsets.symmetric(
+            horizontal: DSSpacing.m,
+            vertical: DSSpacing.s12,
+          ),
           itemCount: 14,
           itemBuilder: (context, index) {
             final date = startDate.add(Duration(days: index));
@@ -45,6 +48,14 @@ class DatesCarousel extends ConsumerWidget {
                     width: 1,
                   ),
                   borderRadius: BorderRadius.circular(DSRadius.s),
+                  boxShadow: [
+                    if (isSelected)
+                      BoxShadow(
+                        color: DSColors.lime.withValues(alpha: 0.6),
+                        blurRadius: 8,
+                        offset: const Offset(0, 4),
+                      ),
+                  ],
                 ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,

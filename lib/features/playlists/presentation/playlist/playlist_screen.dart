@@ -84,23 +84,30 @@ class _PlaylistScreenState extends ConsumerState<PlaylistScreen> {
     showTrackOptionsBottomSheet(
       context: context,
       track: track,
-      onAddToPlaylist: () => showAddToPlaylistBottomSheet(
-        context: context,
-        track: track,
-      ),
+      onAddToPlaylist: () =>
+          showAddToPlaylistBottomSheet(context: context, track: track),
       onRemoveFromPlaylist: widget.type == PlaylistType.custom
           ? () => showDeleteConfirmBottomSheet(
-                context: context,
-                text: 'Are you sure you want to delete this track from the playlist?',
-                onConfirm: () {
-                  ref
-                      .read(customPlaylistControllerProvider(widget.playlistId).notifier)
-                      .removeTrack(track.id);
-                  ref
-                      .read(customPlaylistControllerProvider(widget.playlistId).notifier)
-                      .save();
-                },
-              )
+              context: context,
+              text:
+                  'Are you sure you want to delete this track from the playlist?',
+              onConfirm: () {
+                ref
+                    .read(
+                      customPlaylistControllerProvider(
+                        widget.playlistId,
+                      ).notifier,
+                    )
+                    .removeTrack(track.id);
+                ref
+                    .read(
+                      customPlaylistControllerProvider(
+                        widget.playlistId,
+                      ).notifier,
+                    )
+                    .save();
+              },
+            )
           : null,
     );
   }
@@ -141,10 +148,8 @@ class _PlaylistScreenState extends ConsumerState<PlaylistScreen> {
         ? ref.watch(playlistControllerProvider(widget.playlistId))
         : ref.watch(customPlaylistControllerProvider(widget.playlistId));
 
-    final currentPlaylist = tracksState.mapOrNull(
-          data: (data) => data.playlist,
-        ) ??
-        widget.playlist;
+    final currentPlaylist =
+        tracksState.mapOrNull(data: (data) => data.playlist) ?? widget.playlist;
 
     if (currentPlaylist == null) {
       if (tracksState is PlaylistDetailsLoading) {
@@ -168,12 +173,21 @@ class _PlaylistScreenState extends ConsumerState<PlaylistScreen> {
     }
 
     final isLikedFromRegistry = ref.watch(
-      likeRegistryProvider.select((s) => s.likedPlaylists.any((p) => p.id == widget.playlistId)),
+      likeRegistryProvider.select(
+        (s) => s.likedPlaylists.any((p) => p.id == widget.playlistId),
+      ),
     );
-    final isThisActiveSource = ref.watch(playerStateProvider.select((s) =>
-        s.source?.id == widget.playlistId && !s.isRadioMode));
-    final isThisPlaying = ref.watch(playerStateProvider.select((s) =>
-        s.source?.id == widget.playlistId && s.isPlaying && !s.isRadioMode));
+    final isThisActiveSource = ref.watch(
+      playerStateProvider.select(
+        (s) => s.source?.id == widget.playlistId && !s.isRadioMode,
+      ),
+    );
+    final isThisPlaying = ref.watch(
+      playerStateProvider.select(
+        (s) =>
+            s.source?.id == widget.playlistId && s.isPlaying && !s.isRadioMode,
+      ),
+    );
     final pl = currentPlaylist;
     final currentTracks =
         tracksState.mapOrNull(data: (d) => d.tracks) ?? const <Track>[];
@@ -197,24 +211,37 @@ class _PlaylistScreenState extends ConsumerState<PlaylistScreen> {
             actions: [
               if (widget.type == PlaylistType.custom)
                 IconButton(
-                  icon: const Icon(Icons.settings, color: DSColors.white, size: DSIconSize.s24),
+                  icon: const Icon(
+                    Icons.settings,
+                    color: DSColors.white,
+                    size: DSIconSize.s24,
+                  ),
                   onPressed: () {
                     final pl = currentPlaylist;
                     showPlaylistBottomSheet(
                       context: context,
                       onAddTracks: () => showAddTracksBottomSheet(
                         context: context,
-                        existingTrackIds:
-                            currentTracks.map((t) => t.id).toSet(),
+                        existingTrackIds: currentTracks
+                            .map((t) => t.id)
+                            .toSet(),
                         onSave: (tracks) => ref
-                            .read(customPlaylistControllerProvider(widget.playlistId).notifier)
+                            .read(
+                              customPlaylistControllerProvider(
+                                widget.playlistId,
+                              ).notifier,
+                            )
                             .addTracks(tracks),
                       ),
                       onRename: () => showRenamePlaylistBottomSheet(
                         context: context,
                         initialName: pl.title,
                         onSave: (newName) => ref
-                            .read(customPlaylistControllerProvider(widget.playlistId).notifier)
+                            .read(
+                              customPlaylistControllerProvider(
+                                widget.playlistId,
+                              ).notifier,
+                            )
                             .rename(newName),
                       ),
                       onEdit: () {
@@ -233,7 +260,11 @@ class _PlaylistScreenState extends ConsumerState<PlaylistScreen> {
                         text: 'Are you sure you want to delete this playlist?',
                         onConfirm: () async {
                           await ref
-                              .read(customPlaylistControllerProvider(widget.playlistId).notifier)
+                              .read(
+                                customPlaylistControllerProvider(
+                                  widget.playlistId,
+                                ).notifier,
+                              )
                               .delete();
                           if (context.mounted) context.pop();
                         },
@@ -243,6 +274,7 @@ class _PlaylistScreenState extends ConsumerState<PlaylistScreen> {
                 )
               else
                 IconButton(
+                  padding: EdgeInsets.only(right: DSSpacing.m),
                   icon: SvgPicture.asset('assets/icons/share_no_bg.svg'),
                   onPressed: () {},
                 ),
@@ -252,20 +284,25 @@ class _PlaylistScreenState extends ConsumerState<PlaylistScreen> {
                 playlist: pl,
                 isLiked: isLikedFromRegistry,
                 isPlaying: isThisPlaying,
-                showPlayButton: tracksState.mapOrNull(
+                showPlayButton:
+                    tracksState.mapOrNull(
                       data: (data) => data.tracks.isNotEmpty,
                     ) ??
                     false,
                 onActionTap: widget.type == PlaylistType.custom
                     ? () => showAddTracksBottomSheet(
-                          context: context,
-                          existingTrackIds:
-                              currentTracks.map((t) => t.id).toSet(),
-                          onSave: (tracks) => ref
-                              .read(customPlaylistControllerProvider(widget.playlistId)
-                                  .notifier)
-                              .addTracks(tracks),
-                        )
+                        context: context,
+                        existingTrackIds: currentTracks
+                            .map((t) => t.id)
+                            .toSet(),
+                        onSave: (tracks) => ref
+                            .read(
+                              customPlaylistControllerProvider(
+                                widget.playlistId,
+                              ).notifier,
+                            )
+                            .addTracks(tracks),
+                      )
                     : () => _onLikeTap(ref, pl),
                 onPlayTap: () {
                   final tracksValue = tracksState.mapOrNull(
@@ -289,7 +326,9 @@ class _PlaylistScreenState extends ConsumerState<PlaylistScreen> {
                 height: 24,
                 decoration: const BoxDecoration(
                   color: DSColors.white,
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(DSRadius.xl)),
+                  borderRadius: BorderRadius.vertical(
+                    top: Radius.circular(DSRadius.xl),
+                  ),
                 ),
               ),
             ),
@@ -316,11 +355,19 @@ class _PlaylistScreenState extends ConsumerState<PlaylistScreen> {
                       onPressed: () {
                         if (widget.type == PlaylistType.featured) {
                           ref
-                              .read(playlistControllerProvider(widget.playlistId).notifier)
+                              .read(
+                                playlistControllerProvider(
+                                  widget.playlistId,
+                                ).notifier,
+                              )
                               .loadFull();
                         } else {
                           ref
-                              .read(customPlaylistControllerProvider(widget.playlistId).notifier)
+                              .read(
+                                customPlaylistControllerProvider(
+                                  widget.playlistId,
+                                ).notifier,
+                              )
                               .loadFull();
                         }
                       },
@@ -335,7 +382,9 @@ class _PlaylistScreenState extends ConsumerState<PlaylistScreen> {
                 return SliverFillRemaining(
                   hasScrollBody: false,
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: DSSpacing.m),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: DSSpacing.m,
+                    ),
                     child: Stack(
                       fit: StackFit.expand,
                       children: [
@@ -363,7 +412,10 @@ class _PlaylistScreenState extends ConsumerState<PlaylistScreen> {
               final playingTrackId = playerState.currentTrack?.id;
 
               return SliverPadding(
-                padding: const EdgeInsets.only(bottom: DSLayout.bottomBarClearance, top: 0),
+                padding: const EdgeInsets.only(
+                  bottom: DSLayout.bottomBarClearance,
+                  top: 0,
+                ),
                 sliver: SliverList(
                   delegate: SliverChildBuilderDelegate((context, index) {
                     final track = tracks[index];
@@ -391,7 +443,9 @@ class _PlaylistScreenState extends ConsumerState<PlaylistScreen> {
                         ),
                         if (index < tracks.length - 1)
                           const Padding(
-                            padding: EdgeInsets.symmetric(horizontal: DSSpacing.m),
+                            padding: EdgeInsets.symmetric(
+                              horizontal: DSSpacing.m,
+                            ),
                             child: DottedDivider(),
                           ),
                       ],
