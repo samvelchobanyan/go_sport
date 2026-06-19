@@ -11,7 +11,6 @@ final tokenStorageProvider = Provider<TokenStorage>(
 class TokenStorage {
   static const _accessTokenKey = 'access_token';
   static const _refreshTokenKey = 'refresh_token';
-  static const _choseGuestKey = 'chose_guest';
 
   String? _registrationToken;
   String? _resetToken;
@@ -33,9 +32,6 @@ class TokenStorage {
     try {
       _cachedAccessToken = await _secureStorage.read(key: _accessTokenKey);
       _cachedRefreshToken = await _secureStorage.read(key: _refreshTokenKey);
-
-      final guestFlag = await _secureStorage.read(key: _choseGuestKey);
-      _choseGuest = guestFlag == 'true';
     } on PlatformException {
       // Secure storage unreadable (e.g. Android Keystore reset → BadPaddingException).
       // Wipe the corrupt entries and fall back to unauthenticated (ADR-005).
@@ -46,9 +42,11 @@ class TokenStorage {
     }
   }
 
-  Future<void> setChoseGuest() async {
+  /// Guest choice is per-session only (in-memory): it is intentionally NOT
+  /// persisted, so each app launch starts at login until the user opts into
+  /// guest mode again — mirroring the in-memory guest session timer.
+  void setChoseGuest() {
     _choseGuest = true;
-    await _secureStorage.write(key: _choseGuestKey, value: 'true');
   }
 
   Future<void> saveTokens({
@@ -65,7 +63,6 @@ class TokenStorage {
     await Future.wait([
       _secureStorage.write(key: _accessTokenKey, value: accessToken),
       _secureStorage.write(key: _refreshTokenKey, value: refreshToken),
-      _secureStorage.delete(key: _choseGuestKey),
     ]);
   }
 
@@ -79,7 +76,6 @@ class TokenStorage {
     await Future.wait([
       _secureStorage.delete(key: _accessTokenKey),
       _secureStorage.delete(key: _refreshTokenKey),
-      _secureStorage.delete(key: _choseGuestKey),
     ]);
   }
 

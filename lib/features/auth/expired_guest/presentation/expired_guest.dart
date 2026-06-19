@@ -1,14 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
+import 'package:go_sport/domain/state/player_state.dart';
 import 'package:go_router/go_router.dart';
 
-class ExpiredGuestScreen extends StatelessWidget {
+class ExpiredGuestScreen extends ConsumerStatefulWidget {
   const ExpiredGuestScreen({super.key});
+
+  @override
+  ConsumerState<ExpiredGuestScreen> createState() => _ExpiredGuestScreenState();
+}
+
+class _ExpiredGuestScreenState extends ConsumerState<ExpiredGuestScreen> {
+  @override
+  void initState() {
+    super.initState();
+    // Guest session is over — stop any ongoing playback when this screen appears.
+    // Post-frame so we don't mutate the provider during the first build.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(playerStateProvider.notifier).stop();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,8 +45,7 @@ class ExpiredGuestScreen extends StatelessWidget {
               width: screenWidth,
               height: screenHeight * 0.7,
               fit: BoxFit.cover,
-              cacheHeight: (screenHeight * 0.7).toInt(),
-              cacheWidth: screenWidth.toInt(),
+              alignment: Alignment.topCenter,
             ),
 
             // Main Content Container

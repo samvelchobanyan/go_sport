@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:go_sport/core/auth/token_storage.dart';
+import 'package:go_sport/core/auth/auth_state.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
@@ -284,10 +284,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             height: DSSpacing.xxl,
                             width: screenWidth,
                             child: TextButton(
-                              onPressed: () async {
-                                await ref
-                                    .read(tokenStorageProvider)
-                                    .setChoseGuest();
+                              onPressed: () {
+                                // Sets both the persisted choseGuest flag (for the
+                                // router) and the AuthGuest state (for the guest bar).
+                                ref.read(authProvider.notifier).continueAsGuest();
 
                                 context.go('/');
                               },
