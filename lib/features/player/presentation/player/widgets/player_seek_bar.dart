@@ -58,7 +58,7 @@ class _PlayerSeekBarState extends ConsumerState<PlayerSeekBar> {
               radius: 3.0,
             ),
             thumbColor: DSColors.blue,
-            overlayShape: const RoundSliderOverlayShape(overlayRadius: 20.0),
+            overlayShape: const RoundSliderOverlayShape(overlayRadius: 14.0),
             overlayColor: DSColors.blue.withValues(alpha: 0.12),
             trackShape: const _FullWidthTrackShape(),
           ),
@@ -85,7 +85,6 @@ class _PlayerSeekBarState extends ConsumerState<PlayerSeekBar> {
                 : null,
           ),
         ),
-        const SizedBox(height: DSSpacing.s8),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [

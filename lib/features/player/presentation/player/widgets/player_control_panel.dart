@@ -32,7 +32,7 @@ class PlayerControlPanel extends ConsumerWidget {
       child: Padding(
         padding: const EdgeInsets.symmetric(
           horizontal: 48,
-          vertical: DSSpacing.m,
+          vertical: DSSpacing.s36,
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -40,7 +40,7 @@ class PlayerControlPanel extends ConsumerWidget {
             // Track info row
             _buildTrackInfo(context, ref, track),
 
-            const SizedBox(height: DSSpacing.l),
+            const SizedBox(height: DSSpacing.s8),
 
             const PlayerSeekBar(),
             const SizedBox(height: DSSpacing.s40),
@@ -184,8 +184,8 @@ class PlayerControlPanel extends ConsumerWidget {
           onTap: () => ref.read(playerStateProvider.notifier).previous(),
           child: SvgPicture.asset(
             'assets/icons/skip_prev.svg',
-            width: 32,
-            height: 32,
+            width: 24,
+            height: 24,
             colorFilter: const ColorFilter.mode(
               DSColors.blue,
               BlendMode.srcIn,
@@ -197,8 +197,8 @@ class PlayerControlPanel extends ConsumerWidget {
         GestureDetector(
           onTap: () => ref.read(playerStateProvider.notifier).togglePlayPause(),
           child: Container(
-            width: 72,
-            height: 72,
+            width: 80,
+            height: 80,
             decoration: const BoxDecoration(
               color: DSColors.blue,
               shape: BoxShape.circle,
@@ -233,8 +233,8 @@ class PlayerControlPanel extends ConsumerWidget {
           onTap: () => ref.read(playerStateProvider.notifier).next(),
           child: SvgPicture.asset(
             'assets/icons/skip_next.svg',
-            width: 32,
-            height: 32,
+            width: 24,
+            height: 24,
             colorFilter: const ColorFilter.mode(
               DSColors.blue,
               BlendMode.srcIn,
@@ -264,8 +264,8 @@ class PlayerControlPanel extends ConsumerWidget {
             opacity: shuffleEnabled ? 1.0 : 0.4,
             child: SvgPicture.asset(
               'assets/icons/shuffle.svg',
-              width: 24,
-              height: 24,
+              width: 28,
+              height: 28,
               colorFilter: const ColorFilter.mode(
                 DSColors.blue,
                 BlendMode.srcIn,
@@ -285,8 +285,8 @@ class PlayerControlPanel extends ConsumerWidget {
               children: [
                 SvgPicture.asset(
                   'assets/icons/repeat.svg',
-                  width: 24,
-                  height: 24,
+                  width: 28,
+                  height: 28,
                   colorFilter: const ColorFilter.mode(
                     DSColors.blue,
                     BlendMode.srcIn,
