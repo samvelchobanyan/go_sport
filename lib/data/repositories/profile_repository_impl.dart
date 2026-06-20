@@ -13,11 +13,20 @@ class ProfileRepositoryImpl implements ProfileRepository {
   @override
   Future<User> getUser() async {
     final response = await _apiClient.get(
-      '/api/users/me',
+      '/api/users/me/profile',
       queryParameters: {'populate': '*'},
     );
 
-    return UserDto.fromJson(response.data as Map<String, dynamic>).toDomain();
+    final data = response.data as Map<String, dynamic>;
+    // TEMP debug: inspect raw avatar payload from API
+    // ignore: avoid_print
+    print('[getUser] raw avatar field: ${data['avatar']}');
+
+    final user = UserDto.fromJson(data).toDomain();
+    // ignore: avoid_print
+    print('[getUser] resolved avatar url: ${user.avatar}');
+
+    return user;
   }
 
   @override

@@ -88,15 +88,23 @@ class ScheduleTile extends StatelessWidget {
             '$startTime - $endTime',
             style: context.bodyL?.copyWith(color: DSColors.gray50),
           ),
-          const SizedBox(width: DSSpacing.xs),
+          const SizedBox(width: DSSpacing.s6),
           GestureDetector(
             onTap: onSubscribeToggle,
             behavior: HitTestBehavior.opaque,
-            child: Padding(
-              padding: const EdgeInsets.all(DSSpacing.xs),
-              child: DSNotificationIcon(
-                color: DSColors.blue,
-                isFilled: isSubscribed,
+            child: Container(
+              width: 27,
+              height: 27,
+              decoration: const BoxDecoration(
+                color: DSColors.blue10,
+                shape: BoxShape.circle,
+              ),
+              child: Center(
+                child: DSNotificationIcon(
+                  color: DSColors.blue,
+                  size: DSIconSize.s16,
+                  isFilled: isSubscribed,
+                ),
               ),
             ),
           ),

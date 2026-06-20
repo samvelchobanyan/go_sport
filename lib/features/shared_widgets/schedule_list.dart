@@ -33,7 +33,7 @@ class ScheduleList extends ConsumerWidget {
             }
 
             if (index == 1) {
-              return const SizedBox(height: DSSpacing.m);
+              return const SizedBox(height: DSSpacing.s10);
             }
 
             final programIndex = index - 2;
