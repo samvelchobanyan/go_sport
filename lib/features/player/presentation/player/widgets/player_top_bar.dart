@@ -21,11 +21,11 @@ class PlayerTopBar extends ConsumerWidget {
 		) ?? '';
 
 		return Padding(
-			padding: const EdgeInsets.symmetric(horizontal: DSSpacing.l, vertical: DSSpacing.m),
+			padding: const EdgeInsets.symmetric(horizontal: DSSpacing.xs, vertical: DSSpacing.m),
 			child: Row(
 				children: [
 					IconButton(
-						icon: const Icon(Icons.keyboard_arrow_down),
+						icon: const Icon(Icons.keyboard_arrow_down_rounded),
 						color: DSColors.black,
 						onPressed: () => Navigator.of(context).pop(),
 					),
@@ -39,11 +39,7 @@ class PlayerTopBar extends ConsumerWidget {
 							),
 						),
 					),
-					IconButton(
-						icon: const Icon(Icons.more_horiz),
-						color: DSColors.black,
-						onPressed: null,
-					),
+					const SizedBox(width: DSSpacing.xxl), // balances the leading IconButton
 				],
 			),
 		);

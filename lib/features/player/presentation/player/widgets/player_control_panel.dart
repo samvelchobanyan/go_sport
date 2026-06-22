@@ -197,8 +197,8 @@ class PlayerControlPanel extends ConsumerWidget {
         GestureDetector(
           onTap: () => ref.read(playerStateProvider.notifier).togglePlayPause(),
           child: Container(
-            width: 80,
-            height: 80,
+            width: 88,
+            height: 88,
             decoration: const BoxDecoration(
               color: DSColors.blue,
               shape: BoxShape.circle,
@@ -217,8 +217,8 @@ class PlayerControlPanel extends ConsumerWidget {
                       isPlaying
                           ? 'assets/icons/pause.svg'
                           : 'assets/icons/play.svg',
-                      width: 32,
-                      height: 32,
+                      width: 53,
+                      height: 53,
                       colorFilter: const ColorFilter.mode(
                         DSColors.white,
                         BlendMode.srcIn,
