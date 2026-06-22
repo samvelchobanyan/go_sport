@@ -6,7 +6,7 @@ import 'package:go_sport/core/navigation/routes.dart';
 import 'package:go_sport/features/auth/change_password/presentation/change_password_screen.dart';
 import 'package:go_sport/features/auth/check_email/presentation/check_email_screen.dart';
 import 'package:go_sport/features/auth/confirm_change_password/presentation/confirm_change_password_screen.dart';
-import 'package:go_sport/features/auth/confirm_email/presentation/confirm_email_screen.dart';
+import 'package:go_sport/features/auth/confirm_email/presentation/confirm_email/confirm_email_screen.dart';
 import 'package:go_sport/features/auth/confirm_phone/presentation/confirm_phone_screen.dart';
 import 'package:go_sport/features/auth/create_password/presentation/create_password_screen.dart';
 import 'package:go_sport/features/auth/expired_guest/presentation/expired_guest.dart';
@@ -66,9 +66,10 @@ GoRouter createAppRouter(TokenStorage tokenStorage) {
           state.matchedLocation == AppRoutes.login ||
           // registration
           state.matchedLocation == AppRoutes.registrationEmail ||
-          state.matchedLocation == AppRoutes.registrationPhone ||
-          state.matchedLocation == AppRoutes.registrationName ||
           state.matchedLocation == AppRoutes.confirmEmail ||
+          state.matchedLocation == AppRoutes.registrationPhone ||
+          state.matchedLocation == AppRoutes.confirmPhone ||
+          state.matchedLocation == AppRoutes.registrationName ||
           state.matchedLocation == AppRoutes.createPassword ||
           // forget password flow
           state.matchedLocation == AppRoutes.forgotPassword ||

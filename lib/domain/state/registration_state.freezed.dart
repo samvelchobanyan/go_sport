@@ -18,10 +18,19 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$RegistrationState {
   // UI State
-  bool get isLoading => throw _privateConstructorUsedError;
-  bool get isSuccess => throw _privateConstructorUsedError;
-  bool get isConfirmSuccess => throw _privateConstructorUsedError;
+  bool get isLoading =>
+      throw _privateConstructorUsedError; // @Default(false) bool isSuccess,
+  // @Default(false) bool isConfirmSuccess,
+  // @Default(false) bool isSkipSuccess,
+  bool get isEmailSuccess => throw _privateConstructorUsedError; // Distinct
+  bool get isEmailVerifySuccess =>
+      throw _privateConstructorUsedError; // Distinct
+  bool get isPhoneSuccess => throw _privateConstructorUsedError; // Distinct
+  bool get isPhoneVerifySuccess =>
+      throw _privateConstructorUsedError; // Distinct
   bool get isSkipSuccess => throw _privateConstructorUsedError;
+  bool get isNameSuccess => throw _privateConstructorUsedError; // Distinct
+  bool get isPasswordSuccess => throw _privateConstructorUsedError; // Distinct
   String? get error =>
       throw _privateConstructorUsedError; // Data gathered during the multi-step process
   String? get email => throw _privateConstructorUsedError;
@@ -45,9 +54,13 @@ abstract class $RegistrationStateCopyWith<$Res> {
   @useResult
   $Res call({
     bool isLoading,
-    bool isSuccess,
-    bool isConfirmSuccess,
+    bool isEmailSuccess,
+    bool isEmailVerifySuccess,
+    bool isPhoneSuccess,
+    bool isPhoneVerifySuccess,
     bool isSkipSuccess,
+    bool isNameSuccess,
+    bool isPasswordSuccess,
     String? error,
     String? email,
     String? phoneNumber,
@@ -72,9 +85,13 @@ class _$RegistrationStateCopyWithImpl<$Res, $Val extends RegistrationState>
   @override
   $Res call({
     Object? isLoading = null,
-    Object? isSuccess = null,
-    Object? isConfirmSuccess = null,
+    Object? isEmailSuccess = null,
+    Object? isEmailVerifySuccess = null,
+    Object? isPhoneSuccess = null,
+    Object? isPhoneVerifySuccess = null,
     Object? isSkipSuccess = null,
+    Object? isNameSuccess = null,
+    Object? isPasswordSuccess = null,
     Object? error = freezed,
     Object? email = freezed,
     Object? phoneNumber = freezed,
@@ -87,17 +104,33 @@ class _$RegistrationStateCopyWithImpl<$Res, $Val extends RegistrationState>
                 ? _value.isLoading
                 : isLoading // ignore: cast_nullable_to_non_nullable
                       as bool,
-            isSuccess: null == isSuccess
-                ? _value.isSuccess
-                : isSuccess // ignore: cast_nullable_to_non_nullable
+            isEmailSuccess: null == isEmailSuccess
+                ? _value.isEmailSuccess
+                : isEmailSuccess // ignore: cast_nullable_to_non_nullable
                       as bool,
-            isConfirmSuccess: null == isConfirmSuccess
-                ? _value.isConfirmSuccess
-                : isConfirmSuccess // ignore: cast_nullable_to_non_nullable
+            isEmailVerifySuccess: null == isEmailVerifySuccess
+                ? _value.isEmailVerifySuccess
+                : isEmailVerifySuccess // ignore: cast_nullable_to_non_nullable
+                      as bool,
+            isPhoneSuccess: null == isPhoneSuccess
+                ? _value.isPhoneSuccess
+                : isPhoneSuccess // ignore: cast_nullable_to_non_nullable
+                      as bool,
+            isPhoneVerifySuccess: null == isPhoneVerifySuccess
+                ? _value.isPhoneVerifySuccess
+                : isPhoneVerifySuccess // ignore: cast_nullable_to_non_nullable
                       as bool,
             isSkipSuccess: null == isSkipSuccess
                 ? _value.isSkipSuccess
                 : isSkipSuccess // ignore: cast_nullable_to_non_nullable
+                      as bool,
+            isNameSuccess: null == isNameSuccess
+                ? _value.isNameSuccess
+                : isNameSuccess // ignore: cast_nullable_to_non_nullable
+                      as bool,
+            isPasswordSuccess: null == isPasswordSuccess
+                ? _value.isPasswordSuccess
+                : isPasswordSuccess // ignore: cast_nullable_to_non_nullable
                       as bool,
             error: freezed == error
                 ? _value.error
@@ -136,9 +169,13 @@ abstract class _$$RegistrationStateImplCopyWith<$Res>
   @useResult
   $Res call({
     bool isLoading,
-    bool isSuccess,
-    bool isConfirmSuccess,
+    bool isEmailSuccess,
+    bool isEmailVerifySuccess,
+    bool isPhoneSuccess,
+    bool isPhoneVerifySuccess,
     bool isSkipSuccess,
+    bool isNameSuccess,
+    bool isPasswordSuccess,
     String? error,
     String? email,
     String? phoneNumber,
@@ -162,9 +199,13 @@ class __$$RegistrationStateImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? isLoading = null,
-    Object? isSuccess = null,
-    Object? isConfirmSuccess = null,
+    Object? isEmailSuccess = null,
+    Object? isEmailVerifySuccess = null,
+    Object? isPhoneSuccess = null,
+    Object? isPhoneVerifySuccess = null,
     Object? isSkipSuccess = null,
+    Object? isNameSuccess = null,
+    Object? isPasswordSuccess = null,
     Object? error = freezed,
     Object? email = freezed,
     Object? phoneNumber = freezed,
@@ -177,17 +218,33 @@ class __$$RegistrationStateImplCopyWithImpl<$Res>
             ? _value.isLoading
             : isLoading // ignore: cast_nullable_to_non_nullable
                   as bool,
-        isSuccess: null == isSuccess
-            ? _value.isSuccess
-            : isSuccess // ignore: cast_nullable_to_non_nullable
+        isEmailSuccess: null == isEmailSuccess
+            ? _value.isEmailSuccess
+            : isEmailSuccess // ignore: cast_nullable_to_non_nullable
                   as bool,
-        isConfirmSuccess: null == isConfirmSuccess
-            ? _value.isConfirmSuccess
-            : isConfirmSuccess // ignore: cast_nullable_to_non_nullable
+        isEmailVerifySuccess: null == isEmailVerifySuccess
+            ? _value.isEmailVerifySuccess
+            : isEmailVerifySuccess // ignore: cast_nullable_to_non_nullable
+                  as bool,
+        isPhoneSuccess: null == isPhoneSuccess
+            ? _value.isPhoneSuccess
+            : isPhoneSuccess // ignore: cast_nullable_to_non_nullable
+                  as bool,
+        isPhoneVerifySuccess: null == isPhoneVerifySuccess
+            ? _value.isPhoneVerifySuccess
+            : isPhoneVerifySuccess // ignore: cast_nullable_to_non_nullable
                   as bool,
         isSkipSuccess: null == isSkipSuccess
             ? _value.isSkipSuccess
             : isSkipSuccess // ignore: cast_nullable_to_non_nullable
+                  as bool,
+        isNameSuccess: null == isNameSuccess
+            ? _value.isNameSuccess
+            : isNameSuccess // ignore: cast_nullable_to_non_nullable
+                  as bool,
+        isPasswordSuccess: null == isPasswordSuccess
+            ? _value.isPasswordSuccess
+            : isPasswordSuccess // ignore: cast_nullable_to_non_nullable
                   as bool,
         error: freezed == error
             ? _value.error
@@ -219,9 +276,13 @@ class __$$RegistrationStateImplCopyWithImpl<$Res>
 class _$RegistrationStateImpl implements _RegistrationState {
   const _$RegistrationStateImpl({
     this.isLoading = false,
-    this.isSuccess = false,
-    this.isConfirmSuccess = false,
+    this.isEmailSuccess = false,
+    this.isEmailVerifySuccess = false,
+    this.isPhoneSuccess = false,
+    this.isPhoneVerifySuccess = false,
     this.isSkipSuccess = false,
+    this.isNameSuccess = false,
+    this.isPasswordSuccess = false,
     this.error,
     this.email,
     this.phoneNumber,
@@ -233,15 +294,36 @@ class _$RegistrationStateImpl implements _RegistrationState {
   @override
   @JsonKey()
   final bool isLoading;
+  // @Default(false) bool isSuccess,
+  // @Default(false) bool isConfirmSuccess,
+  // @Default(false) bool isSkipSuccess,
   @override
   @JsonKey()
-  final bool isSuccess;
+  final bool isEmailSuccess;
+  // Distinct
   @override
   @JsonKey()
-  final bool isConfirmSuccess;
+  final bool isEmailVerifySuccess;
+  // Distinct
+  @override
+  @JsonKey()
+  final bool isPhoneSuccess;
+  // Distinct
+  @override
+  @JsonKey()
+  final bool isPhoneVerifySuccess;
+  // Distinct
   @override
   @JsonKey()
   final bool isSkipSuccess;
+  @override
+  @JsonKey()
+  final bool isNameSuccess;
+  // Distinct
+  @override
+  @JsonKey()
+  final bool isPasswordSuccess;
+  // Distinct
   @override
   final String? error;
   // Data gathered during the multi-step process
@@ -256,7 +338,7 @@ class _$RegistrationStateImpl implements _RegistrationState {
 
   @override
   String toString() {
-    return 'RegistrationState(isLoading: $isLoading, isSuccess: $isSuccess, isConfirmSuccess: $isConfirmSuccess, isSkipSuccess: $isSkipSuccess, error: $error, email: $email, phoneNumber: $phoneNumber, name: $name, surname: $surname)';
+    return 'RegistrationState(isLoading: $isLoading, isEmailSuccess: $isEmailSuccess, isEmailVerifySuccess: $isEmailVerifySuccess, isPhoneSuccess: $isPhoneSuccess, isPhoneVerifySuccess: $isPhoneVerifySuccess, isSkipSuccess: $isSkipSuccess, isNameSuccess: $isNameSuccess, isPasswordSuccess: $isPasswordSuccess, error: $error, email: $email, phoneNumber: $phoneNumber, name: $name, surname: $surname)';
   }
 
   @override
@@ -266,12 +348,20 @@ class _$RegistrationStateImpl implements _RegistrationState {
             other is _$RegistrationStateImpl &&
             (identical(other.isLoading, isLoading) ||
                 other.isLoading == isLoading) &&
-            (identical(other.isSuccess, isSuccess) ||
-                other.isSuccess == isSuccess) &&
-            (identical(other.isConfirmSuccess, isConfirmSuccess) ||
-                other.isConfirmSuccess == isConfirmSuccess) &&
+            (identical(other.isEmailSuccess, isEmailSuccess) ||
+                other.isEmailSuccess == isEmailSuccess) &&
+            (identical(other.isEmailVerifySuccess, isEmailVerifySuccess) ||
+                other.isEmailVerifySuccess == isEmailVerifySuccess) &&
+            (identical(other.isPhoneSuccess, isPhoneSuccess) ||
+                other.isPhoneSuccess == isPhoneSuccess) &&
+            (identical(other.isPhoneVerifySuccess, isPhoneVerifySuccess) ||
+                other.isPhoneVerifySuccess == isPhoneVerifySuccess) &&
             (identical(other.isSkipSuccess, isSkipSuccess) ||
                 other.isSkipSuccess == isSkipSuccess) &&
+            (identical(other.isNameSuccess, isNameSuccess) ||
+                other.isNameSuccess == isNameSuccess) &&
+            (identical(other.isPasswordSuccess, isPasswordSuccess) ||
+                other.isPasswordSuccess == isPasswordSuccess) &&
             (identical(other.error, error) || other.error == error) &&
             (identical(other.email, email) || other.email == email) &&
             (identical(other.phoneNumber, phoneNumber) ||
@@ -284,9 +374,13 @@ class _$RegistrationStateImpl implements _RegistrationState {
   int get hashCode => Object.hash(
     runtimeType,
     isLoading,
-    isSuccess,
-    isConfirmSuccess,
+    isEmailSuccess,
+    isEmailVerifySuccess,
+    isPhoneSuccess,
+    isPhoneVerifySuccess,
     isSkipSuccess,
+    isNameSuccess,
+    isPasswordSuccess,
     error,
     email,
     phoneNumber,
@@ -309,9 +403,13 @@ class _$RegistrationStateImpl implements _RegistrationState {
 abstract class _RegistrationState implements RegistrationState {
   const factory _RegistrationState({
     final bool isLoading,
-    final bool isSuccess,
-    final bool isConfirmSuccess,
+    final bool isEmailSuccess,
+    final bool isEmailVerifySuccess,
+    final bool isPhoneSuccess,
+    final bool isPhoneVerifySuccess,
     final bool isSkipSuccess,
+    final bool isNameSuccess,
+    final bool isPasswordSuccess,
     final String? error,
     final String? email,
     final String? phoneNumber,
@@ -321,13 +419,23 @@ abstract class _RegistrationState implements RegistrationState {
 
   // UI State
   @override
-  bool get isLoading;
+  bool get isLoading; // @Default(false) bool isSuccess,
+  // @Default(false) bool isConfirmSuccess,
+  // @Default(false) bool isSkipSuccess,
   @override
-  bool get isSuccess;
+  bool get isEmailSuccess; // Distinct
   @override
-  bool get isConfirmSuccess;
+  bool get isEmailVerifySuccess; // Distinct
+  @override
+  bool get isPhoneSuccess; // Distinct
+  @override
+  bool get isPhoneVerifySuccess; // Distinct
   @override
   bool get isSkipSuccess;
+  @override
+  bool get isNameSuccess; // Distinct
+  @override
+  bool get isPasswordSuccess; // Distinct
   @override
   String? get error; // Data gathered during the multi-step process
   @override

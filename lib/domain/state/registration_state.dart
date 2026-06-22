@@ -14,9 +14,16 @@ class RegistrationState with _$RegistrationState {
   const factory RegistrationState({
     // UI State
     @Default(false) bool isLoading,
-    @Default(false) bool isSuccess,
-    @Default(false) bool isConfirmSuccess,
+    // @Default(false) bool isSuccess,
+    // @Default(false) bool isConfirmSuccess,
+    // @Default(false) bool isSkipSuccess,
+    @Default(false) bool isEmailSuccess, // Distinct
+    @Default(false) bool isEmailVerifySuccess, // Distinct
+    @Default(false) bool isPhoneSuccess, // Distinct
+    @Default(false) bool isPhoneVerifySuccess, // Distinct
     @Default(false) bool isSkipSuccess,
+    @Default(false) bool isNameSuccess, // Distinct
+    @Default(false) bool isPasswordSuccess, // Distinct
     String? error,
 
     // Data gathered during the multi-step process
@@ -46,7 +53,12 @@ class RegistrationController extends Notifier<RegistrationState> {
 
       final tokenStorage = ref.read(tokenStorageProvider);
       tokenStorage.saveRegistrationToken(result.registrationToken);
-      state = state.copyWith(isLoading: false, isSuccess: true, email: email);
+      state = state.copyWith(
+        isLoading: false,
+        //  isSuccess: true,
+        isEmailSuccess: true,
+        email: email,
+      );
     } catch (e) {
       _handleError("Failed to send email verification.");
     }
@@ -62,7 +74,11 @@ class RegistrationController extends Notifier<RegistrationState> {
 
     try {
       await _authRepository.verifyEmail(token: token, otp: otp);
-      state = state.copyWith(isLoading: false, isConfirmSuccess: true);
+      state = state.copyWith(
+        isLoading: false,
+        isEmailVerifySuccess: true,
+        // isConfirmSuccess: true
+      );
     } catch (e) {
       _handleError("Invalid code.");
     }
@@ -78,7 +94,8 @@ class RegistrationController extends Notifier<RegistrationState> {
       await _authRepository.registerPhone(token: token!, phone: phone);
       state = state.copyWith(
         isLoading: false,
-        isSuccess: true,
+        isPhoneSuccess: true,
+        // isSuccess: true,
         phoneNumber: phone,
       );
     } catch (e) {
@@ -95,7 +112,11 @@ class RegistrationController extends Notifier<RegistrationState> {
 
     try {
       await _authRepository.verifyPhone(token: token, otp: otp);
-      state = state.copyWith(isLoading: false, isConfirmSuccess: true);
+      state = state.copyWith(
+        isLoading: false,
+        // isConfirmSuccess: true
+        isPhoneVerifySuccess: true,
+      );
     } catch (e) {
       _handleError("Invalid code.");
     }
@@ -112,7 +133,7 @@ class RegistrationController extends Notifier<RegistrationState> {
       await _authRepository.skipPhone(token: token);
       state = state.copyWith(
         isLoading: false,
-        isSuccess: false,
+        // isSuccess: false,
         isSkipSuccess: true,
       );
     } catch (e) {
@@ -163,9 +184,10 @@ class RegistrationController extends Notifier<RegistrationState> {
       );
       state = state.copyWith(
         isLoading: false,
-        isSuccess: true,
-        isConfirmSuccess: false,
-        isSkipSuccess: false,
+        isPasswordSuccess: true,
+        // isSuccess: true,
+        // isConfirmSuccess: false,
+        // isSkipSuccess: false,
       );
     } catch (e) {
       _handleError("Could not set password.");
@@ -192,7 +214,8 @@ class RegistrationController extends Notifier<RegistrationState> {
 
       state = state.copyWith(
         isLoading: false,
-        isSuccess: true,
+        isNameSuccess: true,
+        // isSuccess: true,
         name: name,
         surname: surname,
       );
@@ -208,9 +231,14 @@ class RegistrationController extends Notifier<RegistrationState> {
   void _prepareAction() {
     state = state.copyWith(
       isLoading: true,
-      isSuccess: false,
-      isConfirmSuccess: false,
+
+      isEmailSuccess: false,
+      isEmailVerifySuccess: false,
+      isPhoneSuccess: false,
+      isPhoneVerifySuccess: false,
       isSkipSuccess: false,
+      isNameSuccess: false,
+      isPasswordSuccess: false,
       error: null,
     );
   }
@@ -218,9 +246,13 @@ class RegistrationController extends Notifier<RegistrationState> {
   void _handleError(String message) {
     state = state.copyWith(
       isLoading: false,
-      isSuccess: false,
-      isConfirmSuccess: false,
+      isEmailSuccess: false,
+      isEmailVerifySuccess: false,
+      isPhoneSuccess: false,
+      isPhoneVerifySuccess: false,
       isSkipSuccess: false,
+      isNameSuccess: false,
+      isPasswordSuccess: false,
       error: message,
     );
   }

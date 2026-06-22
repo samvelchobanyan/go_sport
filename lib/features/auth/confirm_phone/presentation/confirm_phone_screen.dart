@@ -36,6 +36,19 @@ class _ConfirmPhoneScreenState extends ConsumerState<ConfirmPhoneScreen> {
     super.dispose();
   }
 
+  void _onContinue() {
+    final otp = _controllers.map((c) => c.text).join();
+
+    if (otp.length < 6) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please enter the full 6-digit code')),
+      );
+      return;
+    }
+
+    ref.read(registrationControllerProvider.notifier).verifyPhoneOtp(otp);
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
@@ -44,7 +57,7 @@ class _ConfirmPhoneScreenState extends ConsumerState<ConfirmPhoneScreen> {
     final registrationState = ref.watch(registrationControllerProvider);
 
     ref.listen<RegistrationState>(registrationControllerProvider, (prev, next) {
-      if (next.isConfirmSuccess) {
+      if (next.isPhoneVerifySuccess) {
         context.go('/create-password');
       }
       if (next.error != null) {
@@ -73,7 +86,6 @@ class _ConfirmPhoneScreenState extends ConsumerState<ConfirmPhoneScreen> {
               ),
             ),
 
-           
             RoundBackButton(
               cardHeight: _cardHeight,
               goBackTo: '/registration-phone',
@@ -147,10 +159,9 @@ class _ConfirmPhoneScreenState extends ConsumerState<ConfirmPhoneScreen> {
 
                           ElevatedButton.icon(
                             onPressed: () {
-                              context.go('/create-password');
+                              registrationState.isLoading ? null : _onContinue;
                             },
-                            // todo uncomment later (doesnt work api yet)
-                            // registrationState.isLoading ? null : _onContinue,
+
                             icon: Icon(
                               Icons.arrow_forward,
                               color: DSColors.lime,

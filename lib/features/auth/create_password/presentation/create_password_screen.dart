@@ -61,7 +61,7 @@ class _CreatePasswordScreenState extends ConsumerState<CreatePasswordScreen> {
     final imageHeight = screenSize.height - _cardHeight + _cardOverlap;
 
     ref.listen<RegistrationState>(registrationControllerProvider, (prev, next) {
-      if (next.isSuccess) {
+      if (next.isPasswordSuccess) {
         context.go('/registration-name');
       }
       if (next.error != null) {

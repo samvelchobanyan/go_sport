@@ -73,7 +73,7 @@ class _RegistrationEmailScreenState
     final state = ref.watch(registrationControllerProvider);
 
     ref.listen<RegistrationState>(registrationControllerProvider, (prev, next) {
-      if (next.isSuccess) {
+      if (next.isEmailSuccess) {
         context.go('/confirm-email');
       }
       if (next.error != null) {

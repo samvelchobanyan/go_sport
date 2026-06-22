@@ -168,10 +168,10 @@ class RadioPageScreen extends ConsumerWidget {
       return SliverToBoxAdapter(
         child: Center(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: DSSpacing.m),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: Text(
               'No featured episodes yet',
-              style: context.subtitleLBold,
+              style: TextStyle(color: DSColors.gray60),
             ),
           ),
         ),

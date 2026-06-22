@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_sport/core/navigation/routes.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
@@ -54,11 +55,11 @@ class _RegistrationPhoneScreenState
     final state = ref.watch(registrationControllerProvider);
 
     ref.listen<RegistrationState>(registrationControllerProvider, (prev, next) {
-      if (next.isSuccess && !next.isSkipSuccess) {
-        context.go('/confirm-phone');
+      if (next.isPhoneSuccess) {
+        context.go(AppRoutes.confirmPhone);
       }
       if (next.isSkipSuccess) {
-        context.go('/create-password');
+        context.go(AppRoutes.createPassword);
       }
       if (next.error != null) {
         ScaffoldMessenger.of(
@@ -167,7 +168,9 @@ class _RegistrationPhoneScreenState
                               backgroundColor: DSColors.blue,
                               minimumSize: const Size.fromHeight(DSSpacing.xxl),
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(DSRadius.xxl),
+                                borderRadius: BorderRadius.circular(
+                                  DSRadius.xxl,
+                                ),
                               ),
                             ),
                           ),
@@ -178,7 +181,6 @@ class _RegistrationPhoneScreenState
                               ref
                                   .read(registrationControllerProvider.notifier)
                                   .skipPhone();
-                              context.go('/create-password');
                             },
                             style: TextButton.styleFrom(side: BorderSide.none),
                             child: Text(

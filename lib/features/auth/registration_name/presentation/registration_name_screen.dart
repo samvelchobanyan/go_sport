@@ -56,7 +56,7 @@ class _RegistrationNameScreenState
     final imageHeight = screenSize.height - _cardHeight + _cardOverlap;
 
     ref.listen<RegistrationState>(registrationControllerProvider, (prev, next) {
-      if (next.isSuccess) {
+      if (next.isNameSuccess) {
         context.go('/');
       }
       if (next.error != null) {
