@@ -120,8 +120,8 @@ class _PlayButton extends StatelessWidget {
                   isPlaying
                       ? 'assets/icons/pause.svg'
                       : 'assets/icons/play.svg',
-                  width: 36,
-                  height: 36,
+                  width: 53,
+                  height: 53,
                   colorFilter: const ColorFilter.mode(
                     DSColors.white,
                     BlendMode.srcIn,
