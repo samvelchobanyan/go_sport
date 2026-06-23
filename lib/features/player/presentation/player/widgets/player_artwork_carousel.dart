@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:go_sport/design_system/components/network_image/ds_network_image.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
-import 'package:go_sport/design_system/foundations/ds_icon_size.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/domain/state/player_state.dart';
 
@@ -147,25 +146,11 @@ class _ArtworkCard extends StatelessWidget {
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(DSRadius.m),
-        child: imageUrl != null
-            ? CachedNetworkImage(
-                imageUrl: imageUrl!,
-                fit: BoxFit.cover,
-                memCacheWidth: 300,
-                memCacheHeight: 300,
-                placeholder: (context, url) => Container(
-                  color: DSColors.gray20,
-                ),
-                errorWidget: (context, url, error) => Container(
-                  color: DSColors.gray20,
-                  child: const Icon(
-                    Icons.music_note,
-                    size: DSIconSize.s48,
-                    color: DSColors.gray50,
-                  ),
-                ),
-              )
-            : Container(color: DSColors.gray20),
+        child: DSNetworkImage(
+          imageUrl: imageUrl,
+          memCacheWidth: 300,
+          memCacheHeight: 300,
+        ),
       ),
     );
   }

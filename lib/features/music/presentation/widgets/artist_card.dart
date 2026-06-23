@@ -1,9 +1,7 @@
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:go_sport/design_system/components/network_image/ds_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
-import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_spacing.dart';
-import 'package:go_sport/design_system/foundations/ds_icon_size.dart';
 
 class ArtistCard extends StatelessWidget {
   final String name;
@@ -25,23 +23,10 @@ class ArtistCard extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           ClipOval(
-            child: CachedNetworkImage(
+            child: DSNetworkImage(
               imageUrl: imageUrl,
               width: 120,
               height: 120,
-              fit: BoxFit.cover,
-              placeholder: (context, url) =>
-                  Container(width: 120, height: 120, color: DSColors.divider),
-              errorWidget: (context, url, error) => Container(
-                width: 120,
-                height: 120,
-                color: DSColors.gray20,
-                child: const Icon(
-                  Icons.error,
-                  color: DSColors.gray50,
-                  size: DSIconSize.s28,
-                ),
-              ),
             ),
           ),
           const SizedBox(height: DSSpacing.s12),

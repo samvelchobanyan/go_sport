@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_sport/design_system/components/network_image/ds_network_image.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
@@ -39,11 +40,7 @@ class PlaylistHero extends StatelessWidget {
                 'assets/images/custom_playlist_cover.png',
                 fit: BoxFit.cover,
               )
-            : Image.network(
-                playlist.imageUrl,
-                fit: BoxFit.cover,
-                errorBuilder: (_, __, ___) => Container(color: DSColors.gray40),
-              ),
+            : DSNetworkImage(imageUrl: playlist.imageUrl),
 
         // Gradient overlay
         const DecoratedBox(

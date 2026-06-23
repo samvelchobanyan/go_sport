@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_sport/design_system/components/network_image/ds_network_image.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
@@ -34,16 +35,10 @@ void showTrackOptionsBottomSheet({
                 ),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(DSRadius.xs),
-                  child: Image.network(
-                    track.imageUrl ?? '',
+                  child: DSNetworkImage(
+                    imageUrl: track.imageUrl,
                     width: 48,
                     height: 48,
-                    fit: BoxFit.cover,
-                    errorBuilder: (_, __, ___) => Container(
-                      width: 48,
-                      height: 48,
-                      color: DSColors.gray20,
-                    ),
                   ),
                 ),
               ),

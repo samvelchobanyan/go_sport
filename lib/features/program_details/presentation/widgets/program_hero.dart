@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_sport/design_system/components/network_image/ds_network_image.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_sport/design_system/components/icons/ds_heart_icon.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
@@ -32,11 +33,7 @@ class ProgramHero extends StatelessWidget {
         // Background image
         Hero(
           tag: 'program-image-${program.id}',
-          child: Image.network(
-            program.imageUrl,
-            fit: BoxFit.cover,
-            errorBuilder: (_, __, ___) => Container(color: DSColors.gray40),
-          ),
+          child: DSNetworkImage(imageUrl: program.imageUrl),
         ),
 
         // Gradient overlay

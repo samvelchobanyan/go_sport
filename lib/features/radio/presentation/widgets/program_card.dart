@@ -1,7 +1,6 @@
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:go_sport/design_system/components/network_image/ds_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
-import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 import 'package:go_sport/features/shared_widgets/count_badge.dart';
 import 'package:go_sport/features/shared_widgets/media_card_shell.dart';
@@ -34,14 +33,7 @@ class ProgramCard extends StatelessWidget {
             MediaCardShell(
               child: Hero(
                 tag: 'program-image-$id',
-                child: CachedNetworkImage(
-                  imageUrl: imageUrl,
-                  fit: BoxFit.cover,
-                  placeholder: (context, url) =>
-                      Container(color: DSColors.gray20),
-                  errorWidget: (context, url, error) =>
-                      Container(color: DSColors.gray20),
-                ),
+                child: DSNetworkImage(imageUrl: imageUrl),
               ),
             ),
             const SizedBox(height: DSSpacing.s6),

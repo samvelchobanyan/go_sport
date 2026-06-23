@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:go_sport/design_system/components/network_image/ds_network_image.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_icon_size.dart';
@@ -130,22 +130,9 @@ class _StoryOverlayState extends ConsumerState<StoryOverlay>
         children: [
           // Background image (full screen, including system areas)
           Positioned.fill(
-            child: CachedNetworkImage(
+            child: DSNetworkImage(
               key: ValueKey(story.id),
               imageUrl: story.imageUrl,
-              fit: BoxFit.cover,
-              placeholder: (context, url) => Container(
-                color: DSColors.gray20,
-                child: const Center(child: CircularProgressIndicator()),
-              ),
-              errorWidget: (context, url, error) => Container(
-                color: DSColors.gray20,
-                child: const Icon(
-                  Icons.broken_image,
-                  size: 64,
-                  color: DSColors.gray50,
-                ),
-              ),
             ),
           ),
 

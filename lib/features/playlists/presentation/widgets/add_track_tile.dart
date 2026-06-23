@@ -1,4 +1,4 @@
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:go_sport/design_system/components/network_image/ds_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
@@ -34,19 +34,10 @@ class AddTrackTile extends StatelessWidget {
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(DSRadius.xs),
-            child: CachedNetworkImage(
-              imageUrl: track.imageUrl ?? '',
+            child: DSNetworkImage(
+              imageUrl: track.imageUrl,
               width: 48,
               height: 48,
-              fit: BoxFit.cover,
-              placeholder: (context, url) =>
-                  Container(width: 48, height: 48, color: DSColors.divider),
-              errorWidget: (context, url, error) => Container(
-                width: 48,
-                height: 48,
-                color: DSColors.gray20,
-                child: const Icon(Icons.music_note, color: DSColors.gray50),
-              ),
             ),
           ),
           const SizedBox(width: DSSpacing.s12),

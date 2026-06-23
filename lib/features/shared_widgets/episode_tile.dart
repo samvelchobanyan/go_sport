@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_sport/design_system/components/network_image/ds_network_image.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_icon_size.dart';
@@ -71,23 +72,11 @@ class EpisodeTile extends StatelessWidget {
                 ),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(DSRadius.xs),
-                  child: episode.imageUrl != null
-                      ? Image.network(
-                          episode.imageUrl!,
-                          width: 48,
-                          height: 48,
-                          fit: BoxFit.cover,
-                          errorBuilder: (_, __, ___) => Container(
-                            width: 48,
-                            height: 48,
-                            color: DSColors.gray20,
-                          ),
-                        )
-                      : Container(
-                          width: 48,
-                          height: 48,
-                          color: DSColors.gray20,
-                        ),
+                  child: DSNetworkImage(
+                    imageUrl: episode.imageUrl,
+                    width: 48,
+                    height: 48,
+                  ),
                 ),
               ),
               const SizedBox(width: DSSpacing.s10),

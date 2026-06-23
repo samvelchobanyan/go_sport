@@ -1,4 +1,4 @@
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:go_sport/design_system/components/network_image/ds_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:go_sport/design_system/components/icons/ds_notification_icon.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
@@ -35,23 +35,10 @@ class ScheduleTile extends StatelessWidget {
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(DSRadius.xs),
-            child: CachedNetworkImage(
-              imageUrl: program.imageUrl ?? '',
+            child: DSNetworkImage(
+              imageUrl: program.imageUrl,
               width: 40,
               height: 40,
-              fit: BoxFit.cover,
-              placeholder: (context, url) =>
-                  Container(width: 40, height: 40, color: DSColors.divider),
-              errorWidget: (context, url, error) => Container(
-                width: 40,
-                height: 40,
-                color: DSColors.gray20,
-                child: const Icon(
-                  Icons.error,
-                  color: DSColors.gray50,
-                  size: DSIconSize.s28,
-                ),
-              ),
             ),
           ),
           const SizedBox(width: DSSpacing.s12),
