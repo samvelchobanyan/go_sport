@@ -1,10 +1,8 @@
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:go_sport/design_system/components/network_image/ds_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
-import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_spacing.dart';
-import 'package:go_sport/design_system/foundations/ds_icon_size.dart';
 import 'package:go_sport/domain/entities/artist.dart';
 
 class ArtistTile extends StatelessWidget {
@@ -36,23 +34,10 @@ class ArtistTile extends StatelessWidget {
             Container(
               decoration: BoxDecoration(shape: BoxShape.circle),
               child: ClipOval(
-                child: CachedNetworkImage(
+                child: DSNetworkImage(
                   imageUrl: artist.imageUrl,
                   width: 72,
                   height: 72,
-                  fit: BoxFit.cover,
-                  placeholder: (context, url) =>
-                      Container(width: 72, height: 72, color: DSColors.divider),
-                  errorWidget: (context, url, error) => Container(
-                    width: 72,
-                    height: 72,
-                    color: DSColors.gray20,
-                    child: const Icon(
-                      Icons.error,
-                      color: DSColors.gray50,
-                      size: DSIconSize.s28,
-                    ),
-                  ),
                 ),
               ),
             ),

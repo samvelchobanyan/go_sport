@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_sport/design_system/components/network_image/ds_network_image.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
-import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 import 'package:go_sport/domain/entities/playlist.dart';
 import 'media_card_shell.dart';
@@ -28,12 +28,7 @@ class PlaylistCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             MediaCardShell(
-              child: Image.network(
-                playlist.imageUrl,
-                fit: BoxFit.cover,
-                errorBuilder: (_, __, ___) =>
-                    Container(color: DSColors.gray20),
-              ),
+              child: DSNetworkImage(imageUrl: playlist.imageUrl),
             ),
             const SizedBox(height: DSSpacing.s6),
             Text(

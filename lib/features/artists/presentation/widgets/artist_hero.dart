@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_sport/design_system/components/network_image/ds_network_image.dart';
 import 'package:go_sport/design_system/components/icons/ds_heart_icon.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
@@ -24,11 +25,7 @@ class ArtistHero extends StatelessWidget {
     return Stack(
       fit: StackFit.expand,
       children: [
-        Image.network(
-          artist.imageUrl,
-          fit: BoxFit.cover,
-          errorBuilder: (_, __, ___) => Container(color: DSColors.gray40),
-        ),
+        DSNetworkImage(imageUrl: artist.imageUrl),
 
         const DecoratedBox(
           decoration: BoxDecoration(

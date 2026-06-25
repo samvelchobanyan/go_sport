@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:go_sport/design_system/components/network_image/ds_network_image.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_spacing.dart';
-import 'package:go_sport/design_system/foundations/ds_icon_size.dart';
 import 'package:go_sport/domain/entities/story.dart';
 
 class StoryItem extends StatelessWidget {
@@ -43,26 +42,7 @@ class StoryItem extends StatelessWidget {
               width: 62, // 72 - 2*(outerRing 2 + whiteRing 3) = 62
               height: 62,
               child: ClipOval(
-                child: CachedNetworkImage(
-                  imageUrl: story.imageUrl,
-                  fit: BoxFit.cover,
-                  placeholder: (context, url) => Container(
-                    color: DSColors.gray20,
-                    child: const Icon(
-                      Icons.person,
-                      color: DSColors.gray50,
-                      size: DSIconSize.s28,
-                    ),
-                  ),
-                  errorWidget: (context, url, error) => Container(
-                    color: DSColors.gray20,
-                    child: const Icon(
-                      Icons.error,
-                      color: DSColors.gray50,
-                      size: DSIconSize.s28,
-                    ),
-                  ),
-                ),
+                child: DSNetworkImage(imageUrl: story.imageUrl),
               ),
             ),
           ),

@@ -1,9 +1,8 @@
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:go_sport/design_system/components/network_image/ds_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_spacing.dart';
-import 'package:go_sport/design_system/foundations/ds_icon_size.dart';
 import 'package:go_sport/features/shared_widgets/media_card_shell.dart';
 import 'package:go_sport/features/shared_widgets/count_badge.dart';
 
@@ -37,20 +36,7 @@ class AlbumCard extends StatelessWidget {
             MediaCardShell(
               child: Hero(
                 tag: 'album-image-$id',
-                child: CachedNetworkImage(
-                  imageUrl: imageUrl,
-                  fit: BoxFit.cover,
-                  placeholder: (context, url) =>
-                      Container(width: 84, height: 84, color: DSColors.divider),
-                  errorWidget: (context, url, error) => Container(
-                    color: DSColors.gray20,
-                    child: const Icon(
-                      Icons.error,
-                      color: DSColors.gray50,
-                      size: DSIconSize.s28,
-                    ),
-                  ),
-                ),
+                child: DSNetworkImage(imageUrl: imageUrl),
               ),
             ),
             const SizedBox(height: DSSpacing.s6),

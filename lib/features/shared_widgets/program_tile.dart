@@ -1,10 +1,9 @@
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:go_sport/design_system/components/network_image/ds_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_spacing.dart';
-import 'package:go_sport/design_system/foundations/ds_icon_size.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 
 class ProgramTile extends StatelessWidget {
@@ -44,23 +43,10 @@ class ProgramTile extends StatelessWidget {
               ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(DSRadius.s),
-                child: CachedNetworkImage(
+                child: DSNetworkImage(
                   imageUrl: imageUrl,
                   width: 50,
                   height: 50,
-                  fit: BoxFit.cover,
-                  placeholder: (context, url) =>
-                      Container(width: 50, height: 50, color: DSColors.divider),
-                  errorWidget: (context, url, error) => Container(
-                    width: 50,
-                    height: 50,
-                    color: DSColors.gray20,
-                    child: const Icon(
-                      Icons.error,
-                      color: DSColors.gray50,
-                      size: DSIconSize.s28,
-                    ),
-                  ),
                 ),
               ),
             ),

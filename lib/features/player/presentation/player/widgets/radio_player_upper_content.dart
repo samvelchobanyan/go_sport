@@ -1,4 +1,4 @@
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:go_sport/design_system/components/network_image/ds_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -159,22 +159,7 @@ class _NowPlayingCard extends StatelessWidget {
             child: SizedBox(
               width: 36,
               height: 36,
-              child: imageUrl != null
-                  ? CachedNetworkImage(
-                      imageUrl: imageUrl!,
-                      fit: BoxFit.cover,
-                      errorWidget: (_, __, ___) => Container(
-                        color: DSColors.gray20,
-                        child: const Icon(
-                          Icons.radio,
-                          color: DSColors.gray50,
-                        ),
-                      ),
-                    )
-                  : Container(
-                      color: DSColors.gray20,
-                      child: const Icon(Icons.radio, color: DSColors.gray50),
-                    ),
+              child: DSNetworkImage(imageUrl: imageUrl),
             ),
           ),
           const SizedBox(width: DSSpacing.s8),

@@ -1,4 +1,4 @@
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:go_sport/design_system/components/network_image/ds_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -117,26 +117,10 @@ class NewsDetailScreen extends ConsumerWidget {
               padding: const EdgeInsets.symmetric(horizontal: DSSpacing.l),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(DSRadius.s),
-                child: CachedNetworkImage(
+                child: DSNetworkImage(
                   imageUrl: article.imageUrl,
                   width: double.infinity,
                   height: 240,
-                  fit: BoxFit.cover,
-                  placeholder: (context, url) => Container(
-                    width: double.infinity,
-                    height: 240,
-                    color: DSColors.divider,
-                  ),
-                  errorWidget: (context, url, error) => Container(
-                    width: double.infinity,
-                    height: 240,
-                    color: DSColors.gray20,
-                    child: const Icon(
-                      Icons.error,
-                      color: DSColors.gray50,
-                      size: DSIconSize.s28,
-                    ),
-                  ),
                 ),
               ),
             ),
