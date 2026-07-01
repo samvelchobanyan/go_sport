@@ -33,7 +33,8 @@ class _RegistrationPhoneScreenState
   }
 
   void _onContinue() {
-    final phone = _phoneController.text.trim().replaceAll(RegExp(r'\D'), '');
+    // Оставляем только цифры (клавиатура телефонная, но допускает + * # и т.п.).
+    var phone = _phoneController.text.trim().replaceAll(RegExp(r'\D'), '');
 
     if (phone.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -42,9 +43,25 @@ class _RegistrationPhoneScreenState
       return;
     }
 
+    // Нормализуем к национальному номеру: срезаем ведущий 0, затем код 374.
+    if (phone.startsWith('0')) {
+      phone = phone.substring(1);
+    }
+    if (phone.startsWith('374')) {
+      phone = phone.substring(3);
+    }
+
+    // Армянский мобильный — ровно 8 цифр. Иначе формат неверный.
+    if (phone.length != 8) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Invalid phone number format')),
+      );
+      return;
+    }
+
     ref
         .read(registrationControllerProvider.notifier)
-        .registerPhone('+374$phone');
+        .registerPhone('374$phone');
   }
 
   @override

@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:go_sport/core/auth/auth_state.dart';
@@ -118,6 +121,18 @@ class RegistrationController extends Notifier<RegistrationState> {
         isPhoneVerifySuccess: true,
       );
     } catch (e) {
+      // TEMP DEBUG: реальный ответ сервера на verifyPhone (убрать после отладки)
+      if (e is DioException) {
+        log(
+          'verifyPhone FAILED\n'
+          'request body: ${e.requestOptions.data}\n'
+          'status: ${e.response?.statusCode}\n'
+          'response body: ${e.response?.data}',
+          name: 'verifyPhoneOtp',
+        );
+      } else {
+        log('verifyPhone FAILED (non-Dio): $e', name: 'verifyPhoneOtp');
+      }
       _handleError("Invalid code.");
     }
   }
