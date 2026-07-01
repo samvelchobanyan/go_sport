@@ -187,11 +187,19 @@ class _ConfirmEmailScreenState extends ConsumerState<ConfirmEmailScreen> {
                           TextButton(
                             onPressed: registrationState.isLoading
                                 ? null
-                                : () => ref
-                                      .read(
-                                        registrationControllerProvider.notifier,
-                                      )
-                                      .resendEmailOtp(),
+                                : () async {
+                                    await ref
+                                        .read(
+                                          registrationControllerProvider
+                                              .notifier,
+                                        )
+                                        .resendEmailOtp();
+
+                                    for (var controller in _controllers) {
+                                      controller.clear();
+                                    }
+                                    FocusScope.of(context).unfocus();
+                                  },
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [

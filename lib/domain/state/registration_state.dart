@@ -150,6 +150,7 @@ class RegistrationController extends Notifier<RegistrationState> {
 
     try {
       await _authRepository.resendPhoneOtp(token: token);
+      state = state.copyWith(isLoading: false);
     } catch (e) {
       _handleError("Error on resend phone OTP");
     }
@@ -164,6 +165,7 @@ class RegistrationController extends Notifier<RegistrationState> {
 
     try {
       await _authRepository.resendEmailOtp(token: token);
+      state = state.copyWith(isLoading: false);
     } catch (e) {
       _handleError("Error on resend email OTP");
     }

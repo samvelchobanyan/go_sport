@@ -45,7 +45,7 @@ class _ConfirmPhoneScreenState extends ConsumerState<ConfirmPhoneScreen> {
       );
       return;
     }
-
+    print('OTP entered: $otp');
     ref.read(registrationControllerProvider.notifier).verifyPhoneOtp(otp);
   }
 
@@ -57,6 +57,7 @@ class _ConfirmPhoneScreenState extends ConsumerState<ConfirmPhoneScreen> {
     final registrationState = ref.watch(registrationControllerProvider);
 
     ref.listen<RegistrationState>(registrationControllerProvider, (prev, next) {
+      print('Registration state changed: $next');
       if (next.isPhoneVerifySuccess) {
         context.go('/create-password');
       }
@@ -158,9 +159,9 @@ class _ConfirmPhoneScreenState extends ConsumerState<ConfirmPhoneScreen> {
                           const Spacer(),
 
                           ElevatedButton.icon(
-                            onPressed: () {
-                              registrationState.isLoading ? null : _onContinue;
-                            },
+                            onPressed: registrationState.isLoading
+                                ? null
+                                : _onContinue,
 
                             icon: Icon(
                               Icons.arrow_forward,
@@ -188,11 +189,18 @@ class _ConfirmPhoneScreenState extends ConsumerState<ConfirmPhoneScreen> {
                           TextButton(
                             onPressed: registrationState.isLoading
                                 ? null
-                                : () => ref
-                                      .read(
-                                        registrationControllerProvider.notifier,
-                                      )
-                                      .resendPhoneOtp(),
+                                : () async {
+                                    await ref
+                                        .read(
+                                          registrationControllerProvider
+                                              .notifier,
+                                        )
+                                        .resendPhoneOtp();
+                                    for (var controller in _controllers) {
+                                      controller.clear();
+                                    }
+                                    FocusScope.of(context).unfocus();
+                                  },
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
