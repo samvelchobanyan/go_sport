@@ -10,6 +10,7 @@ import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/domain/state/featured_playlists_state.dart';
 import 'package:go_sport/domain/state/like_registry.dart';
+import 'package:go_sport/domain/state/user_state.dart';
 import 'package:go_sport/features/music/presentation/music/music_dashboard_controller.dart';
 import 'package:go_sport/features/music/presentation/widgets/music_quick_action_card.dart';
 import 'package:go_sport/features/music/presentation/widgets/music_screen_skeleton.dart';
@@ -34,6 +35,7 @@ class _MusicScreenState extends ConsumerState<MusicScreen> {
   @override
   Widget build(BuildContext context) {
     final playlistsState = ref.watch(featuredPlaylistsStateProvider);
+    final avatarUrl = ref.watch(userStateProvider.select((s) => s.user?.avatar));
     final playlists = playlistsState.playlistsList;
 
     final musicDashboardState = ref.watch(musicStateProvider);
@@ -164,7 +166,7 @@ class _MusicScreenState extends ConsumerState<MusicScreen> {
                         left: DSSpacing.m,
                       ),
                       child: UserAvatarButton(
-                        imageUrl: null,
+                        imageUrl: avatarUrl,
                         onTap: () {
                           context.push(AppRoutes.profile);
                         },

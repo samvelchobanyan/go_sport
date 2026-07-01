@@ -39,7 +39,7 @@ class MainShell extends ConsumerWidget {
           ),
           if (isGuest)
             GuestTimerBar(
-              onRegisterTap: () => context.go(AppRoutes.login),
+              onRegisterTap: () => context.go(AppRoutes.registrationEmail),
             ),
         ],
       ),

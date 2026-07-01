@@ -6,8 +6,8 @@ import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/design_system/foundations/ds_spacing.dart';
+import 'package:go_sport/core/auth/auth_state.dart';
 import 'package:go_sport/domain/state/registration_state.dart';
-import 'package:go_sport/features/auth/login/presentation/login/login_controller.dart';
 import 'package:go_sport/features/shared_widgets/round_back_button.dart';
 import 'package:go_sport/features/shared_widgets/input.dart';
 import 'package:go_router/go_router.dart';
@@ -83,14 +83,11 @@ class _RegistrationEmailScreenState
       }
     });
 
-    ref.listen<LoginState>(loginControllerProvider, (previous, next) {
-      if (next.isAuthenticated) {
+    // Google sign-in authenticates via the domain auth notifier; navigate when
+    // the app becomes authenticated (email flow instead goes to /confirm-email).
+    ref.listen(authProvider, (prev, next) {
+      if (next is AuthAuthenticated) {
         context.go('/');
-      }
-      if (next.error != null) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text(next.error!)));
       }
     });
 
@@ -208,7 +205,9 @@ class _RegistrationEmailScreenState
 
                           // Google Login Button
                           TextButton(
-                            onPressed: () {},
+                            onPressed: () => ref
+                                .read(registrationControllerProvider.notifier)
+                                .loginWithGoogle(),
                             style: TextButton.styleFrom(
                               minimumSize: const Size.fromHeight(DSSpacing.xxl),
                               backgroundColor: DSColors.blue5,

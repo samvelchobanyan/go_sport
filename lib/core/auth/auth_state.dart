@@ -2,7 +2,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../domain/state/like_registry.dart';
+import '../di/auth_providers.dart';
 import '../di/push_providers.dart';
+import '../di/repository_providers.dart';
 import 'token_storage.dart';
 
 part 'auth_state.freezed.dart';
@@ -45,6 +47,24 @@ class AuthNotifier extends Notifier<AuthState> {
     await tokenStorage.saveTokens(accessToken: jwt, refreshToken: '');
     state = const AuthState.authenticated();
     ref.read(likeRegistryProvider.notifier).initSession();
+  }
+
+  /// Signs in with Google and establishes the session. Shared by the login and
+  /// registration screens — the button lives on both, so the orchestration
+  /// belongs to the auth owner, not to a single screen controller.
+  /// Returns `true` on success, `false` if the user canceled the Google prompt.
+  /// Throws on any real failure — callers wrap with their own loading/error.
+  Future<bool> loginWithGoogle() async {
+    final accessToken =
+        await ref.read(googleAuthServiceProvider).signInAndGetAccessToken();
+    if (accessToken == null) return false;
+
+    final result = await ref
+        .read(authRepositoryProvider)
+        .loginWithGoogle(accessToken: accessToken);
+    await login(result.jwt);
+    ref.read(pushServiceProvider).register().ignore();
+    return true;
   }
 
   Future<void> logout() async {

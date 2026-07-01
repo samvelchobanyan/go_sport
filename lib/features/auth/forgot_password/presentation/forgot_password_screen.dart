@@ -132,7 +132,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
 
                           SizedBox(height: DSSpacing.s14),
                           Text(
-                            'We will send a password reset \nlink to your email',
+                            'We will send a password reset link to your email',
                             style: context.bodyL?.copyWith(
                               color: DSColors.gray70,
                             ),

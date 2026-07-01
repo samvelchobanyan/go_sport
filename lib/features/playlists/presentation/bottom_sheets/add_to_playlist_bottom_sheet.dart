@@ -8,8 +8,11 @@ import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/domain/entities/playlist.dart';
 import 'package:go_sport/features/shared_widgets/bottom_pop_ups/bottom_sheet_container.dart';
 import 'package:go_sport/domain/entities/track.dart';
+import 'package:go_sport/core/di/repository_providers.dart';
+import 'package:go_sport/domain/state/my_playlists_state.dart';
 
 import 'add_to_playlist_controller.dart';
+import 'create_playlist.dart';
 
 void showAddToPlaylistBottomSheet({
   required BuildContext context,
@@ -118,8 +121,15 @@ class _AddToPlaylistBottomSheet extends ConsumerWidget {
               height: 48,
               child: ElevatedButton.icon(
                 onPressed: () {
-                  // TODO: Пока заглушка
-                  debugPrint('Create playlist stub');
+                  showCreatePlaylistBottomSheet(
+                    context: context,
+                    onSave: (name) async {
+                      final repo = ref.read(customPlaylistRepositoryProvider);
+                      final playlist = await repo.createCustomPlaylist(name);
+                      ref.read(myPlaylistsStateProvider.notifier).addPlaylist(playlist);
+                      notifier.addCreatedPlaylist(playlist);
+                    },
+                  );
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: DSColors.blue.withValues(alpha: 0.05),

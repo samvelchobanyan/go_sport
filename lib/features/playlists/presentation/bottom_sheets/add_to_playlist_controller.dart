@@ -29,17 +29,22 @@ class AddToPlaylistNotifier
 
   Future<void> _init() async {
     final myPlaylistsNotifier = ref.read(myPlaylistsStateProvider.notifier);
-    var myPlaylists = ref.read(myPlaylistsStateProvider).playlists;
 
-    // Если список пуст, значит мы еще не загружали вкладку "My Playlists"
-    if (myPlaylists.isEmpty) {
+    List<Playlist> readCustomPlaylists() => ref
+        .read(myPlaylistsStateProvider)
+        .playlists
+        .where((p) => p.type == PlaylistType.custom)
+        .toList();
+
+    // Берём сразу только кастомные — featured-лайки для этого sheet'а не нужны.
+    // Пусто — значит customs ещё не подгружены (в стейте могут быть только
+    // лайкнутые featured, из-за них общий список непустой и старый guard
+    // по .isEmpty кастомные так и не догружал); тянем их.
+    var customPlaylists = readCustomPlaylists();
+    if (customPlaylists.isEmpty) {
       await myPlaylistsNotifier.loadFavorites();
-      myPlaylists = ref.read(myPlaylistsStateProvider).playlists;
+      customPlaylists = readCustomPlaylists();
     }
-
-    // Оставляем только кастомные плейлисты
-    final customPlaylists =
-        myPlaylists.where((p) => p.type == PlaylistType.custom).toList();
 
     // Находим, где трек уже добавлен
     final selected = <String>{};
@@ -66,6 +71,15 @@ class AddToPlaylistNotifier
     }
     state = state.copyWith(selectedIds: newSelected);
   }
+
+  void addCreatedPlaylist(Playlist playlist) {
+  state = state.copyWith(
+    playlists: [...state.playlists, playlist],
+    selectedIds: {...state.selectedIds, playlist.id},
+    // initialSelectedIds намеренно не трогаем — чтобы новый плейлист
+    // попал в toAdd при save() и получил трек
+  );
+}
 
   Future<bool> save() async {
     state = state.copyWith(isSaving: true, error: null);

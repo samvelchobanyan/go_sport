@@ -10,6 +10,7 @@ import 'package:go_sport/domain/entities/playlist.dart';
 import 'package:go_sport/domain/state/news_state.dart';
 import 'package:go_sport/domain/state/stories_state.dart';
 import 'package:go_sport/domain/state/featured_playlists_state.dart';
+import 'package:go_sport/domain/state/user_state.dart';
 import 'package:go_sport/features/shared_widgets/featured_playlists.dart';
 import '../../../../domain/entities/story.dart';
 
@@ -126,6 +127,8 @@ class HomeScreen extends ConsumerWidget {
     required List news,
     required List<Playlist> playlists,
   }) {
+    final avatarUrl = ref.watch(userStateProvider.select((s) => s.user?.avatar));
+
     if (isLoading) {
       return const HomeSkeleton();
     }
@@ -190,7 +193,7 @@ class HomeScreen extends ConsumerWidget {
                 left: DSSpacing.m,
               ),
               child: UserAvatarButton(
-                imageUrl: null,
+                imageUrl: avatarUrl,
                 onTap: () {
                   context.push(AppRoutes.profile);
                 },

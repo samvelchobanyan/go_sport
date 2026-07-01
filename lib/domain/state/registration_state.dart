@@ -243,6 +243,17 @@ class RegistrationController extends Notifier<RegistrationState> {
     }
   }
 
+  // --- Google sign-in (shared orchestration lives in AuthNotifier) ---
+  Future<void> loginWithGoogle() async {
+    _prepareAction();
+    try {
+      await ref.read(authProvider.notifier).loginWithGoogle();
+      state = state.copyWith(isLoading: false);
+    } catch (e) {
+      _handleError("Google sign-in failed");
+    }
+  }
+
   // --- Utilities ---
 
   void _prepareAction() {

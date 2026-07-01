@@ -8,6 +8,7 @@ import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 import 'package:go_sport/domain/entities/track.dart';
 import 'package:go_sport/domain/state/player_state.dart';
+import 'package:go_sport/domain/state/user_state.dart';
 import 'package:go_sport/features/radio/presentation/radio/radio_dashboard_controller.dart';
 import 'package:go_sport/features/radio/presentation/widgets/program_card.dart';
 import 'package:go_sport/features/radio/presentation/widgets/radio_page_skeleton.dart';
@@ -23,6 +24,7 @@ class RadioPageScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final radioDashboardState = ref.watch(radioStateProvider);
+    final avatarUrl = ref.watch(userStateProvider.select((s) => s.user?.avatar));
 
     final featuredPrograms = radioDashboardState.featuredPrograms;
     final featuredEpisodes = radioDashboardState.featuredEpisodes;
@@ -56,7 +58,7 @@ class RadioPageScreen extends ConsumerWidget {
                           left: 16,
                         ),
                         child: UserAvatarButton(
-                          imageUrl: null,
+                          imageUrl: avatarUrl,
                           onTap: () {
                             context.push('/profile');
                           },
