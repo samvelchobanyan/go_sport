@@ -32,6 +32,8 @@ class AlbumsRepositoryImpl implements AlbumsRepository {
       '/api/albums/$albumId',
       queryParameters: {
         'populate[Tracks][populate][File][populate]': '*',
+        'populate[Tracks][populate][Album][populate]': 'Cover',
+        'populate[Tracks][populate][Artists][fields][0]': 'Name',
       },
     );
 
