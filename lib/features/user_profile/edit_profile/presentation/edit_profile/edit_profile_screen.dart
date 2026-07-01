@@ -9,11 +9,14 @@ import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
+import 'package:go_sport/design_system/foundations/ds_icon_size.dart';
+import 'package:go_sport/features/shared_widgets/bottom_pop_ups/bottom_sheet_container.dart';
 import 'package:go_sport/features/shared_widgets/input.dart';
 import 'package:go_router/go_router.dart';
 import 'package:go_sport/features/user_profile/edit_profile/presentation/edit_profile/edit_profile_controller.dart';
 import 'package:go_sport/domain/state/user_state.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:image/image.dart' as img;
 
 class EditProfileScreen extends ConsumerStatefulWidget {
   const EditProfileScreen({super.key});
@@ -34,21 +37,111 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
     );
   }
 
-  Future<void> _pickImage() async {
+  Future<void> _pickImage(ImageSource source) async {
     final ImagePicker picker = ImagePicker();
 
-    // Pick an image from gallery
     final XFile? image = await picker.pickImage(
-      source: ImageSource.gallery,
+      source: source,
       maxWidth: 1000, // Good practice to prevent massive uploads
       imageQuality: 85,
     );
 
-    if (image != null) {
-      setState(() {
-        _selectedImageFile = File(image.path);
-      });
+    if (image == null) return;
+
+    // Camera photos store rotation in EXIF metadata, not in the pixels. Flutter's
+    // Image.file honors that tag (preview looks fine), but the server strips EXIF
+    // on re-encode, so the saved avatar ends up sideways. Bake the orientation
+    // into the pixels (and drop the tag) before the file reaches upload.
+    final corrected = await _bakeOrientation(File(image.path));
+
+    if (!mounted) return;
+    setState(() {
+      _selectedImageFile = corrected;
+    });
+  }
+
+  Future<File> _bakeOrientation(File file) async {
+    try {
+      final bytes = await file.readAsBytes();
+      final decoded = img.decodeImage(bytes);
+      if (decoded == null) return file;
+
+      final oriented = img.bakeOrientation(decoded);
+      final jpg = img.encodeJpg(oriented, quality: 85);
+
+      final target = File(
+        '${file.parent.path}/avatar_${DateTime.now().millisecondsSinceEpoch}.jpg',
+      );
+      await target.writeAsBytes(jpg);
+      return target;
+    } catch (_) {
+      // Any decode/encode failure → fall back to the original file; a possibly
+      // rotated avatar beats a broken picker.
+      return file;
     }
+  }
+
+  void _showImageSourceSheet() {
+    Widget sourceRow({
+      required Widget icon,
+      required String label,
+      required VoidCallback onTap,
+    }) {
+      return GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: DSSpacing.s8),
+          child: Row(
+            children: [
+              icon,
+              const SizedBox(width: DSSpacing.s12),
+              Text(label, style: context.subtitleM),
+            ],
+          ),
+        ),
+      );
+    }
+
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: DSColors.transparent,
+      builder: (sheetContext) => BottomSheetContainer(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            sourceRow(
+              icon: SvgPicture.asset(
+                'assets/icons/camera.svg',
+                width: DSIconSize.s24,
+                height: DSIconSize.s24,
+                colorFilter: const ColorFilter.mode(
+                  DSColors.black,
+                  BlendMode.srcIn,
+                ),
+              ),
+              label: 'Take a photo',
+              onTap: () {
+                Navigator.pop(sheetContext);
+                _pickImage(ImageSource.camera);
+              },
+            ),
+            sourceRow(
+              icon: const Icon(
+                Icons.photo_library_outlined,
+                size: DSIconSize.s24,
+                color: DSColors.black,
+              ),
+              label: 'Choose from gallery',
+              onTap: () {
+                Navigator.pop(sheetContext);
+                _pickImage(ImageSource.gallery);
+              },
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   @override
@@ -116,7 +209,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                 children: [
                   const SizedBox(height: DSSpacing.l),
                   GestureDetector(
-                    onTap: _pickImage,
+                    onTap: _showImageSourceSheet,
                     child: Container(
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
