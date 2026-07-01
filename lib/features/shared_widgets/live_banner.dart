@@ -6,7 +6,9 @@ import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 
 class LiveBanner extends StatelessWidget {
-  const LiveBanner({super.key});
+  final VoidCallback? onTap;
+
+  const LiveBanner({super.key, this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -17,16 +19,19 @@ class LiveBanner extends StatelessWidget {
           left: DSSpacing.m,
           top: DSSpacing.s18,
         ),
-        child: Container(
-          height: 64,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(DSRadius.s),
-            image: DecorationImage(
-              image: AssetImage('assets/images/live_banner.png'),
-              fit: BoxFit.cover,
+        child: GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: onTap,
+          child: Container(
+            height: 64,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(DSRadius.s),
+              image: DecorationImage(
+                image: AssetImage('assets/images/live_banner.png'),
+                fit: BoxFit.cover,
+              ),
             ),
-          ),
-          child: Padding(
+            child: Padding(
             padding: const EdgeInsets.all(DSSpacing.s10),
             child: Row(
               children: [
@@ -48,6 +53,7 @@ class LiveBanner extends StatelessWidget {
                 ),
               ],
             ),
+          ),
           ),
         ),
       ),

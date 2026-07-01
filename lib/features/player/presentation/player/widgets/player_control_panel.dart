@@ -46,7 +46,13 @@ class PlayerControlPanel extends ConsumerWidget {
             const SizedBox(height: DSSpacing.s40),
 
             // Playback controls
-            _buildControls(context, ref, info.isPlaying, info.status),
+            _buildControls(
+              context,
+              ref,
+              info.isPlaying,
+              info.status,
+              info.isRadioMode,
+            ),
 
             const Spacer(),
 
@@ -161,8 +167,12 @@ class PlayerControlPanel extends ConsumerWidget {
     WidgetRef ref,
     bool isPlaying,
     PlayerStatus status,
+    bool isRadioMode,
   ) {
-    final isLoading = status == PlayerStatus.loading;
+    // Scope the button visuals to music: while radio is the active source the
+    // music track isn't actually playing, so show Play (not Pause) and no spinner.
+    final isMusicPlaying = !isRadioMode && isPlaying;
+    final isLoading = !isRadioMode && status == PlayerStatus.loading;
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -183,7 +193,16 @@ class PlayerControlPanel extends ConsumerWidget {
 
         // Play / Pause (large circular button)
         GestureDetector(
-          onTap: () => ref.read(playerStateProvider.notifier).togglePlayPause(),
+          onTap: () {
+            final notifier = ref.read(playerStateProvider.notifier);
+            if (isRadioMode) {
+              // Music player is open while radio is the active source — Play
+              // means "come back to my track", not "resume the radio stream".
+              notifier.resumeMusic();
+            } else {
+              notifier.togglePlayPause();
+            }
+          },
           child: Container(
             width: 88,
             height: 88,
@@ -202,7 +221,7 @@ class PlayerControlPanel extends ConsumerWidget {
                       ),
                     )
                   : SvgPicture.asset(
-                      isPlaying
+                      isMusicPlaying
                           ? 'assets/icons/pause.svg'
                           : 'assets/icons/play.svg',
                       width: 53,

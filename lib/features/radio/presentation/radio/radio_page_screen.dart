@@ -15,6 +15,7 @@ import 'package:go_sport/features/radio/presentation/widgets/radio_page_skeleton
 import 'package:go_sport/features/shared_widgets/dotted_divider.dart';
 import 'package:go_sport/features/shared_widgets/episode_tile.dart';
 import 'package:go_sport/features/shared_widgets/live_banner.dart';
+import 'package:go_sport/features/player/presentation/player/radio_full_player_screen.dart';
 import '../../../shared_widgets/user_avatar_button.dart';
 import '../../../shared_widgets/wave_section_header.dart';
 
@@ -85,7 +86,17 @@ class RadioPageScreen extends ConsumerWidget {
                     ),
 
                     // orange banner
-                    LiveBanner(),
+                    LiveBanner(
+                      onTap: () {
+                        final notifier = ref.read(
+                          playerStateProvider.notifier,
+                        );
+                        if (!ref.read(playerStateProvider).isRadioMode) {
+                          notifier.playRadio();
+                        }
+                        RadioFullPlayerScreen.show(context);
+                      },
+                    ),
 
                     // featured programs
                     SliverToBoxAdapter(
