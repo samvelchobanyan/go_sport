@@ -31,10 +31,7 @@ class ProgramHero extends StatelessWidget {
       fit: StackFit.expand,
       children: [
         // Background image
-        Hero(
-          tag: 'program-image-${program.id}',
-          child: DSNetworkImage(imageUrl: program.imageUrl),
-        ),
+        DSNetworkImage(imageUrl: program.imageUrl),
 
         // Gradient overlay
         const DecoratedBox(

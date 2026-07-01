@@ -34,10 +34,7 @@ class AlbumCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             MediaCardShell(
-              child: Hero(
-                tag: 'album-image-$id',
-                child: DSNetworkImage(imageUrl: imageUrl),
-              ),
+              child: DSNetworkImage(imageUrl: imageUrl),
             ),
             const SizedBox(height: DSSpacing.s6),
             Text(
