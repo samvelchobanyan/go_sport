@@ -52,6 +52,8 @@ class PlayerControlPanel extends ConsumerWidget {
               info.isPlaying,
               info.status,
               info.isRadioMode,
+              info.canGoPrev,
+              info.canGoNext,
             ),
 
             const Spacer(),
@@ -143,18 +145,19 @@ class PlayerControlPanel extends ConsumerWidget {
               child: Container(
                 width: 40,
                 height: 40,
-                decoration: const BoxDecoration(
-                  color: DSColors.white,
+                decoration: BoxDecoration(
+                  color: isLiked ? DSColors.orange : DSColors.white,
                   shape: BoxShape.circle,
                 ),
                 child: Center(
                   child: DSHeartIcon(
-                    color: DSColors.orange,
+                    color: isLiked ? DSColors.white : DSColors.orange,
                     size: DSIconSize.s28,
                     isFilled: isLiked,
                   ),
                 ),
               ),
+
             );
           },
         ),
@@ -168,6 +171,8 @@ class PlayerControlPanel extends ConsumerWidget {
     bool isPlaying,
     PlayerStatus status,
     bool isRadioMode,
+    bool canGoPrev,
+    bool canGoNext,
   ) {
     // Scope the button visuals to music: while radio is the active source the
     // music track isn't actually playing, so show Play (not Pause) and no spinner.
@@ -179,13 +184,15 @@ class PlayerControlPanel extends ConsumerWidget {
       children: [
         // Previous
         GestureDetector(
-          onTap: () => ref.read(playerStateProvider.notifier).previous(),
+          onTap: canGoPrev
+              ? () => ref.read(playerStateProvider.notifier).previous()
+              : null,
           child: SvgPicture.asset(
             'assets/icons/skip_prev.svg',
             width: 24,
             height: 24,
-            colorFilter: const ColorFilter.mode(
-              DSColors.blue,
+            colorFilter: ColorFilter.mode(
+              canGoPrev ? DSColors.blue : DSColors.gray40,
               BlendMode.srcIn,
             ),
           ),
@@ -237,13 +244,15 @@ class PlayerControlPanel extends ConsumerWidget {
 
         // Next
         GestureDetector(
-          onTap: () => ref.read(playerStateProvider.notifier).next(),
+          onTap: canGoNext
+              ? () => ref.read(playerStateProvider.notifier).next()
+              : null,
           child: SvgPicture.asset(
             'assets/icons/skip_next.svg',
             width: 24,
             height: 24,
-            colorFilter: const ColorFilter.mode(
-              DSColors.blue,
+            colorFilter: ColorFilter.mode(
+              canGoNext ? DSColors.blue : DSColors.gray40,
               BlendMode.srcIn,
             ),
           ),

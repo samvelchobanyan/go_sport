@@ -34,7 +34,7 @@ class ArtistCard extends StatelessWidget {
             width: 120,
             child: Text(
               name,
-              style: context.subtitleM,
+              style: context.subtitleLSemi,
               textAlign: TextAlign.center,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,

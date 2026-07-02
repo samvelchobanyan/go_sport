@@ -155,6 +155,12 @@ extension PlayerStateX on PlayerState {
     return hasPrevious ? tracks[currentIndex - 1] : null;
   }
 
+  /// Can move to a next track — respects repeat-all wrap and shuffle order
+  bool get canGoNext => repeatMode == RepeatMode.all || nextTrack != null;
+
+  /// Can move to a previous track — respects repeat-all wrap and shuffle order
+  bool get canGoPrev => repeatMode == RepeatMode.all || prevTrack != null;
+
   /// Actual duration: prefer player-reported duration, fallback to track metadata
   Duration get effectiveDuration =>
       totalDuration > Duration.zero

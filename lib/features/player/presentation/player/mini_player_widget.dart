@@ -255,12 +255,10 @@ class _MiniPlayerWidgetState extends ConsumerState<MiniPlayerWidget>
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),
-                            if (artistName.isNotEmpty) ...[
-                              const SizedBox(height: DSSpacing.s),
+                            if (artistName.isNotEmpty) ...[                              
                               Text(
                                 artistName,
-                                style: context.subtitleM?.copyWith(
-                                  fontWeight: FontWeight.bold,
+                                style: context.textL?.copyWith(
                                   color: DSColors.gray70,
                                 ),
                                 maxLines: 1,
@@ -423,8 +421,7 @@ class _MiniPlayerWidgetState extends ConsumerState<MiniPlayerWidget>
                     ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                  ),
-                  const SizedBox(height: DSSpacing.s),
+                  ),                
                   Text(
                     info.radioNowPlaying ?? 'Live broadcast',
                     style: context.textL?.copyWith(

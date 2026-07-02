@@ -33,7 +33,7 @@ class PlaylistCard extends StatelessWidget {
             const SizedBox(height: DSSpacing.s6),
             Text(
               playlist.title,
-              style: context.subtitleM,
+              style: context.subtitleLSemi,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
             ),

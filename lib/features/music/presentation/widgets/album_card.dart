@@ -39,11 +39,11 @@ class AlbumCard extends StatelessWidget {
             const SizedBox(height: DSSpacing.s6),
             Text(
               title,
-              style: context.subtitleM,
+              style: context.subtitleLSemi,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
             ),
-            const SizedBox(height: DSSpacing.xs),
+            const SizedBox(height: DSSpacing.s),
             Text(
               artist,
               style: context.bodyL?.copyWith(color: DSColors.gray60),
