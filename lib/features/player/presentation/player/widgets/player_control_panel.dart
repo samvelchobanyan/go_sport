@@ -145,18 +145,19 @@ class PlayerControlPanel extends ConsumerWidget {
               child: Container(
                 width: 40,
                 height: 40,
-                decoration: const BoxDecoration(
-                  color: DSColors.white,
+                decoration: BoxDecoration(
+                  color: isLiked ? DSColors.orange : DSColors.white,
                   shape: BoxShape.circle,
                 ),
                 child: Center(
                   child: DSHeartIcon(
-                    color: DSColors.orange,
+                    color: isLiked ? DSColors.white : DSColors.orange,
                     size: DSIconSize.s28,
                     isFilled: isLiked,
                   ),
                 ),
               ),
+
             );
           },
         ),

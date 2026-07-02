@@ -85,7 +85,11 @@ class PlaylistHero extends StatelessWidget {
                         width: 48,
                         height: 48,
                         decoration: BoxDecoration(
-                          color: DSColors.white.withValues(alpha: 0.25),
+                          // Orange fill only for the liked featured-playlist heart;
+                          // custom playlists show a lime "+" action — keep it translucent.
+                          color: (!isCustom && isLiked)
+                              ? DSColors.orange
+                              : DSColors.white.withValues(alpha: 0.25),
                           shape: BoxShape.circle,
                         ),
                         child: Center(

@@ -88,7 +88,7 @@ class TrackTile extends StatelessWidget {
             Expanded(
               child: Text(
                 track.title,
-                style: context.subtitleM?.copyWith(
+                style: context.subtitleLSemi?.copyWith(
                   color: isPlaying != null ? DSColors.blue : DSColors.black,
                 ),
                 maxLines: 1,

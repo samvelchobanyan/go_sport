@@ -76,7 +76,9 @@ class ProgramHero extends StatelessWidget {
                         width: 48,
                         height: 48,
                         decoration: BoxDecoration(
-                          color: DSColors.white.withValues(alpha: 0.25),
+                          color: isLiked
+                              ? DSColors.orange
+                              : DSColors.white.withValues(alpha: 0.25),
                           shape: BoxShape.circle,
                         ),
                         child: Center(
