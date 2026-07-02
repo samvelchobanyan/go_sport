@@ -31,9 +31,9 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<({String jwt, User user})> loginWithGoogle({
     required String accessToken,
   }) async {
-    final response = await _apiClient.get(
-      '/api/auth/google/callback',
-      queryParameters: {'access_token': accessToken},
+    final response = await _apiClient.post(
+      '/api/users/auth/google',
+      data: {'access_token': accessToken},
       options: Options(extra: {'public': true}),
     );
 
