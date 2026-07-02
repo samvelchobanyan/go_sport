@@ -43,20 +43,16 @@ class _HomeAppBarSliver extends StatelessWidget {
       pinned: true,
       floating: true,
       leading: Padding(
-        padding: const EdgeInsets.all(DSSpacing.s8),
-        child: UserAvatarButton(
-          imageUrl: null,
-          onTap: () {},
+        padding: const EdgeInsets.only(
+          top: DSSpacing.s8,
+          bottom: DSSpacing.s8,
+          left: DSSpacing.m,
         ),
+        child: UserAvatarButton(imageUrl: null, onTap: () {}),
       ),
-      title: SvgPicture.asset(
-        'assets/icons/app_logo.svg',
-        height: 40,
-      ),
+      title: SvgPicture.asset('assets/icons/app_logo.svg', height: 40),
       centerTitle: true,
-      actions: [
-        const SearchButton(),
-      ],
+      actions: [const SearchButton()],
     );
   }
 }
@@ -76,7 +72,8 @@ class _StoriesRowSkeletonSliver extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final count = _estimateStoryCount(MediaQuery.sizeOf(context).width);
+    final count = 7;
+    // final count = _estimateStoryCount(MediaQuery.sizeOf(context).width);
 
     return SliverToBoxAdapter(
       child: Padding(
@@ -87,8 +84,10 @@ class _StoriesRowSkeletonSliver extends StatelessWidget {
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.symmetric(horizontal: DSSpacing.m),
             itemCount: count,
-            separatorBuilder: (context, index) => const SizedBox(width: _storyGap),
-            itemBuilder: (context, index) => const SkeletonCircle(size: _storySize),
+            separatorBuilder: (context, index) =>
+                const SizedBox(width: _storyGap),
+            itemBuilder: (context, index) =>
+                const SkeletonCircle(size: _storySize),
           ),
         ),
       ),
@@ -128,9 +127,15 @@ class _PodcastBannerSkeletonSliver extends StatelessWidget {
                               return Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  SkeletonLine(width: inner.maxWidth * 0.55, height: 18),
+                                  SkeletonLine(
+                                    width: inner.maxWidth * 0.55,
+                                    height: 18,
+                                  ),
                                   const SizedBox(height: DSSpacing.s6),
-                                  SkeletonLine(width: inner.maxWidth * 0.42, height: 18),
+                                  SkeletonLine(
+                                    width: inner.maxWidth * 0.42,
+                                    height: 18,
+                                  ),
                                 ],
                               );
                             },
@@ -201,7 +206,8 @@ class _FeaturedPlaylistsCarouselSkeletonSliver extends StatelessWidget {
           scrollDirection: Axis.horizontal,
           padding: const EdgeInsets.symmetric(horizontal: DSSpacing.m),
           itemCount: 6,
-          separatorBuilder: (context, index) => const SizedBox(width: DSSpacing.s12),
+          separatorBuilder: (context, index) =>
+              const SizedBox(width: DSSpacing.s12),
           itemBuilder: (context, index) {
             return SizedBox(
               width: _cardWidth,
@@ -274,26 +280,23 @@ class _NewsListSkeletonSliver extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SliverList(
-      delegate: SliverChildBuilderDelegate(
-        (context, index) {
-          final isLast = index == 2;
+      delegate: SliverChildBuilderDelegate((context, index) {
+        final isLast = index == 2;
 
-          return Column(
-            children: [
-              const _NewsItemSkeleton(),
-              if (!isLast) ...[
-                const SizedBox(height: DSSpacing.s10),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: DSSpacing.m),
-                  child: SkeletonLine(width: double.infinity, height: 1),
-                ),
-                const SizedBox(height: DSSpacing.s10),
-              ],
+        return Column(
+          children: [
+            const _NewsItemSkeleton(),
+            if (!isLast) ...[
+              const SizedBox(height: DSSpacing.s10),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: DSSpacing.m),
+                child: SkeletonLine(width: double.infinity, height: 1),
+              ),
+              const SizedBox(height: DSSpacing.s10),
             ],
-          );
-        },
-        childCount: 3,
-      ),
+          ],
+        );
+      }, childCount: 3),
     );
   }
 }
@@ -304,15 +307,16 @@ class _NewsItemSkeleton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Padding(
-      padding: EdgeInsets.symmetric(vertical: DSSpacing.s8, horizontal: DSSpacing.m),
+      padding: EdgeInsets.symmetric(
+        vertical: DSSpacing.s8,
+        horizontal: DSSpacing.m,
+      ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           SkeletonBox(width: 84, height: 84, radius: DSRadius.s),
           SizedBox(width: DSSpacing.s12),
-          Expanded(
-            child: _NewsTitleSkeleton(),
-          ),
+          Expanded(child: _NewsTitleSkeleton()),
         ],
       ),
     );
