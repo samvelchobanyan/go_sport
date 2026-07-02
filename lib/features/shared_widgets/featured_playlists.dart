@@ -9,9 +9,9 @@ class FeaturedPlaylistsSection extends StatelessWidget {
   final List<Playlist> playlists;
 
   const FeaturedPlaylistsSection({super.key, required this.playlists});
-
   @override
   Widget build(BuildContext context) {
+    print('!!!!!!playlists: $playlists');
     return SliverToBoxAdapter(
       child: Container(
         color: DSColors.white,
@@ -36,9 +36,7 @@ class FeaturedPlaylistsSection extends StatelessWidget {
                     final playlist = playlists[index];
                     return Padding(
                       padding: const EdgeInsets.only(right: DSSpacing.s12),
-                      child: PlaylistCard(
-                        playlist: playlist,
-                      ),
+                      child: PlaylistCard(playlist: playlist),
                     );
                   },
                 ),

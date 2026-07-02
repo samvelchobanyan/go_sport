@@ -36,10 +36,7 @@ void showSearchBottomSheet(BuildContext context) {
     backgroundColor: DSColors.transparent,
     barrierColor: DSColors.gray30,
     enableDrag: true,
-    builder: (_) => MediaQuery(
-      data: mq,
-      child: const _SearchSheet(),
-    ),
+    builder: (_) => MediaQuery(data: mq, child: const _SearchSheet()),
   );
 }
 
@@ -91,7 +88,12 @@ class _SearchSheetState extends ConsumerState<_SearchSheet> {
               child: Column(
                 children: [
                   _Header(controller: _textController),
-                  Expanded(child: _Body(state: state, scrollController: _scrollController)),
+                  Expanded(
+                    child: _Body(
+                      state: state,
+                      scrollController: _scrollController,
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -110,7 +112,12 @@ class _Header extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(DSSpacing.s8, DSSpacing.s8, DSSpacing.m, DSSpacing.s8),
+      padding: const EdgeInsets.fromLTRB(
+        DSSpacing.s8,
+        DSSpacing.s8,
+        DSSpacing.m,
+        DSSpacing.s8,
+      ),
       child: Row(
         children: [
           IconButton(
@@ -126,8 +133,9 @@ class _Header extends ConsumerWidget {
               controller: controller,
               autofocus: true,
               style: Theme.of(context).textTheme.bodyMedium,
-              onChanged: (value) =>
-                  ref.read(searchControllerProvider.notifier).onQueryChanged(value),
+              onChanged: (value) => ref
+                  .read(searchControllerProvider.notifier)
+                  .onQueryChanged(value),
               decoration: InputDecoration(
                 hintText: 'Search tracks, albums, etc...',
                 filled: true,
@@ -171,7 +179,11 @@ class _SuffixIcon extends ConsumerWidget {
 
     if (hasQuery) {
       return IconButton(
-        icon: const Icon(Icons.close, color: DSColors.black, size: DSIconSize.s20),
+        icon: const Icon(
+          Icons.close,
+          color: DSColors.black,
+          size: DSIconSize.s20,
+        ),
         onPressed: () {
           controller.clear();
           ref.read(searchControllerProvider.notifier).onQueryChanged('');
@@ -185,10 +197,7 @@ class _SuffixIcon extends ConsumerWidget {
         'assets/icons/search.svg',
         width: 20,
         height: 20,
-        colorFilter: const ColorFilter.mode(
-          DSColors.blue,
-          BlendMode.srcIn,
-        ),
+        colorFilter: const ColorFilter.mode(DSColors.blue, BlendMode.srcIn),
       ),
     );
   }
@@ -244,7 +253,12 @@ class _FeaturedPlaylistsContent extends ConsumerWidget {
       itemBuilder: (context, index) {
         if (index == 0) {
           return Padding(
-            padding: const EdgeInsets.fromLTRB(DSSpacing.m, DSSpacing.s8, DSSpacing.m, DSSpacing.m),
+            padding: const EdgeInsets.fromLTRB(
+              DSSpacing.m,
+              DSSpacing.s8,
+              DSSpacing.m,
+              DSSpacing.m,
+            ),
             child: Text('Featured Playlists', style: context.h2),
           );
         }
@@ -285,7 +299,10 @@ class _CategoryChips extends ConsumerWidget {
       height: 48,
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.symmetric(horizontal: DSSpacing.m, vertical: DSSpacing.s8),
+        padding: const EdgeInsets.symmetric(
+          horizontal: DSSpacing.m,
+          vertical: DSSpacing.s8,
+        ),
         itemCount: entries.length,
         separatorBuilder: (_, __) => const SizedBox(width: DSSpacing.s8),
         itemBuilder: (context, index) {
@@ -321,7 +338,10 @@ class _Chip extends StatelessWidget {
       onTap: onTap,
       behavior: HitTestBehavior.opaque,
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: DSSpacing.m, vertical: DSSpacing.s6),
+        padding: const EdgeInsets.symmetric(
+          horizontal: DSSpacing.m,
+          vertical: DSSpacing.s6,
+        ),
         decoration: BoxDecoration(
           color: isActive ? DSColors.blue10 : DSColors.white,
           border: isActive ? null : Border.all(color: DSColors.blue20),
@@ -389,53 +409,56 @@ class _AllSections extends ConsumerWidget {
     return ListView(
       padding: const EdgeInsets.only(bottom: DSSpacing.l),
       children: [
-        if (state.tracks.isNotEmpty)
-          _Section(
-            title: 'Tracks',
-            children: state.tracks
-                .map((t) => _TrackRow(track: t, queue: state.tracks))
-                .toList(),
-          ),
-        if (state.albums.isNotEmpty)
-          _Section(
-            title: 'Albums',
-            children: state.albums.map((a) => _AlbumRow(album: a)).toList(),
-          ),
-        if (state.artists.isNotEmpty)
-          _Section(
-            title: 'Artists',
-            children: state.artists
-                .map((a) => ArtistTile(
-                      artist: a,
-                      onTap: () {
-                        context.push('/music/artist/${a.id}', extra: a);
-                        Navigator.of(context).pop();
-                      },
-                    ))
-                .toList(),
-          ),
-        if (state.playlists.isNotEmpty)
-          _Section(
-            title: 'Playlists',
-            children: state.playlists
-                .map((p) => PlaylistTile(
-                      playlist: p,
-                      onTap: () {
-                        context.push(
-                          '/music/playlist/${p.id}?type=${p.type.name}',
-                          extra: p,
-                        );
-                        Navigator.of(context).pop();
-                      },
-                    ))
-                .toList(),
-          ),
-        if (state.programs.isNotEmpty)
-          _Section(
-            title: 'Programs',
-            children:
-                state.programs.map((p) => _ProgramRow(program: p)).toList(),
-          ),
+        // if (state.tracks.isNotEmpty)
+        _Section(
+          title: 'Tracks',
+          children: state.tracks
+              .map((t) => _TrackRow(track: t, queue: state.tracks))
+              .toList(),
+        ),
+        // if (state.albums.isNotEmpty)
+        _Section(
+          title: 'Albums',
+          children: state.albums.map((a) => _AlbumRow(album: a)).toList(),
+        ),
+        // if (state.artists.isNotEmpty)
+        _Section(
+          title: 'Artists',
+          children: state.artists
+              .map(
+                (a) => ArtistTile(
+                  artist: a,
+                  onTap: () {
+                    context.push('/music/artist/${a.id}', extra: a);
+                    Navigator.of(context).pop();
+                  },
+                ),
+              )
+              .toList(),
+        ),
+        // if (state.playlists.isNotEmpty)
+        _Section(
+          title: 'Playlists',
+          children: state.playlists
+              .map(
+                (p) => PlaylistTile(
+                  playlist: p,
+                  onTap: () {
+                    context.push(
+                      '/music/playlist/${p.id}?type=${p.type.name}',
+                      extra: p,
+                    );
+                    Navigator.of(context).pop();
+                  },
+                ),
+              )
+              .toList(),
+        ),
+        // if (state.programs.isNotEmpty)
+        _Section(
+          title: 'Programs',
+          children: state.programs.map((p) => _ProgramRow(program: p)).toList(),
+        ),
       ],
     );
   }
@@ -446,24 +469,40 @@ class _Section extends StatelessWidget {
   final List<Widget> children;
 
   const _Section({required this.title, required this.children});
-
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.fromLTRB(DSSpacing.m, DSSpacing.m, DSSpacing.m, DSSpacing.s8),
+          padding: const EdgeInsets.fromLTRB(
+            DSSpacing.m,
+            DSSpacing.m,
+            DSSpacing.m,
+            DSSpacing.s8,
+          ),
           child: Text(title, style: context.h3),
         ),
-        for (var i = 0; i < children.length; i++) ...[
-          children[i],
-          if (i < children.length - 1)
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: DSSpacing.m),
-              child: DottedDivider(),
+        if (children.isEmpty)
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: DSSpacing.m,
+              vertical: DSSpacing.s8,
             ),
-        ],
+            child: Text(
+              'No ${title.toLowerCase()} found',
+              style: context.subtitleM,
+            ),
+          )
+        else
+          for (var i = 0; i < children.length; i++) ...[
+            children[i],
+            if (i < children.length - 1)
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: DSSpacing.m),
+                child: DottedDivider(),
+              ),
+          ],
       ],
     );
   }
@@ -479,6 +518,15 @@ class _CategoryList extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final items = _itemsForCategory(state);
     final showSpinner = state.isLoadingMore;
+
+    if (items.isEmpty && !showSpinner) {
+      return Center(
+        child: Text(
+          'Nothing found',
+          style: context.subtitleLBold?.copyWith(color: DSColors.gray60),
+        ),
+      );
+    }
 
     return ListView.separated(
       controller: scrollController,
@@ -574,7 +622,9 @@ class _TrackRow extends ConsumerWidget {
       isPlaying: isPlaying,
       onTap: () {
         final startIndex = queue.indexWhere((t) => t.id == track.id);
-        ref.read(playerStateProvider.notifier).playQueue(
+        ref
+            .read(playerStateProvider.notifier)
+            .playQueue(
               queue,
               source: QueueSource.favorites(
                 id: 'search',
@@ -587,10 +637,8 @@ class _TrackRow extends ConsumerWidget {
       onMenuTap: (t) => showTrackOptionsBottomSheet(
         context: context,
         track: t,
-        onAddToPlaylist: () => showAddToPlaylistBottomSheet(
-          context: context,
-          track: t,
-        ),
+        onAddToPlaylist: () =>
+            showAddToPlaylistBottomSheet(context: context, track: t),
       ),
     );
   }
