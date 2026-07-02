@@ -104,10 +104,14 @@ class _PlayerArtworkCarouselState extends ConsumerState<PlayerArtworkCarousel> {
                   child: SizedBox(
                     width: cardWidth,
                     height: currentHeight,
-                    child: _ArtworkCard(
-                      imageUrl: track?.imageUrl,
-                      shadowOpacity: track != null ? shadowOpacity : 0,
-                    ),
+                    // No track on this side (edge of queue) → transparent slot,
+                    // so no "dead" placeholder card peeks in.
+                    child: track == null
+                        ? null
+                        : _ArtworkCard(
+                            imageUrl: track.imageUrl,
+                            shadowOpacity: shadowOpacity,
+                          ),
                   ),
                 );
               },

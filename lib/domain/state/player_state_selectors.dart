@@ -40,6 +40,8 @@ final playerInfoProvider = Provider<({
   String? radioNowPlaying,
   bool shuffleEnabled,
   RepeatMode repeatMode,
+  bool canGoNext,
+  bool canGoPrev,
 })>((ref) {
   return ref.watch(playerStateProvider.select((s) => (
     track: s.currentTrack,
@@ -52,5 +54,7 @@ final playerInfoProvider = Provider<({
     radioNowPlaying: s.radioNowPlaying,
     shuffleEnabled: s.shuffleEnabled,
     repeatMode: s.repeatMode,
+    canGoNext: s.canGoNext,
+    canGoPrev: s.canGoPrev,
   )));
 });
