@@ -228,6 +228,7 @@ class RegistrationController extends Notifier<RegistrationState> {
       );
 
       await ref.read(authProvider.notifier).login(result.jwt);
+      _pushService.register().ignore();
 
       state = state.copyWith(
         isLoading: false,
@@ -237,7 +238,6 @@ class RegistrationController extends Notifier<RegistrationState> {
         surname: surname,
       );
 
-      _pushService.register().ignore();
     } catch (e) {
       _handleError("Failed to save profile.");
     }

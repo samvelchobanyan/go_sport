@@ -117,6 +117,7 @@ class EpisodeTile extends StatelessWidget {
   Widget _buildEpisodeContent(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Row(
           children: [

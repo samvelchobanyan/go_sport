@@ -32,28 +32,31 @@ class LiveBanner extends StatelessWidget {
               ),
             ),
             child: Padding(
-            padding: const EdgeInsets.all(DSSpacing.s10),
-            child: Row(
-              children: [
-                const DSWaveIcon(isAnimated: true),
-                SizedBox(width: DSSpacing.s14),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Listen Live Now',
-                      style: context.h3?.copyWith(color: DSColors.white),
+              padding: const EdgeInsets.all(DSSpacing.s10),
+              child: Row(
+                children: [
+                  const DSWaveIcon(isAnimated: true),
+                  SizedBox(width: DSSpacing.s14),
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 2),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Listen Live Now',
+                          style: context.h3?.copyWith(color: DSColors.white),
+                        ),
+                        // SizedBox(height: DSSpacing.xs),
+                        Text(
+                          'We Get the Cup',
+                          style: context.textL?.copyWith(color: DSColors.white),
+                        ),
+                      ],
                     ),
-                    SizedBox(height: DSSpacing.xs),
-                    Text(
-                      'We Get the Cup',
-                      style: context.textL?.copyWith(color: DSColors.white),
-                    ),
-                  ],
-                ),
-              ],
+                  ),
+                ],
+              ),
             ),
-          ),
           ),
         ),
       ),

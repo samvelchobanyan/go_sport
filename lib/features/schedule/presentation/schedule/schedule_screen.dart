@@ -5,6 +5,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_spacing.dart';
+import 'package:go_sport/domain/state/player_state.dart';
+import 'package:go_sport/features/player/presentation/player/radio_full_player_screen.dart';
 import 'package:go_sport/features/shared_widgets/live_banner.dart';
 import 'package:go_sport/features/schedule/presentation/widgets/dates_carousel.dart';
 import 'package:go_sport/domain/state/schedule_state.dart';
@@ -50,7 +52,15 @@ class ScheduleScreen extends ConsumerWidget {
 
             const SliverToBoxAdapter(child: SizedBox(height: DSSpacing.m)),
             // live radio banner
-            LiveBanner(),
+            LiveBanner(
+              onTap: () {
+                final notifier = ref.read(playerStateProvider.notifier);
+                if (!ref.read(playerStateProvider).isRadioMode) {
+                  notifier.playRadio();
+                }
+                RadioFullPlayerScreen.show(context);
+              },
+            ),
 
             state.when(
               loading: () => const SliverFillRemaining(
