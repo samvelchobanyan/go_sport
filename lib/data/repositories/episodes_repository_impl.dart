@@ -16,6 +16,7 @@ class EpisodesRepositoryImpl implements EpisodesRepository {
         'populate[File][populate]': '*',
         'populate[Program][populate][Cover][populate]': '*',
         'filters[Featured][\$eq]': true,
+        'sort[0]': 'Weight:desc',
       },
     );
 

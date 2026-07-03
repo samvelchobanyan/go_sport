@@ -17,6 +17,7 @@ class ArtistsRepositoryImpl implements ArtistsRepository {
       queryParameters: {
         'populate': '*',
         'filters[Featured][\$eq]': true,
+        'sort[0]': 'Weight:desc',
       },
     );
 

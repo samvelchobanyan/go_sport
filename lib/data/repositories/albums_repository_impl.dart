@@ -17,6 +17,7 @@ class AlbumsRepositoryImpl implements AlbumsRepository {
       queryParameters: {
         'populate': '*',
         'filters[Featured][\$eq]': true,
+        'sort[0]': 'Weight:desc',
       },
     );
 

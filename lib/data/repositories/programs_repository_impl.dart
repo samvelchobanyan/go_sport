@@ -17,6 +17,7 @@ class ProgramsRepositoryImpl implements ProgramsRepository {
       queryParameters: {
         'populate': '*',
         'filters[Featured][\$eq]': true,
+        'sort[0]': 'Weight:desc',
       },
     );
 
