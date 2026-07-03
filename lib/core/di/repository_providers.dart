@@ -16,7 +16,7 @@ import 'package:go_sport/domain/repositories/profile_repository.dart';
 import 'package:go_sport/domain/repositories/programs_repository.dart';
 import 'package:go_sport/domain/repositories/schedule_repository.dart';
 
-import '../../data/repositories/news_repository_mock.dart';
+import '../../data/repositories/news_repository_impl.dart';
 import '../../data/repositories/custom_playlist_repository_impl.dart';
 import '../../data/repositories/featured_playlist_repository_impl.dart';
 import '../../data/repositories/story_repository_mock.dart';
@@ -35,7 +35,7 @@ final storyRepositoryProvider = Provider<StoryRepository>((ref) {
 });
 
 final newsRepositoryProvider = Provider<NewsRepository>((ref) {
-  return MockNewsRepository();
+  return NewsRepositoryImpl(ref.read(apiClientProvider));
 });
 
 final featuredPlaylistRepositoryProvider = Provider<FeaturedPlaylistRepository>((ref) {

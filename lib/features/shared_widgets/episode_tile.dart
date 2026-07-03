@@ -143,14 +143,14 @@ class EpisodeTile extends StatelessWidget {
                       if (episode.releaseDate != null)
                         Text(
                           _formatDate(episode.releaseDate),
-                          style: context.subtitleLSemi?.copyWith(
+                          style: context.label?.copyWith(
                             color: DSColors.gray60,
                           ),
                         ),
                       Text(
                         ' • ',
-                        style: context.subtitleLSemi?.copyWith(
-                          color: DSColors.gray60,
+                        style: context.label?.copyWith(
+                          color: DSColors.gray20,
                         ),
                       ),
                       Text(

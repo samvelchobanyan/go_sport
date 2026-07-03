@@ -26,6 +26,7 @@ mixin _$NewsArticle {
   String get content => throw _privateConstructorUsedError;
   int get likesCount => throw _privateConstructorUsedError;
   bool get isLiked => throw _privateConstructorUsedError;
+  String? get likeId => throw _privateConstructorUsedError;
 
   /// Create a copy of NewsArticle
   /// with the given fields replaced by the non-null parameter values.
@@ -51,6 +52,7 @@ abstract class $NewsArticleCopyWith<$Res> {
     String content,
     int likesCount,
     bool isLiked,
+    String? likeId,
   });
 }
 
@@ -78,6 +80,7 @@ class _$NewsArticleCopyWithImpl<$Res, $Val extends NewsArticle>
     Object? content = null,
     Object? likesCount = null,
     Object? isLiked = null,
+    Object? likeId = freezed,
   }) {
     return _then(
       _value.copyWith(
@@ -117,6 +120,10 @@ class _$NewsArticleCopyWithImpl<$Res, $Val extends NewsArticle>
                 ? _value.isLiked
                 : isLiked // ignore: cast_nullable_to_non_nullable
                       as bool,
+            likeId: freezed == likeId
+                ? _value.likeId
+                : likeId // ignore: cast_nullable_to_non_nullable
+                      as String?,
           )
           as $Val,
     );
@@ -142,6 +149,7 @@ abstract class _$$NewsArticleImplCopyWith<$Res>
     String content,
     int likesCount,
     bool isLiked,
+    String? likeId,
   });
 }
 
@@ -168,6 +176,7 @@ class __$$NewsArticleImplCopyWithImpl<$Res>
     Object? content = null,
     Object? likesCount = null,
     Object? isLiked = null,
+    Object? likeId = freezed,
   }) {
     return _then(
       _$NewsArticleImpl(
@@ -207,6 +216,10 @@ class __$$NewsArticleImplCopyWithImpl<$Res>
             ? _value.isLiked
             : isLiked // ignore: cast_nullable_to_non_nullable
                   as bool,
+        likeId: freezed == likeId
+            ? _value.likeId
+            : likeId // ignore: cast_nullable_to_non_nullable
+                  as String?,
       ),
     );
   }
@@ -225,6 +238,7 @@ class _$NewsArticleImpl implements _NewsArticle {
     required this.content,
     required this.likesCount,
     required this.isLiked,
+    this.likeId,
   });
 
   @override
@@ -245,10 +259,12 @@ class _$NewsArticleImpl implements _NewsArticle {
   final int likesCount;
   @override
   final bool isLiked;
+  @override
+  final String? likeId;
 
   @override
   String toString() {
-    return 'NewsArticle(id: $id, title: $title, subtitle: $subtitle, author: $author, imageUrl: $imageUrl, publishedAt: $publishedAt, content: $content, likesCount: $likesCount, isLiked: $isLiked)';
+    return 'NewsArticle(id: $id, title: $title, subtitle: $subtitle, author: $author, imageUrl: $imageUrl, publishedAt: $publishedAt, content: $content, likesCount: $likesCount, isLiked: $isLiked, likeId: $likeId)';
   }
 
   @override
@@ -268,7 +284,8 @@ class _$NewsArticleImpl implements _NewsArticle {
             (identical(other.content, content) || other.content == content) &&
             (identical(other.likesCount, likesCount) ||
                 other.likesCount == likesCount) &&
-            (identical(other.isLiked, isLiked) || other.isLiked == isLiked));
+            (identical(other.isLiked, isLiked) || other.isLiked == isLiked) &&
+            (identical(other.likeId, likeId) || other.likeId == likeId));
   }
 
   @override
@@ -283,6 +300,7 @@ class _$NewsArticleImpl implements _NewsArticle {
     content,
     likesCount,
     isLiked,
+    likeId,
   );
 
   /// Create a copy of NewsArticle
@@ -305,6 +323,7 @@ abstract class _NewsArticle implements NewsArticle {
     required final String content,
     required final int likesCount,
     required final bool isLiked,
+    final String? likeId,
   }) = _$NewsArticleImpl;
 
   @override
@@ -325,6 +344,8 @@ abstract class _NewsArticle implements NewsArticle {
   int get likesCount;
   @override
   bool get isLiked;
+  @override
+  String? get likeId;
 
   /// Create a copy of NewsArticle
   /// with the given fields replaced by the non-null parameter values.
