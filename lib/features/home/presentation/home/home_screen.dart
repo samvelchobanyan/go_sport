@@ -101,9 +101,35 @@ class HomeScreen extends ConsumerWidget {
     final stories = storiesState.storiesList;
     final news = newsState.articlesList;
     final playlists = playlistsState.playlistsList;
+    final avatarUrl = ref.watch(
+      userStateProvider.select((s) => s.user?.avatar),
+    );
 
     return Scaffold(
       backgroundColor: DSColors.white,
+      appBar: AppBar(
+        backgroundColor: DSColors.white,
+        elevation: 0,
+        scrolledUnderElevation: 0,
+        // pinned: true,
+        // floating: true,
+        leading: Padding(
+          padding: const EdgeInsets.only(
+            top: DSSpacing.s8,
+            bottom: DSSpacing.s8,
+            left: DSSpacing.m,
+          ),
+          child: UserAvatarButton(
+            imageUrl: avatarUrl,
+            onTap: () {
+              context.push(AppRoutes.profile);
+            },
+          ),
+        ),
+        title: SvgPicture.asset('assets/icons/app_logo.svg', height: 40),
+        centerTitle: true,
+        actions: [const SearchButton()],
+      ),
       body: _buildBody(
         context,
         ref,
@@ -127,8 +153,6 @@ class HomeScreen extends ConsumerWidget {
     required List news,
     required List<Playlist> playlists,
   }) {
-    final avatarUrl = ref.watch(userStateProvider.select((s) => s.user?.avatar));
-
     if (isLoading) {
       return const HomeSkeleton();
     }
@@ -181,29 +205,6 @@ class HomeScreen extends ConsumerWidget {
       onRefresh: () => _refresh(ref),
       child: CustomScrollView(
         slivers: [
-          SliverAppBar(
-            backgroundColor: DSColors.white,
-            elevation: 0,
-            pinned: true,
-            floating: true,
-            leading: Padding(
-              padding: const EdgeInsets.only(
-                top: DSSpacing.s8,
-                bottom: DSSpacing.s8,
-                left: DSSpacing.m,
-              ),
-              child: UserAvatarButton(
-                imageUrl: avatarUrl,
-                onTap: () {
-                  context.push(AppRoutes.profile);
-                },
-              ),
-            ),
-            title: SvgPicture.asset('assets/icons/app_logo.svg', height: 40),
-            centerTitle: true,
-            actions: [const SearchButton()],
-          ),
-
           // Stories Row
           if (stories.isNotEmpty)
             SliverToBoxAdapter(
@@ -298,8 +299,7 @@ class HomeScreen extends ConsumerWidget {
                           horizontal: DSSpacing.m,
                           // vertical: DSSpacing.s10,
                         ),
-                        child:
-                         DottedDivider(),
+                        child: DottedDivider(),
                       ),
                     ],
                   ],

@@ -25,7 +25,9 @@ class RadioPageScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final radioDashboardState = ref.watch(radioStateProvider);
-    final avatarUrl = ref.watch(userStateProvider.select((s) => s.user?.avatar));
+    final avatarUrl = ref.watch(
+      userStateProvider.select((s) => s.user?.avatar),
+    );
 
     final featuredPrograms = radioDashboardState.featuredPrograms;
     final featuredEpisodes = radioDashboardState.featuredEpisodes;
@@ -38,6 +40,37 @@ class RadioPageScreen extends ConsumerWidget {
       value: SystemUiOverlayStyle.dark,
       child: Scaffold(
         backgroundColor: DSColors.white,
+
+        appBar: AppBar(
+          backgroundColor: DSColors.white,
+          elevation: 0,
+          scrolledUnderElevation: 0,
+          leading: Padding(
+            padding: const EdgeInsets.only(top: 8, bottom: 8, left: 16),
+            child: UserAvatarButton(
+              imageUrl: avatarUrl,
+              onTap: () {
+                context.push('/profile');
+              },
+            ),
+          ),
+          title: Text('Radio', style: context.h2),
+          centerTitle: true,
+          actions: [
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+              child: GestureDetector(
+                onTap: () => {context.push('/radio/schedule')},
+                child: SvgPicture.asset(
+                  'assets/icons/calendar.svg',
+                  width: 24,
+                  height: 24,
+                ),
+              ),
+            ),
+          ],
+        ),
+
         body: showInitialSkeleton
             ? const RadioPageSkeleton()
             : RefreshIndicator(
@@ -46,51 +79,10 @@ class RadioPageScreen extends ConsumerWidget {
                 child: CustomScrollView(
                   physics: const AlwaysScrollableScrollPhysics(),
                   slivers: [
-                    SliverAppBar(
-                      backgroundColor: DSColors.white,
-                      elevation: 0,
-                      pinned: true,
-                      floating: true,
-
-                      leading: Padding(
-                        padding: const EdgeInsets.only(
-                          top: 8,
-                          bottom: 8,
-                          left: 16,
-                        ),
-                        child: UserAvatarButton(
-                          imageUrl: avatarUrl,
-                          onTap: () {
-                            context.push('/profile');
-                          },
-                        ),
-                      ),
-                      title: Text('Radio', style: context.h2),
-                      centerTitle: true,
-                      actions: [
-                        Padding(
-                          padding: EdgeInsets.symmetric(
-                            vertical: 8,
-                            horizontal: 16,
-                          ),
-                          child: GestureDetector(
-                            onTap: () => {context.push('/radio/schedule')},
-                            child: SvgPicture.asset(
-                              'assets/icons/calendar.svg',
-                              width: 24,
-                              height: 24,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-
                     // orange banner
                     LiveBanner(
                       onTap: () {
-                        final notifier = ref.read(
-                          playerStateProvider.notifier,
-                        );
+                        final notifier = ref.read(playerStateProvider.notifier);
                         if (!ref.read(playerStateProvider).isRadioMode) {
                           notifier.playRadio();
                         }

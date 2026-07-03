@@ -1,17 +1,10 @@
-import 'dart:math' as math;
-
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_sport/design_system/components/skeleton/skeleton_box.dart';
 import 'package:go_sport/design_system/components/skeleton/skeleton_circle.dart';
 import 'package:go_sport/design_system/components/skeleton/skeleton_line.dart';
-import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_icon_size.dart';
 import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
-
-import '../../../../shared_widgets/search_button.dart';
-import '../../../../shared_widgets/user_avatar_button.dart';
 
 class HomeSkeleton extends StatelessWidget {
   const HomeSkeleton({super.key});
@@ -20,7 +13,6 @@ class HomeSkeleton extends StatelessWidget {
   Widget build(BuildContext context) {
     return CustomScrollView(
       slivers: const [
-        _HomeAppBarSliver(),
         _StoriesRowSkeletonSliver(),
         _PodcastBannerSkeletonSliver(),
         _FeaturedPlaylistsHeaderSkeletonSliver(),
@@ -32,48 +24,15 @@ class HomeSkeleton extends StatelessWidget {
   }
 }
 
-class _HomeAppBarSliver extends StatelessWidget {
-  const _HomeAppBarSliver();
-
-  @override
-  Widget build(BuildContext context) {
-    return SliverAppBar(
-      backgroundColor: DSColors.white,
-      elevation: 0,
-      pinned: true,
-      floating: true,
-      leading: Padding(
-        padding: const EdgeInsets.only(
-          top: DSSpacing.s8,
-          bottom: DSSpacing.s8,
-          left: DSSpacing.m,
-        ),
-        child: UserAvatarButton(imageUrl: null, onTap: () {}),
-      ),
-      title: SvgPicture.asset('assets/icons/app_logo.svg', height: 40),
-      centerTitle: true,
-      actions: [const SearchButton()],
-    );
-  }
-}
-
 class _StoriesRowSkeletonSliver extends StatelessWidget {
   const _StoriesRowSkeletonSliver();
 
   static const double _storySize = 72;
   static const double _storyGap = 8;
 
-  int _estimateStoryCount(double screenWidth) {
-    const horizontalPadding = 16.0 * 2;
-    final available = math.max(0.0, screenWidth - horizontalPadding);
-    final itemExtent = _storySize + _storyGap;
-    return math.max(1, (available / itemExtent).floor());
-  }
-
   @override
   Widget build(BuildContext context) {
     final count = 7;
-    // final count = _estimateStoryCount(MediaQuery.sizeOf(context).width);
 
     return SliverToBoxAdapter(
       child: Padding(

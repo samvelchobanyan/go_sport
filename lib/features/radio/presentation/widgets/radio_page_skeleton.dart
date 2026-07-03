@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:go_sport/design_system/components/skeleton/skeleton_box.dart';
 import 'package:go_sport/design_system/components/skeleton/skeleton_circle.dart';
 import 'package:go_sport/design_system/components/skeleton/skeleton_line.dart';
-import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 import 'package:go_sport/design_system/foundations/ds_layout.dart';
 import 'package:go_sport/design_system/foundations/ds_icon_size.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
-import 'package:go_sport/features/shared_widgets/user_avatar_button.dart';
 
 class RadioPageSkeleton extends StatelessWidget {
   const RadioPageSkeleton({super.key});
@@ -16,44 +14,10 @@ class RadioPageSkeleton extends StatelessWidget {
   Widget build(BuildContext context) {
     return CustomScrollView(
       slivers: const [
-        _RadioAppBarSliver(),
         _LiveBannerSkeletonSliver(),
         _ProgramsSectionSkeletonSliver(),
         _EpisodesHeaderSkeletonSliver(),
         _EpisodesListSkeletonSliver(),
-      ],
-    );
-  }
-}
-
-class _RadioAppBarSliver extends StatelessWidget {
-  const _RadioAppBarSliver();
-
-  @override
-  Widget build(BuildContext context) {
-    return SliverAppBar(
-      backgroundColor: DSColors.white,
-      elevation: 0,
-      pinned: true,
-      floating: true,
-      leading: Padding(
-        padding: const EdgeInsets.only(
-          top: 8,
-          bottom: 8,
-          left: 16,
-        ),
-        child: UserAvatarButton(
-          imageUrl: null,
-          onTap: () {},
-        ),
-      ),
-      title: const Text('Radio'),
-      centerTitle: true,
-      actions: const [
-        Padding(
-          padding: EdgeInsets.symmetric(vertical: DSSpacing.s12, horizontal: DSSpacing.m),
-          child: SkeletonBox(width: 24, height: 24, radius: DSRadius.xs),
-        ),
       ],
     );
   }
@@ -66,7 +30,11 @@ class _LiveBannerSkeletonSliver extends StatelessWidget {
   Widget build(BuildContext context) {
     return SliverToBoxAdapter(
       child: Padding(
-        padding: const EdgeInsets.only(top: DSSpacing.s18, left: DSSpacing.m, right: DSSpacing.m),
+        padding: const EdgeInsets.only(
+          top: DSSpacing.s18,
+          left: DSSpacing.m,
+          right: DSSpacing.m,
+        ),
         child: LayoutBuilder(
           builder: (context, constraints) {
             return Stack(
@@ -131,9 +99,7 @@ class _EpisodesHeaderSkeletonSliver extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const SliverToBoxAdapter(
-      child: _SectionHeaderSkeleton(),
-    );
+    return const SliverToBoxAdapter(child: _SectionHeaderSkeleton());
   }
 }
 
@@ -166,7 +132,8 @@ class _ProgramsCarouselSkeleton extends StatelessWidget {
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.symmetric(horizontal: DSSpacing.m),
         itemCount: 3,
-        separatorBuilder: (context, index) => const SizedBox(width: DSSpacing.s12),
+        separatorBuilder: (context, index) =>
+            const SizedBox(width: DSSpacing.s12),
         itemBuilder: (context, index) => const _ProgramCardSkeleton(),
       ),
     );
@@ -204,20 +171,17 @@ class _EpisodesListSkeletonSliver extends StatelessWidget {
     return SliverPadding(
       padding: const EdgeInsets.only(bottom: DSLayout.bottomBarClearance),
       sliver: SliverList(
-        delegate: SliverChildBuilderDelegate(
-          (context, index) {
-            return Column(
-              children: const [
-                _EpisodeTileSkeleton(),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: DSSpacing.m),
-                  child: SkeletonLine(width: double.infinity, height: 1),
-                ),
-              ],
-            );
-          },
-          childCount: 6,
-        ),
+        delegate: SliverChildBuilderDelegate((context, index) {
+          return Column(
+            children: const [
+              _EpisodeTileSkeleton(),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: DSSpacing.m),
+                child: SkeletonLine(width: double.infinity, height: 1),
+              ),
+            ],
+          );
+        }, childCount: 6),
       ),
     );
   }
@@ -229,7 +193,10 @@ class _EpisodeTileSkeleton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Padding(
-      padding: EdgeInsets.symmetric(horizontal: DSSpacing.m, vertical: DSSpacing.s12),
+      padding: EdgeInsets.symmetric(
+        horizontal: DSSpacing.m,
+        vertical: DSSpacing.s12,
+      ),
       child: Row(
         children: [
           SkeletonBox(width: 48, height: 48, radius: DSRadius.xs),
