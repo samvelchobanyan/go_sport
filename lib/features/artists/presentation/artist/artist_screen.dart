@@ -68,10 +68,11 @@ class _ArtistScreenState extends ConsumerState<ArtistScreen> {
               onPressed: () => context.pop(),
             ),
             actions: [
-              IconButton(
-                icon: SvgPicture.asset('assets/icons/share_no_bg.svg'),
-                onPressed: () {},
-              ),
+              // Share — functionality not implemented yet, hidden for now.
+              // IconButton(
+              //   icon: SvgPicture.asset('assets/icons/share_no_bg.svg'),
+              //   onPressed: () {},
+              // ),
               const SearchButton(iconColor: DSColors.white),
             ],
             flexibleSpace: FlexibleSpaceBar(

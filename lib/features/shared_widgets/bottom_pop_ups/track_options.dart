@@ -74,22 +74,21 @@ void showTrackOptionsBottomSheet({
           // Action buttons
           Column(
             children: [
-              // Add to playlist
-              ActionButton(
-                icon: 'assets/icons/plus_bg.svg',
-                label: onRemoveFromPlaylist != null
-                    ? 'Add to another playlist'
-                    : 'Add to playlist',
-                onTap: () {
-                  Navigator.pop(context);
-                  if (onAddToPlaylist != null) {
+              // Add to playlist — only when the caller provides the callback
+              // (episode tiles don't: episodes can't be added to playlists).
+              if (onAddToPlaylist != null) ...[
+                ActionButton(
+                  icon: 'assets/icons/plus_bg.svg',
+                  label: onRemoveFromPlaylist != null
+                      ? 'Add to another playlist'
+                      : 'Add to playlist',
+                  onTap: () {
+                    Navigator.pop(context);
                     onAddToPlaylist();
-                  } else {
-                    debugPrint('Add to playlist tapped');
-                  }
-                },
-              ),
-              const SizedBox(height: DSSpacing.s10),
+                  },
+                ),
+                const SizedBox(height: DSSpacing.s10),
+              ],
 
               // Like
               Consumer(
@@ -134,15 +133,15 @@ void showTrackOptionsBottomSheet({
               ],
               const SizedBox(height: DSSpacing.s10),
 
-              // Share
-              ActionButton(
-                icon: 'assets/icons/share.svg',
-                label: 'Share',
-                onTap: () {
-                  Navigator.pop(context);
-                  debugPrint('Share tapped');
-                },
-              ),
+              // Share — functionality not implemented yet, hidden for now.
+              // ActionButton(
+              //   icon: 'assets/icons/share.svg',
+              //   label: 'Share',
+              //   onTap: () {
+              //     Navigator.pop(context);
+              //     debugPrint('Share tapped');
+              //   },
+              // ),
             ],
           ),
         ],

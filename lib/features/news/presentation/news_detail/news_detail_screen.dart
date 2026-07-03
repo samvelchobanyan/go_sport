@@ -215,25 +215,25 @@ class NewsDetailScreen extends ConsumerWidget {
                   ),
                   const SizedBox(width: DSSpacing.m),
 
-                  // Share button
-                  GestureDetector(
-                    onTap: () {
-                      // Share functionality - will be implemented later
-                    },
-                    child: Container(
-                      width: 48,
-                      height: 48,
-                      decoration: BoxDecoration(
-                        color: DSColors.blue10,
-                        shape: BoxShape.circle,
-                      ),
-                      child: Icon(
-                        Icons.share_outlined,
-                        color: DSColors.blue,
-                        size: DSIconSize.s24,
-                      ),
-                    ),
-                  ),
+                  // Share button — functionality not implemented yet, hidden for now.
+                  // GestureDetector(
+                  //   onTap: () {
+                  //     // Share functionality - will be implemented later
+                  //   },
+                  //   child: Container(
+                  //     width: 48,
+                  //     height: 48,
+                  //     decoration: BoxDecoration(
+                  //       color: DSColors.blue10,
+                  //       shape: BoxShape.circle,
+                  //     ),
+                  //     child: Icon(
+                  //       Icons.share_outlined,
+                  //       color: DSColors.blue,
+                  //       size: DSIconSize.s24,
+                  //     ),
+                  //   ),
+                  // ),
                   const Spacer(),
 
                   // Likes counter

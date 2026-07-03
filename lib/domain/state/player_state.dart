@@ -504,7 +504,7 @@ class PlayerNotifier extends Notifier<PlayerState> {
 
     // 2. Delegate to AudioHandler, then start playback
     try {
-      await _audioHandler.setQueue(tracks, initialIndex: startIndex);
+      await _audioHandler.setQueue(tracks, initialIndex: startIndex, fallbackArtUrl: source.imageUrl);
       await _audioHandler.play();
       _saveSession();
     } catch (e) {
@@ -544,6 +544,7 @@ class PlayerNotifier extends Notifier<PlayerState> {
         tracks,
         initialIndex: index,
         initialPosition: position,
+        fallbackArtUrl: source.imageUrl,
       );
     } catch (e) {
       state = state.copyWith(
@@ -707,6 +708,7 @@ class PlayerNotifier extends Notifier<PlayerState> {
         tracks,
         initialIndex: index,
         initialPosition: _musicPosition,
+        fallbackArtUrl: state.source?.imageUrl,
       );
       await _audioHandler.play();
       _saveSession();

@@ -271,13 +271,14 @@ class _PlaylistScreenState extends ConsumerState<PlaylistScreen> {
                       ),
                     );
                   },
-                )
-              else
-                IconButton(
-                  padding: EdgeInsets.only(right: DSSpacing.m),
-                  icon: SvgPicture.asset('assets/icons/share_no_bg.svg'),
-                  onPressed: () {},
                 ),
+              // Share — functionality not implemented yet, hidden for now.
+              // else
+              //   IconButton(
+              //     padding: EdgeInsets.only(right: DSSpacing.m),
+              //     icon: SvgPicture.asset('assets/icons/share_no_bg.svg'),
+              //     onPressed: () {},
+              //   ),
             ],
             flexibleSpace: FlexibleSpaceBar(
               background: PlaylistHero(

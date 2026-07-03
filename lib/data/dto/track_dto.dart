@@ -79,6 +79,7 @@ class TrackDto {
 
   Track toDomain() {
     log('"$name" → audioUrl: "${file?.url ?? ''}"', name: 'TrackDto');
+    log('"$name" → imageUrl: "$albumCoverUrl"', name: 'TrackDto');
     return Track(
       id: documentId,
       title: name,

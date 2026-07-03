@@ -1,12 +1,49 @@
+import 'dart:io';
+
 import 'package:audio_service/audio_service.dart';
+import 'package:flutter/services.dart' show rootBundle;
 import 'package:just_audio/just_audio.dart';
+import 'package:path_provider/path_provider.dart';
 
 import '../../domain/entities/track.dart';
+
+/// Bundled artwork shown by the system player (lock screen / notification)
+/// when a track has no cover of its own. Materialized to a file because
+/// MediaItem.artUri only accepts URIs the native side can read (http/file),
+/// not Flutter asset paths.
+const _noImageAsset = 'assets/images/noimage_lock_screen.png';
 
 /// Wrapper around just_audio player that implements audio_service.
 /// Acts as a bridge between the app/system and the underlying audio player.
 class AppAudioHandler extends BaseAudioHandler with QueueHandler, SeekHandler {
   final AudioPlayer _player = AudioPlayer();
+
+  /// file:// URI of the materialized [_noImageAsset]; null until first queue
+  /// load (or if materialization failed — then artUri just stays null).
+  Uri? _noImageArtUri;
+
+  /// Copy [_noImageAsset] from the bundle to the app support directory once,
+  /// so the system player can read it via a file:// URI.
+  Future<void> _ensureNoImageArt() async {
+    if (_noImageArtUri != null) return;
+    try {
+      final dir = await getApplicationSupportDirectory();
+      final file = File('${dir.path}/noimage_lock_screen.png');
+      if (!await file.exists()) {
+        final bytes = await rootBundle.load(_noImageAsset);
+        await file.writeAsBytes(bytes.buffer.asUint8List());
+      }
+      _noImageArtUri = Uri.file(file.path);
+    } catch (_) {
+      // Best-effort: no fallback art is better than a crash on queue load.
+    }
+  }
+
+  /// Parse [url] only if it is a real network URL the native side can load.
+  /// Filters out nulls and non-network values (e.g. bundled asset paths used
+  /// as playlist covers), which would otherwise reach the system as dead URIs.
+  Uri? _networkUri(String? url) =>
+      url != null && url.startsWith('http') ? Uri.parse(url) : null;
 
   AppAudioHandler() {
     _init();
@@ -97,8 +134,11 @@ class AppAudioHandler extends BaseAudioHandler with QueueHandler, SeekHandler {
     List<Track> tracks, {
     int initialIndex = 0,
     Duration initialPosition = Duration.zero,
+    String? fallbackArtUrl,
   }) async {
     if (tracks.isEmpty) return;
+
+    await _ensureNoImageArt();
 
     // 1. Create MediaItems
     final mediaItems = tracks.map((track) {
@@ -108,7 +148,9 @@ class AppAudioHandler extends BaseAudioHandler with QueueHandler, SeekHandler {
         title: track.title,
         artist: track.artistName,
         duration: track.duration,
-        artUri: track.imageUrl != null ? Uri.parse(track.imageUrl!) : null,
+        artUri: _networkUri(track.imageUrl) ??
+            _networkUri(fallbackArtUrl) ??
+            _noImageArtUri,
         extras: {'audioUrl': track.audioUrl, 'imageUrl': track.imageUrl},
       );
     }).toList();
@@ -176,6 +218,8 @@ class AppAudioHandler extends BaseAudioHandler with QueueHandler, SeekHandler {
     required String title,
     required String imageUrl,
   }) async {
+    await _ensureNoImageArt();
+
     // 1. Clear system queue (radio has no queue)
     queue.add([]);
 
@@ -184,7 +228,7 @@ class AppAudioHandler extends BaseAudioHandler with QueueHandler, SeekHandler {
       id: 'radio',
       title: title,
       artist: 'Live',
-      artUri: Uri.parse(imageUrl),
+      artUri: _networkUri(imageUrl) ?? _noImageArtUri,
       // duration is null for live streams
     ));
 

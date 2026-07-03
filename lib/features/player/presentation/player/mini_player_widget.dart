@@ -8,6 +8,7 @@ import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 import 'package:go_sport/design_system/foundations/ds_icon_size.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
+import 'package:go_sport/design_system/components/network_image/ds_network_image.dart';
 import 'package:go_sport/design_system/components/icons/ds_heart_icon.dart';
 import 'package:go_sport/design_system/components/icons/ds_wave_icon.dart';
 import 'package:go_sport/design_system/components/icons/ds_bit_icon.dart';
@@ -222,22 +223,12 @@ class _MiniPlayerWidgetState extends ConsumerState<MiniPlayerWidget>
                   child: Row(
                     children: [
                       // Album cover
-                      Container(
+                      DSNetworkImage(
+                        imageUrl: imageUrl,
                         width: 34,
                         height: 34,
-                        decoration: BoxDecoration(
-                          color: DSColors.white,
-                          borderRadius: BorderRadius.circular(DSRadius.xs),
-                          image: imageUrl != null
-                              ? DecorationImage(
-                                  image: CachedNetworkImageProvider(imageUrl),
-                                  fit: BoxFit.cover,
-                                )
-                              : null,
-                        ),
-                        child: imageUrl == null
-                            ? const Icon(Icons.music_note, color: DSColors.gray40)
-                            : null,
+                        borderRadius: DSRadius.xs,
+                        memCacheWidth: (34 * MediaQuery.of(context).devicePixelRatio).round(),
                       ),
                       const SizedBox(width: DSSpacing.s8),
                       // Text block

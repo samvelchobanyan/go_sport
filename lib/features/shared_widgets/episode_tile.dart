@@ -7,7 +7,6 @@ import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 import 'package:go_sport/domain/entities/track.dart';
 import 'package:go_sport/features/shared_widgets/bottom_pop_ups/track_options.dart';
-import 'package:go_sport/features/playlists/presentation/bottom_sheets/add_to_playlist_bottom_sheet.dart';
 import 'package:go_sport/shared/widgets/equalizer_indicator.dart';
 
 class EpisodeTile extends StatelessWidget {
@@ -91,10 +90,6 @@ class EpisodeTile extends StatelessWidget {
                   showTrackOptionsBottomSheet(
                     context: context,
                     track: episode,
-                    onAddToPlaylist: () => showAddToPlaylistBottomSheet(
-                      context: context,
-                      track: episode,
-                    ),
                   );
                 },
                 behavior: HitTestBehavior.opaque,
