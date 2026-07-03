@@ -12,6 +12,7 @@ import 'package:go_sport/domain/entities/news_article.dart';
 import 'package:go_sport/domain/state/news_state.dart';
 import 'package:go_sport/features/shared_widgets/dotted_divider.dart';
 import 'widgets/news_detail_screen_skeleton.dart';
+import 'package:intl/intl.dart';
 
 class NewsDetailScreen extends ConsumerWidget {
   final String articleId;
@@ -68,17 +69,14 @@ class NewsDetailScreen extends ConsumerWidget {
                       : '';
                   return Row(
                     mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: DSSpacing.s6),
-                        child: Container(
-                          width: 14,
-                          height: 2,
-                          color: DSColors.orange,
-                        ),
-                      ),
-                      const SizedBox(width: DSSpacing.s),
+                      // Padding(
+                      //   padding: const EdgeInsets.only(top: DSSpacing.s6),
+                      //   child:
+                      Container(width: 14, height: 2, color: DSColors.orange),
+                      // ),
+                      const SizedBox(width: DSSpacing.s8),
                       Column(
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.end,
@@ -125,6 +123,16 @@ class NewsDetailScreen extends ConsumerWidget {
               ),
             ),
             const SizedBox(height: DSSpacing.s14),
+
+            // Date
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: DSSpacing.l),
+              child: Text(
+                DateFormat('MMM d, yyyy').format(article.publishedAt),
+                style: context.label?.copyWith(color: DSColors.gray60),
+              ),
+            ),
+            const SizedBox(height: DSSpacing.s8),
 
             // Title
             Padding(
@@ -183,7 +191,7 @@ class NewsDetailScreen extends ConsumerWidget {
                     onTap: () {
                       ref
                           .read(newsStateProvider.notifier)
-                          .toggleLike(articleId);
+                          .toggleLike(article.id);
                     },
                     child: Container(
                       width: 48,

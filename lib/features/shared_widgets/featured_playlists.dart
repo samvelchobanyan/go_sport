@@ -11,7 +11,6 @@ class FeaturedPlaylistsSection extends StatelessWidget {
   const FeaturedPlaylistsSection({super.key, required this.playlists});
   @override
   Widget build(BuildContext context) {
-    print('!!!!!!playlists: $playlists');
     return SliverToBoxAdapter(
       child: Container(
         color: DSColors.white,
