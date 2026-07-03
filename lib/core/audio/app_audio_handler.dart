@@ -91,8 +91,13 @@ class AppAudioHandler extends BaseAudioHandler with QueueHandler, SeekHandler {
 
   // === Queue Management ===
 
-  /// Load a new queue of tracks and start playing from [initialIndex]
-  Future<void> setQueue(List<Track> tracks, {int initialIndex = 0}) async {
+  /// Load a new queue of tracks positioned at [initialIndex] / [initialPosition].
+  /// Does NOT start playback — call [play] separately when playback is wanted.
+  Future<void> setQueue(
+    List<Track> tracks, {
+    int initialIndex = 0,
+    Duration initialPosition = Duration.zero,
+  }) async {
     if (tracks.isEmpty) return;
 
     // 1. Create MediaItems
@@ -124,13 +129,12 @@ class AppAudioHandler extends BaseAudioHandler with QueueHandler, SeekHandler {
       mediaItem.add(mediaItems[initialIndex]);
     }
 
-    // 5. Load into player
+    // 5. Load into player (paused; caller decides when to play)
     await _player.setAudioSource(
       ConcatenatingAudioSource(children: audioSources),
       initialIndex: initialIndex,
+      initialPosition: initialPosition,
     );
-
-    await _player.play();
   }
 
   // === Playback Controls ===

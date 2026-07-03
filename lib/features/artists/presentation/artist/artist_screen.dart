@@ -17,9 +17,17 @@ import 'package:go_sport/features/shared_widgets/search_button.dart';
 import 'package:go_sport/features/shared_widgets/wave_section_header.dart';
 
 class ArtistScreen extends ConsumerStatefulWidget {
-  final Artist artist;
+  /// Artist id — the only thing required to open the screen. Navigations that
+  /// already hold the full [Artist] (lists, search) pass it as [artistHint]
+  /// for an instant first paint; the player passes only the id.
+  final String artistId;
+  final Artist? artistHint;
 
-  const ArtistScreen({super.key, required this.artist});
+  const ArtistScreen({
+    super.key,
+    required this.artistId,
+    this.artistHint,
+  });
 
   @override
   ConsumerState<ArtistScreen> createState() => _ArtistScreenState();
@@ -28,10 +36,20 @@ class ArtistScreen extends ConsumerStatefulWidget {
 class _ArtistScreenState extends ConsumerState<ArtistScreen> {
   @override
   Widget build(BuildContext context) {
-    final albumsState = ref.watch(artistControllerProvider(widget.artist.id));
+    final state = ref.watch(artistControllerProvider(widget.artistId));
     final isLiked = ref.watch(
-      likeRegistryProvider.select((s) => s.likedArtists.any((a) => a.id == widget.artist.id)),
+      likeRegistryProvider
+          .select((s) => s.likedArtists.any((a) => a.id == widget.artistId)),
     );
+
+    // Prefer the freshly loaded artist; fall back to the navigation hint so the
+    // hero paints immediately when we came from a list. Null only while the
+    // player-originated load is still in flight.
+    final loadedArtist = state.whenOrNull(
+      data: (artist, albums) => artist,
+    );
+    final artist = loadedArtist ?? widget.artistHint;
+
     final screenHeight = MediaQuery.of(context).size.height;
     final expandedHeight = screenHeight * 0.5;
 
@@ -57,13 +75,17 @@ class _ArtistScreenState extends ConsumerState<ArtistScreen> {
               const SearchButton(iconColor: DSColors.white),
             ],
             flexibleSpace: FlexibleSpaceBar(
-              background: ArtistHero(
-                artist: widget.artist,
-                isLiked: isLiked,
-                onLikeTap: () => ref
-                    .read(likeRegistryProvider.notifier)
-                    .toggleArtistLike(widget.artist),
-              ),
+              background: artist == null
+                  // Player-originated open: artist not loaded yet — plain
+                  // backdrop until the network fills it in.
+                  ? const ColoredBox(color: DSColors.black)
+                  : ArtistHero(
+                      artist: artist,
+                      isLiked: isLiked,
+                      onLikeTap: () => ref
+                          .read(likeRegistryProvider.notifier)
+                          .toggleArtistLike(artist),
+                    ),
             ),
             bottom: PreferredSize(
               preferredSize: const Size.fromHeight(24),
@@ -76,7 +98,7 @@ class _ArtistScreenState extends ConsumerState<ArtistScreen> {
               ),
             ),
           ),
-          albumsState.when(
+          state.when(
             loading: () => const SliverMainAxisGroup(
               slivers: [
                 SliverToBoxAdapter(
@@ -99,16 +121,16 @@ class _ArtistScreenState extends ConsumerState<ArtistScreen> {
                     ElevatedButton(
                       onPressed: () => ref
                           .read(
-                            artistControllerProvider(widget.artist.id).notifier,
+                            artistControllerProvider(widget.artistId).notifier,
                           )
-                          .loadAlbums(),
+                          .loadDetails(),
                       child: const Text('Retry'),
                     ),
                   ],
                 ),
               ),
             ),
-            data: (albums) => SliverMainAxisGroup(
+            data: (artist, albums) => SliverMainAxisGroup(
               slivers: [
                 const SliverToBoxAdapter(
                   child: WaveSectionHeader(title: 'Albums'),

@@ -10,6 +10,7 @@ import 'package:go_sport/core/notifications/notification_service.dart';
 import 'package:go_sport/core/notifications/reminder_storage.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'core/audio/app_audio_handler.dart';
+import 'core/audio/player_session_storage.dart';
 import 'core/auth/google_auth_service.dart';
 import 'core/auth/token_storage.dart';
 import 'core/config/app_config.dart';
@@ -52,6 +53,9 @@ Future<void> main() async {
   final reminderStorage = ReminderStorage();
   await reminderStorage.init();
 
+  final playerSessionStorage = PlayerSessionStorage();
+  await playerSessionStorage.init();
+
   try {
     // Initialize AudioService
     final audioHandler = await AudioService.init(
@@ -73,6 +77,7 @@ Future<void> main() async {
           googleAuthServiceProvider.overrideWithValue(googleAuthService),
           notificationServiceProvider.overrideWithValue(notificationService),
           reminderStorageProvider.overrideWithValue(reminderStorage),
+          playerSessionStorageProvider.overrideWithValue(playerSessionStorage),
         ],
         child: MainApp(tokenStorage: tokenStorage),
       ),

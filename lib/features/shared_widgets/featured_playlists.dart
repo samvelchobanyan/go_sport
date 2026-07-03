@@ -27,7 +27,7 @@ class FeaturedPlaylistsSection extends StatelessWidget {
             ),
             if (playlists.isNotEmpty)
               SizedBox(
-                height: 210,
+                height: 230,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   padding: const EdgeInsets.symmetric(horizontal: DSSpacing.m),

@@ -23,7 +23,7 @@ class PlaylistCard extends StatelessWidget {
         extra: playlist,
       ),
       child: SizedBox(
-        width: 140,
+        width: 160,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

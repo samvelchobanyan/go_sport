@@ -50,8 +50,8 @@ class DSColors {
   static const divider = gray20; // rgba(245,245,247,1)
 
   static const List<Color> storyGradient = [
-    Color(0xFF404AC3), // синий из Figma
+    orange, // оранжевый (#F55F2A)
     Color(0xFFCFDC28), // желто-зеленый из Figma
-    Color(0xFF404AC3), // синий (замыкаем круг)
+    Color(0xFF404AC3), // оранжевый (замыкаем круг)
   ];
 }

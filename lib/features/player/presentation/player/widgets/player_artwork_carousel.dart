@@ -56,6 +56,10 @@ class _PlayerArtworkCarouselState extends ConsumerState<PlayerArtworkCarousel> {
         ref.watch(playerStateProvider.select((s) => s.prevTrack));
     final nextTrack =
         ref.watch(playerStateProvider.select((s) => s.nextTrack));
+    // Shared across the whole queue — used as artwork fallback for any track
+    // (current or side) that has no cover of its own.
+    final sourceImageUrl =
+        ref.watch(playerStateProvider.select((s) => s.source?.imageUrl));
 
     if (currentTrack == null) return const SizedBox();
 
@@ -109,8 +113,9 @@ class _PlayerArtworkCarouselState extends ConsumerState<PlayerArtworkCarousel> {
                     child: track == null
                         ? null
                         : _ArtworkCard(
-                            imageUrl: track.imageUrl,
+                            imageUrl: track.imageUrl ?? sourceImageUrl,
                             shadowOpacity: shadowOpacity,
+                            cardWidth: cardWidth,
                           ),
                   ),
                 );
@@ -127,13 +132,20 @@ class _ArtworkCard extends StatelessWidget {
   const _ArtworkCard({
     required this.imageUrl,
     required this.shadowOpacity,
+    required this.cardWidth,
   });
 
   final String? imageUrl;
   final double shadowOpacity;
+  final double cardWidth;
 
   @override
   Widget build(BuildContext context) {
+    // Decode the artwork at its real on-screen resolution (logical width ×
+    // device pixel ratio) instead of a fixed 300px cap, which upscaled the
+    // large full-player card and made it look soft.
+    final decodeWidth =
+        (cardWidth * MediaQuery.of(context).devicePixelRatio).round();
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(DSRadius.m),
@@ -152,8 +164,7 @@ class _ArtworkCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(DSRadius.m),
         child: DSNetworkImage(
           imageUrl: imageUrl,
-          memCacheWidth: 300,
-          memCacheHeight: 300,
+          memCacheWidth: decodeWidth,
         ),
       ),
     );

@@ -67,14 +67,6 @@ class PlaylistHero extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text(
-                  playlist.title,
-                  style: context.h1?.copyWith(color: DSColors.white),
-                  textAlign: TextAlign.center,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                const SizedBox(height: DSSpacing.l),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -136,6 +128,14 @@ class PlaylistHero extends StatelessWidget {
                       ),
                     ],
                   ],
+                ),
+                const SizedBox(height: DSSpacing.m),
+                Text(
+                  playlist.title,
+                  style: context.h1?.copyWith(color: DSColors.white),
+                  textAlign: TextAlign.center,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ],
             ),

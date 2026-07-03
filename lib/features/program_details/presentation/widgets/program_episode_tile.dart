@@ -90,15 +90,15 @@ class ProgramEpisodeTile extends StatelessWidget {
             if (episode.releaseDate != null)
               Text(
                 _formatDate(episode.releaseDate),
-                style: context.subtitleLSemi?.copyWith(color: DSColors.gray60),
+                style: context.textL?.copyWith(color: DSColors.gray60),
               ),
             Text(
               ' • ',
-              style: context.subtitleLSemi?.copyWith(color: DSColors.gray60),
+              style: context.textL?.copyWith(color: DSColors.gray60),
             ),
             Text(
               _formatDuration(episode.duration),
-              style: context.subtitleLSemi?.copyWith(color: DSColors.gray60),
+              style: context.textL?.copyWith(color: DSColors.gray60),
             ),
           ],
         ),

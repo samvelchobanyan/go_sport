@@ -255,8 +255,12 @@ GoRouter createAppRouter(TokenStorage tokenStorage) {
                   GoRoute(
                     path: 'artist/:id',
                     builder: (context, state) {
-                      final artist = state.extra as Artist;
-                      return ArtistScreen(artist: artist);
+                      final id = state.pathParameters['id']!;
+                      final artistHint = state.extra as Artist?;
+                      return ArtistScreen(
+                        artistId: id,
+                        artistHint: artistHint,
+                      );
                     },
                   ),
                   // Favorites route

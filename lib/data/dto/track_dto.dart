@@ -13,12 +13,16 @@ class _FileDto {
 }
 
 class _ArtistDto {
+  final String documentId;
   final String name;
 
-  _ArtistDto({required this.name});
+  _ArtistDto({required this.documentId, required this.name});
 
   factory _ArtistDto.fromJson(Map<String, dynamic> json) {
-    return _ArtistDto(name: json['Name'] as String);
+    return _ArtistDto(
+      documentId: json['documentId'] as String,
+      name: json['Name'] as String,
+    );
   }
 }
 
@@ -79,6 +83,7 @@ class TrackDto {
       id: documentId,
       title: name,
       artistName: artists.isNotEmpty ? artists.first.name : '',
+      artistId: artists.isNotEmpty ? artists.first.documentId : null,
       imageUrl: albumCoverUrl,
       duration: Duration(seconds: length),
       audioUrl: file?.url ?? '',

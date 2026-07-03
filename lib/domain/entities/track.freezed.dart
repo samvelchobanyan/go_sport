@@ -20,6 +20,7 @@ mixin _$Track {
   String get id => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   String get artistName => throw _privateConstructorUsedError;
+  String? get artistId => throw _privateConstructorUsedError;
   String? get imageUrl => throw _privateConstructorUsedError;
   Duration get duration => throw _privateConstructorUsedError;
   String get audioUrl => throw _privateConstructorUsedError;
@@ -41,6 +42,7 @@ abstract class $TrackCopyWith<$Res> {
     String id,
     String title,
     String artistName,
+    String? artistId,
     String? imageUrl,
     Duration duration,
     String audioUrl,
@@ -67,6 +69,7 @@ class _$TrackCopyWithImpl<$Res, $Val extends Track>
     Object? id = null,
     Object? title = null,
     Object? artistName = null,
+    Object? artistId = freezed,
     Object? imageUrl = freezed,
     Object? duration = null,
     Object? audioUrl = null,
@@ -87,6 +90,10 @@ class _$TrackCopyWithImpl<$Res, $Val extends Track>
                 ? _value.artistName
                 : artistName // ignore: cast_nullable_to_non_nullable
                       as String,
+            artistId: freezed == artistId
+                ? _value.artistId
+                : artistId // ignore: cast_nullable_to_non_nullable
+                      as String?,
             imageUrl: freezed == imageUrl
                 ? _value.imageUrl
                 : imageUrl // ignore: cast_nullable_to_non_nullable
@@ -125,6 +132,7 @@ abstract class _$$TrackImplCopyWith<$Res> implements $TrackCopyWith<$Res> {
     String id,
     String title,
     String artistName,
+    String? artistId,
     String? imageUrl,
     Duration duration,
     String audioUrl,
@@ -150,6 +158,7 @@ class __$$TrackImplCopyWithImpl<$Res>
     Object? id = null,
     Object? title = null,
     Object? artistName = null,
+    Object? artistId = freezed,
     Object? imageUrl = freezed,
     Object? duration = null,
     Object? audioUrl = null,
@@ -170,6 +179,10 @@ class __$$TrackImplCopyWithImpl<$Res>
             ? _value.artistName
             : artistName // ignore: cast_nullable_to_non_nullable
                   as String,
+        artistId: freezed == artistId
+            ? _value.artistId
+            : artistId // ignore: cast_nullable_to_non_nullable
+                  as String?,
         imageUrl: freezed == imageUrl
             ? _value.imageUrl
             : imageUrl // ignore: cast_nullable_to_non_nullable
@@ -202,6 +215,7 @@ class _$TrackImpl implements _Track {
     required this.id,
     required this.title,
     required this.artistName,
+    this.artistId,
     this.imageUrl,
     required this.duration,
     required this.audioUrl,
@@ -216,6 +230,8 @@ class _$TrackImpl implements _Track {
   @override
   final String artistName;
   @override
+  final String? artistId;
+  @override
   final String? imageUrl;
   @override
   final Duration duration;
@@ -228,7 +244,7 @@ class _$TrackImpl implements _Track {
 
   @override
   String toString() {
-    return 'Track(id: $id, title: $title, artistName: $artistName, imageUrl: $imageUrl, duration: $duration, audioUrl: $audioUrl, releaseDate: $releaseDate, likeId: $likeId)';
+    return 'Track(id: $id, title: $title, artistName: $artistName, artistId: $artistId, imageUrl: $imageUrl, duration: $duration, audioUrl: $audioUrl, releaseDate: $releaseDate, likeId: $likeId)';
   }
 
   @override
@@ -240,6 +256,8 @@ class _$TrackImpl implements _Track {
             (identical(other.title, title) || other.title == title) &&
             (identical(other.artistName, artistName) ||
                 other.artistName == artistName) &&
+            (identical(other.artistId, artistId) ||
+                other.artistId == artistId) &&
             (identical(other.imageUrl, imageUrl) ||
                 other.imageUrl == imageUrl) &&
             (identical(other.duration, duration) ||
@@ -257,6 +275,7 @@ class _$TrackImpl implements _Track {
     id,
     title,
     artistName,
+    artistId,
     imageUrl,
     duration,
     audioUrl,
@@ -278,6 +297,7 @@ abstract class _Track implements Track {
     required final String id,
     required final String title,
     required final String artistName,
+    final String? artistId,
     final String? imageUrl,
     required final Duration duration,
     required final String audioUrl,
@@ -291,6 +311,8 @@ abstract class _Track implements Track {
   String get title;
   @override
   String get artistName;
+  @override
+  String? get artistId;
   @override
   String? get imageUrl;
   @override

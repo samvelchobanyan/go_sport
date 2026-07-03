@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:audio_service/audio_service.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -8,7 +9,9 @@ import 'package:just_audio/just_audio.dart';
 
 import '../entities/track.dart';
 import '../../core/audio/app_audio_handler.dart';
+import '../../core/audio/player_session_storage.dart';
 import '../../core/di/audio_providers.dart';
+import '../../core/di/repository_providers.dart';
 
 part 'player_state.freezed.dart';
 
@@ -213,20 +216,156 @@ extension PlayerStateX on PlayerState {
 class PlayerNotifier extends Notifier<PlayerState> {
   late final AppAudioHandler _audioHandler;
   final List<StreamSubscription> _subscriptions = [];
+  AppLifecycleListener? _lifecycleListener;
+  Timer? _positionSaveTimer;
+
+  /// Music playback position, stashed when switching to radio so
+  /// [resumeMusic] can continue from where the track left off.
+  Duration _musicPosition = Duration.zero;
 
   @override
   PlayerState build() {
     _audioHandler = ref.watch(audioHandlerProvider);
     _listenToAudioHandler();
 
+    // Persist the session when the app goes to background / is torn down.
+    _lifecycleListener = AppLifecycleListener(
+      onPause: _persistNow,
+      onDetach: _persistNow,
+    );
+
+    // Persist the position periodically while playing so a hard kill loses at
+    // most a few seconds — a single-int write, not the whole snapshot.
+    _positionSaveTimer = Timer.periodic(const Duration(seconds: 10), (_) {
+      if (state.isPlaying && state.mode == PlaybackMode.music) _savePosition();
+    });
+
     ref.onDispose(() {
       for (final sub in _subscriptions) {
         sub.cancel();
       }
+      _lifecycleListener?.dispose();
+      _positionSaveTimer?.cancel();
     });
+
+    // Prime the mini-player once, after this build settles (don't touch state
+    // during build). Restores the last session, or falls back to featured.
+    Future(_restoreOrPrime);
 
     return const PlayerState();
   }
+
+  /// On startup: restore the last saved session, else prime a featured playlist.
+  /// Only acts on an untouched player so it never clobbers active playback.
+  Future<void> _restoreOrPrime() async {
+    if (state.status != PlayerStatus.idle || state.tracks.isNotEmpty) return;
+
+    // 1. Restore last persisted session (app was killed).
+    final storage = ref.read(playerSessionStorageProvider);
+    final saved = storage.session;
+    if (saved != null) {
+      await loadPausedQueue(
+        saved.tracks,
+        source: _sourceFromSession(saved),
+        index: saved.currentIndex,
+        position: storage.position,
+      );
+      return;
+    }
+
+    // 2. First launch ever — prime the first featured playlist, paused.
+    try {
+      final repo = ref.read(featuredPlaylistRepositoryProvider);
+      final playlists = await repo.getFeaturedPlaylists();
+      if (playlists.isEmpty) return;
+
+      final first = playlists.first;
+      final tracks = await repo.getPlaylistTracks(first.id);
+      if (tracks.isEmpty) return;
+
+      // Re-check: the user may have started playback while we fetched.
+      if (state.status != PlayerStatus.idle || state.tracks.isNotEmpty) return;
+
+      await loadPausedQueue(
+        tracks,
+        source: QueueSource.playlist(
+          id: first.id,
+          title: first.title,
+          imageUrl: first.imageUrl,
+        ),
+      );
+    } catch (_) {
+      // Offline / featured unavailable — leave the mini-player empty as before.
+    }
+  }
+
+  /// Rebuild a [QueueSource] from the flat fields stored in a [PlayerSession].
+  QueueSource _sourceFromSession(PlayerSession s) => switch (s.sourceType) {
+        'album' => QueueSource.album(
+            id: s.sourceId, title: s.sourceTitle, imageUrl: s.sourceImageUrl),
+        'program' => QueueSource.program(
+            id: s.sourceId, title: s.sourceTitle, imageUrl: s.sourceImageUrl),
+        'favorites' => QueueSource.favorites(
+            id: s.sourceId, title: s.sourceTitle, imageUrl: s.sourceImageUrl),
+        'episodes' => QueueSource.episodes(
+            id: s.sourceId, title: s.sourceTitle, imageUrl: s.sourceImageUrl),
+        _ => QueueSource.playlist(
+            id: s.sourceId, title: s.sourceTitle, imageUrl: s.sourceImageUrl),
+      };
+
+  /// Persist the current music queue snapshot so it survives an app kill.
+  /// Skips radio and empty/sourceless states — only a real music session.
+  void _saveSession() {
+    if (state.mode != PlaybackMode.music) return;
+    if (state.tracks.isEmpty) return;
+    final source = state.source;
+    if (source == null) return;
+
+    final (type, id, title, imageUrl) = _sourceToFields(source);
+    unawaited(
+      ref.read(playerSessionStorageProvider).saveSession(
+            PlayerSession(
+              tracks: state.tracks,
+              currentIndex: state.currentIndex,
+              sourceType: type,
+              sourceId: id,
+              sourceTitle: title,
+              sourceImageUrl: imageUrl,
+            ),
+          ),
+    );
+  }
+
+  /// Persist just the playback position (a single int). Music only —
+  /// radio position is meaningless and would corrupt the saved music session.
+  void _savePosition() {
+    if (state.mode != PlaybackMode.music) return;
+    if (state.tracks.isEmpty) return;
+    unawaited(
+      ref.read(playerSessionStorageProvider).savePosition(state.position),
+    );
+  }
+
+  /// Flush both snapshot and position — used on app background / teardown.
+  void _persistNow() {
+    _saveSession();
+    _savePosition();
+  }
+
+  /// Flatten a [QueueSource] into fields for [PlayerSession].
+  (String, String, String, String) _sourceToFields(QueueSource source) =>
+      switch (source) {
+        QueueSourceAlbum(:final id, :final title, :final imageUrl) =>
+          ('album', id, title, imageUrl),
+        QueueSourcePlaylist(:final id, :final title, :final imageUrl) =>
+          ('playlist', id, title, imageUrl),
+        QueueSourceProgram(:final id, :final title, :final imageUrl) =>
+          ('program', id, title, imageUrl),
+        QueueSourceFavorites(:final id, :final title, :final imageUrl) =>
+          ('favorites', id, title, imageUrl),
+        QueueSourceEpisodes(:final id, :final title, :final imageUrl) =>
+          ('episodes', id, title, imageUrl),
+      };
 
   void _listenToAudioHandler() {
     // Position updates (Direct stream from AppAudioHandler)
@@ -285,6 +424,7 @@ class PlayerNotifier extends Notifier<PlayerState> {
     final index = state.tracks.indexWhere((t) => t.id == mediaItem.id);
     if (index != -1 && index != state.currentIndex) {
       state = state.copyWith(currentIndex: index);
+      _saveSession(); // persist the new current track
     }
   }
 
@@ -346,6 +486,7 @@ class PlayerNotifier extends Notifier<PlayerState> {
     if (state.source?.id == source.id && state.mode == PlaybackMode.music) {
       state = state.copyWith(currentIndex: startIndex);
       await skipTo(startIndex);
+      _saveSession();
       return;
     }
 
@@ -361,9 +502,49 @@ class PlayerNotifier extends Notifier<PlayerState> {
       errorMessage: null,
     );
 
-    // 2. Delegate to AudioHandler
+    // 2. Delegate to AudioHandler, then start playback
     try {
       await _audioHandler.setQueue(tracks, initialIndex: startIndex);
+      await _audioHandler.play();
+      _saveSession();
+    } catch (e) {
+      state = state.copyWith(
+        status: PlayerStatus.error,
+        errorMessage: e.toString(),
+      );
+    }
+  }
+
+  /// Load a queue WITHOUT starting playback — sits paused at [position].
+  /// Used to prime the mini-player on startup (restored session or featured
+  /// playlist). Twin of [playQueue] minus the final play() and with a position.
+  Future<void> loadPausedQueue(
+    List<Track> tracks, {
+    required QueueSource source,
+    int index = 0,
+    Duration position = Duration.zero,
+  }) async {
+    if (tracks.isEmpty) return;
+
+    // 1. Update UI state so the mini-player shows the track, silent (paused)
+    state = state.copyWith(
+      mode: PlaybackMode.music,
+      tracks: tracks,
+      source: source,
+      currentIndex: index,
+      position: position,
+      status: PlayerStatus.paused,
+      radioNowPlaying: null,
+      errorMessage: null,
+    );
+
+    // 2. Load into the player at the given position; do NOT play.
+    try {
+      await _audioHandler.setQueue(
+        tracks,
+        initialIndex: index,
+        initialPosition: position,
+      );
     } catch (e) {
       state = state.copyWith(
         status: PlayerStatus.error,
@@ -474,6 +655,11 @@ class PlayerNotifier extends Notifier<PlayerState> {
 
   /// Start playing radio stream
   Future<void> playRadio() async {
+    // 0. Stash current music position so resumeMusic can continue from it
+    if (state.mode == PlaybackMode.music) {
+      _musicPosition = state.position;
+    }
+
     // 1. Update UI state (keep tracks and music queue source for resume later)
     state = state.copyWith(
       mode: PlaybackMode.radio,
@@ -512,11 +698,18 @@ class PlayerNotifier extends Notifier<PlayerState> {
     state = state.copyWith(
       mode: PlaybackMode.music,
       status: PlayerStatus.loading,
+      position: _musicPosition, // Restore stashed music position
       radioNowPlaying: null, // Clear radio metadata
     );
 
     try {
-      await _audioHandler.setQueue(tracks, initialIndex: index);
+      await _audioHandler.setQueue(
+        tracks,
+        initialIndex: index,
+        initialPosition: _musicPosition,
+      );
+      await _audioHandler.play();
+      _saveSession();
     } catch (e) {
       state = state.copyWith(
         status: PlayerStatus.error,

@@ -8,6 +8,7 @@ class Track with _$Track {
     required String id,
     required String title,
     required String artistName,
+    String? artistId,
     String? imageUrl,
     required Duration duration,
     required String audioUrl,

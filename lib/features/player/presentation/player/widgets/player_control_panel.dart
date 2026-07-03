@@ -2,6 +2,7 @@ import 'package:go_sport/design_system/components/network_image/ds_network_image
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_icon_size.dart';
 import 'package:go_sport/design_system/foundations/ds_spacing.dart';
@@ -38,7 +39,7 @@ class PlayerControlPanel extends ConsumerWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             // Track info row
-            _buildTrackInfo(context, ref, track),
+            _buildTrackInfo(context, ref, track, info.displayImageUrl),
 
             const SizedBox(height: DSSpacing.s8),
 
@@ -76,8 +77,8 @@ class PlayerControlPanel extends ConsumerWidget {
     );
   }
 
-  Widget _buildTrackInfo(BuildContext context, WidgetRef ref, track) {
-    final imageUrl = track?.imageUrl;
+  Widget _buildTrackInfo(
+      BuildContext context, WidgetRef ref, track, String? imageUrl) {
     final title = track?.title ?? '';
     final artist = track?.artistName ?? '';
 
@@ -95,27 +96,36 @@ class PlayerControlPanel extends ConsumerWidget {
 
         const SizedBox(width: DSSpacing.s8),
 
-        // Title + Artist
+        // Title + Artist — tap opens the artist page (when we know the id)
         Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                title,
-                style: context.subtitleLBold,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
-              if (artist.isNotEmpty) ...[
-                const SizedBox(height: DSSpacing.s),
+          child: GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: () {
+              final artistId = track?.artistId;
+              if (artistId == null) return;
+              context.push('/music/artist/$artistId');
+              Navigator.of(context).pop(); // close the full-player sheet
+            },
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
                 Text(
-                  artist,
-                  style: context.bodyL?.copyWith(color: DSColors.gray60),
+                  title,
+                  style: context.subtitleLBold,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
+                if (artist.isNotEmpty) ...[
+                  const SizedBox(height: DSSpacing.s),
+                  Text(
+                    artist,
+                    style: context.bodyL?.copyWith(color: DSColors.gray60),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
               ],
-            ],
+            ),
           ),
         ),
 

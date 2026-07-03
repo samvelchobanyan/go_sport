@@ -238,8 +238,9 @@ class _MusicScreenState extends ConsumerState<MusicScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: 16,
+                                  padding: const EdgeInsets.only(
+                                    top: 24,
+                                    bottom: 16,
                                   ),
                                   child: WaveSectionHeader(
                                     title: 'Featured albums',
@@ -248,7 +249,7 @@ class _MusicScreenState extends ConsumerState<MusicScreen> {
                                 ),
                                 if (featuredAlbums.isNotEmpty)
                                   SizedBox(
-                                    height: 240,
+                                    height: 252,
                                     child: ListView.builder(
                                       scrollDirection: Axis.horizontal,
                                       padding: const EdgeInsets.symmetric(
@@ -295,8 +296,9 @@ class _MusicScreenState extends ConsumerState<MusicScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 const Padding(
-                                  padding: EdgeInsets.symmetric(
-                                    vertical: DSSpacing.m,
+                                  padding: EdgeInsets.only(
+                                    top: DSSpacing.l,
+                                    bottom: DSSpacing.m,
                                   ),
                                   child: WaveSectionHeader(
                                     title: 'Featured artists',

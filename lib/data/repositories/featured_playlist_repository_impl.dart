@@ -17,6 +17,7 @@ class FeaturedPlaylistRepositoryImpl implements FeaturedPlaylistRepository {
       queryParameters: {
         'populate': '*',
         'filters[Featured][\$eq]': true,
+        'sort[0]': 'Weight:desc',
       },
     );
 

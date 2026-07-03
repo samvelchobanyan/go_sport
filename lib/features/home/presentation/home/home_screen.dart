@@ -251,7 +251,7 @@ class HomeScreen extends ConsumerWidget {
             SliverToBoxAdapter(
               child: Padding(
                 padding: const EdgeInsets.only(
-                  top: DSSpacing.xl,
+                  top: DSSpacing.l,
                   bottom: DSSpacing.s10,
                 ),
                 child: GestureDetector(

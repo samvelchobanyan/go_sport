@@ -58,22 +58,6 @@ class AlbumHero extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text(
-                  album.title,
-                  style: context.h1?.copyWith(color: DSColors.white),
-                  textAlign: TextAlign.center,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                const SizedBox(height: DSSpacing.s12),
-                Text(
-                  '${album.artist} ${album.releaseYear}',
-                  style: context.textL?.copyWith(color: DSColors.white),
-                  textAlign: TextAlign.center,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                const SizedBox(height: DSSpacing.m),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -119,6 +103,22 @@ class AlbumHero extends StatelessWidget {
                       ),
                     ),
                   ],
+                ),
+                const SizedBox(height: DSSpacing.m),
+                Text(
+                  '${album.artist} ${album.releaseYear}',
+                  style: context.textL?.copyWith(color: DSColors.white),
+                  textAlign: TextAlign.center,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const SizedBox(height: DSSpacing.s12),
+                Text(
+                  album.title,
+                  style: context.h1?.copyWith(color: DSColors.white),
+                  textAlign: TextAlign.center,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ],
             ),

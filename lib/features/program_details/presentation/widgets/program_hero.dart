@@ -58,14 +58,6 @@ class ProgramHero extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text(
-                  program.title,
-                  style: context.h1?.copyWith(color: DSColors.white),
-                  textAlign: TextAlign.center,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                const SizedBox(height: DSSpacing.l),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -113,6 +105,14 @@ class ProgramHero extends StatelessWidget {
                       ),
                     ),
                   ],
+                ),
+                const SizedBox(height: DSSpacing.m),
+                Text(
+                  program.title,
+                  style: context.h1?.copyWith(color: DSColors.white),
+                  textAlign: TextAlign.center,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ],
             ),

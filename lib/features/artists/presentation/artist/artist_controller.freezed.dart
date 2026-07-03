@@ -16,105 +16,105 @@ final _privateConstructorUsedError = UnsupportedError(
 );
 
 /// @nodoc
-mixin _$ArtistAlbumsState {
+mixin _$ArtistDetailsState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(List<Album> albums) data,
+    required TResult Function(Artist artist, List<Album> albums) data,
     required TResult Function(String message) error,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function(List<Album> albums)? data,
+    TResult? Function(Artist artist, List<Album> albums)? data,
     TResult? Function(String message)? error,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(List<Album> albums)? data,
+    TResult Function(Artist artist, List<Album> albums)? data,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_ArtistAlbumsLoading value) loading,
-    required TResult Function(_ArtistAlbumsData value) data,
-    required TResult Function(_ArtistAlbumsError value) error,
+    required TResult Function(_ArtistDetailsLoading value) loading,
+    required TResult Function(_ArtistDetailsData value) data,
+    required TResult Function(_ArtistDetailsError value) error,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_ArtistAlbumsLoading value)? loading,
-    TResult? Function(_ArtistAlbumsData value)? data,
-    TResult? Function(_ArtistAlbumsError value)? error,
+    TResult? Function(_ArtistDetailsLoading value)? loading,
+    TResult? Function(_ArtistDetailsData value)? data,
+    TResult? Function(_ArtistDetailsError value)? error,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_ArtistAlbumsLoading value)? loading,
-    TResult Function(_ArtistAlbumsData value)? data,
-    TResult Function(_ArtistAlbumsError value)? error,
+    TResult Function(_ArtistDetailsLoading value)? loading,
+    TResult Function(_ArtistDetailsData value)? data,
+    TResult Function(_ArtistDetailsError value)? error,
     required TResult orElse(),
   }) => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $ArtistAlbumsStateCopyWith<$Res> {
-  factory $ArtistAlbumsStateCopyWith(
-    ArtistAlbumsState value,
-    $Res Function(ArtistAlbumsState) then,
-  ) = _$ArtistAlbumsStateCopyWithImpl<$Res, ArtistAlbumsState>;
+abstract class $ArtistDetailsStateCopyWith<$Res> {
+  factory $ArtistDetailsStateCopyWith(
+    ArtistDetailsState value,
+    $Res Function(ArtistDetailsState) then,
+  ) = _$ArtistDetailsStateCopyWithImpl<$Res, ArtistDetailsState>;
 }
 
 /// @nodoc
-class _$ArtistAlbumsStateCopyWithImpl<$Res, $Val extends ArtistAlbumsState>
-    implements $ArtistAlbumsStateCopyWith<$Res> {
-  _$ArtistAlbumsStateCopyWithImpl(this._value, this._then);
+class _$ArtistDetailsStateCopyWithImpl<$Res, $Val extends ArtistDetailsState>
+    implements $ArtistDetailsStateCopyWith<$Res> {
+  _$ArtistDetailsStateCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of ArtistAlbumsState
+  /// Create a copy of ArtistDetailsState
   /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
-abstract class _$$ArtistAlbumsLoadingImplCopyWith<$Res> {
-  factory _$$ArtistAlbumsLoadingImplCopyWith(
-    _$ArtistAlbumsLoadingImpl value,
-    $Res Function(_$ArtistAlbumsLoadingImpl) then,
-  ) = __$$ArtistAlbumsLoadingImplCopyWithImpl<$Res>;
+abstract class _$$ArtistDetailsLoadingImplCopyWith<$Res> {
+  factory _$$ArtistDetailsLoadingImplCopyWith(
+    _$ArtistDetailsLoadingImpl value,
+    $Res Function(_$ArtistDetailsLoadingImpl) then,
+  ) = __$$ArtistDetailsLoadingImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$ArtistAlbumsLoadingImplCopyWithImpl<$Res>
-    extends _$ArtistAlbumsStateCopyWithImpl<$Res, _$ArtistAlbumsLoadingImpl>
-    implements _$$ArtistAlbumsLoadingImplCopyWith<$Res> {
-  __$$ArtistAlbumsLoadingImplCopyWithImpl(
-    _$ArtistAlbumsLoadingImpl _value,
-    $Res Function(_$ArtistAlbumsLoadingImpl) _then,
+class __$$ArtistDetailsLoadingImplCopyWithImpl<$Res>
+    extends _$ArtistDetailsStateCopyWithImpl<$Res, _$ArtistDetailsLoadingImpl>
+    implements _$$ArtistDetailsLoadingImplCopyWith<$Res> {
+  __$$ArtistDetailsLoadingImplCopyWithImpl(
+    _$ArtistDetailsLoadingImpl _value,
+    $Res Function(_$ArtistDetailsLoadingImpl) _then,
   ) : super(_value, _then);
 
-  /// Create a copy of ArtistAlbumsState
+  /// Create a copy of ArtistDetailsState
   /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
 
-class _$ArtistAlbumsLoadingImpl implements _ArtistAlbumsLoading {
-  const _$ArtistAlbumsLoadingImpl();
+class _$ArtistDetailsLoadingImpl implements _ArtistDetailsLoading {
+  const _$ArtistDetailsLoadingImpl();
 
   @override
   String toString() {
-    return 'ArtistAlbumsState.loading()';
+    return 'ArtistDetailsState.loading()';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$ArtistAlbumsLoadingImpl);
+            other is _$ArtistDetailsLoadingImpl);
   }
 
   @override
@@ -124,7 +124,7 @@ class _$ArtistAlbumsLoadingImpl implements _ArtistAlbumsLoading {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(List<Album> albums) data,
+    required TResult Function(Artist artist, List<Album> albums) data,
     required TResult Function(String message) error,
   }) {
     return loading();
@@ -134,7 +134,7 @@ class _$ArtistAlbumsLoadingImpl implements _ArtistAlbumsLoading {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function(List<Album> albums)? data,
+    TResult? Function(Artist artist, List<Album> albums)? data,
     TResult? Function(String message)? error,
   }) {
     return loading?.call();
@@ -144,7 +144,7 @@ class _$ArtistAlbumsLoadingImpl implements _ArtistAlbumsLoading {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(List<Album> albums)? data,
+    TResult Function(Artist artist, List<Album> albums)? data,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -157,9 +157,9 @@ class _$ArtistAlbumsLoadingImpl implements _ArtistAlbumsLoading {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_ArtistAlbumsLoading value) loading,
-    required TResult Function(_ArtistAlbumsData value) data,
-    required TResult Function(_ArtistAlbumsError value) error,
+    required TResult Function(_ArtistDetailsLoading value) loading,
+    required TResult Function(_ArtistDetailsData value) data,
+    required TResult Function(_ArtistDetailsError value) error,
   }) {
     return loading(this);
   }
@@ -167,9 +167,9 @@ class _$ArtistAlbumsLoadingImpl implements _ArtistAlbumsLoading {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_ArtistAlbumsLoading value)? loading,
-    TResult? Function(_ArtistAlbumsData value)? data,
-    TResult? Function(_ArtistAlbumsError value)? error,
+    TResult? Function(_ArtistDetailsLoading value)? loading,
+    TResult? Function(_ArtistDetailsData value)? data,
+    TResult? Function(_ArtistDetailsError value)? error,
   }) {
     return loading?.call(this);
   }
@@ -177,9 +177,9 @@ class _$ArtistAlbumsLoadingImpl implements _ArtistAlbumsLoading {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_ArtistAlbumsLoading value)? loading,
-    TResult Function(_ArtistAlbumsData value)? data,
-    TResult Function(_ArtistAlbumsError value)? error,
+    TResult Function(_ArtistDetailsLoading value)? loading,
+    TResult Function(_ArtistDetailsData value)? data,
+    TResult Function(_ArtistDetailsError value)? error,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -189,36 +189,42 @@ class _$ArtistAlbumsLoadingImpl implements _ArtistAlbumsLoading {
   }
 }
 
-abstract class _ArtistAlbumsLoading implements ArtistAlbumsState {
-  const factory _ArtistAlbumsLoading() = _$ArtistAlbumsLoadingImpl;
+abstract class _ArtistDetailsLoading implements ArtistDetailsState {
+  const factory _ArtistDetailsLoading() = _$ArtistDetailsLoadingImpl;
 }
 
 /// @nodoc
-abstract class _$$ArtistAlbumsDataImplCopyWith<$Res> {
-  factory _$$ArtistAlbumsDataImplCopyWith(
-    _$ArtistAlbumsDataImpl value,
-    $Res Function(_$ArtistAlbumsDataImpl) then,
-  ) = __$$ArtistAlbumsDataImplCopyWithImpl<$Res>;
+abstract class _$$ArtistDetailsDataImplCopyWith<$Res> {
+  factory _$$ArtistDetailsDataImplCopyWith(
+    _$ArtistDetailsDataImpl value,
+    $Res Function(_$ArtistDetailsDataImpl) then,
+  ) = __$$ArtistDetailsDataImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({List<Album> albums});
+  $Res call({Artist artist, List<Album> albums});
+
+  $ArtistCopyWith<$Res> get artist;
 }
 
 /// @nodoc
-class __$$ArtistAlbumsDataImplCopyWithImpl<$Res>
-    extends _$ArtistAlbumsStateCopyWithImpl<$Res, _$ArtistAlbumsDataImpl>
-    implements _$$ArtistAlbumsDataImplCopyWith<$Res> {
-  __$$ArtistAlbumsDataImplCopyWithImpl(
-    _$ArtistAlbumsDataImpl _value,
-    $Res Function(_$ArtistAlbumsDataImpl) _then,
+class __$$ArtistDetailsDataImplCopyWithImpl<$Res>
+    extends _$ArtistDetailsStateCopyWithImpl<$Res, _$ArtistDetailsDataImpl>
+    implements _$$ArtistDetailsDataImplCopyWith<$Res> {
+  __$$ArtistDetailsDataImplCopyWithImpl(
+    _$ArtistDetailsDataImpl _value,
+    $Res Function(_$ArtistDetailsDataImpl) _then,
   ) : super(_value, _then);
 
-  /// Create a copy of ArtistAlbumsState
+  /// Create a copy of ArtistDetailsState
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({Object? albums = null}) {
+  $Res call({Object? artist = null, Object? albums = null}) {
     return _then(
-      _$ArtistAlbumsDataImpl(
+      _$ArtistDetailsDataImpl(
+        artist: null == artist
+            ? _value.artist
+            : artist // ignore: cast_nullable_to_non_nullable
+                  as Artist,
         albums: null == albums
             ? _value._albums
             : albums // ignore: cast_nullable_to_non_nullable
@@ -226,14 +232,28 @@ class __$$ArtistAlbumsDataImplCopyWithImpl<$Res>
       ),
     );
   }
+
+  /// Create a copy of ArtistDetailsState
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $ArtistCopyWith<$Res> get artist {
+    return $ArtistCopyWith<$Res>(_value.artist, (value) {
+      return _then(_value.copyWith(artist: value));
+    });
+  }
 }
 
 /// @nodoc
 
-class _$ArtistAlbumsDataImpl implements _ArtistAlbumsData {
-  const _$ArtistAlbumsDataImpl({required final List<Album> albums})
-    : _albums = albums;
+class _$ArtistDetailsDataImpl implements _ArtistDetailsData {
+  const _$ArtistDetailsDataImpl({
+    required this.artist,
+    required final List<Album> albums,
+  }) : _albums = albums;
 
+  @override
+  final Artist artist;
   final List<Album> _albums;
   @override
   List<Album> get albums {
@@ -244,28 +264,32 @@ class _$ArtistAlbumsDataImpl implements _ArtistAlbumsData {
 
   @override
   String toString() {
-    return 'ArtistAlbumsState.data(albums: $albums)';
+    return 'ArtistDetailsState.data(artist: $artist, albums: $albums)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$ArtistAlbumsDataImpl &&
+            other is _$ArtistDetailsDataImpl &&
+            (identical(other.artist, artist) || other.artist == artist) &&
             const DeepCollectionEquality().equals(other._albums, _albums));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(_albums));
+  int get hashCode => Object.hash(
+    runtimeType,
+    artist,
+    const DeepCollectionEquality().hash(_albums),
+  );
 
-  /// Create a copy of ArtistAlbumsState
+  /// Create a copy of ArtistDetailsState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$ArtistAlbumsDataImplCopyWith<_$ArtistAlbumsDataImpl> get copyWith =>
-      __$$ArtistAlbumsDataImplCopyWithImpl<_$ArtistAlbumsDataImpl>(
+  _$$ArtistDetailsDataImplCopyWith<_$ArtistDetailsDataImpl> get copyWith =>
+      __$$ArtistDetailsDataImplCopyWithImpl<_$ArtistDetailsDataImpl>(
         this,
         _$identity,
       );
@@ -274,32 +298,32 @@ class _$ArtistAlbumsDataImpl implements _ArtistAlbumsData {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(List<Album> albums) data,
+    required TResult Function(Artist artist, List<Album> albums) data,
     required TResult Function(String message) error,
   }) {
-    return data(albums);
+    return data(artist, albums);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function(List<Album> albums)? data,
+    TResult? Function(Artist artist, List<Album> albums)? data,
     TResult? Function(String message)? error,
   }) {
-    return data?.call(albums);
+    return data?.call(artist, albums);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(List<Album> albums)? data,
+    TResult Function(Artist artist, List<Album> albums)? data,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
     if (data != null) {
-      return data(albums);
+      return data(artist, albums);
     }
     return orElse();
   }
@@ -307,9 +331,9 @@ class _$ArtistAlbumsDataImpl implements _ArtistAlbumsData {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_ArtistAlbumsLoading value) loading,
-    required TResult Function(_ArtistAlbumsData value) data,
-    required TResult Function(_ArtistAlbumsError value) error,
+    required TResult Function(_ArtistDetailsLoading value) loading,
+    required TResult Function(_ArtistDetailsData value) data,
+    required TResult Function(_ArtistDetailsError value) error,
   }) {
     return data(this);
   }
@@ -317,9 +341,9 @@ class _$ArtistAlbumsDataImpl implements _ArtistAlbumsData {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_ArtistAlbumsLoading value)? loading,
-    TResult? Function(_ArtistAlbumsData value)? data,
-    TResult? Function(_ArtistAlbumsError value)? error,
+    TResult? Function(_ArtistDetailsLoading value)? loading,
+    TResult? Function(_ArtistDetailsData value)? data,
+    TResult? Function(_ArtistDetailsError value)? error,
   }) {
     return data?.call(this);
   }
@@ -327,9 +351,9 @@ class _$ArtistAlbumsDataImpl implements _ArtistAlbumsData {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_ArtistAlbumsLoading value)? loading,
-    TResult Function(_ArtistAlbumsData value)? data,
-    TResult Function(_ArtistAlbumsError value)? error,
+    TResult Function(_ArtistDetailsLoading value)? loading,
+    TResult Function(_ArtistDetailsData value)? data,
+    TResult Function(_ArtistDetailsError value)? error,
     required TResult orElse(),
   }) {
     if (data != null) {
@@ -339,45 +363,48 @@ class _$ArtistAlbumsDataImpl implements _ArtistAlbumsData {
   }
 }
 
-abstract class _ArtistAlbumsData implements ArtistAlbumsState {
-  const factory _ArtistAlbumsData({required final List<Album> albums}) =
-      _$ArtistAlbumsDataImpl;
+abstract class _ArtistDetailsData implements ArtistDetailsState {
+  const factory _ArtistDetailsData({
+    required final Artist artist,
+    required final List<Album> albums,
+  }) = _$ArtistDetailsDataImpl;
 
+  Artist get artist;
   List<Album> get albums;
 
-  /// Create a copy of ArtistAlbumsState
+  /// Create a copy of ArtistDetailsState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$ArtistAlbumsDataImplCopyWith<_$ArtistAlbumsDataImpl> get copyWith =>
+  _$$ArtistDetailsDataImplCopyWith<_$ArtistDetailsDataImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$ArtistAlbumsErrorImplCopyWith<$Res> {
-  factory _$$ArtistAlbumsErrorImplCopyWith(
-    _$ArtistAlbumsErrorImpl value,
-    $Res Function(_$ArtistAlbumsErrorImpl) then,
-  ) = __$$ArtistAlbumsErrorImplCopyWithImpl<$Res>;
+abstract class _$$ArtistDetailsErrorImplCopyWith<$Res> {
+  factory _$$ArtistDetailsErrorImplCopyWith(
+    _$ArtistDetailsErrorImpl value,
+    $Res Function(_$ArtistDetailsErrorImpl) then,
+  ) = __$$ArtistDetailsErrorImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String message});
 }
 
 /// @nodoc
-class __$$ArtistAlbumsErrorImplCopyWithImpl<$Res>
-    extends _$ArtistAlbumsStateCopyWithImpl<$Res, _$ArtistAlbumsErrorImpl>
-    implements _$$ArtistAlbumsErrorImplCopyWith<$Res> {
-  __$$ArtistAlbumsErrorImplCopyWithImpl(
-    _$ArtistAlbumsErrorImpl _value,
-    $Res Function(_$ArtistAlbumsErrorImpl) _then,
+class __$$ArtistDetailsErrorImplCopyWithImpl<$Res>
+    extends _$ArtistDetailsStateCopyWithImpl<$Res, _$ArtistDetailsErrorImpl>
+    implements _$$ArtistDetailsErrorImplCopyWith<$Res> {
+  __$$ArtistDetailsErrorImplCopyWithImpl(
+    _$ArtistDetailsErrorImpl _value,
+    $Res Function(_$ArtistDetailsErrorImpl) _then,
   ) : super(_value, _then);
 
-  /// Create a copy of ArtistAlbumsState
+  /// Create a copy of ArtistDetailsState
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({Object? message = null}) {
     return _then(
-      _$ArtistAlbumsErrorImpl(
+      _$ArtistDetailsErrorImpl(
         message: null == message
             ? _value.message
             : message // ignore: cast_nullable_to_non_nullable
@@ -389,35 +416,35 @@ class __$$ArtistAlbumsErrorImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$ArtistAlbumsErrorImpl implements _ArtistAlbumsError {
-  const _$ArtistAlbumsErrorImpl({required this.message});
+class _$ArtistDetailsErrorImpl implements _ArtistDetailsError {
+  const _$ArtistDetailsErrorImpl({required this.message});
 
   @override
   final String message;
 
   @override
   String toString() {
-    return 'ArtistAlbumsState.error(message: $message)';
+    return 'ArtistDetailsState.error(message: $message)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$ArtistAlbumsErrorImpl &&
+            other is _$ArtistDetailsErrorImpl &&
             (identical(other.message, message) || other.message == message));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, message);
 
-  /// Create a copy of ArtistAlbumsState
+  /// Create a copy of ArtistDetailsState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$ArtistAlbumsErrorImplCopyWith<_$ArtistAlbumsErrorImpl> get copyWith =>
-      __$$ArtistAlbumsErrorImplCopyWithImpl<_$ArtistAlbumsErrorImpl>(
+  _$$ArtistDetailsErrorImplCopyWith<_$ArtistDetailsErrorImpl> get copyWith =>
+      __$$ArtistDetailsErrorImplCopyWithImpl<_$ArtistDetailsErrorImpl>(
         this,
         _$identity,
       );
@@ -426,7 +453,7 @@ class _$ArtistAlbumsErrorImpl implements _ArtistAlbumsError {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(List<Album> albums) data,
+    required TResult Function(Artist artist, List<Album> albums) data,
     required TResult Function(String message) error,
   }) {
     return error(message);
@@ -436,7 +463,7 @@ class _$ArtistAlbumsErrorImpl implements _ArtistAlbumsError {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function(List<Album> albums)? data,
+    TResult? Function(Artist artist, List<Album> albums)? data,
     TResult? Function(String message)? error,
   }) {
     return error?.call(message);
@@ -446,7 +473,7 @@ class _$ArtistAlbumsErrorImpl implements _ArtistAlbumsError {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(List<Album> albums)? data,
+    TResult Function(Artist artist, List<Album> albums)? data,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -459,9 +486,9 @@ class _$ArtistAlbumsErrorImpl implements _ArtistAlbumsError {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_ArtistAlbumsLoading value) loading,
-    required TResult Function(_ArtistAlbumsData value) data,
-    required TResult Function(_ArtistAlbumsError value) error,
+    required TResult Function(_ArtistDetailsLoading value) loading,
+    required TResult Function(_ArtistDetailsData value) data,
+    required TResult Function(_ArtistDetailsError value) error,
   }) {
     return error(this);
   }
@@ -469,9 +496,9 @@ class _$ArtistAlbumsErrorImpl implements _ArtistAlbumsError {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_ArtistAlbumsLoading value)? loading,
-    TResult? Function(_ArtistAlbumsData value)? data,
-    TResult? Function(_ArtistAlbumsError value)? error,
+    TResult? Function(_ArtistDetailsLoading value)? loading,
+    TResult? Function(_ArtistDetailsData value)? data,
+    TResult? Function(_ArtistDetailsError value)? error,
   }) {
     return error?.call(this);
   }
@@ -479,9 +506,9 @@ class _$ArtistAlbumsErrorImpl implements _ArtistAlbumsError {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_ArtistAlbumsLoading value)? loading,
-    TResult Function(_ArtistAlbumsData value)? data,
-    TResult Function(_ArtistAlbumsError value)? error,
+    TResult Function(_ArtistDetailsLoading value)? loading,
+    TResult Function(_ArtistDetailsData value)? data,
+    TResult Function(_ArtistDetailsError value)? error,
     required TResult orElse(),
   }) {
     if (error != null) {
@@ -491,15 +518,15 @@ class _$ArtistAlbumsErrorImpl implements _ArtistAlbumsError {
   }
 }
 
-abstract class _ArtistAlbumsError implements ArtistAlbumsState {
-  const factory _ArtistAlbumsError({required final String message}) =
-      _$ArtistAlbumsErrorImpl;
+abstract class _ArtistDetailsError implements ArtistDetailsState {
+  const factory _ArtistDetailsError({required final String message}) =
+      _$ArtistDetailsErrorImpl;
 
   String get message;
 
-  /// Create a copy of ArtistAlbumsState
+  /// Create a copy of ArtistDetailsState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$ArtistAlbumsErrorImplCopyWith<_$ArtistAlbumsErrorImpl> get copyWith =>
+  _$$ArtistDetailsErrorImplCopyWith<_$ArtistDetailsErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

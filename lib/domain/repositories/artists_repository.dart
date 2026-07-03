@@ -7,7 +7,9 @@ abstract interface class ArtistsRepository {
     int page = 1,
     int pageSize = 20,
   });
-  Future<List<Album>> getArtistAlbums(String artistId);
+  Future<({Artist artist, List<Album> albums})> getArtistDetails(
+    String artistId,
+  );
 
   Future<String?> toggleLike(String artistId, [String? likeId]);
 }

@@ -54,20 +54,26 @@ class ArtistsRepositoryImpl implements ArtistsRepository {
   }
 
   @override
-  Future<List<Album>> getArtistAlbums(String artistId) async {
+  Future<({Artist artist, List<Album> albums})> getArtistDetails(
+    String artistId,
+  ) async {
     final response = await _apiClient.get(
       '/api/artists/$artistId',
       queryParameters: {
         'populate[Albums][populate]': '*',
+        'populate[Cover][populate]': '*',
       },
     );
 
     final data = response.data['data'] as Map<String, dynamic>;
     final albumsData = data['Albums'] as List<dynamic>? ?? [];
 
-    return albumsData
+    final artist = ArtistDto.fromJson(data).toDomain();
+    final albums = albumsData
         .map((e) => AlbumDto.fromJson(e as Map<String, dynamic>).toDomain())
         .toList();
+
+    return (artist: artist, albums: albums);
   }
 
   @override
