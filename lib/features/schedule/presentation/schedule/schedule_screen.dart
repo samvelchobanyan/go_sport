@@ -50,7 +50,7 @@ class ScheduleScreen extends ConsumerWidget {
             const SliverToBoxAdapter(child: SizedBox(height: DSSpacing.s10)),
             DatesCarousel(today: today),
 
-            const SliverToBoxAdapter(child: SizedBox(height: DSSpacing.m)),
+            
             // live radio banner
             LiveBanner(
               onTap: () {
