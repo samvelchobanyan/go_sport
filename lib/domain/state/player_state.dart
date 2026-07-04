@@ -482,8 +482,15 @@ class PlayerNotifier extends Notifier<PlayerState> {
   }) async {
     if (tracks.isEmpty) return;
 
-    // Same source — just skip to the track
-    if (state.source?.id == source.id && state.mode == PlaybackMode.music) {
+    // Same source — just skip to the track. Only when the player actually
+    // has the queue loaded: after a playback error (or stop) the native
+    // player is idle and a bare seek silently does nothing — fall through
+    // to the full reload below instead.
+    final playerAlive = state.status != PlayerStatus.error &&
+        state.status != PlayerStatus.idle;
+    if (state.source?.id == source.id &&
+        state.mode == PlaybackMode.music &&
+        playerAlive) {
       state = state.copyWith(currentIndex: startIndex);
       await skipTo(startIndex);
       _saveSession();

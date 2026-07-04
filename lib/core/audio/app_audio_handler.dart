@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:audio_service/audio_service.dart';
-import 'package:flutter/services.dart' show rootBundle;
+import 'package:flutter/services.dart' show PlatformException, rootBundle;
 import 'package:just_audio/just_audio.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -17,6 +17,12 @@ const _noImageAsset = 'assets/images/noimage_lock_screen.png';
 /// Acts as a bridge between the app/system and the underlying audio player.
 class AppAudioHandler extends BaseAudioHandler with QueueHandler, SeekHandler {
   final AudioPlayer _player = AudioPlayer();
+
+  /// True while a broken-track recovery (skip/stop) is in flight. just_audio
+  /// can deliver more than one error event for a single failed source; without
+  /// this guard each event schedules its own seekToNext and tracks get
+  /// skipped two at a time.
+  bool _recovering = false;
 
   /// file:// URI of the materialized [_noImageAsset]; null until first queue
   /// load (or if materialization failed — then artUri just stays null).
@@ -91,9 +97,47 @@ class AppAudioHandler extends BaseAudioHandler with QueueHandler, SeekHandler {
         }[_player.loopMode]!,
       ));
     }, onError: (Object error, StackTrace stackTrace) {
-        playbackState.add(playbackState.value.copyWith(
-          processingState: AudioProcessingState.error,
-        ));
+      playbackState.add(playbackState.value.copyWith(
+        processingState: AudioProcessingState.error,
+      ));
+      if (_recovering) return;
+      _recovering = true;
+      // Both platform plugins report which item failed in the error payload
+      // ({index: N}); the current index is only a fallback because by the
+      // time we act the native side may have moved on (Android re-prepares
+      // onto the next item itself; iOS broadcasts preload errors for
+      // upcoming items while the current one is still playing).
+      int? failedIndex;
+      if (error is PlatformException && error.details is Map) {
+        failedIndex = (error.details as Map)['index'] as int?;
+      }
+      failedIndex ??= _player.currentIndex;
+      // Deferred via Future: seek/play/stop feed the same event stream that
+      // is delivering this error, and a synchronous call throws
+      // "Cannot fire new event" (controller is still firing).
+      Future(() async {
+        try {
+          if (_player.currentIndex != failedIndex) {
+            // Native side already moved past the broken item, or the error
+            // was a preload failure for an upcoming item — only nudge
+            // playback if it actually stalled.
+            if (!_player.playing) {
+              await _player.play();
+            }
+          } else if (_player.hasNext) {
+            // Player is genuinely stuck on the broken item — skip it.
+            await _player.seekToNext();
+            await _player.play();
+          } else {
+            await _player.stop();
+          }
+        } catch (_) {
+          // Player may be unrecoverable after the error; leave it stopped
+          // rather than crash on a second attempt.
+        } finally {
+          _recovering = false;
+        }
+      });
     });
 
     // 2. Broadcast current track changes to the system
