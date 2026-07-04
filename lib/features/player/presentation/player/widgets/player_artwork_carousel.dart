@@ -5,34 +5,29 @@ import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/domain/state/player_state.dart';
 
-class PlayerArtworkCarousel extends ConsumerStatefulWidget {
-  const PlayerArtworkCarousel({super.key});
+class PlayerArtworkCarousel extends ConsumerWidget {
+  const PlayerArtworkCarousel({super.key, required this.controller});
 
-  @override
-  ConsumerState<PlayerArtworkCarousel> createState() =>
-      _PlayerArtworkCarouselState();
-}
+  /// Shared with [PlayerControlPanel] so the prev/next buttons drive the same
+  /// carousel a swipe does. Owned (created/disposed) by the parent screen.
+  final PageController controller;
 
-class _PlayerArtworkCarouselState extends ConsumerState<PlayerArtworkCarousel> {
-  PageController? _pageController;
   static const double _horizontalPadding = 48.0;
   static const double _gap = 32.0;
   static const double _centerHeight = 264.0;
   static const double _sideHeight = 204.0;
 
-  @override
-  void dispose() {
-    _pageController?.dispose();
-    super.dispose();
-  }
-
-  double _calculateViewportFraction(double screenWidth) {
+  /// Viewport fraction the shared [controller] must be built with: the centre
+  /// card is [_horizontalPadding] inset on both sides and neighbours peek in by
+  /// [_gap]. Lives here, next to the sizing constants, so the parent that owns
+  /// the controller stays the single source of truth for this geometry.
+  static double viewportFractionFor(double screenWidth) {
     final cardWidth = screenWidth - _horizontalPadding * 2;
     return (cardWidth + _gap) / screenWidth;
   }
 
-  void _onScrollEnd() {
-    final page = _pageController?.page?.round();
+  void _onScrollEnd(WidgetRef ref) {
+    final page = controller.page?.round();
     if (page == null || page == 1) return;
 
     if (page == 2) {
@@ -42,14 +37,14 @@ class _PlayerArtworkCarouselState extends ConsumerState<PlayerArtworkCarousel> {
     }
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted && (_pageController?.hasClients ?? false)) {
-        _pageController!.jumpToPage(1);
+      if (controller.hasClients) {
+        controller.jumpToPage(1);
       }
     });
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final currentTrack =
         ref.watch(playerStateProvider.select((s) => s.currentTrack));
     final prevTrack =
@@ -66,20 +61,15 @@ class _PlayerArtworkCarouselState extends ConsumerState<PlayerArtworkCarousel> {
     final screenWidth = MediaQuery.of(context).size.width;
     final cardWidth = screenWidth - _horizontalPadding * 2;
 
-    _pageController ??= PageController(
-      initialPage: 1,
-      viewportFraction: _calculateViewportFraction(screenWidth),
-    );
-
     return SizedBox(
       height: _centerHeight,
       child: NotificationListener<ScrollEndNotification>(
         onNotification: (_) {
-          _onScrollEnd();
+          _onScrollEnd(ref);
           return false;
         },
         child: PageView.builder(
-          controller: _pageController,
+          controller: controller,
           itemCount: 3,
           physics: const PageScrollPhysics(),
           itemBuilder: (context, index) {
@@ -91,11 +81,11 @@ class _PlayerArtworkCarouselState extends ConsumerState<PlayerArtworkCarousel> {
             };
 
             return AnimatedBuilder(
-              animation: _pageController!,
+              animation: controller,
               builder: (context, child) {
                 double pageOffset = 0;
-                if (_pageController!.position.hasContentDimensions) {
-                  pageOffset = (_pageController!.page ?? 1.0) - index;
+                if (controller.position.hasContentDimensions) {
+                  pageOffset = (controller.page ?? 1.0) - index;
                 }
 
                 final distance = pageOffset.abs().clamp(0.0, 1.0);

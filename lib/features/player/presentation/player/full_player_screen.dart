@@ -3,12 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:flutter/services.dart'; 
 import 'widgets/player_top_bar.dart';
-import 'widgets/animated_gradient.dart';
 import 'widgets/player_control_panel.dart';
 import 'widgets/player_fluid_background.dart';
 import 'widgets/player_artwork_carousel.dart';
 
-class FullPlayerScreen extends ConsumerWidget {
+class FullPlayerScreen extends ConsumerStatefulWidget {
   const FullPlayerScreen({super.key});
 
   /// Opens the full player as a modal bottom sheet.
@@ -32,7 +31,29 @@ class FullPlayerScreen extends ConsumerWidget {
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<FullPlayerScreen> createState() => _FullPlayerScreenState();
+}
+
+class _FullPlayerScreenState extends ConsumerState<FullPlayerScreen> {
+  // Shared between the artwork carousel and the prev/next buttons so both drive
+  // the same PageView. Created lazily (viewport fraction needs the screen width)
+  // and disposed here — this screen is the single owner of the controller.
+  PageController? _pageController;
+
+  @override
+  void dispose() {
+    _pageController?.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    _pageController ??= PageController(
+      initialPage: 1,
+      viewportFraction: PlayerArtworkCarousel.viewportFractionFor(screenWidth),
+    );
+
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.dark,
       child: Scaffold(
@@ -47,12 +68,12 @@ class FullPlayerScreen extends ConsumerWidget {
               child: Column(
                 children: [
                   const PlayerTopBar(),
-                  const Expanded(
-                    child: PlayerArtworkCarousel(),
+                  Expanded(
+                    child: PlayerArtworkCarousel(controller: _pageController!),
                   ),
                   SizedBox(
                     height: MediaQuery.of(context).size.height * 0.42,
-                    child: const PlayerControlPanel(),
+                    child: PlayerControlPanel(controller: _pageController!),
                   ),
                 ],
               ),

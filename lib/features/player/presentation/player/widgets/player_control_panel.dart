@@ -16,7 +16,14 @@ import 'package:go_sport/domain/state/player_state_selectors.dart';
 import 'player_seek_bar.dart';
 
 class PlayerControlPanel extends ConsumerWidget {
-  const PlayerControlPanel({super.key});
+  const PlayerControlPanel({super.key, required this.controller});
+
+  /// The carousel's page controller. Prev/Next animate this instead of moving
+  /// the track directly — the track advances at the end of the slide, via the
+  /// carousel's own ScrollEndNotification handler (same path as a swipe).
+  final PageController controller;
+
+  static const Duration _kSwipeDuration = Duration(milliseconds: 300);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -195,7 +202,11 @@ class PlayerControlPanel extends ConsumerWidget {
         // Previous
         GestureDetector(
           onTap: canGoPrev
-              ? () => ref.read(playerStateProvider.notifier).previous()
+              ? () => controller.animateToPage(
+                    0,
+                    duration: _kSwipeDuration,
+                    curve: Curves.easeOut,
+                  )
               : null,
           child: SvgPicture.asset(
             'assets/icons/skip_prev.svg',
@@ -255,7 +266,11 @@ class PlayerControlPanel extends ConsumerWidget {
         // Next
         GestureDetector(
           onTap: canGoNext
-              ? () => ref.read(playerStateProvider.notifier).next()
+              ? () => controller.animateToPage(
+                    2,
+                    duration: _kSwipeDuration,
+                    curve: Curves.easeOut,
+                  )
               : null,
           child: SvgPicture.asset(
             'assets/icons/skip_next.svg',
