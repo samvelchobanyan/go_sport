@@ -22,7 +22,9 @@
       "Bash(git push *)",
       "Bash(git branch *)",
       "Bash(git stash *)",
-      "PowerShell($paths = @\\(\"C:\\\\flutter\\\\bin\\\\dart.bat\",\"C:\\\\src\\\\flutter\\\\bin\\\\dart.bat\",\"C:\\\\tools\\\\flutter\\\\bin\\\\dart.bat\",\"$env:USERPROFILE\\\\flutter\\\\bin\\\\dart.bat\",\"$env:LOCALAPPDATA\\\\flutter\\\\bin\\\\dart.bat\",\"C:\\\\dev\\\\flutter\\\\bin\\\\dart.bat\"\\); $found = $paths | Where-Object { Test-Path $_ }; if \\($found\\) { Write-Output \"FOUND: $found\" } else { Write-Output \"not in common spots; searching...\"; Get-ChildItem -Path C:\\\\ -Filter flutter.bat -Recurse -ErrorAction SilentlyContinue -Depth 4 | Select-Object -First 3 -ExpandProperty FullName })"
+      "PowerShell($paths = @\\(\"C:\\\\flutter\\\\bin\\\\dart.bat\",\"C:\\\\src\\\\flutter\\\\bin\\\\dart.bat\",\"C:\\\\tools\\\\flutter\\\\bin\\\\dart.bat\",\"$env:USERPROFILE\\\\flutter\\\\bin\\\\dart.bat\",\"$env:LOCALAPPDATA\\\\flutter\\\\bin\\\\dart.bat\",\"C:\\\\dev\\\\flutter\\\\bin\\\\dart.bat\"\\); $found = $paths | Where-Object { Test-Path $_ }; if \\($found\\) { Write-Output \"FOUND: $found\" } else { Write-Output \"not in common spots; searching...\"; Get-ChildItem -Path C:\\\\ -Filter flutter.bat -Recurse -ErrorAction SilentlyContinue -Depth 4 | Select-Object -First 3 -ExpandProperty FullName })",
+      "Read(//c/Users/Samvel/AppData/Local/Pub/Cache/hosted/pub.dev/just_audio-0.9.46/darwin/just_audio/Sources/just_audio/**)",
+      "Bash(git log *)"
     ]
   }
 }
