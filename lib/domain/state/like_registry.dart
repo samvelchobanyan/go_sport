@@ -42,9 +42,8 @@ class LikeRegistry extends Notifier<LikeRegistryState> {
         await ref
             .read(albumsRepositoryProvider)
             .toggleLike(album.id, existing.likeId);
-      } catch (e) {
+      } catch (_) {
         state = state.copyWith(likedAlbums: prevList);
-        rethrow;
       }
     } else {
       // Like
@@ -59,9 +58,8 @@ class LikeRegistry extends Notifier<LikeRegistryState> {
                 .toList(),
           );
         }
-      } catch (e) {
+      } catch (_) {
         state = state.copyWith(likedAlbums: prevList);
-        rethrow;
       }
     }
   }
@@ -79,9 +77,8 @@ class LikeRegistry extends Notifier<LikeRegistryState> {
         await ref
             .read(featuredPlaylistRepositoryProvider)
             .toggleLikeTrack(track.id, existing.likeId);
-      } catch (e) {
+      } catch (_) {
         state = state.copyWith(likedTracks: prevList);
-        rethrow;
       }
     } else {
       state = state.copyWith(likedTracks: [...prevList, track]);
@@ -96,9 +93,8 @@ class LikeRegistry extends Notifier<LikeRegistryState> {
                 .toList(),
           );
         }
-      } catch (e) {
+      } catch (_) {
         state = state.copyWith(likedTracks: prevList);
-        rethrow;
       }
     }
   }
@@ -116,9 +112,8 @@ class LikeRegistry extends Notifier<LikeRegistryState> {
         await ref
             .read(programsRepositoryProvider)
             .toggleLike(program.id, existing.likeId);
-      } catch (e) {
+      } catch (_) {
         state = state.copyWith(likedPrograms: prevList);
-        rethrow;
       }
     } else {
       state = state.copyWith(likedPrograms: [...prevList, program]);
@@ -133,9 +128,8 @@ class LikeRegistry extends Notifier<LikeRegistryState> {
                 .toList(),
           );
         }
-      } catch (e) {
+      } catch (_) {
         state = state.copyWith(likedPrograms: prevList);
-        rethrow;
       }
     }
   }
@@ -153,9 +147,8 @@ class LikeRegistry extends Notifier<LikeRegistryState> {
         await ref
             .read(artistsRepositoryProvider)
             .toggleLike(artist.id, existing.likeId);
-      } catch (e) {
+      } catch (_) {
         state = state.copyWith(likedArtists: prevList);
-        rethrow;
       }
     } else {
       state = state.copyWith(likedArtists: [...prevList, artist]);
@@ -170,9 +163,8 @@ class LikeRegistry extends Notifier<LikeRegistryState> {
                 .toList(),
           );
         }
-      } catch (e) {
+      } catch (_) {
         state = state.copyWith(likedArtists: prevList);
-        rethrow;
       }
     }
   }
@@ -190,9 +182,8 @@ class LikeRegistry extends Notifier<LikeRegistryState> {
         await ref
             .read(featuredPlaylistRepositoryProvider)
             .toggleLike(playlist.id, existing.likeId);
-      } catch (e) {
+      } catch (_) {
         state = state.copyWith(likedPlaylists: prevList);
-        rethrow;
       }
     } else {
       state = state.copyWith(likedPlaylists: [...prevList, playlist]);
@@ -207,9 +198,8 @@ class LikeRegistry extends Notifier<LikeRegistryState> {
                 .toList(),
           );
         }
-      } catch (e) {
+      } catch (_) {
         state = state.copyWith(likedPlaylists: prevList);
-        rethrow;
       }
     }
   }
@@ -227,9 +217,8 @@ class LikeRegistry extends Notifier<LikeRegistryState> {
         await ref
             .read(episodesRepositoryProvider)
             .toggleLikeEpisode(episode.id, existing.likeId);
-      } catch (e) {
+      } catch (_) {
         state = state.copyWith(likedEpisodes: prevList);
-        rethrow;
       }
     } else {
       state = state.copyWith(likedEpisodes: [...prevList, episode]);
@@ -244,9 +233,8 @@ class LikeRegistry extends Notifier<LikeRegistryState> {
                 .toList(),
           );
         }
-      } catch (e) {
+      } catch (_) {
         state = state.copyWith(likedEpisodes: prevList);
-        rethrow;
       }
     }
   }

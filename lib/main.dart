@@ -18,6 +18,8 @@ import 'core/di/audio_providers.dart';
 import 'core/di/auth_providers.dart';
 import 'core/navigation/app_router.dart';
 import 'core/network/interceptors/auth_interceptor.dart';
+import 'core/network/interceptors/error_interceptor.dart';
+import 'core/network/network_error_service.dart';
 import 'design_system/theme/ds_theme_data.dart';
 import 'package:firebase_core/firebase_core.dart';
 
@@ -40,7 +42,12 @@ Future<void> main() async {
 
   await tokenStorage.init();
 
-  final apiClient = ApiClient(config, [AuthInterceptor(tokenStorage)]);
+  final networkErrorService = NetworkErrorService();
+
+  final apiClient = ApiClient(config, [
+    AuthInterceptor(tokenStorage),
+    ErrorInterceptor(networkErrorService),
+  ]);
 
   final googleAuthService = GoogleAuthService(
     webClientId: config.googleWebClientId,
@@ -73,6 +80,7 @@ Future<void> main() async {
         overrides: [
           audioHandlerProvider.overrideWithValue(audioHandler),
           apiClientProvider.overrideWithValue(apiClient),
+          networkErrorServiceProvider.overrideWithValue(networkErrorService),
           tokenStorageProvider.overrideWithValue(tokenStorage),
           googleAuthServiceProvider.overrideWithValue(googleAuthService),
           notificationServiceProvider.overrideWithValue(notificationService),
@@ -115,6 +123,7 @@ class MainApp extends ConsumerStatefulWidget {
 
 class _MainAppState extends ConsumerState<MainApp> {
   late final GoRouter _router;
+  final _messengerKey = GlobalKey<ScaffoldMessengerState>();
 
   @override
   void initState() {
@@ -135,14 +144,43 @@ class _MainAppState extends ConsumerState<MainApp> {
     }
   }
 
+  void _showNetworkError(NetworkErrorKind kind) {
+    _messengerKey.currentState
+      ?..hideCurrentSnackBar()
+      ..showSnackBar(
+        SnackBar(
+          content: Text(_networkErrorMessage(kind)),
+          duration: const Duration(seconds: 2),
+        ),
+      );
+  }
+
+  String _networkErrorMessage(NetworkErrorKind kind) {
+    switch (kind) {
+      case NetworkErrorKind.noConnection:
+        return 'No internet connection';
+      case NetworkErrorKind.timeout:
+        return "Server isn't responding, try again later";
+      case NetworkErrorKind.server:
+        return 'Server error, try again later';
+      case NetworkErrorKind.unknown:
+        return 'Something went wrong';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     ref.listen<AsyncValue<String>>(notificationTapProvider, (prev, next) {
       next.whenData(_handleNotificationPayload);
     });
 
+    ref.listen<AsyncValue<NetworkErrorKind>>(networkErrorProvider, (prev, next) {
+      next.whenData(_showNetworkError);
+    });
+
     return MaterialApp.router(
       title: 'Audio App',
+      scaffoldMessengerKey: _messengerKey,
       debugShowCheckedModeBanner: false,
       theme: DSThemeData.mainTheme,
       routerConfig: _router,
