@@ -56,6 +56,11 @@ class HomeScreen extends ConsumerWidget {
   }
 
   void _openStoryOverlay(BuildContext context, int initialIndex) {
+    // Инсеты напрямую из окна: showModalBottomSheet обнуляет top у padding
+    // И viewPadding (removePadding), а MediaQuery.of(context) здесь уже
+    // обрезан AppBar'ом. Тот же паттерн, что в FullPlayerScreen.show.
+    final mq = MediaQueryData.fromView(View.of(context));
+
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -64,7 +69,7 @@ class HomeScreen extends ConsumerWidget {
       barrierColor: DSColors.gray90,
       enableDrag: true,
       builder: (modalContext) => MediaQuery(
-        data: MediaQuery.of(context),
+        data: mq,
         child: StoryOverlay(
           initialIndex: initialIndex,
           onClose: () => Navigator.of(modalContext).pop(),
