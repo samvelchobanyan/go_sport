@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:audio_service/audio_service.dart';
+import 'package:flutter/foundation.dart' show debugPrint;
 import 'package:flutter/services.dart' show PlatformException, rootBundle;
 import 'package:just_audio/just_audio.dart';
 import 'package:path_provider/path_provider.dart';
@@ -18,11 +19,57 @@ const _noImageAsset = 'assets/images/noimage_lock_screen.png';
 class AppAudioHandler extends BaseAudioHandler with QueueHandler, SeekHandler {
   final AudioPlayer _player = AudioPlayer();
 
+  // === Broken-track handling: current state and plan ======================
+  //
+  // just_audio 0.9.x has a flawed error model; this class works around it:
+  //
+  // 1. Broken track DURING playback — the native side auto-advances past it
+  //    (Android plugin re-prepares onto failed+1, up to 5 errors per load;
+  //    iOS AVQueuePlayer skips failed items by itself). The onError recovery
+  //    below only nudges play() when playback stalled after the jump, or
+  //    skips manually when the player is genuinely stuck on the failed item.
+  //
+  // 2. Broken STARTING track — setAudioSource throws, and when the native
+  //    player was created for that load (cold start) just_audio disposes it,
+  //    discarding even a successful native auto-advance. The retry loop in
+  //    [setQueue] steps over broken start indices until one loads.
+  //
+  // KNOWN UNFIXED (reproduced 2026-07-05): the Android plugin stops
+  // auto-advancing after 5 errors per load (cumulative errorCount, reset
+  // only by the next full load). Past that limit the player is dead in
+  // eternal buffering: seekToNext on an errored ExoPlayer is a no-op and
+  // taps only move the Dart-side index. Deliberately NOT worked around —
+  // a proper fix (full queue reload from recovery) would add yet another
+  // layer of scaffolding that the planned upgrade makes obsolete.
+  //
+  // PLAN — upgrade to just_audio ^0.10.x, which redesigns error handling:
+  //  - AudioPlayer(maxSkipsOnError: N) replaces the onError recovery below
+  //    (counts CONSECUTIVE errors, resets on every successfully loaded
+  //    track — no permanent poisoning);
+  //  - errorStream replaces playbackEventStream.onError (errors are data,
+  //    no reentrancy hazard);
+  //  - the dispose-on-failed-initial-load catch is removed upstream, so the
+  //    retry loop in setQueue is likely removable too (verify on an album
+  //    with broken leading tracks);
+  //  - setAudioSource(ConcatenatingAudioSource(...)) migrates to the new
+  //    playlist API, setAudioSources(...).
+  // On upgrade delete: the onError recovery block, _recovering,
+  // _loadingQueue, the retry loop in setQueue. Then regression-test music,
+  // radio + ICY, shuffle, lock screen / background, and session restore.
+  // =========================================================================
+
   /// True while a broken-track recovery (skip/stop) is in flight. just_audio
   /// can deliver more than one error event for a single failed source; without
   /// this guard each event schedules its own seekToNext and tracks get
   /// skipped two at a time.
   bool _recovering = false;
+
+  /// True while [setQueue] is loading the queue (including load retries).
+  /// Failed load attempts emit the same error events as playback failures,
+  /// but during a load they are owned by the retry loop in [setQueue] —
+  /// the onError recovery must stand down, otherwise two mechanisms would
+  /// command the player simultaneously.
+  bool _loadingQueue = false;
 
   /// file:// URI of the materialized [_noImageAsset]; null until first queue
   /// load (or if materialization failed — then artUri just stays null).
@@ -97,10 +144,24 @@ class AppAudioHandler extends BaseAudioHandler with QueueHandler, SeekHandler {
         }[_player.loopMode]!,
       ));
     }, onError: (Object error, StackTrace stackTrace) {
+      // TEMP DEBUG: broken-track recovery diagnostics
+      debugPrint('AudioRecovery: onError fired — error=$error, '
+          'currentIndex=${_player.currentIndex}, '
+          'processingState=${_player.processingState}, '
+          'recovering=$_recovering');
       playbackState.add(playbackState.value.copyWith(
         processingState: AudioProcessingState.error,
       ));
-      if (_recovering) return;
+      // While setQueue is loading, errors belong to its retry loop —
+      // recovery here would command the player mid-load and corrupt it.
+      if (_loadingQueue) {
+        debugPrint('AudioRecovery: load in progress — retry loop owns this error');
+        return;
+      }
+      if (_recovering) {
+        debugPrint('AudioRecovery: duplicate error ignored (recovery in flight)');
+        return;
+      }
       _recovering = true;
       // Both platform plugins report which item failed in the error payload
       // ({index: N}); the current index is only a fallback because by the
@@ -117,27 +178,51 @@ class AppAudioHandler extends BaseAudioHandler with QueueHandler, SeekHandler {
       // "Cannot fire new event" (controller is still firing).
       Future(() async {
         try {
+          debugPrint('AudioRecovery: recovery start — failedIndex=$failedIndex, '
+              'currentIndex=${_player.currentIndex}, '
+              'playing=${_player.playing}, '
+              'processingState=${_player.processingState}');
           if (_player.currentIndex != failedIndex) {
             // Native side already moved past the broken item, or the error
             // was a preload failure for an upcoming item — only nudge
             // playback if it actually stalled.
             if (!_player.playing) {
+              debugPrint('AudioRecovery: moved past failed item but stalled — play()');
               await _player.play();
+              debugPrint('AudioRecovery: after play — '
+                  'currentIndex=${_player.currentIndex}, '
+                  'playing=${_player.playing}, '
+                  'processingState=${_player.processingState}');
+            } else {
+              debugPrint('AudioRecovery: playback unaffected — no action');
             }
           } else if (_player.hasNext) {
             // Player is genuinely stuck on the broken item — skip it.
+            debugPrint('AudioRecovery: stuck on failed item — seekToNext()');
             await _player.seekToNext();
             await _player.play();
+            debugPrint('AudioRecovery: after seekToNext+play — '
+                'currentIndex=${_player.currentIndex}, '
+                'playing=${_player.playing}, '
+                'processingState=${_player.processingState}');
           } else {
+            debugPrint('AudioRecovery: no next track — stopping');
             await _player.stop();
           }
-        } catch (_) {
+        } catch (e) {
           // Player may be unrecoverable after the error; leave it stopped
           // rather than crash on a second attempt.
+          debugPrint('AudioRecovery: recovery FAILED — $e');
         } finally {
           _recovering = false;
+          debugPrint('AudioRecovery: recovery finished, flag reset');
         }
       });
+    });
+
+    // TEMP DEBUG: trace every index change to see who moves the playhead
+    _player.currentIndexStream.listen((index) {
+      debugPrint('AudioRecovery: currentIndexStream -> $index');
     });
 
     // 2. Broadcast current track changes to the system
@@ -215,12 +300,42 @@ class AppAudioHandler extends BaseAudioHandler with QueueHandler, SeekHandler {
       mediaItem.add(mediaItems[initialIndex]);
     }
 
-    // 5. Load into player (paused; caller decides when to play)
-    await _player.setAudioSource(
-      ConcatenatingAudioSource(children: audioSources),
-      initialIndex: initialIndex,
-      initialPosition: initialPosition,
-    );
+    // 5. Load into player (paused; caller decides when to play).
+    //
+    // WORKAROUND for the just_audio 0.9.x error model: if the STARTING track
+    // fails to load, setAudioSource throws and — when the native player was
+    // created for this load (cold start) — disposes it, discarding even a
+    // successful native auto-advance. Broken tracks encountered DURING
+    // playback are handled fine (native auto-advance + onError recovery);
+    // only a broken start kills the whole queue. So on failure we retry the
+    // load from each following index until one succeeds. Remove this loop
+    // when upgrading to just_audio 0.10.x (maxSkipsOnError / errorStream).
+    _loadingQueue = true;
+    try {
+      var index = initialIndex;
+      var position = initialPosition;
+      while (true) {
+        try {
+          await _player.setAudioSource(
+            ConcatenatingAudioSource(children: audioSources),
+            initialIndex: index,
+            initialPosition: position,
+          );
+          break;
+        } catch (e) {
+          // TEMP DEBUG
+          debugPrint('AudioRecovery: setAudioSource FAILED '
+              '(initialIndex=$index) — $e');
+          index += 1;
+          position = Duration.zero; // saved position applied to original track only
+          if (index >= tracks.length) rethrow; // nothing in the queue is loadable
+          // TEMP DEBUG
+          debugPrint('AudioRecovery: retrying load from index $index');
+        }
+      }
+    } finally {
+      _loadingQueue = false;
+    }
   }
 
   // === Playback Controls ===

@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -142,7 +140,6 @@ class MyFavoritesScreen extends ConsumerWidget {
     String imageUrl,
   ) {
     if (favorites.isEmpty) return;
-    final randomIndex = Random().nextInt(favorites.length);
     ref.read(playerStateProvider.notifier).playQueue(
           favorites,
           source: QueueSource.favorites(
@@ -150,7 +147,7 @@ class MyFavoritesScreen extends ConsumerWidget {
             title: title,
             imageUrl: imageUrl,
           ),
-          startIndex: randomIndex,
+          startIndex: 0,
         );
   }
 
