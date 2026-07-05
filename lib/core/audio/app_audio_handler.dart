@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:audio_service/audio_service.dart';
-import 'package:flutter/foundation.dart' show debugPrint;
 import 'package:flutter/services.dart' show PlatformException, rootBundle;
 import 'package:just_audio/just_audio.dart';
 import 'package:path_provider/path_provider.dart';
@@ -144,24 +143,13 @@ class AppAudioHandler extends BaseAudioHandler with QueueHandler, SeekHandler {
         }[_player.loopMode]!,
       ));
     }, onError: (Object error, StackTrace stackTrace) {
-      // TEMP DEBUG: broken-track recovery diagnostics
-      debugPrint('AudioRecovery: onError fired — error=$error, '
-          'currentIndex=${_player.currentIndex}, '
-          'processingState=${_player.processingState}, '
-          'recovering=$_recovering');
       playbackState.add(playbackState.value.copyWith(
         processingState: AudioProcessingState.error,
       ));
       // While setQueue is loading, errors belong to its retry loop —
       // recovery here would command the player mid-load and corrupt it.
-      if (_loadingQueue) {
-        debugPrint('AudioRecovery: load in progress — retry loop owns this error');
-        return;
-      }
-      if (_recovering) {
-        debugPrint('AudioRecovery: duplicate error ignored (recovery in flight)');
-        return;
-      }
+      if (_loadingQueue) return;
+      if (_recovering) return;
       _recovering = true;
       // Both platform plugins report which item failed in the error payload
       // ({index: N}); the current index is only a fallback because by the
@@ -178,51 +166,27 @@ class AppAudioHandler extends BaseAudioHandler with QueueHandler, SeekHandler {
       // "Cannot fire new event" (controller is still firing).
       Future(() async {
         try {
-          debugPrint('AudioRecovery: recovery start — failedIndex=$failedIndex, '
-              'currentIndex=${_player.currentIndex}, '
-              'playing=${_player.playing}, '
-              'processingState=${_player.processingState}');
           if (_player.currentIndex != failedIndex) {
             // Native side already moved past the broken item, or the error
             // was a preload failure for an upcoming item — only nudge
             // playback if it actually stalled.
             if (!_player.playing) {
-              debugPrint('AudioRecovery: moved past failed item but stalled — play()');
               await _player.play();
-              debugPrint('AudioRecovery: after play — '
-                  'currentIndex=${_player.currentIndex}, '
-                  'playing=${_player.playing}, '
-                  'processingState=${_player.processingState}');
-            } else {
-              debugPrint('AudioRecovery: playback unaffected — no action');
             }
           } else if (_player.hasNext) {
             // Player is genuinely stuck on the broken item — skip it.
-            debugPrint('AudioRecovery: stuck on failed item — seekToNext()');
             await _player.seekToNext();
             await _player.play();
-            debugPrint('AudioRecovery: after seekToNext+play — '
-                'currentIndex=${_player.currentIndex}, '
-                'playing=${_player.playing}, '
-                'processingState=${_player.processingState}');
           } else {
-            debugPrint('AudioRecovery: no next track — stopping');
             await _player.stop();
           }
-        } catch (e) {
+        } catch (_) {
           // Player may be unrecoverable after the error; leave it stopped
           // rather than crash on a second attempt.
-          debugPrint('AudioRecovery: recovery FAILED — $e');
         } finally {
           _recovering = false;
-          debugPrint('AudioRecovery: recovery finished, flag reset');
         }
       });
-    });
-
-    // TEMP DEBUG: trace every index change to see who moves the playhead
-    _player.currentIndexStream.listen((index) {
-      debugPrint('AudioRecovery: currentIndexStream -> $index');
     });
 
     // 2. Broadcast current track changes to the system
@@ -322,15 +286,10 @@ class AppAudioHandler extends BaseAudioHandler with QueueHandler, SeekHandler {
             initialPosition: position,
           );
           break;
-        } catch (e) {
-          // TEMP DEBUG
-          debugPrint('AudioRecovery: setAudioSource FAILED '
-              '(initialIndex=$index) — $e');
+        } catch (_) {
           index += 1;
           position = Duration.zero; // saved position applied to original track only
           if (index >= tracks.length) rethrow; // nothing in the queue is loadable
-          // TEMP DEBUG
-          debugPrint('AudioRecovery: retrying load from index $index');
         }
       }
     } finally {
