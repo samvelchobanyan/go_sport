@@ -8,6 +8,7 @@ import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/domain/entities/playlist.dart';
+import 'package:go_sport/domain/state/like_registry.dart';
 import 'package:go_sport/domain/state/my_playlists_state.dart';
 import 'package:go_sport/features/playlists/presentation/bottom_sheets/create_playlist.dart';
 import 'package:go_sport/features/shared_widgets/dotted_divider.dart';
@@ -25,8 +26,16 @@ class MyPlaylistsScreen extends ConsumerWidget {
         final repo = ref.read(customPlaylistRepositoryProvider);
         final playlist = await repo.createCustomPlaylist(name);
         ref.read(myPlaylistsStateProvider.notifier).addPlaylist(playlist);
+        // Register the new custom playlist in the global registry so counts
+        // (e.g. on the Music screen) update immediately.
+        await ref
+            .read(likeRegistryProvider.notifier)
+            .togglePlaylistLike(playlist);
         if (context.mounted) {
-          context.push('/music/playlist/${playlist.id}?type=custom', extra: playlist);
+          context.push(
+            '/music/playlist/${playlist.id}?type=custom',
+            extra: playlist,
+          );
         }
       },
     );

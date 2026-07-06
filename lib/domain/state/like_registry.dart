@@ -49,12 +49,16 @@ class LikeRegistry extends Notifier<LikeRegistryState> {
       // Like
       state = state.copyWith(likedAlbums: [album, ...prevList]);
       try {
-        final newLikeId =
-            await ref.read(albumsRepositoryProvider).toggleLike(album.id, null);
+        final newLikeId = await ref
+            .read(albumsRepositoryProvider)
+            .toggleLike(album.id, null);
         if (newLikeId != null) {
           state = state.copyWith(
             likedAlbums: state.likedAlbums
-                .map((a) => a.id == album.id ? album.copyWith(likeId: newLikeId) : a)
+                .map(
+                  (a) =>
+                      a.id == album.id ? album.copyWith(likeId: newLikeId) : a,
+                )
                 .toList(),
           );
         }
@@ -89,7 +93,10 @@ class LikeRegistry extends Notifier<LikeRegistryState> {
         if (newLikeId != null) {
           state = state.copyWith(
             likedTracks: state.likedTracks
-                .map((t) => t.id == track.id ? track.copyWith(likeId: newLikeId) : t)
+                .map(
+                  (t) =>
+                      t.id == track.id ? track.copyWith(likeId: newLikeId) : t,
+                )
                 .toList(),
           );
         }
@@ -124,7 +131,11 @@ class LikeRegistry extends Notifier<LikeRegistryState> {
         if (newLikeId != null) {
           state = state.copyWith(
             likedPrograms: state.likedPrograms
-                .map((p) => p.id == program.id ? program.copyWith(likeId: newLikeId) : p)
+                .map(
+                  (p) => p.id == program.id
+                      ? program.copyWith(likeId: newLikeId)
+                      : p,
+                )
                 .toList(),
           );
         }
@@ -159,7 +170,11 @@ class LikeRegistry extends Notifier<LikeRegistryState> {
         if (newLikeId != null) {
           state = state.copyWith(
             likedArtists: state.likedArtists
-                .map((a) => a.id == artist.id ? artist.copyWith(likeId: newLikeId) : a)
+                .map(
+                  (a) => a.id == artist.id
+                      ? artist.copyWith(likeId: newLikeId)
+                      : a,
+                )
                 .toList(),
           );
         }
@@ -172,6 +187,19 @@ class LikeRegistry extends Notifier<LikeRegistryState> {
   Future<void> togglePlaylistLike(Playlist playlist) async {
     final idx = state.likedPlaylists.indexWhere((p) => p.id == playlist.id);
     final prevList = state.likedPlaylists;
+
+    // Custom playlists are user-created and have no server-side "like" API.
+    // Treat them as liked locally by adding/removing from the registry only.
+    if (playlist.type == PlaylistType.custom) {
+      if (idx >= 0) {
+        state = state.copyWith(
+          likedPlaylists: prevList.where((p) => p.id != playlist.id).toList(),
+        );
+      } else {
+        state = state.copyWith(likedPlaylists: [playlist, ...prevList]);
+      }
+      return;
+    }
 
     if (idx >= 0) {
       final existing = prevList[idx];
@@ -194,7 +222,11 @@ class LikeRegistry extends Notifier<LikeRegistryState> {
         if (newLikeId != null) {
           state = state.copyWith(
             likedPlaylists: state.likedPlaylists
-                .map((p) => p.id == playlist.id ? playlist.copyWith(likeId: newLikeId) : p)
+                .map(
+                  (p) => p.id == playlist.id
+                      ? playlist.copyWith(likeId: newLikeId)
+                      : p,
+                )
                 .toList(),
           );
         }
@@ -229,7 +261,11 @@ class LikeRegistry extends Notifier<LikeRegistryState> {
         if (newLikeId != null) {
           state = state.copyWith(
             likedEpisodes: state.likedEpisodes
-                .map((e) => e.id == episode.id ? episode.copyWith(likeId: newLikeId) : e)
+                .map(
+                  (e) => e.id == episode.id
+                      ? episode.copyWith(likeId: newLikeId)
+                      : e,
+                )
                 .toList(),
           );
         }
@@ -260,32 +296,60 @@ class LikeRegistry extends Notifier<LikeRegistryState> {
     }
 
     await Future.wait([
-      safe(() => _loadAllPages(
-            (page) => ref.read(albumsRepositoryProvider).getFavoriteAlbums(page: page),
-            _mergeAlbums,
-          )),
-      safe(() => _loadAllPages(
-            (page) => ref.read(programsRepositoryProvider).getFavoritePrograms(page: page),
-            _mergePrograms,
-          )),
-      safe(() => _loadAllPages(
-            (page) => ref.read(artistsRepositoryProvider).getFavoriteArtists(page: page),
-            _mergeArtists,
-          )),
+      safe(
+        () => _loadAllPages(
+          (page) =>
+              ref.read(albumsRepositoryProvider).getFavoriteAlbums(page: page),
+          _mergeAlbums,
+        ),
+      ),
+      safe(
+        () => _loadAllPages(
+          (page) => ref
+              .read(programsRepositoryProvider)
+              .getFavoritePrograms(page: page),
+          _mergePrograms,
+        ),
+      ),
+      safe(
+        () => _loadAllPages(
+          (page) => ref
+              .read(artistsRepositoryProvider)
+              .getFavoriteArtists(page: page),
+          _mergeArtists,
+        ),
+      ),
       safe(() async {
         final playlists = await ref
             .read(featuredPlaylistRepositoryProvider)
             .getLikedFeaturedPlaylists();
         _mergePlaylists(playlists);
       }),
-      safe(() => _loadAllPages(
-            (page) => ref.read(featuredPlaylistRepositoryProvider).getFavoriteTracks(page: page),
-            _mergeTracks,
-          )),
-      safe(() => _loadAllPages(
-            (page) => ref.read(episodesRepositoryProvider).getFavoriteEpisodes(page: page),
-            _mergeEpisodes,
-          )),
+      // Include custom (user-created) playlists as implicitly "liked" so they're
+      // counted in the registry and visible in "My Playlists" without needing
+      // a separate client-side union everywhere.
+      safe(() async {
+        final custom = await ref
+            .read(customPlaylistRepositoryProvider)
+            .getCustomPlaylists();
+        _mergePlaylists(custom);
+      }),
+      safe(
+        () => _loadAllPages(
+          (page) => ref
+              .read(featuredPlaylistRepositoryProvider)
+              .getFavoriteTracks(page: page),
+          _mergeTracks,
+        ),
+      ),
+      safe(
+        () => _loadAllPages(
+          (page) => ref
+              .read(episodesRepositoryProvider)
+              .getFavoriteEpisodes(page: page),
+          _mergeEpisodes,
+        ),
+      ),
     ]);
   }
 
@@ -371,6 +435,14 @@ class LikeRegistry extends Notifier<LikeRegistryState> {
     state = state.copyWith(likedPlaylists: next);
   }
 
+  void removePlaylist(String playlistId) {
+    state = state.copyWith(
+      likedPlaylists: state.likedPlaylists
+          .where((p) => p.id != playlistId)
+          .toList(),
+    );
+  }
+
   void _mergeEpisodes(List<Track> episodes) {
     final next = [...state.likedEpisodes];
     for (final episode in episodes) {
@@ -385,5 +457,6 @@ class LikeRegistry extends Notifier<LikeRegistryState> {
   }
 }
 
-final likeRegistryProvider =
-    NotifierProvider<LikeRegistry, LikeRegistryState>(LikeRegistry.new);
+final likeRegistryProvider = NotifierProvider<LikeRegistry, LikeRegistryState>(
+  LikeRegistry.new,
+);

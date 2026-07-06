@@ -35,7 +35,9 @@ class _MusicScreenState extends ConsumerState<MusicScreen> {
   @override
   Widget build(BuildContext context) {
     final playlistsState = ref.watch(featuredPlaylistsStateProvider);
-    final avatarUrl = ref.watch(userStateProvider.select((s) => s.user?.avatar));
+    final avatarUrl = ref.watch(
+      userStateProvider.select((s) => s.user?.avatar),
+    );
     final playlists = playlistsState.playlistsList;
 
     final musicDashboardState = ref.watch(musicStateProvider);
@@ -48,6 +50,8 @@ class _MusicScreenState extends ConsumerState<MusicScreen> {
     final playlistsCount = ref.watch(
       likeRegistryProvider.select((s) => s.likedPlaylists.length),
     );
+
+    print('playlistsCount $playlistsCount');
     final albumsCount = ref.watch(
       likeRegistryProvider.select((s) => s.likedAlbums.length),
     );

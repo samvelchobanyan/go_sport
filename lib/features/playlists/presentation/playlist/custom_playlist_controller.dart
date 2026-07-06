@@ -3,6 +3,7 @@ import 'package:go_sport/core/di/repository_providers.dart';
 import 'package:go_sport/domain/entities/playlist.dart';
 import 'package:go_sport/domain/entities/track.dart';
 import 'package:go_sport/domain/repositories/custom_playlist_repository.dart';
+import 'package:go_sport/domain/state/like_registry.dart';
 import 'package:go_sport/domain/state/my_playlists_state.dart';
 
 import 'playlist_controller.dart';
@@ -80,12 +81,16 @@ class CustomPlaylistNotifier
     try {
       final myPlaylists = ref.read(myPlaylistsStateProvider).playlists;
       Playlist? playlist = myPlaylists.where((p) => p.id == arg).firstOrNull;
-      
+
       if (playlist == null) {
         await ref.read(myPlaylistsStateProvider.notifier).loadFavorites();
-        playlist = ref.read(myPlaylistsStateProvider).playlists.where((p) => p.id == arg).firstOrNull;
+        playlist = ref
+            .read(myPlaylistsStateProvider)
+            .playlists
+            .where((p) => p.id == arg)
+            .firstOrNull;
       }
-      
+
       if (playlist == null) throw Exception('Playlist not found');
 
       final tracks = await _repository.getCustomPlaylistTracks(arg);
@@ -119,7 +124,9 @@ class CustomPlaylistNotifier
     final current = state;
     if (current is! PlaylistDetailsData) return;
 
-    final updatedPlaylist = current.playlist.copyWith(trackCount: newTracks.length);
+    final updatedPlaylist = current.playlist.copyWith(
+      trackCount: newTracks.length,
+    );
     state = current.copyWith(playlist: updatedPlaylist, tracks: newTracks);
   }
 
@@ -128,7 +135,9 @@ class CustomPlaylistNotifier
     if (current is! PlaylistDetailsData) return;
 
     final tracks = current.tracks.where((t) => t.id != trackId).toList();
-    final updatedPlaylist = current.playlist.copyWith(trackCount: tracks.length);
+    final updatedPlaylist = current.playlist.copyWith(
+      trackCount: tracks.length,
+    );
     state = current.copyWith(playlist: updatedPlaylist, tracks: tracks);
   }
 
@@ -144,7 +153,9 @@ class CustomPlaylistNotifier
     );
     final saved = state;
     if (saved is PlaylistDetailsData) {
-      ref.read(myPlaylistsStateProvider.notifier).updatePlaylist(saved.playlist);
+      ref
+          .read(myPlaylistsStateProvider.notifier)
+          .updatePlaylist(saved.playlist);
     }
   }
 
@@ -164,8 +175,7 @@ class CustomPlaylistNotifier
 
     // Дедуп: не добавляем треки, которые уже в плейлисте.
     final existingIds = current.tracks.map((t) => t.id).toSet();
-    final unique =
-        newTracks.where((t) => !existingIds.contains(t.id)).toList();
+    final unique = newTracks.where((t) => !existingIds.contains(t.id)).toList();
     if (unique.isEmpty) return;
 
     final merged = [...current.tracks, ...unique];
@@ -179,10 +189,13 @@ class CustomPlaylistNotifier
   Future<void> delete() async {
     await _repository.deleteCustomPlaylist(arg);
     ref.read(myPlaylistsStateProvider.notifier).removePlaylist(arg);
+    ref.read(likeRegistryProvider.notifier).removePlaylist(arg);
   }
 }
 
-final customPlaylistControllerProvider = NotifierProvider.family<
-    CustomPlaylistNotifier, PlaylistDetailsState, String>(
-  CustomPlaylistNotifier.new,
-);
+final customPlaylistControllerProvider =
+    NotifierProvider.family<
+      CustomPlaylistNotifier,
+      PlaylistDetailsState,
+      String
+    >(CustomPlaylistNotifier.new);

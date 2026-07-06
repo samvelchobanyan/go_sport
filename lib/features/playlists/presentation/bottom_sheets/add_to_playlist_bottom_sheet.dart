@@ -6,6 +6,7 @@ import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 import 'package:go_sport/design_system/foundations/ds_icon_size.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/domain/entities/playlist.dart';
+import 'package:go_sport/domain/state/like_registry.dart';
 import 'package:go_sport/features/shared_widgets/bottom_pop_ups/bottom_sheet_container.dart';
 import 'package:go_sport/domain/entities/track.dart';
 import 'package:go_sport/core/di/repository_providers.dart';
@@ -126,7 +127,13 @@ class _AddToPlaylistBottomSheet extends ConsumerWidget {
                     onSave: (name) async {
                       final repo = ref.read(customPlaylistRepositoryProvider);
                       final playlist = await repo.createCustomPlaylist(name);
-                      ref.read(myPlaylistsStateProvider.notifier).addPlaylist(playlist);
+                      ref
+                          .read(myPlaylistsStateProvider.notifier)
+                          .addPlaylist(playlist);
+                      // Register new custom playlist as liked so counts update.
+                      await ref
+                          .read(likeRegistryProvider.notifier)
+                          .togglePlaylistLike(playlist);
                       notifier.addCreatedPlaylist(playlist);
                     },
                   );

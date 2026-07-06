@@ -25,12 +25,14 @@ class MyPlaylistsStateNotifier extends Notifier<MyPlaylistsState> {
     _customRepo = ref.watch(customPlaylistRepositoryProvider);
 
     // Re-combine when registry's liked playlists change.
-    ref.listen(
-      likeRegistryProvider.select((s) => s.likedPlaylists),
-      (_, next) {
-        state = state.copyWith(playlists: [...next, ..._customPlaylists]);
-      },
-    );
+    ref.listen(likeRegistryProvider.select((s) => s.likedPlaylists), (_, next) {
+      // Merge while avoiding duplicates (custom playlists may also be
+      // present in the liked list after registry now includes custom).
+      final merged = <String, Playlist>{};
+      for (final p in next) merged[p.id] = p;
+      for (final p in _customPlaylists) merged.putIfAbsent(p.id, () => p);
+      state = state.copyWith(playlists: merged.values.toList());
+    });
 
     Future.microtask(loadFavorites);
 
@@ -43,8 +45,11 @@ class MyPlaylistsStateNotifier extends Notifier<MyPlaylistsState> {
     state = state.copyWith(isLoading: true, error: null);
     try {
       _customPlaylists = await _customRepo.getCustomPlaylists();
+      final merged = <String, Playlist>{};
+      for (final p in _likedFeatured) merged[p.id] = p;
+      for (final p in _customPlaylists) merged.putIfAbsent(p.id, () => p);
       state = state.copyWith(
-        playlists: [..._likedFeatured, ..._customPlaylists],
+        playlists: merged.values.toList(),
         isLoading: false,
       );
     } catch (e) {
@@ -59,19 +64,28 @@ class MyPlaylistsStateNotifier extends Notifier<MyPlaylistsState> {
 
   void removePlaylist(String id) {
     _customPlaylists = _customPlaylists.where((p) => p.id != id).toList();
-    state = state.copyWith(playlists: [..._likedFeatured, ..._customPlaylists]);
+    final merged = <String, Playlist>{};
+    for (final p in _likedFeatured) merged[p.id] = p;
+    for (final p in _customPlaylists) merged.putIfAbsent(p.id, () => p);
+    state = state.copyWith(playlists: merged.values.toList());
   }
 
   void addPlaylist(Playlist playlist) {
     _customPlaylists = [playlist, ..._customPlaylists];
-    state = state.copyWith(playlists: [..._likedFeatured, ..._customPlaylists]);
+    final merged = <String, Playlist>{};
+    for (final p in _likedFeatured) merged[p.id] = p;
+    for (final p in _customPlaylists) merged.putIfAbsent(p.id, () => p);
+    state = state.copyWith(playlists: merged.values.toList());
   }
 
   void updatePlaylist(Playlist playlist) {
     _customPlaylists = _customPlaylists
         .map((p) => p.id == playlist.id ? playlist : p)
         .toList();
-    state = state.copyWith(playlists: [..._likedFeatured, ..._customPlaylists]);
+    final merged = <String, Playlist>{};
+    for (final p in _likedFeatured) merged[p.id] = p;
+    for (final p in _customPlaylists) merged.putIfAbsent(p.id, () => p);
+    state = state.copyWith(playlists: merged.values.toList());
   }
 
   List<Playlist> get _likedFeatured =>
@@ -80,5 +94,5 @@ class MyPlaylistsStateNotifier extends Notifier<MyPlaylistsState> {
 
 final myPlaylistsStateProvider =
     NotifierProvider<MyPlaylistsStateNotifier, MyPlaylistsState>(
-  MyPlaylistsStateNotifier.new,
-);
+      MyPlaylistsStateNotifier.new,
+    );

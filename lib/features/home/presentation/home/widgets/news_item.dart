@@ -1,9 +1,11 @@
 import 'package:go_sport/design_system/components/network_image/ds_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
+import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/domain/entities/news_article.dart';
+import 'package:intl/intl.dart';
 
 class NewsItem extends StatelessWidget {
   final NewsArticle article;
@@ -22,7 +24,7 @@ class NewsItem extends StatelessWidget {
           horizontal: DSSpacing.m,
         ),
         child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Изображение новости
             Container(
@@ -39,15 +41,28 @@ class NewsItem extends StatelessWidget {
               ),
             ),
             const SizedBox(width: DSSpacing.s12),
-            // Текстовая информация
             Expanded(
-              child: Text(
-                article.title,
-                style: context.subtitleM,
-                maxLines: 3,
-                overflow: TextOverflow.ellipsis,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: DSSpacing.s),
+
+                  Text(
+                    DateFormat('MMM d, yyyy').format(article.publishedAt),
+                    style: context.label?.copyWith(color: DSColors.gray60),
+                  ),
+                  SizedBox(height: DSSpacing.xs),
+
+                  Text(
+                    article.title,
+                    style: context.subtitleM,
+                    maxLines: 3,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
               ),
             ),
+            // Текстовая информация
           ],
         ),
       ),

@@ -24,6 +24,7 @@ class NewsDetailScreen extends ConsumerWidget {
     final newsState = ref.watch(newsStateProvider);
     final article = newsState.getArticle(articleId);
 
+    print(' article=$article');
     // If article not in cache, try to load it
     if (article == null) {
       // Trigger load if not already loading
@@ -56,52 +57,53 @@ class NewsDetailScreen extends ConsumerWidget {
           onPressed: () => context.canPop() ? context.pop() : context.go('/'),
         ),
         actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: DSSpacing.m),
-            child: Align(
-              alignment: Alignment.center,
-              child: Builder(
-                builder: (context) {
-                  final parts = article.author.split(' ');
-                  final firstName = parts.isNotEmpty ? parts[0] : '';
-                  final lastName = parts.length > 1
-                      ? parts.sublist(1).join(' ')
-                      : '';
-                  return Row(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      // Padding(
-                      //   padding: const EdgeInsets.only(top: DSSpacing.s6),
-                      //   child:
-                      Container(width: 14, height: 2, color: DSColors.orange),
-                      // ),
-                      const SizedBox(width: DSSpacing.s8),
-                      Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Text(
-                            firstName,
-                            style: context.subtitleM?.copyWith(
-                              color: DSColors.gray60,
-                            ),
-                          ),
-                          if (lastName.isNotEmpty)
+          if (article.author != 'Unknown')
+            Padding(
+              padding: const EdgeInsets.only(right: DSSpacing.m),
+              child: Align(
+                alignment: Alignment.center,
+                child: Builder(
+                  builder: (context) {
+                    final parts = article.author.split(' ');
+                    final firstName = parts.isNotEmpty ? parts[0] : '';
+                    final lastName = parts.length > 1
+                        ? parts.sublist(1).join(' ')
+                        : '';
+                    return Row(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        // Padding(
+                        //   padding: const EdgeInsets.only(top: DSSpacing.s6),
+                        //   child:
+                        Container(width: 14, height: 2, color: DSColors.orange),
+                        // ),
+                        const SizedBox(width: DSSpacing.s8),
+                        Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
                             Text(
-                              lastName,
+                              firstName,
                               style: context.subtitleM?.copyWith(
                                 color: DSColors.gray60,
                               ),
                             ),
-                        ],
-                      ),
-                    ],
-                  );
-                },
+                            if (lastName.isNotEmpty)
+                              Text(
+                                lastName,
+                                style: context.subtitleM?.copyWith(
+                                  color: DSColors.gray60,
+                                ),
+                              ),
+                          ],
+                        ),
+                      ],
+                    );
+                  },
+                ),
               ),
             ),
-          ),
         ],
       ),
       body: SingleChildScrollView(

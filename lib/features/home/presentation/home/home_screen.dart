@@ -162,8 +162,6 @@ class HomeScreen extends ConsumerWidget {
       return const HomeSkeleton();
     }
 
-    print('news $news');
-
     if (hasError && stories.isEmpty && news.isEmpty && playlists.isEmpty) {
       return Center(
         child: Padding(
