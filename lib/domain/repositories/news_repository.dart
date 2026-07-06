@@ -7,6 +7,10 @@ abstract class NewsRepository {
   /// Получить детальную информацию о статье
   Future<NewsArticle> getArticle(String id);
 
+  /// Получить карту лайкнутых текущим пользователем статей:
+  /// id статьи -> id записи лайка (нужен для снятия лайка).
+  Future<Map<String, String>> getLikedArticles();
+
   /// Переключить лайк на статье
   Future<String?> toggleLike(String id, [String? likeId]);
 }

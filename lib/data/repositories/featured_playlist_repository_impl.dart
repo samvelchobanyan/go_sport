@@ -52,6 +52,7 @@ class FeaturedPlaylistRepositoryImpl implements FeaturedPlaylistRepository {
       '/api/user-playlists',
       queryParameters: {
         'populate[Playlist][populate][Cover][populate]': '*',
+        'sort[0]': 'createdAt:desc',
       },
     );
 
@@ -77,6 +78,7 @@ class FeaturedPlaylistRepositoryImpl implements FeaturedPlaylistRepository {
         'populate[Track][populate][Album][populate]': 'Cover',
         'populate[Track][populate][File][populate]': '*',
         'populate[Track][populate][Artists][fields][0]': 'Name',
+        'sort[0]': 'createdAt:desc',
         'pagination[page]': page,
         'pagination[pageSize]': pageSize,
       },

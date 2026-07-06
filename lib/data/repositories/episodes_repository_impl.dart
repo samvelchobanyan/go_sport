@@ -36,6 +36,7 @@ class EpisodesRepositoryImpl implements EpisodesRepository {
       queryParameters: {
         'populate[Episode][populate][File][populate]': '*',
         'populate[Episode][populate][Program][populate][Cover][populate]': '*',
+        'sort[0]': 'createdAt:desc',
         'pagination[page]': page,
         'pagination[pageSize]': pageSize,
       },

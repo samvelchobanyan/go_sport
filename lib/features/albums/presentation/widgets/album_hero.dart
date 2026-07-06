@@ -106,7 +106,7 @@ class AlbumHero extends StatelessWidget {
                 ),
                 const SizedBox(height: DSSpacing.m),
                 Text(
-                  '${album.artist} ${album.releaseYear}',
+                  '${album.artist} • ${album.releaseYear}',
                   style: context.textL?.copyWith(color: DSColors.white),
                   textAlign: TextAlign.center,
                   maxLines: 1,

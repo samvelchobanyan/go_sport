@@ -14,5 +14,6 @@ class NewsArticle with _$NewsArticle {
     required String content,
     required int likesCount,
     required bool isLiked,
+    String? likeId,
   }) = _NewsArticle;
 }

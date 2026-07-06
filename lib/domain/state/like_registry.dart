@@ -47,7 +47,7 @@ class LikeRegistry extends Notifier<LikeRegistryState> {
       }
     } else {
       // Like
-      state = state.copyWith(likedAlbums: [...prevList, album]);
+      state = state.copyWith(likedAlbums: [album, ...prevList]);
       try {
         final newLikeId =
             await ref.read(albumsRepositoryProvider).toggleLike(album.id, null);
@@ -81,7 +81,7 @@ class LikeRegistry extends Notifier<LikeRegistryState> {
         state = state.copyWith(likedTracks: prevList);
       }
     } else {
-      state = state.copyWith(likedTracks: [...prevList, track]);
+      state = state.copyWith(likedTracks: [track, ...prevList]);
       try {
         final newLikeId = await ref
             .read(featuredPlaylistRepositoryProvider)
@@ -116,7 +116,7 @@ class LikeRegistry extends Notifier<LikeRegistryState> {
         state = state.copyWith(likedPrograms: prevList);
       }
     } else {
-      state = state.copyWith(likedPrograms: [...prevList, program]);
+      state = state.copyWith(likedPrograms: [program, ...prevList]);
       try {
         final newLikeId = await ref
             .read(programsRepositoryProvider)
@@ -151,7 +151,7 @@ class LikeRegistry extends Notifier<LikeRegistryState> {
         state = state.copyWith(likedArtists: prevList);
       }
     } else {
-      state = state.copyWith(likedArtists: [...prevList, artist]);
+      state = state.copyWith(likedArtists: [artist, ...prevList]);
       try {
         final newLikeId = await ref
             .read(artistsRepositoryProvider)
@@ -186,7 +186,7 @@ class LikeRegistry extends Notifier<LikeRegistryState> {
         state = state.copyWith(likedPlaylists: prevList);
       }
     } else {
-      state = state.copyWith(likedPlaylists: [...prevList, playlist]);
+      state = state.copyWith(likedPlaylists: [playlist, ...prevList]);
       try {
         final newLikeId = await ref
             .read(featuredPlaylistRepositoryProvider)
@@ -221,7 +221,7 @@ class LikeRegistry extends Notifier<LikeRegistryState> {
         state = state.copyWith(likedEpisodes: prevList);
       }
     } else {
-      state = state.copyWith(likedEpisodes: [...prevList, episode]);
+      state = state.copyWith(likedEpisodes: [episode, ...prevList]);
       try {
         final newLikeId = await ref
             .read(episodesRepositoryProvider)

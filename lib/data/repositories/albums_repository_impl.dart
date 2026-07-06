@@ -56,6 +56,7 @@ class AlbumsRepositoryImpl implements AlbumsRepository {
       queryParameters: {
         'populate[Album][populate][Cover][populate]': '*',
         'populate[Album][populate][Artist][fields][0]': 'Name',
+        'sort[0]': 'createdAt:desc',
         'pagination[page]': page,
         'pagination[pageSize]': pageSize,
       },

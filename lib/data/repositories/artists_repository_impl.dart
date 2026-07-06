@@ -36,6 +36,7 @@ class ArtistsRepositoryImpl implements ArtistsRepository {
       '/api/user-artists',
       queryParameters: {
         'populate[Artist][populate][Cover][populate]': '*',
+        'sort[0]': 'createdAt:desc',
         'pagination[page]': page,
         'pagination[pageSize]': pageSize,
       },

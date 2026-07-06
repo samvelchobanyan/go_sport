@@ -25,6 +25,11 @@ extension NewsStateX on NewsState {
 class NewsNotifier extends Notifier<NewsState> {
   late final NewsRepository _repository;
 
+  /// id статьи -> id записи лайка. Читается один раз с /api/user-articles,
+  /// используется чтобы проставить isLiked/likeId загруженным статьям.
+  Map<String, String> _likedIds = {};
+  Future<void>? _likedIdsLoaded;
+
   @override
   NewsState build() {
     _repository = ref.watch(newsRepositoryProvider);
@@ -32,17 +37,36 @@ class NewsNotifier extends Notifier<NewsState> {
     return const NewsState();
   }
 
+  Future<void> _ensureLikedIds() => _likedIdsLoaded ??= _loadLikedIds();
+
+  Future<void> _loadLikedIds() async {
+    try {
+      _likedIds = await _repository.getLikedArticles();
+    } catch (_) {
+      // молча игнорируем — обогащение просто оставит статьи нелайкнутыми
+    }
+  }
+
+  /// Проставляет статье isLiked/likeId по загруженному набору лайков.
+  NewsArticle _withLike(NewsArticle article) {
+    final likeId = _likedIds[article.id];
+    return likeId != null
+        ? article.copyWith(isLiked: true, likeId: likeId)
+        : article;
+  }
+
   Future<void> loadNews({int page = 1, int pageSize = 20}) async {
     state = state.copyWith(isLoading: true, error: null);
 
     try {
+      await _ensureLikedIds();
       final articles = await _repository.getNews(
         page: page,
         pageSize: pageSize,
       );
       final articlesMap = {
         ...state.articles,
-        for (final article in articles) article.id: article,
+        for (final article in articles) article.id: _withLike(article),
       };
       state = state.copyWith(articles: articlesMap, isLoading: false);
     } catch (e) {
@@ -55,55 +79,25 @@ class NewsNotifier extends Notifier<NewsState> {
     if (state.articles.containsKey(id)) return;
 
     try {
+      await _ensureLikedIds();
       final article = await _repository.getArticle(id);
       state = state.copyWith(
-        articles: {...state.articles, article.id: article},
+        articles: {...state.articles, article.id: _withLike(article)},
       );
     } catch (e) {
       state = state.copyWith(error: e.toString());
     }
   }
 
-  // Future<void> toggleLike(String id) async {
-  //   final article = state.articles[id];
-  //   if (article == null) return;
-
-  //   // Optimistic update
-  //   final updatedArticle = article.copyWith(
-  //     isLiked: !article.isLiked,
-  //     likesCount: article.isLiked ? article.likesCount - 1 : article.likesCount + 1,
-  //   );
-  //   state = state.copyWith(
-  //     articles: {...state.articles, id: updatedArticle},
-  //   );
-
-  //   try {
-  //     await _repository.toggleLike(id);
-  //   } catch (e) {
-  //     // Rollback on error
-  //     state = state.copyWith(
-  //       articles: {...state.articles, id: article},
-  //       error: e.toString(),
-  //     );
-  //   }
-  // }
-
   Future<void> toggleLike(String id) async {
     final article = state.articles[id];
-    if (article == null) {
-      print('⚠️ [toggleLike] Article with ID $id not found in state cache!');
-      return;
-    }
+    if (article == null) return;
 
     final previousArticle = article;
     final previousArticles = state.articles;
 
     if (article.isLiked) {
-      print('=== [UNLIKE ACTION STARTED] ===');
-      print(
-        'Target Article ID: $id | Current likeId on entity: ${article.likeId}',
-      );
-
+      // Unlike — optimistic remove + repo DELETE + rollback on error
       final updatedArticle = article.copyWith(
         isLiked: false,
         likesCount: article.likesCount > 0 ? article.likesCount - 1 : 0,
@@ -113,16 +107,11 @@ class NewsNotifier extends Notifier<NewsState> {
       state = state.copyWith(
         articles: {...previousArticles, id: updatedArticle},
       );
-      print('➔ [UNLIKE] Optimistic UI state updated to UNLIKED.');
 
       try {
-        print('➔ [UNLIKE] Calling Repository API...');
         await _repository.toggleLike(id, article.likeId);
-        print('✅ [UNLIKE] Repository API completed successfully.');
-      } catch (e, stack) {
-        print('❌ [UNLIKE] API failed! Rolling back state.');
-        print('Error context: $e');
-        print('Stacktrace: $stack');
+        _likedIds.remove(id);
+      } catch (e) {
         state = state.copyWith(
           articles: {...previousArticles, id: previousArticle},
           error: e.toString(),
@@ -131,40 +120,26 @@ class NewsNotifier extends Notifier<NewsState> {
       return;
     }
 
-    // --- LIKE ACTIONS ---
-    print('=== [LIKE ACTION STARTED] ===');
-    print('Target Article ID: $id');
-
+    // Like — optimistic add + repo POST + store returned likeId + rollback on error
     final updatedArticle = article.copyWith(
       isLiked: true,
       likesCount: article.likesCount + 1,
     );
 
     state = state.copyWith(articles: {...previousArticles, id: updatedArticle});
-    print('➔ [LIKE] Optimistic UI state updated to LIKED.');
 
     try {
-      print('➔ [LIKE] Calling Repository API...');
       final newLikeId = await _repository.toggleLike(id);
-      print('➔ [LIKE] Repository API returned fresh newLikeId: "$newLikeId"');
-
       if (newLikeId != null && newLikeId.isNotEmpty) {
-        final updatedMap = Map<String, NewsArticle>.from(state.articles);
-        updatedMap[id] = updatedArticle.copyWith(likeId: newLikeId);
-
-        state = state.copyWith(articles: updatedMap);
-        print('✅ [LIKE] State finalized successfully with saved likeId.');
-      } else {
-        print(
-          '⚠️ [LIKE] API ran successfully, but returned an empty or null likeId token!',
+        _likedIds[id] = newLikeId;
+        state = state.copyWith(
+          articles: {
+            ...state.articles,
+            id: updatedArticle.copyWith(likeId: newLikeId),
+          },
         );
       }
-    } catch (e, stack) {
-      print(
-        '❌ [LIKE] API failed or state parsing crashed! Rolling back state.',
-      );
-      print('Error context: $e');
-      print('Stacktrace: $stack');
+    } catch (e) {
       state = state.copyWith(
         articles: {...previousArticles, id: previousArticle},
         error: e.toString(),
@@ -173,6 +148,7 @@ class NewsNotifier extends Notifier<NewsState> {
   }
 
   Future<void> refresh() async {
+    _likedIdsLoaded = null;
     state = state.copyWith(articles: {});
     await loadNews();
   }

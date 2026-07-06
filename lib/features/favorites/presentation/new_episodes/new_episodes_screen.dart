@@ -41,7 +41,7 @@ class NewEpisodesScreen extends ConsumerWidget {
               children: [
                 MyCategoriesHeader(
                   iconPath: 'assets/icons/dynamic_bg.svg',
-                  title: 'New Episodes',
+                  title: 'My Episodes',
                   subtitle: 'Episodes',
                   itemCount: episodes.length,
                   actionIcon: SvgPicture.asset(
@@ -144,7 +144,6 @@ class NewEpisodesScreen extends ConsumerWidget {
     String imageUrl,
   ) {
     if (episodes.isEmpty) return;
-    final randomIndex = Random().nextInt(episodes.length);
     ref.read(playerStateProvider.notifier).playQueue(
           episodes,
           source: QueueSource.episodes(
@@ -152,7 +151,7 @@ class NewEpisodesScreen extends ConsumerWidget {
             title: title,
             imageUrl: imageUrl,
           ),
-          startIndex: randomIndex,
+          startIndex: 0,
         );
   }
 }

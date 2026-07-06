@@ -226,6 +226,7 @@ class NewsDto {
       content: body,
       likesCount: cnt,
       isLiked: likeId != null,
+      likeId: likeId,
     );
   }
 }

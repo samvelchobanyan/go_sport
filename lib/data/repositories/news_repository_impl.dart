@@ -40,6 +40,41 @@ class NewsRepositoryImpl implements NewsRepository {
     return NewsDto.fromJson(data).toDomain();
   }
 
+  @override
+  Future<Map<String, String>> getLikedArticles() async {
+    final result = <String, String>{};
+    var page = 1;
+
+    while (true) {
+      final response = await _apiClient.get(
+        '/api/user-articles',
+        queryParameters: {
+          'populate': 'Article',
+          'pagination[page]': page,
+          'pagination[pageSize]': 50,
+        },
+      );
+
+      final data = response.data['data'] as List<dynamic>;
+      for (final e in data) {
+        final entry = e as Map<String, dynamic>;
+        final article = entry['Article'] as Map<String, dynamic>?;
+        final articleId = article?['documentId'] as String?;
+        if (articleId != null) {
+          result[articleId] = entry['documentId'] as String;
+        }
+      }
+
+      final pagination =
+          response.data['meta']?['pagination'] as Map<String, dynamic>?;
+      final pageCount = pagination?['pageCount'] as int? ?? 1;
+      if (page >= pageCount) break;
+      page++;
+    }
+
+    return result;
+  }
+
   // @override
   // Future<String?> toggleLike(String newsId, [String? likeId]) async {
   //   if (likeId != null && likeId.isNotEmpty) {
