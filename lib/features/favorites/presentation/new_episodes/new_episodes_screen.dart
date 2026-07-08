@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -126,7 +124,9 @@ class NewEpisodesScreen extends ConsumerWidget {
   }
 
   void _onTrackTap(WidgetRef ref, List<Track> episodes, int index) {
-    ref.read(playerStateProvider.notifier).playQueue(
+    ref
+        .read(playerStateProvider.notifier)
+        .playQueue(
           episodes,
           source: QueueSource.episodes(
             id: index.toString(),
@@ -144,7 +144,9 @@ class NewEpisodesScreen extends ConsumerWidget {
     String imageUrl,
   ) {
     if (episodes.isEmpty) return;
-    ref.read(playerStateProvider.notifier).playQueue(
+    ref
+        .read(playerStateProvider.notifier)
+        .playQueue(
           episodes,
           source: QueueSource.episodes(
             id: 'episodes',

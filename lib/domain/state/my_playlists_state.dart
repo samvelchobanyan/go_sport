@@ -30,7 +30,9 @@ class MyPlaylistsStateNotifier extends Notifier<MyPlaylistsState> {
       // present in the liked list after registry now includes custom).
       final merged = <String, Playlist>{};
       for (final p in next) merged[p.id] = p;
-      for (final p in _customPlaylists) merged.putIfAbsent(p.id, () => p);
+      // Ensure custom playlists take precedence so their metadata (title,
+      // trackCount) remains authoritative when updated.
+      for (final p in _customPlaylists) merged[p.id] = p;
       state = state.copyWith(playlists: merged.values.toList());
     });
 
@@ -47,7 +49,7 @@ class MyPlaylistsStateNotifier extends Notifier<MyPlaylistsState> {
       _customPlaylists = await _customRepo.getCustomPlaylists();
       final merged = <String, Playlist>{};
       for (final p in _likedFeatured) merged[p.id] = p;
-      for (final p in _customPlaylists) merged.putIfAbsent(p.id, () => p);
+      for (final p in _customPlaylists) merged[p.id] = p;
       state = state.copyWith(
         playlists: merged.values.toList(),
         isLoading: false,
@@ -66,7 +68,7 @@ class MyPlaylistsStateNotifier extends Notifier<MyPlaylistsState> {
     _customPlaylists = _customPlaylists.where((p) => p.id != id).toList();
     final merged = <String, Playlist>{};
     for (final p in _likedFeatured) merged[p.id] = p;
-    for (final p in _customPlaylists) merged.putIfAbsent(p.id, () => p);
+    for (final p in _customPlaylists) merged[p.id] = p;
     state = state.copyWith(playlists: merged.values.toList());
   }
 
@@ -74,7 +76,7 @@ class MyPlaylistsStateNotifier extends Notifier<MyPlaylistsState> {
     _customPlaylists = [playlist, ..._customPlaylists];
     final merged = <String, Playlist>{};
     for (final p in _likedFeatured) merged[p.id] = p;
-    for (final p in _customPlaylists) merged.putIfAbsent(p.id, () => p);
+    for (final p in _customPlaylists) merged[p.id] = p;
     state = state.copyWith(playlists: merged.values.toList());
   }
 
@@ -84,7 +86,7 @@ class MyPlaylistsStateNotifier extends Notifier<MyPlaylistsState> {
         .toList();
     final merged = <String, Playlist>{};
     for (final p in _likedFeatured) merged[p.id] = p;
-    for (final p in _customPlaylists) merged.putIfAbsent(p.id, () => p);
+    for (final p in _customPlaylists) merged[p.id] = p;
     state = state.copyWith(playlists: merged.values.toList());
   }
 

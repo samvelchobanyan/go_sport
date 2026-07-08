@@ -34,6 +34,8 @@ class StoriesDto {
     required this.body,
     required this.cover,
     this.publishedAt,
+    this.ctaLabel,
+    this.ctaUrl,
   });
 
   factory StoriesDto.fromJson(Map<String, dynamic> json) {
@@ -51,6 +53,14 @@ class StoriesDto {
           ? _CoverDto.fromJson(json['Cover'] as Map<String, dynamic>)
           : null,
       publishedAt: parsedDate,
+      ctaLabel:
+          (json['Button'] as String?) ?? (json['button'] as String?) ?? '',
+      ctaUrl:
+          (json['URL'] as String?) ??
+          (json['Url'] as String?) ??
+          (json['url'] as String?) ??
+          ((json['CTA'] is Map) ? (json['CTA']['url'] as String?) : null) ??
+          '',
     );
   }
 
@@ -63,9 +73,13 @@ class StoriesDto {
       imageUrl: cover?.url ?? '',
       isViewed:
           false, // Defaulted as per your Freezed definition or local tracking
-      ctaLabel: '', // Fallback empty string if not present in your API yet
-      ctaTargetType: '',
-      ctaTargetId: '',
+      ctaLabel: ctaLabel ?? '',
+      ctaTargetType: (ctaUrl != null && ctaUrl!.isNotEmpty) ? 'external' : '',
+      ctaTargetId: ctaUrl ?? '',
     );
   }
+
+  // Optional CTA fields parsed from the API
+  final String? ctaLabel;
+  final String? ctaUrl;
 }

@@ -36,6 +36,7 @@ dependencies:
 
     # External links
     url_launcher: ^6.3.0
+    connectivity_plus: ^4.0.1
 
     # Push Notifications
     firebase_messaging: 16.3.0

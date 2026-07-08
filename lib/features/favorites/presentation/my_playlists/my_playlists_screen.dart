@@ -46,6 +46,8 @@ class MyPlaylistsScreen extends ConsumerWidget {
     final state = ref.watch(myPlaylistsStateProvider);
     final playlists = state.playlists;
 
+    print('playlists $playlists');
+
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.dark,
       child: Scaffold(

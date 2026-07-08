@@ -9,6 +9,8 @@ import 'package:go_sport/core/network/api_client.dart';
 import 'package:go_sport/core/notifications/notification_service.dart';
 import 'package:go_sport/core/notifications/reminder_storage.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
+import 'package:go_sport/domain/state/connectivity_state.dart';
+import 'package:go_sport/features/shared_widgets/no_connection_screen.dart';
 import 'core/audio/app_audio_handler.dart';
 import 'core/audio/player_session_storage.dart';
 import 'core/auth/google_auth_service.dart';
@@ -22,6 +24,7 @@ import 'core/network/interceptors/error_interceptor.dart';
 import 'core/network/network_error_service.dart';
 import 'design_system/theme/ds_theme_data.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -63,6 +66,12 @@ Future<void> main() async {
   final playerSessionStorage = PlayerSessionStorage();
   await playerSessionStorage.init();
 
+  // Perform initial connectivity check to avoid launching networked
+  // screens while offline (prevents early DioExceptions).
+  final connectivity = Connectivity();
+  final initialResult = await connectivity.checkConnectivity();
+  final initialOnline = initialResult != ConnectivityResult.none;
+
   try {
     // Initialize AudioService
     final audioHandler = await AudioService.init(
@@ -86,6 +95,9 @@ Future<void> main() async {
           notificationServiceProvider.overrideWithValue(notificationService),
           reminderStorageProvider.overrideWithValue(reminderStorage),
           playerSessionStorageProvider.overrideWithValue(playerSessionStorage),
+          // Provide initial connectivity hint to the connectivity provider
+          // so the app can show the offline screen immediately when needed.
+          initialConnectivityProvider.overrideWithValue(initialOnline),
         ],
         child: MainApp(tokenStorage: tokenStorage),
       ),
@@ -170,13 +182,25 @@ class _MainAppState extends ConsumerState<MainApp> {
 
   @override
   Widget build(BuildContext context) {
+    final online = ref.watch(connectivityProvider);
     ref.listen<AsyncValue<String>>(notificationTapProvider, (prev, next) {
       next.whenData(_handleNotificationPayload);
     });
 
-    ref.listen<AsyncValue<NetworkErrorKind>>(networkErrorProvider, (prev, next) {
+    ref.listen<AsyncValue<NetworkErrorKind>>(networkErrorProvider, (
+      prev,
+      next,
+    ) {
       next.whenData(_showNetworkError);
     });
+
+    if (!online) {
+      return MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: DSThemeData.mainTheme,
+        home: NoConnectionScreen(),
+      );
+    }
 
     return MaterialApp.router(
       title: 'Audio App',

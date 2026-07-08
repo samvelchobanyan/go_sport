@@ -5,6 +5,7 @@ import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 import 'package:go_sport/design_system/foundations/ds_icon_size.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 import 'package:go_sport/core/navigation/routes.dart';
 import 'package:go_sport/domain/entities/playlist.dart';
 import 'package:go_sport/domain/state/news_state.dart';
@@ -49,6 +50,15 @@ class HomeScreen extends ConsumerWidget {
         break;
       case 'radio':
         context.push('/radio');
+        break;
+      case 'external':
+        if (targetId.isNotEmpty) {
+          try {
+            launchUrlString(targetId);
+          } catch (e) {
+            debugPrint('Failed to launch URL: $targetId — $e');
+          }
+        }
         break;
       default:
         debugPrint('Unknown story action target type: $targetType');

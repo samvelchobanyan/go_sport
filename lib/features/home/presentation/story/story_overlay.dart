@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_sport/design_system/components/network_image/ds_network_image.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_icon_size.dart';
 import 'package:go_sport/design_system/foundations/ds_spacing.dart';
@@ -74,9 +73,7 @@ class _StoryOverlayState extends ConsumerState<StoryOverlay>
   }
 
   void _markCurrentViewed() {
-    ref
-        .read(storiesStateProvider.notifier)
-        .markAsViewed(_stories[_index].id);
+    ref.read(storiesStateProvider.notifier).markAsViewed(_stories[_index].id);
   }
 
   void _restartTimer() {
@@ -128,7 +125,7 @@ class _StoryOverlayState extends ConsumerState<StoryOverlay>
       backgroundColor: DSColors.transparent,
       body: Stack(
         children: [
-          // Background image (full screen, including system areas)
+          // 1. Background image (full screen)
           Positioned.fill(
             child: DSNetworkImage(
               key: ValueKey(story.id),
@@ -136,17 +133,7 @@ class _StoryOverlayState extends ConsumerState<StoryOverlay>
             ),
           ),
 
-          // Tap zones (left = prev, right = next) + hold-to-pause
-          Positioned.fill(
-            child: GestureDetector(
-              behavior: HitTestBehavior.opaque,
-              onTapUp: _onTapUp,
-              onLongPressStart: (_) => _pause(),
-              onLongPressEnd: (_) => _resume(),
-            ),
-          ),
-
-          // Top scrim so progress bar / close button read on any photo
+          // 2. Top scrim gradient
           Positioned(
             top: 0,
             left: 0,
@@ -165,7 +152,7 @@ class _StoryOverlayState extends ConsumerState<StoryOverlay>
             ),
           ),
 
-          // Segmented progress bar
+          // 3. Segmented progress bar
           Positioned(
             top: topInset + DSSpacing.s8,
             left: DSSpacing.m,
@@ -180,29 +167,7 @@ class _StoryOverlayState extends ConsumerState<StoryOverlay>
             ),
           ),
 
-          // Close button (top-right, respecting safe area)
-          Positioned(
-            top: topInset + DSSpacing.l,
-            right: DSSpacing.m,
-            child: GestureDetector(
-              onTap: widget.onClose,
-              child: Container(
-                width: 40,
-                height: 40,
-                decoration: BoxDecoration(
-                  color: const Color.fromARGB(136, 255, 255, 255),
-                  shape: BoxShape.circle,
-                ),
-                child: Icon(
-                  Icons.close,
-                  size: DSIconSize.s24,
-                  color: DSColors.black,
-                ),
-              ),
-            ),
-          ),
-
-          // Bottom content area with gradient
+          // 4. Bottom text content area (Stays at the back layout level)
           Positioned(
             left: 0,
             right: 0,
@@ -241,40 +206,79 @@ class _StoryOverlayState extends ConsumerState<StoryOverlay>
 
                       const SizedBox(height: DSSpacing.l),
 
-                      // CTA Button
-                      GestureDetector(
-                        onTap: () => widget.onAction(
-                          story.ctaTargetType,
-                          story.ctaTargetId,
-                        ),
-                        child: Container(
-                          height: 48,
-                          decoration: BoxDecoration(
-                            color: DSColors.lime,
-                            borderRadius: BorderRadius.circular(DSRadius.xxl),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              SvgPicture.asset('assets/icons/volume.svg'),
-                              const SizedBox(width: DSSpacing.s8),
-                              Text(
-                                story.ctaLabel,
-                                style: context.subtitleLBold?.copyWith(
-                                  color: DSColors.blue,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
+                      // Empty spacer matching the exact height of your CTA layout
+                      if ((story.ctaLabel).isNotEmpty &&
+                          (story.ctaTargetId).isNotEmpty)
+                        const SizedBox(height: 48),
 
                       SizedBox(
-                        height: MediaQuery.of(context).padding.bottom +
-                            DSSpacing.l,
+                        height:
+                            MediaQuery.of(context).padding.bottom + DSSpacing.l,
                       ),
                     ],
                   ),
+                ),
+              ),
+            ),
+          ),
+
+          // 5. GLOBAL TAP ZONES & HOLD-TO-PAUSE (Now a direct child of Stack, in front of text layers)
+          Positioned.fill(
+            child: GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTapUp: _onTapUp,
+              onLongPressStart: (_) => _pause(),
+              onLongPressEnd: (_) => _resume(),
+            ),
+          ),
+
+          // 6. INTERACTIVE CTA BUTTON (Placed explicitly on top of the global Tap Zone)
+          if ((story.ctaLabel).isNotEmpty && (story.ctaTargetId).isNotEmpty)
+            Positioned(
+              left: DSSpacing.l,
+              right: DSSpacing.l,
+              bottom: MediaQuery.of(context).padding.bottom + DSSpacing.l,
+              child: GestureDetector(
+                onTap: () =>
+                    widget.onAction(story.ctaTargetType, story.ctaTargetId),
+                child: Container(
+                  height: 48,
+                  decoration: BoxDecoration(
+                    color: DSColors.lime,
+                    borderRadius: BorderRadius.circular(DSRadius.xxl),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        story.ctaLabel,
+                        style: context.subtitleLBold?.copyWith(
+                          color: DSColors.blue,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+
+          // 7. CLOSE BUTTON (Placed explicitly on top of the global Tap Zone)
+          Positioned(
+            top: topInset + DSSpacing.l,
+            right: DSSpacing.m,
+            child: GestureDetector(
+              onTap: widget.onClose,
+              child: Container(
+                width: 40,
+                height: 40,
+                decoration: const BoxDecoration(
+                  color: Color.fromARGB(136, 255, 255, 255),
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  Icons.close,
+                  size: DSIconSize.s24,
+                  color: DSColors.black,
                 ),
               ),
             ),
