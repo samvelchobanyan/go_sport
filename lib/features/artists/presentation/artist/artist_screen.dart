@@ -42,13 +42,16 @@ class _ArtistScreenState extends ConsumerState<ArtistScreen> {
           .select((s) => s.likedArtists.any((a) => a.id == widget.artistId)),
     );
 
-    // Prefer the freshly loaded artist; fall back to the navigation hint so the
-    // hero paints immediately when we came from a list. Null only while the
+    // Prefer the navigation hint for the hero. Its cover URL is already cached
+    // by the list we came from, so keeping it avoids a placeholder flash when
+    // the details load returns a different Cover URL for the same artist. The
+    // freshly loaded artist is used only for player-originated opens (no hint);
+    // albums always come from the loaded state below. Null only while a
     // player-originated load is still in flight.
     final loadedArtist = state.whenOrNull(
       data: (artist, albums) => artist,
     );
-    final artist = loadedArtist ?? widget.artistHint;
+    final artist = widget.artistHint ?? loadedArtist;
 
     final screenHeight = MediaQuery.of(context).size.height;
     final expandedHeight = screenHeight * 0.5;
