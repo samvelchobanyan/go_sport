@@ -9,6 +9,7 @@ import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/core/auth/auth_state.dart';
 import 'package:go_sport/core/navigation/routes.dart';
 import 'package:go_sport/domain/state/user_state.dart';
+import 'package:go_sport/features/user_profile/notifications/presentation/notifications/notifications_controller.dart';
 import 'package:go_sport/features/user_profile/profile/presentation/widgets/action_row.dart';
 import 'package:go_sport/features/user_profile/profile/presentation/widgets/contact_info.dart';
 import 'package:go_sport/features/user_profile/profile/presentation/widgets/social_media_button.dart';
@@ -24,10 +25,23 @@ class ProfileScreen extends ConsumerStatefulWidget {
 }
 
 class _ProfileScreenState extends ConsumerState<ProfileScreen> {
+  void initState() {
+    super.initState();
+    // Fetch unseen notifications on load to keep the badge accurate
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref
+          .read(notificationsControllerProvider.notifier)
+          .getUnseenNotifications();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final userState = ref.watch(userStateProvider);
+    final notificationsState = ref.watch(notificationsControllerProvider);
+    final hasUnseenNotifications = notificationsState.unseenItems.isNotEmpty;
 
+    print('hasUnseenNotifications: $hasUnseenNotifications');
     ref.listen<UserState>(userStateProvider, (previous, next) {
       if (next.error != null && previous?.error != next.error) {
         ScaffoldMessenger.of(
@@ -85,11 +99,42 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           actions: [
             IconButton(
               onPressed: () => context.push(AppRoutes.notifications),
-              icon: SvgPicture.asset('assets/icons/bell_blue.svg'),
+              icon: Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  SvgPicture.asset('assets/icons/bell_blue.svg'),
+                  if (hasUnseenNotifications)
+                    Positioned(
+                      right:
+                          -4, // Shifted slightly out so the badge text layout clears the graphic smoothly
+                      top: -2,
+                      child: Container(
+                        width: 14,
+                        height: 14,
+                        decoration: const BoxDecoration(
+                          color: Colors
+                              .orange, // Change to your DSColors token if available
+                          shape: BoxShape.circle,
+                        ),
+                        child: Center(
+                          child: Text(
+                            '${notificationsState.unseenItems.length}',
+                            style: context.label?.copyWith(
+                              color: DSColors.white,
+                              fontWeight: FontWeight.w600,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ),
+                    ),
+                ],
+              ),
             ),
             const SizedBox(width: DSSpacing.s8),
           ],
         ),
+
         body: CustomScrollView(
           slivers: [
             // Top Profile Section (Scrollable)

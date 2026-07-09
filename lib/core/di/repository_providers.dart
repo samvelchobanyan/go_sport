@@ -3,6 +3,7 @@ import 'package:go_sport/data/repositories/auth_repository_impl.dart';
 import 'package:go_sport/data/repositories/albums_repository_impl.dart';
 import 'package:go_sport/data/repositories/device_repository_impl.dart';
 import 'package:go_sport/data/repositories/profile_repository_impl.dart';
+import 'package:go_sport/data/repositories/notifications_repository_impl.dart';
 import 'package:go_sport/domain/repositories/auth_repository.dart';
 import 'package:go_sport/data/repositories/artists_repository_impl.dart';
 import 'package:go_sport/data/repositories/episodes_repository_impl.dart';
@@ -24,6 +25,7 @@ import '../../data/repositories/tracks_repository_mock.dart';
 import '../../domain/repositories/news_repository.dart';
 import '../../data/repositories/search_repository_impl.dart';
 import '../../domain/repositories/custom_playlist_repository.dart';
+import '../../domain/repositories/notifications_repository.dart';
 import '../../domain/repositories/featured_playlist_repository.dart';
 import '../../domain/repositories/search_repository.dart';
 import '../../domain/repositories/story_repository.dart';
@@ -38,11 +40,15 @@ final newsRepositoryProvider = Provider<NewsRepository>((ref) {
   return NewsRepositoryImpl(ref.read(apiClientProvider));
 });
 
-final featuredPlaylistRepositoryProvider = Provider<FeaturedPlaylistRepository>((ref) {
-  return FeaturedPlaylistRepositoryImpl(ref.read(apiClientProvider));
-});
+final featuredPlaylistRepositoryProvider = Provider<FeaturedPlaylistRepository>(
+  (ref) {
+    return FeaturedPlaylistRepositoryImpl(ref.read(apiClientProvider));
+  },
+);
 
-final customPlaylistRepositoryProvider = Provider<CustomPlaylistRepository>((ref) {
+final customPlaylistRepositoryProvider = Provider<CustomPlaylistRepository>((
+  ref,
+) {
   return CustomPlaylistRepositoryImpl(ref.read(apiClientProvider));
 });
 
@@ -80,6 +86,12 @@ final searchRepositoryProvider = Provider<SearchRepository>((ref) {
 
 final profileRepositoryProvider = Provider<ProfileRepository>((ref) {
   return ProfileRepositoryImpl(ref.read(apiClientProvider));
+});
+
+final notificationsRepositoryProvider = Provider<NotificationsRepository>((
+  ref,
+) {
+  return NotificationsRepositoryImpl(ref.read(apiClientProvider));
 });
 
 final deviceRepositoryProvider = Provider<DeviceRepository>((ref) {
