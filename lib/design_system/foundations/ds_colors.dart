@@ -49,13 +49,11 @@ class DSColors {
 
   static const divider = gray20; // rgba(245,245,247,1)
 
+  
   static const List<Color> storyGradient = [
-    Color(0xFF404AC3), // 404AC3 at start
-    Color(0xFF404AC3), // 13% (0.13)
-    Color(
-      0xFFCFDC28,
-    ), // 38% (0.38) - Note: added the missing 'C' for CFD28 -> CFDC28
-    Color(0xFF404AC3), // 63% (0.63)
-    Color(0xFF404AC3), // 404AC3 at end to complete the loop smoothly
+    orange, // Starts Orange at 0.0 (3 o'clock)
+    Color(0xFFCFDC28), // Transitions to Lime/Yellow-Green at 0.33
+    Color(0xFF404AC3), // Transitions to Blue at 0.66
+    orange, // Loops seamlessly back to Orange at 1.0 (3 o'clock)
   ];
 }

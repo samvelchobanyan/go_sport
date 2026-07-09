@@ -182,6 +182,7 @@ class _StoryOverlayState extends ConsumerState<StoryOverlay>
               ),
               child: SafeArea(
                 top: false,
+                bottom: true, //new
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: DSSpacing.l),
                   child: Column(
@@ -204,17 +205,29 @@ class _StoryOverlayState extends ConsumerState<StoryOverlay>
                         style: context.bodyL?.copyWith(color: DSColors.white80),
                       ),
 
+                      // if ((story.ctaLabel).isNotEmpty &&
+                      //     (story.ctaTargetId).isNotEmpty)
+                      //   const SizedBox(height: DSSpacing.l),
+
+                      // // Empty spacer matching the exact height of your CTA layout
+                      // // if ((story.ctaLabel).isNotEmpty &&
+                      // //     (story.ctaTargetId).isNotEmpty)
+                      // const SizedBox(height: 48),
+
+                      // if ((story.ctaLabel).isNotEmpty &&
+                      //     (story.ctaTargetId).isNotEmpty)
+                      //   SizedBox(
+                      //     height:
+                      //         MediaQuery.of(context).padding.bottom +
+                      //         DSSpacing.l,
+                      //   ),
                       const SizedBox(height: DSSpacing.l),
 
-                      // Empty spacer matching the exact height of your CTA layout
-                      if ((story.ctaLabel).isNotEmpty &&
-                          (story.ctaTargetId).isNotEmpty)
-                        const SizedBox(height: 48),
 
-                      SizedBox(
-                        height:
-                            MediaQuery.of(context).padding.bottom + DSSpacing.l,
-                      ),
+                      if (story.ctaLabel.isNotEmpty &&
+                          story.ctaTargetId.isNotEmpty) ...[
+                        const SizedBox(height: DSSpacing.l + 48),
+                      ],
                     ],
                   ),
                 ),

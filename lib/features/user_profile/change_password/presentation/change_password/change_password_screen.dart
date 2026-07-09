@@ -10,9 +10,9 @@ import 'package:go_sport/features/shared_widgets/input.dart';
 import 'package:go_router/go_router.dart';
 import 'package:go_sport/features/user_profile/change_password/presentation/change_password/change_password_controller.dart';
 
-const double _cardHeight = 600;
-const double _cardOverlap = 25;
-const double _cardVerticalPadding = 40;
+// const double _cardHeight = 600;
+// const double _cardOverlap = 25;
+// const double _cardVerticalPadding = 40;
 
 class ProfileChangePasswordScreen extends ConsumerStatefulWidget {
   const ProfileChangePasswordScreen({super.key});
@@ -69,8 +69,8 @@ class _ProfileChangePasswordScreenState
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(changePasswordControllerProvider);
-    final screenSize = MediaQuery.of(context).size;
-    final imageHeight = screenSize.height - _cardHeight + _cardOverlap;
+    // final screenSize = MediaQuery.of(context).size;
+    // final imageHeight = screenSize.height - _cardHeight + _cardOverlap;
 
     ref.listen<ChangePasswordState>(changePasswordControllerProvider, (
       previous,
@@ -108,7 +108,7 @@ class _ProfileChangePasswordScreenState
               top: 0,
               left: 0,
               right: 0,
-              height: imageHeight,
+              // height: imageHeight,
               child: Image.asset(
                 'assets/images/change_password.png',
                 fit: BoxFit.cover,
@@ -119,8 +119,9 @@ class _ProfileChangePasswordScreenState
             Align(
               alignment: Alignment.bottomCenter,
               child: Container(
-                height: _cardHeight,
-                width: screenSize.width,
+                padding: const EdgeInsets.symmetric(vertical: DSSpacing.s20),
+                // height: _cardHeight,
+                // width: screenSize.width,
                 decoration: BoxDecoration(
                   color: DSColors.white,
                   borderRadius: const BorderRadius.only(
@@ -131,14 +132,16 @@ class _ProfileChangePasswordScreenState
                 child: SingleChildScrollView(
                   padding: const EdgeInsets.symmetric(
                     horizontal: DSSpacing.m,
-                    vertical: _cardVerticalPadding / 2,
+                    // vertical: _cardVerticalPadding / 2,
                   ),
-                  child: ConstrainedBox(
-                    constraints: const BoxConstraints(
-                      minHeight: _cardHeight - _cardVerticalPadding,
-                    ),
-                    child: IntrinsicHeight(
-                      child: Column(
+                  // child: ConstrainedBox(
+                  //   constraints: const BoxConstraints(
+                  //     minHeight: _cardHeight - _cardVerticalPadding,
+                  //   ),
+                  child:
+                      // IntrinsicHeight(
+                      //   child:
+                      Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           Text(
@@ -167,7 +170,8 @@ class _ProfileChangePasswordScreenState
                             obscureText: true,
                           ),
 
-                          const Spacer(),
+                          // const Spacer(),
+                          const SizedBox(height: DSSpacing.l),
 
                           // Action Button
                           ElevatedButton.icon(
@@ -193,16 +197,18 @@ class _ProfileChangePasswordScreenState
                               backgroundColor: DSColors.blue,
                               minimumSize: const Size.fromHeight(DSSpacing.xxl),
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(DSRadius.xxl),
+                                borderRadius: BorderRadius.circular(
+                                  DSRadius.xxl,
+                                ),
                               ),
                             ),
                             onPressed: state.isLoading ? null : _onSave,
                           ),
                         ],
                       ),
-                    ),
-                  ),
                 ),
+                // ),
+                // ),
               ),
             ),
           ],

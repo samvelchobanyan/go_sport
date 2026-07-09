@@ -20,15 +20,15 @@ class StoryItem extends StatelessWidget {
         padding: const EdgeInsets.all(DSSpacing.s),
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-
           gradient: !story.isViewed
               ? const SweepGradient(
                   colors: DSColors.storyGradient,
-
-                  stops: [0.0, 0.13, 0.38, 0.63, 1.0],
+                  stops: [0.0, 0.33, 0.66, 1.0],
                 )
               : null,
-
+          // border: story.isViewed
+          //     ? Border.all(color: DSColors.divider, width: 2)
+          //     : null,
           color: story.isViewed ? DSColors.divider : null,
         ),
         child: Container(
@@ -41,7 +41,9 @@ class StoryItem extends StatelessWidget {
             child: SizedBox(
               width: 62, // 72 - 2*(outerRing 2 + whiteRing 3) = 62
               height: 62,
-              child: ClipOval(child: DSNetworkImage(imageUrl: story.imageUrl)),
+              child: ClipOval(
+                child: DSNetworkImage(imageUrl: story.imageUrl),
+              ),
             ),
           ),
         ),
