@@ -74,12 +74,21 @@ class _ProgramDetailsScreenState extends ConsumerState<ProgramDetailsScreen> {
       programDetailsControllerProvider(widget.program.id),
     );
     final isLiked = ref.watch(
-      likeRegistryProvider.select((s) => s.likedPrograms.any((p) => p.id == widget.program.id)),
+      likeRegistryProvider.select(
+        (s) => s.likedPrograms.any((p) => p.id == widget.program.id),
+      ),
     );
-    final isThisActiveSource = ref.watch(playerStateProvider.select((s) =>
-        s.source?.id == widget.program.id && !s.isRadioMode));
-    final isThisPlaying = ref.watch(playerStateProvider.select((s) =>
-        s.source?.id == widget.program.id && s.isPlaying && !s.isRadioMode));
+    final isThisActiveSource = ref.watch(
+      playerStateProvider.select(
+        (s) => s.source?.id == widget.program.id && !s.isRadioMode,
+      ),
+    );
+    final isThisPlaying = ref.watch(
+      playerStateProvider.select(
+        (s) =>
+            s.source?.id == widget.program.id && s.isPlaying && !s.isRadioMode,
+      ),
+    );
     final screenHeight = MediaQuery.of(context).size.height;
     final expandedHeight = screenHeight * 0.5;
     final youtubeUrl = widget.program.youtubeUrl;
@@ -120,7 +129,8 @@ class _ProgramDetailsScreenState extends ConsumerState<ProgramDetailsScreen> {
                     final episodes = episodesState.mapOrNull(
                       data: (data) => data.episodes,
                     );
-                    if (episodes != null) _onPlayTap(episodes, isThisActiveSource);
+                    if (episodes != null)
+                      _onPlayTap(episodes, isThisActiveSource);
                   },
                 ),
               ),
@@ -182,7 +192,9 @@ class _ProgramDetailsScreenState extends ConsumerState<ProgramDetailsScreen> {
                 final playingTrackId = playerState.currentTrack?.id;
 
                 return SliverPadding(
-                  padding: const EdgeInsets.only(bottom: DSLayout.bottomBarClearance),
+                  padding: const EdgeInsets.only(
+                    bottom: DSLayout.bottomBarClearance,
+                  ),
                   sliver: SliverList(
                     delegate: SliverChildBuilderDelegate((context, index) {
                       final episode = episodes[index];
@@ -201,10 +213,13 @@ class _ProgramDetailsScreenState extends ConsumerState<ProgramDetailsScreen> {
                             topPadding: index == 0 ? 20 : 8,
                             onTap: () => _onTrackTap(episodes, index),
                             onMenuTap: () => _onTrackMenuTap(index),
+                            program: widget.program,
                           ),
                           if (index < episodes.length - 1)
                             const Padding(
-                              padding: EdgeInsets.symmetric(horizontal: DSSpacing.m),
+                              padding: EdgeInsets.symmetric(
+                                horizontal: DSSpacing.m,
+                              ),
                               child: DottedDivider(),
                             ),
                         ],

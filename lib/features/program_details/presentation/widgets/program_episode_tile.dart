@@ -3,6 +3,7 @@ import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 import 'package:go_sport/design_system/foundations/ds_icon_size.dart';
+import 'package:go_sport/domain/entities/program.dart';
 import 'package:go_sport/domain/entities/track.dart';
 import 'package:go_sport/features/shared_widgets/bottom_pop_ups/track_options.dart';
 import 'package:go_sport/features/shared_widgets/track_number_badge.dart';
@@ -15,6 +16,7 @@ class ProgramEpisodeTile extends StatelessWidget {
   final VoidCallback onMenuTap;
   final bool? isPlaying;
   final double topPadding;
+  final Program? program;
 
   const ProgramEpisodeTile({
     super.key,
@@ -24,6 +26,7 @@ class ProgramEpisodeTile extends StatelessWidget {
     required this.onMenuTap,
     this.isPlaying,
     this.topPadding = 8,
+    this.program,
   });
 
   @override
@@ -31,7 +34,12 @@ class ProgramEpisodeTile extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Padding(
-        padding: EdgeInsets.only(left: DSSpacing.m, right: DSSpacing.m, top: topPadding, bottom: DSSpacing.s8),
+        padding: EdgeInsets.only(
+          left: DSSpacing.m,
+          right: DSSpacing.m,
+          top: topPadding,
+          bottom: DSSpacing.s8,
+        ),
         child: Row(
           children: [
             TrackNumberBadge(index: index),
@@ -43,12 +51,18 @@ class ProgramEpisodeTile extends StatelessWidget {
                 showTrackOptionsBottomSheet(
                   context: context,
                   track: episode,
+                  programId: program?.id,
+                  program: program,
                 );
               },
               behavior: HitTestBehavior.opaque,
               child: const Padding(
                 padding: EdgeInsets.all(DSSpacing.s8),
-                child: Icon(Icons.more_horiz, color: DSColors.gray60, size: DSIconSize.s24),
+                child: Icon(
+                  Icons.more_horiz,
+                  color: DSColors.gray60,
+                  size: DSIconSize.s24,
+                ),
               ),
             ),
           ],
@@ -87,10 +101,7 @@ class ProgramEpisodeTile extends StatelessWidget {
                 _formatDate(episode.releaseDate),
                 style: context.textL?.copyWith(color: DSColors.gray60),
               ),
-            Text(
-              ' • ',
-              style: context.textL?.copyWith(color: DSColors.gray60),
-            ),
+            Text(' • ', style: context.textL?.copyWith(color: DSColors.gray60)),
             Text(
               _formatDuration(episode.duration),
               style: context.textL?.copyWith(color: DSColors.gray60),

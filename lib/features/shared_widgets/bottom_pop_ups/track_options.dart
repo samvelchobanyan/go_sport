@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:go_sport/design_system/components/network_image/ds_network_image.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
+import 'package:go_sport/domain/entities/program.dart';
 import 'package:go_sport/domain/entities/track.dart';
 import 'package:go_sport/domain/state/like_registry.dart';
 import 'package:go_sport/features/shared_widgets/bottom_pop_ups/action_button.dart';
@@ -16,7 +18,10 @@ void showTrackOptionsBottomSheet({
   required Track track,
   VoidCallback? onRemoveFromPlaylist,
   VoidCallback? onAddToPlaylist,
+  String? programId,
+  Program? program,
 }) {
+  print('track $track');
   showModalBottomSheet(
     context: context,
     isScrollControlled: true,
@@ -27,46 +32,84 @@ void showTrackOptionsBottomSheet({
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Track info
-          Row(
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(DSRadius.xs),
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(DSRadius.xs),
-                  child: DSNetworkImage(
-                    imageUrl: track.imageUrl,
-                    width: 48,
-                    height: 48,
+          GestureDetector(
+            onTap: () {
+              final router = GoRouter.of(context);
+              final currentPath = router.state.uri.path;
+              final isSameProgram =
+                  programId != null &&
+                  programId.isNotEmpty &&
+                  currentPath.contains('/program/$programId');
+              final isSameAlbum =
+                  track.albumId != null &&
+                  track.albumId!.isNotEmpty &&
+                  currentPath.contains('/album/${track.albumId}');
+
+              if (isSameProgram || isSameAlbum) {
+                Navigator.of(context, rootNavigator: true).pop();
+                return;
+              }
+
+              Navigator.of(context, rootNavigator: true).pop();
+
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                if (!context.mounted) return;
+
+                if (programId != null &&
+                    programId.isNotEmpty &&
+                    program != null) {
+                  context.push('/music/program/$programId', extra: program);
+                  return;
+                }
+
+                if (track.albumId != null && track.albumId!.isNotEmpty) {
+                  context.push('/music/album/${track.albumId}');
+                }
+              });
+            },
+            child: Row(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(DSRadius.xs),
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(DSRadius.xs),
+                    child: DSNetworkImage(
+                      imageUrl: track.imageUrl,
+                      width: 48,
+                      height: 48,
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(width: DSSpacing.s12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      track.title,
-                      style: context.subtitleM,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    if (track.artistName.isNotEmpty) ...[
-                      const SizedBox(height: DSSpacing.xs),
+                const SizedBox(width: DSSpacing.s12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
                       Text(
-                        track.artistName,
-                        style: context.textL?.copyWith(color: DSColors.gray60),
+                        track.title,
+                        style: context.subtitleM,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
+                      if (track.artistName.isNotEmpty) ...[
+                        const SizedBox(height: DSSpacing.xs),
+                        Text(
+                          track.artistName,
+                          style: context.textL?.copyWith(
+                            color: DSColors.gray60,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
                     ],
-                  ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
           const SizedBox(height: DSSpacing.s10),
           DottedDivider(color: DSColors.gray20),

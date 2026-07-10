@@ -88,6 +88,39 @@ class NotificationsController extends AutoDisposeNotifier<NotificationsState> {
     }
   }
 
+  Future<void> readNotification(String documentId) async {
+    state = state.copyWith(isLoading: true, error: null, isSuccess: false);
+    try {
+      final notification = await _notificationsRepository.readNotification(
+        documentId,
+      );
+      final updatedItems = state.items.map((item) {
+        if (item.documentId == documentId) {
+          return notification;
+        }
+        return item;
+      }).toList();
+
+      final updatedUnseenItems = state.unseenItems
+          .where((item) => item.documentId != notification.documentId)
+          .toList();
+
+      state = state.copyWith(
+        isLoading: false,
+        isSuccess: true,
+        items: updatedItems,
+        selectedNotification: notification,
+        unseenItems: updatedUnseenItems,
+      );
+    } catch (e) {
+      state = state.copyWith(
+        isLoading: false,
+        error: _messageFromError(e),
+        isSuccess: false,
+      );
+    }
+  }
+
   String _messageFromError(Object error) {
     if (error is DioException && error.response != null) {
       final errorData = error.response!.data;

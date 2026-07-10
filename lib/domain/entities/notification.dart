@@ -5,9 +5,10 @@ part 'notification.freezed.dart';
 @freezed
 class Notification with _$Notification {
   const factory Notification({
-    required String id,
+    required int id,
     required String title,
     required String body,
+    required String documentId,
     @Default(false) bool isRead,
     required DateTime createdAt,
     String? type,

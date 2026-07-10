@@ -188,9 +188,7 @@ GoRouter createAppRouter(TokenStorage tokenStorage) {
 
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) {
-          return MainShell(
-            navigationShell: navigationShell,
-          );
+          return MainShell(navigationShell: navigationShell);
         },
         branches: [
           // Home Branch
@@ -247,7 +245,17 @@ GoRouter createAppRouter(TokenStorage tokenStorage) {
                   GoRoute(
                     path: 'album/:id',
                     builder: (context, state) {
-                      final album = state.extra as Album;
+                      final id = state.pathParameters['id'] ?? '';
+                      final album = state.extra is Album
+                          ? state.extra as Album
+                          : Album(
+                              id: id,
+                              title: 'Album',
+                              imageUrl: '',
+                              artist: '',
+                              trackCount: 0,
+                              releaseYear: '',
+                            );
                       return AlbumScreen(album: album);
                     },
                   ),
@@ -257,10 +265,7 @@ GoRouter createAppRouter(TokenStorage tokenStorage) {
                     builder: (context, state) {
                       final id = state.pathParameters['id']!;
                       final artistHint = state.extra as Artist?;
-                      return ArtistScreen(
-                        artistId: id,
-                        artistHint: artistHint,
-                      );
+                      return ArtistScreen(artistId: id, artistHint: artistHint);
                     },
                   ),
                   // Favorites route
@@ -299,7 +304,15 @@ GoRouter createAppRouter(TokenStorage tokenStorage) {
                   GoRoute(
                     path: 'program/:id',
                     builder: (context, state) {
-                      final program = state.extra as Program;
+                      final id = state.pathParameters['id'] ?? '';
+                      final program = state.extra is Program
+                          ? state.extra as Program
+                          : Program(
+                              id: id,
+                              title: 'Program',
+                              imageUrl: '',
+                              episodeCount: 0,
+                            );
                       return ProgramDetailsScreen(program: program);
                     },
                   ),

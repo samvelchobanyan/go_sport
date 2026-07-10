@@ -17,9 +17,10 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$Notification {
-  String get id => throw _privateConstructorUsedError;
+  int get id => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   String get body => throw _privateConstructorUsedError;
+  String get documentId => throw _privateConstructorUsedError;
   bool get isRead => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
   String? get type => throw _privateConstructorUsedError;
@@ -40,9 +41,10 @@ abstract class $NotificationCopyWith<$Res> {
   ) = _$NotificationCopyWithImpl<$Res, Notification>;
   @useResult
   $Res call({
-    String id,
+    int id,
     String title,
     String body,
+    String documentId,
     bool isRead,
     DateTime createdAt,
     String? type,
@@ -68,6 +70,7 @@ class _$NotificationCopyWithImpl<$Res, $Val extends Notification>
     Object? id = null,
     Object? title = null,
     Object? body = null,
+    Object? documentId = null,
     Object? isRead = null,
     Object? createdAt = null,
     Object? type = freezed,
@@ -78,7 +81,7 @@ class _$NotificationCopyWithImpl<$Res, $Val extends Notification>
             id: null == id
                 ? _value.id
                 : id // ignore: cast_nullable_to_non_nullable
-                      as String,
+                      as int,
             title: null == title
                 ? _value.title
                 : title // ignore: cast_nullable_to_non_nullable
@@ -86,6 +89,10 @@ class _$NotificationCopyWithImpl<$Res, $Val extends Notification>
             body: null == body
                 ? _value.body
                 : body // ignore: cast_nullable_to_non_nullable
+                      as String,
+            documentId: null == documentId
+                ? _value.documentId
+                : documentId // ignore: cast_nullable_to_non_nullable
                       as String,
             isRead: null == isRead
                 ? _value.isRead
@@ -119,9 +126,10 @@ abstract class _$$NotificationImplCopyWith<$Res>
   @override
   @useResult
   $Res call({
-    String id,
+    int id,
     String title,
     String body,
+    String documentId,
     bool isRead,
     DateTime createdAt,
     String? type,
@@ -146,6 +154,7 @@ class __$$NotificationImplCopyWithImpl<$Res>
     Object? id = null,
     Object? title = null,
     Object? body = null,
+    Object? documentId = null,
     Object? isRead = null,
     Object? createdAt = null,
     Object? type = freezed,
@@ -156,7 +165,7 @@ class __$$NotificationImplCopyWithImpl<$Res>
         id: null == id
             ? _value.id
             : id // ignore: cast_nullable_to_non_nullable
-                  as String,
+                  as int,
         title: null == title
             ? _value.title
             : title // ignore: cast_nullable_to_non_nullable
@@ -164,6 +173,10 @@ class __$$NotificationImplCopyWithImpl<$Res>
         body: null == body
             ? _value.body
             : body // ignore: cast_nullable_to_non_nullable
+                  as String,
+        documentId: null == documentId
+            ? _value.documentId
+            : documentId // ignore: cast_nullable_to_non_nullable
                   as String,
         isRead: null == isRead
             ? _value.isRead
@@ -193,6 +206,7 @@ class _$NotificationImpl implements _Notification {
     required this.id,
     required this.title,
     required this.body,
+    required this.documentId,
     this.isRead = false,
     required this.createdAt,
     this.type,
@@ -200,11 +214,13 @@ class _$NotificationImpl implements _Notification {
   });
 
   @override
-  final String id;
+  final int id;
   @override
   final String title;
   @override
   final String body;
+  @override
+  final String documentId;
   @override
   @JsonKey()
   final bool isRead;
@@ -217,7 +233,7 @@ class _$NotificationImpl implements _Notification {
 
   @override
   String toString() {
-    return 'Notification(id: $id, title: $title, body: $body, isRead: $isRead, createdAt: $createdAt, type: $type, targetId: $targetId)';
+    return 'Notification(id: $id, title: $title, body: $body, documentId: $documentId, isRead: $isRead, createdAt: $createdAt, type: $type, targetId: $targetId)';
   }
 
   @override
@@ -228,6 +244,8 @@ class _$NotificationImpl implements _Notification {
             (identical(other.id, id) || other.id == id) &&
             (identical(other.title, title) || other.title == title) &&
             (identical(other.body, body) || other.body == body) &&
+            (identical(other.documentId, documentId) ||
+                other.documentId == documentId) &&
             (identical(other.isRead, isRead) || other.isRead == isRead) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
@@ -242,6 +260,7 @@ class _$NotificationImpl implements _Notification {
     id,
     title,
     body,
+    documentId,
     isRead,
     createdAt,
     type,
@@ -259,9 +278,10 @@ class _$NotificationImpl implements _Notification {
 
 abstract class _Notification implements Notification {
   const factory _Notification({
-    required final String id,
+    required final int id,
     required final String title,
     required final String body,
+    required final String documentId,
     final bool isRead,
     required final DateTime createdAt,
     final String? type,
@@ -269,11 +289,13 @@ abstract class _Notification implements Notification {
   }) = _$NotificationImpl;
 
   @override
-  String get id;
+  int get id;
   @override
   String get title;
   @override
   String get body;
+  @override
+  String get documentId;
   @override
   bool get isRead;
   @override

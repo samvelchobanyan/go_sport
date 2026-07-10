@@ -31,23 +31,32 @@ class NotificationsRepositoryImpl implements NotificationsRepository {
     final data = response.data['data'] as Map<String, dynamic>? ?? {};
     return NotificationDto.fromJson(data).toDomain();
   }
-@override
-Future<List<Notification>> getUnseenNotifications() async {
-  // Update path and map the Strapi filters to the queryParameters map
-  final response = await _apiClient.get(
-    '/api/notifications',
-    queryParameters: {
-      'filters[IsSeen][\$eq]': 'false',
-    },
-  );
 
-  print('response.data for unseen notifications: ${response.data}');
+  @override
+  Future<List<Notification>> getUnseenNotifications() async {
+    final response = await _apiClient.get(
+      '/api/notifications',
+      queryParameters: {'filters[IsSeen][\$eq]': 'false'},
+    );
 
-  final data = response.data['data'] as List<dynamic>? ?? [];
-  return data
-      .map(
-        (e) => NotificationDto.fromJson(e as Map<String, dynamic>).toDomain(),
-      )
-      .toList();
-}
+    final data = response.data['data'] as List<dynamic>? ?? [];
+    return data
+        .map(
+          (e) => NotificationDto.fromJson(e as Map<String, dynamic>).toDomain(),
+        )
+        .toList();
+  }
+
+  @override
+  Future<Notification> readNotification(String documentId) async {
+    final response = await _apiClient.put(
+      '/api/notifications/$documentId',
+      data: {
+        'data': {'IsSeen': true},
+      },
+    );
+
+    final data = response.data['data'] as Map<String, dynamic>? ?? {};
+    return NotificationDto.fromJson(data).toDomain();
+  }
 }

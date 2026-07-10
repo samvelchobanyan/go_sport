@@ -105,12 +105,11 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
                               // Replace placeholder image path with your design system path
                               imagePath: 'assets/images/login_bg.png',
                               onTap: () {
-                                // Optional handle click interaction
                                 ref
                                     .read(
                                       notificationsControllerProvider.notifier,
                                     )
-                                    .getSingleNotification(item.id);
+                                    .readNotification(item.documentId);
                               },
                             ),
                             if (index != state.items.length - 1)
