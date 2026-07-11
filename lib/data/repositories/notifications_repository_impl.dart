@@ -33,18 +33,21 @@ class NotificationsRepositoryImpl implements NotificationsRepository {
   }
 
   @override
-  Future<List<Notification>> getUnseenNotifications() async {
+  Future<int> getUnseenCount() async {
+    // Only the total is needed for the badge, so ask for a single-item page
+    // and read the count from Strapi's pagination meta (accurate beyond the
+    // default page size, and sidesteps per-item DTO parsing entirely).
     final response = await _apiClient.get(
       '/api/notifications',
-      queryParameters: {'filters[IsSeen][\$eq]': 'false'},
+      queryParameters: {
+        'filters[IsSeen][\$eq]': 'false',
+        'pagination[pageSize]': '1',
+      },
     );
 
-    final data = response.data['data'] as List<dynamic>? ?? [];
-    return data
-        .map(
-          (e) => NotificationDto.fromJson(e as Map<String, dynamic>).toDomain(),
-        )
-        .toList();
+    final meta = response.data['meta'] as Map<String, dynamic>?;
+    final pagination = meta?['pagination'] as Map<String, dynamic>?;
+    return pagination?['total'] as int? ?? 0;
   }
 
   @override

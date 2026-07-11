@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'notifications_controller.dart';
+part of 'notifications_state.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -19,10 +19,9 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$NotificationsState {
   bool get isLoading => throw _privateConstructorUsedError;
   String? get error => throw _privateConstructorUsedError;
-  bool get isSuccess => throw _privateConstructorUsedError;
   List<Notification> get items => throw _privateConstructorUsedError;
+  int get unseenCount => throw _privateConstructorUsedError;
   Notification? get selectedNotification => throw _privateConstructorUsedError;
-  List<Notification> get unseenItems => throw _privateConstructorUsedError;
 
   /// Create a copy of NotificationsState
   /// with the given fields replaced by the non-null parameter values.
@@ -41,10 +40,9 @@ abstract class $NotificationsStateCopyWith<$Res> {
   $Res call({
     bool isLoading,
     String? error,
-    bool isSuccess,
     List<Notification> items,
+    int unseenCount,
     Notification? selectedNotification,
-    List<Notification> unseenItems,
   });
 
   $NotificationCopyWith<$Res>? get selectedNotification;
@@ -67,10 +65,9 @@ class _$NotificationsStateCopyWithImpl<$Res, $Val extends NotificationsState>
   $Res call({
     Object? isLoading = null,
     Object? error = freezed,
-    Object? isSuccess = null,
     Object? items = null,
+    Object? unseenCount = null,
     Object? selectedNotification = freezed,
-    Object? unseenItems = null,
   }) {
     return _then(
       _value.copyWith(
@@ -82,22 +79,18 @@ class _$NotificationsStateCopyWithImpl<$Res, $Val extends NotificationsState>
                 ? _value.error
                 : error // ignore: cast_nullable_to_non_nullable
                       as String?,
-            isSuccess: null == isSuccess
-                ? _value.isSuccess
-                : isSuccess // ignore: cast_nullable_to_non_nullable
-                      as bool,
             items: null == items
                 ? _value.items
                 : items // ignore: cast_nullable_to_non_nullable
                       as List<Notification>,
+            unseenCount: null == unseenCount
+                ? _value.unseenCount
+                : unseenCount // ignore: cast_nullable_to_non_nullable
+                      as int,
             selectedNotification: freezed == selectedNotification
                 ? _value.selectedNotification
                 : selectedNotification // ignore: cast_nullable_to_non_nullable
                       as Notification?,
-            unseenItems: null == unseenItems
-                ? _value.unseenItems
-                : unseenItems // ignore: cast_nullable_to_non_nullable
-                      as List<Notification>,
           )
           as $Val,
     );
@@ -130,10 +123,9 @@ abstract class _$$NotificationsStateImplCopyWith<$Res>
   $Res call({
     bool isLoading,
     String? error,
-    bool isSuccess,
     List<Notification> items,
+    int unseenCount,
     Notification? selectedNotification,
-    List<Notification> unseenItems,
   });
 
   @override
@@ -156,10 +148,9 @@ class __$$NotificationsStateImplCopyWithImpl<$Res>
   $Res call({
     Object? isLoading = null,
     Object? error = freezed,
-    Object? isSuccess = null,
     Object? items = null,
+    Object? unseenCount = null,
     Object? selectedNotification = freezed,
-    Object? unseenItems = null,
   }) {
     return _then(
       _$NotificationsStateImpl(
@@ -171,22 +162,18 @@ class __$$NotificationsStateImplCopyWithImpl<$Res>
             ? _value.error
             : error // ignore: cast_nullable_to_non_nullable
                   as String?,
-        isSuccess: null == isSuccess
-            ? _value.isSuccess
-            : isSuccess // ignore: cast_nullable_to_non_nullable
-                  as bool,
         items: null == items
             ? _value._items
             : items // ignore: cast_nullable_to_non_nullable
                   as List<Notification>,
+        unseenCount: null == unseenCount
+            ? _value.unseenCount
+            : unseenCount // ignore: cast_nullable_to_non_nullable
+                  as int,
         selectedNotification: freezed == selectedNotification
             ? _value.selectedNotification
             : selectedNotification // ignore: cast_nullable_to_non_nullable
                   as Notification?,
-        unseenItems: null == unseenItems
-            ? _value._unseenItems
-            : unseenItems // ignore: cast_nullable_to_non_nullable
-                  as List<Notification>,
       ),
     );
   }
@@ -198,21 +185,16 @@ class _$NotificationsStateImpl implements _NotificationsState {
   const _$NotificationsStateImpl({
     this.isLoading = false,
     this.error,
-    this.isSuccess = false,
     final List<Notification> items = const [],
+    this.unseenCount = 0,
     this.selectedNotification,
-    final List<Notification> unseenItems = const [],
-  }) : _items = items,
-       _unseenItems = unseenItems;
+  }) : _items = items;
 
   @override
   @JsonKey()
   final bool isLoading;
   @override
   final String? error;
-  @override
-  @JsonKey()
-  final bool isSuccess;
   final List<Notification> _items;
   @override
   @JsonKey()
@@ -223,19 +205,14 @@ class _$NotificationsStateImpl implements _NotificationsState {
   }
 
   @override
-  final Notification? selectedNotification;
-  final List<Notification> _unseenItems;
-  @override
   @JsonKey()
-  List<Notification> get unseenItems {
-    if (_unseenItems is EqualUnmodifiableListView) return _unseenItems;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_unseenItems);
-  }
+  final int unseenCount;
+  @override
+  final Notification? selectedNotification;
 
   @override
   String toString() {
-    return 'NotificationsState(isLoading: $isLoading, error: $error, isSuccess: $isSuccess, items: $items, selectedNotification: $selectedNotification, unseenItems: $unseenItems)';
+    return 'NotificationsState(isLoading: $isLoading, error: $error, items: $items, unseenCount: $unseenCount, selectedNotification: $selectedNotification)';
   }
 
   @override
@@ -246,15 +223,11 @@ class _$NotificationsStateImpl implements _NotificationsState {
             (identical(other.isLoading, isLoading) ||
                 other.isLoading == isLoading) &&
             (identical(other.error, error) || other.error == error) &&
-            (identical(other.isSuccess, isSuccess) ||
-                other.isSuccess == isSuccess) &&
             const DeepCollectionEquality().equals(other._items, _items) &&
+            (identical(other.unseenCount, unseenCount) ||
+                other.unseenCount == unseenCount) &&
             (identical(other.selectedNotification, selectedNotification) ||
-                other.selectedNotification == selectedNotification) &&
-            const DeepCollectionEquality().equals(
-              other._unseenItems,
-              _unseenItems,
-            ));
+                other.selectedNotification == selectedNotification));
   }
 
   @override
@@ -262,10 +235,9 @@ class _$NotificationsStateImpl implements _NotificationsState {
     runtimeType,
     isLoading,
     error,
-    isSuccess,
     const DeepCollectionEquality().hash(_items),
+    unseenCount,
     selectedNotification,
-    const DeepCollectionEquality().hash(_unseenItems),
   );
 
   /// Create a copy of NotificationsState
@@ -284,10 +256,9 @@ abstract class _NotificationsState implements NotificationsState {
   const factory _NotificationsState({
     final bool isLoading,
     final String? error,
-    final bool isSuccess,
     final List<Notification> items,
+    final int unseenCount,
     final Notification? selectedNotification,
-    final List<Notification> unseenItems,
   }) = _$NotificationsStateImpl;
 
   @override
@@ -295,13 +266,11 @@ abstract class _NotificationsState implements NotificationsState {
   @override
   String? get error;
   @override
-  bool get isSuccess;
-  @override
   List<Notification> get items;
   @override
-  Notification? get selectedNotification;
+  int get unseenCount;
   @override
-  List<Notification> get unseenItems;
+  Notification? get selectedNotification;
 
   /// Create a copy of NotificationsState
   /// with the given fields replaced by the non-null parameter values.

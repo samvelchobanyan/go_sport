@@ -5,7 +5,7 @@ abstract interface class NotificationsRepository {
 
   Future<Notification> getNotification(String id);
 
-  Future<List<Notification>> getUnseenNotifications();
+  Future<int> getUnseenCount();
 
   Future<Notification> readNotification(String documentId);
 }

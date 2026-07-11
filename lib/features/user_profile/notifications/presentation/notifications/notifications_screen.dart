@@ -6,7 +6,7 @@ import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 import 'package:go_sport/features/shared_widgets/dotted_divider.dart';
-import 'package:go_sport/features/user_profile/notifications/presentation/notifications/notifications_controller.dart';
+import 'package:go_sport/domain/state/notifications_state.dart';
 import 'package:go_sport/features/user_profile/notifications/presentation/notifications/widgets/notification_tile.dart';
 
 class NotificationsScreen extends ConsumerStatefulWidget {
@@ -85,6 +85,9 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
               onRefresh: () => ref
                   .read(notificationsControllerProvider.notifier)
                   .getAllNotifications(),
+              // TODO: replace SingleChildScrollView + Column with
+              // ListView.separated — lazy build for long lists, and DottedDivider
+              // as the separator drops the manual `index != length - 1` check.
               child: SingleChildScrollView(
                 physics: const AlwaysScrollableScrollPhysics(
                   parent: BouncingScrollPhysics(),
