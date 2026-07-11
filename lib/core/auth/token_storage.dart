@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -8,7 +9,7 @@ final tokenStorageProvider = Provider<TokenStorage>(
   ),
 );
 
-class TokenStorage {
+class TokenStorage extends ChangeNotifier {
   static const _accessTokenKey = 'access_token';
   static const _refreshTokenKey = 'refresh_token';
 
@@ -72,6 +73,9 @@ class TokenStorage {
     _choseGuest = false;
     _registrationToken = null;
     _resetToken = null;
+    // Notify synchronously (cache is already cleared) so the router's
+    // refreshListenable re-runs its redirect and lands on login immediately.
+    notifyListeners();
 
     await Future.wait([
       _secureStorage.delete(key: _accessTokenKey),
