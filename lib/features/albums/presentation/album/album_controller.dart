@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../../../core/di/repository_providers.dart';
+import '../../../../domain/entities/album.dart';
 import '../../../../domain/entities/track.dart';
 
 part 'album_controller.freezed.dart';
@@ -11,6 +12,7 @@ sealed class AlbumTracksState with _$AlbumTracksState {
   const factory AlbumTracksState.loading() = _AlbumTracksLoading;
 
   const factory AlbumTracksState.data({
+    required Album album,
     required List<Track> tracks,
   }) = _AlbumTracksData;
 
@@ -30,8 +32,12 @@ class AlbumController extends AutoDisposeFamilyNotifier<AlbumTracksState, String
     state = const AlbumTracksState.loading();
 
     try {
-      final tracks = await ref.read(albumsRepositoryProvider).getAlbumTracks(arg);
-      state = AlbumTracksState.data(tracks: tracks);
+      final details =
+          await ref.read(albumsRepositoryProvider).getAlbumDetails(arg);
+      state = AlbumTracksState.data(
+        album: details.album,
+        tracks: details.tracks,
+      );
     } catch (e) {
       state = AlbumTracksState.error(message: e.toString());
     }

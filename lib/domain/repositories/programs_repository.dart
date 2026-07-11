@@ -10,7 +10,12 @@ abstract interface class ProgramsRepository {
     int pageSize = 20,
   });
   Future<List<Program>> getProgramsByDate(DateTime date);
-  Future<List<Track>> getProgramEpisodes(String programId);
+  /// Program header is derived from the episodes response (each episode
+  /// carries its populated Program), so no extra request is needed.
+  /// [program] is null when the program has no episodes.
+  Future<({Program? program, List<Track> episodes})> getProgramDetails(
+    String programId,
+  );
 
   Future<String?> toggleLike(String programId, [String? likeId]);
 }

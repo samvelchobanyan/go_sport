@@ -6,7 +6,6 @@ import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
-import 'package:go_sport/domain/entities/program.dart';
 import 'package:go_sport/domain/entities/track.dart';
 import 'package:go_sport/domain/state/like_registry.dart';
 import 'package:go_sport/features/shared_widgets/bottom_pop_ups/action_button.dart';
@@ -18,10 +17,7 @@ void showTrackOptionsBottomSheet({
   required Track track,
   VoidCallback? onRemoveFromPlaylist,
   VoidCallback? onAddToPlaylist,
-  String? programId,
-  Program? program,
 }) {
-  print('track $track');
   showModalBottomSheet(
     context: context,
     isScrollControlled: true,
@@ -34,38 +30,29 @@ void showTrackOptionsBottomSheet({
           // Track info
           GestureDetector(
             onTap: () {
+              // The track knows where it came from: albumId for music tracks,
+              // programId for program episodes. The target screens load their
+              // own data by id, so no entity has to travel through the sheet.
+              final albumId = track.albumId;
+              final programId = track.programId;
+
+              // Capture the router before closing the sheet — the sheet's own
+              // context is unmounted after pop.
               final router = GoRouter.of(context);
               final currentPath = router.state.uri.path;
-              final isSameProgram =
-                  programId != null &&
-                  programId.isNotEmpty &&
-                  currentPath.contains('/program/$programId');
-              final isSameAlbum =
-                  track.albumId != null &&
-                  track.albumId!.isNotEmpty &&
-                  currentPath.contains('/album/${track.albumId}');
-
-              if (isSameProgram || isSameAlbum) {
-                Navigator.of(context, rootNavigator: true).pop();
-                return;
-              }
+              final isAlreadyThere =
+                  (programId != null &&
+                      currentPath.contains('/program/$programId')) ||
+                  (albumId != null && currentPath.contains('/album/$albumId'));
 
               Navigator.of(context, rootNavigator: true).pop();
+              if (isAlreadyThere) return;
 
-              WidgetsBinding.instance.addPostFrameCallback((_) {
-                if (!context.mounted) return;
-
-                if (programId != null &&
-                    programId.isNotEmpty &&
-                    program != null) {
-                  context.push('/music/program/$programId', extra: program);
-                  return;
-                }
-
-                if (track.albumId != null && track.albumId!.isNotEmpty) {
-                  context.push('/music/album/${track.albumId}');
-                }
-              });
+              if (programId != null && programId.isNotEmpty) {
+                router.push('/music/program/$programId');
+              } else if (albumId != null && albumId.isNotEmpty) {
+                router.push('/music/album/$albumId');
+              }
             },
             child: Row(
               children: [

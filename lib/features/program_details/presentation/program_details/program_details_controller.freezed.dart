@@ -20,19 +20,19 @@ mixin _$ProgramEpisodesState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(List<Track> episodes) data,
+    required TResult Function(Program? program, List<Track> episodes) data,
     required TResult Function(String message) error,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function(List<Track> episodes)? data,
+    TResult? Function(Program? program, List<Track> episodes)? data,
     TResult? Function(String message)? error,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(List<Track> episodes)? data,
+    TResult Function(Program? program, List<Track> episodes)? data,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) => throw _privateConstructorUsedError;
@@ -128,7 +128,7 @@ class _$ProgramEpisodesLoadingImpl implements _ProgramEpisodesLoading {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(List<Track> episodes) data,
+    required TResult Function(Program? program, List<Track> episodes) data,
     required TResult Function(String message) error,
   }) {
     return loading();
@@ -138,7 +138,7 @@ class _$ProgramEpisodesLoadingImpl implements _ProgramEpisodesLoading {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function(List<Track> episodes)? data,
+    TResult? Function(Program? program, List<Track> episodes)? data,
     TResult? Function(String message)? error,
   }) {
     return loading?.call();
@@ -148,7 +148,7 @@ class _$ProgramEpisodesLoadingImpl implements _ProgramEpisodesLoading {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(List<Track> episodes)? data,
+    TResult Function(Program? program, List<Track> episodes)? data,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -204,7 +204,9 @@ abstract class _$$ProgramEpisodesDataImplCopyWith<$Res> {
     $Res Function(_$ProgramEpisodesDataImpl) then,
   ) = __$$ProgramEpisodesDataImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({List<Track> episodes});
+  $Res call({Program? program, List<Track> episodes});
+
+  $ProgramCopyWith<$Res>? get program;
 }
 
 /// @nodoc
@@ -220,9 +222,13 @@ class __$$ProgramEpisodesDataImplCopyWithImpl<$Res>
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({Object? episodes = null}) {
+  $Res call({Object? program = freezed, Object? episodes = null}) {
     return _then(
       _$ProgramEpisodesDataImpl(
+        program: freezed == program
+            ? _value.program
+            : program // ignore: cast_nullable_to_non_nullable
+                  as Program?,
         episodes: null == episodes
             ? _value._episodes
             : episodes // ignore: cast_nullable_to_non_nullable
@@ -230,14 +236,33 @@ class __$$ProgramEpisodesDataImplCopyWithImpl<$Res>
       ),
     );
   }
+
+  /// Create a copy of ProgramEpisodesState
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $ProgramCopyWith<$Res>? get program {
+    if (_value.program == null) {
+      return null;
+    }
+
+    return $ProgramCopyWith<$Res>(_value.program!, (value) {
+      return _then(_value.copyWith(program: value));
+    });
+  }
 }
 
 /// @nodoc
 
 class _$ProgramEpisodesDataImpl implements _ProgramEpisodesData {
-  const _$ProgramEpisodesDataImpl({required final List<Track> episodes})
-    : _episodes = episodes;
+  const _$ProgramEpisodesDataImpl({
+    this.program,
+    required final List<Track> episodes,
+  }) : _episodes = episodes;
 
+  // Derived from the episodes response; null when the program has none.
+  @override
+  final Program? program;
   final List<Track> _episodes;
   @override
   List<Track> get episodes {
@@ -248,7 +273,7 @@ class _$ProgramEpisodesDataImpl implements _ProgramEpisodesData {
 
   @override
   String toString() {
-    return 'ProgramEpisodesState.data(episodes: $episodes)';
+    return 'ProgramEpisodesState.data(program: $program, episodes: $episodes)';
   }
 
   @override
@@ -256,12 +281,16 @@ class _$ProgramEpisodesDataImpl implements _ProgramEpisodesData {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ProgramEpisodesDataImpl &&
+            (identical(other.program, program) || other.program == program) &&
             const DeepCollectionEquality().equals(other._episodes, _episodes));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(_episodes));
+  int get hashCode => Object.hash(
+    runtimeType,
+    program,
+    const DeepCollectionEquality().hash(_episodes),
+  );
 
   /// Create a copy of ProgramEpisodesState
   /// with the given fields replaced by the non-null parameter values.
@@ -278,32 +307,32 @@ class _$ProgramEpisodesDataImpl implements _ProgramEpisodesData {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(List<Track> episodes) data,
+    required TResult Function(Program? program, List<Track> episodes) data,
     required TResult Function(String message) error,
   }) {
-    return data(episodes);
+    return data(program, episodes);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function(List<Track> episodes)? data,
+    TResult? Function(Program? program, List<Track> episodes)? data,
     TResult? Function(String message)? error,
   }) {
-    return data?.call(episodes);
+    return data?.call(program, episodes);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(List<Track> episodes)? data,
+    TResult Function(Program? program, List<Track> episodes)? data,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
     if (data != null) {
-      return data(episodes);
+      return data(program, episodes);
     }
     return orElse();
   }
@@ -344,9 +373,13 @@ class _$ProgramEpisodesDataImpl implements _ProgramEpisodesData {
 }
 
 abstract class _ProgramEpisodesData implements ProgramEpisodesState {
-  const factory _ProgramEpisodesData({required final List<Track> episodes}) =
-      _$ProgramEpisodesDataImpl;
+  const factory _ProgramEpisodesData({
+    final Program? program,
+    required final List<Track> episodes,
+  }) = _$ProgramEpisodesDataImpl;
 
+  // Derived from the episodes response; null when the program has none.
+  Program? get program;
   List<Track> get episodes;
 
   /// Create a copy of ProgramEpisodesState
@@ -431,7 +464,7 @@ class _$ProgramEpisodesErrorImpl implements _ProgramEpisodesError {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(List<Track> episodes) data,
+    required TResult Function(Program? program, List<Track> episodes) data,
     required TResult Function(String message) error,
   }) {
     return error(message);
@@ -441,7 +474,7 @@ class _$ProgramEpisodesErrorImpl implements _ProgramEpisodesError {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function(List<Track> episodes)? data,
+    TResult? Function(Program? program, List<Track> episodes)? data,
     TResult? Function(String message)? error,
   }) {
     return error?.call(message);
@@ -451,7 +484,7 @@ class _$ProgramEpisodesErrorImpl implements _ProgramEpisodesError {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(List<Track> episodes)? data,
+    TResult Function(Program? program, List<Track> episodes)? data,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {

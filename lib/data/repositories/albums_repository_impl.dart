@@ -28,10 +28,14 @@ class AlbumsRepositoryImpl implements AlbumsRepository {
   }
 
   @override
-  Future<List<Track>> getAlbumTracks(String albumId) async {
+  Future<({Album album, List<Track> tracks})> getAlbumDetails(
+    String albumId,
+  ) async {
     final response = await _apiClient.get(
       '/api/albums/$albumId',
       queryParameters: {
+        'populate[Cover][populate]': '*',
+        'populate[Artist][fields][0]': 'Name',
         'populate[Tracks][populate][File][populate]': '*',
         'populate[Tracks][populate][Album][populate]': 'Cover',
         'populate[Tracks][populate][Artists][fields][0]': 'Name',
@@ -41,9 +45,14 @@ class AlbumsRepositoryImpl implements AlbumsRepository {
     final albumData = response.data['data'] as Map<String, dynamic>;
     final tracksData = albumData['Tracks'] as List<dynamic>? ?? [];
 
-    return tracksData
+    final tracks = tracksData
         .map((e) => TrackDto.fromJson(e as Map<String, dynamic>).toDomain())
         .toList();
+    final album = AlbumDto.fromJson(
+      albumData,
+    ).toDomain().copyWith(trackCount: tracks.length);
+
+    return (album: album, tracks: tracks);
   }
 
   @override

@@ -54,6 +54,7 @@ final GlobalKey<NavigatorState> _radioBranchNavigatorKey =
 GoRouter createAppRouter(TokenStorage tokenStorage) {
   return GoRouter(
     initialLocation: AppRoutes.home,
+    refreshListenable: tokenStorage,
     redirect: (context, state) {
       final isAuthenticated = tokenStorage.accessToken != null;
       final isGuest = tokenStorage.choseGuest;
@@ -245,18 +246,9 @@ GoRouter createAppRouter(TokenStorage tokenStorage) {
                   GoRoute(
                     path: 'album/:id',
                     builder: (context, state) {
-                      final id = state.pathParameters['id'] ?? '';
-                      final album = state.extra is Album
-                          ? state.extra as Album
-                          : Album(
-                              id: id,
-                              title: 'Album',
-                              imageUrl: '',
-                              artist: '',
-                              trackCount: 0,
-                              releaseYear: '',
-                            );
-                      return AlbumScreen(album: album);
+                      final id = state.pathParameters['id']!;
+                      final albumHint = state.extra as Album?;
+                      return AlbumScreen(albumId: id, albumHint: albumHint);
                     },
                   ),
                   // Artist route
@@ -304,16 +296,16 @@ GoRouter createAppRouter(TokenStorage tokenStorage) {
                   GoRoute(
                     path: 'program/:id',
                     builder: (context, state) {
-                      final id = state.pathParameters['id'] ?? '';
-                      final program = state.extra is Program
-                          ? state.extra as Program
-                          : Program(
-                              id: id,
-                              title: 'Program',
-                              imageUrl: '',
-                              episodeCount: 0,
-                            );
-                      return ProgramDetailsScreen(program: program);
+                      final id = state.pathParameters['id']!;
+                      final programHint = state.extra as Program?;
+                      // Deep link / push: ?play=<episodeId> auto-plays that
+                      // episode once the list loads.
+                      final playEpisodeId = state.uri.queryParameters['play'];
+                      return ProgramDetailsScreen(
+                        programId: id,
+                        programHint: programHint,
+                        playEpisodeId: playEpisodeId,
+                      );
                     },
                   ),
                 ],

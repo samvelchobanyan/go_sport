@@ -148,12 +148,39 @@ class _MainAppState extends ConsumerState<MainApp> {
         _handleNotificationPayload(payload);
       }
     });
+
+    // Push tapped while the app was in background.
+    FirebaseMessaging.onMessageOpenedApp.listen(_handlePushMessage);
+    // Push tapped while the app was terminated: the app cold-starts as usual
+    // (home builds first), then the news screen is pushed on top of it.
+    FirebaseMessaging.instance.getInitialMessage().then((message) {
+      if (message != null) _handlePushMessage(message);
+    });
   }
 
   void _handleNotificationPayload(String payload) {
     if (payload == kRadioSchedulePayload) {
       _router.push(AppRoutes.radioSchedule);
     }
+  }
+
+  /// Maps an FCM data payload ({type, documentId, ...}) to an in-app route.
+  /// Screens load their own data by id, so the push only carries the address.
+  void _handlePushMessage(RemoteMessage message) {
+    final type = message.data['type'];
+    final documentId = message.data['documentId'];
+    final programId = message.data['programId'];
+    if (documentId is! String || documentId.isEmpty) return;
+
+    final route = switch (type) {
+      'article' => '/news/$documentId',
+      'album' => '/music/album/$documentId',
+      // Open the program and auto-play the pushed episode once it loads.
+      'episode' when programId is String && programId.isNotEmpty =>
+        '/music/program/$programId?play=$documentId',
+      _ => null, // unknown type — ignore silently
+    };
+    if (route != null) _router.push(route);
   }
 
   void _showNetworkError(NetworkErrorKind kind) {

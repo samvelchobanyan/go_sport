@@ -21,9 +21,23 @@ import '../widgets/program_hero.dart';
 import 'package:go_sport/features/shared_widgets/dotted_divider.dart';
 
 class ProgramDetailsScreen extends ConsumerStatefulWidget {
-  final Program program;
+  /// Program id — the only thing required to open the screen. Navigations
+  /// that already hold the full [Program] (lists, search) pass it as
+  /// [programHint] for an instant first paint; the track options sheet
+  /// passes only the id.
+  final String programId;
+  final Program? programHint;
 
-  const ProgramDetailsScreen({super.key, required this.program});
+  /// Episode to auto-play once episodes load (deep link / push).
+  /// Null for regular navigation — the screen behaves exactly as before.
+  final String? playEpisodeId;
+
+  const ProgramDetailsScreen({
+    super.key,
+    required this.programId,
+    this.programHint,
+    this.playEpisodeId,
+  });
 
   @override
   ConsumerState<ProgramDetailsScreen> createState() =>
@@ -31,15 +45,18 @@ class ProgramDetailsScreen extends ConsumerStatefulWidget {
 }
 
 class _ProgramDetailsScreenState extends ConsumerState<ProgramDetailsScreen> {
-  void _onTrackTap(List<Track> episodes, int index) {
+  /// Guards the push-triggered auto-play so it fires at most once.
+  bool _autoPlayHandled = false;
+
+  void _onTrackTap(Program program, List<Track> episodes, int index) {
     ref
         .read(playerStateProvider.notifier)
         .playQueue(
           episodes,
           source: QueueSource.program(
-            id: widget.program.id,
-            title: widget.program.title,
-            imageUrl: widget.program.imageUrl,
+            id: program.id,
+            title: program.title,
+            imageUrl: program.imageUrl,
           ),
           startIndex: index,
         );
@@ -49,7 +66,11 @@ class _ProgramDetailsScreenState extends ConsumerState<ProgramDetailsScreen> {
     debugPrint('Track menu tapped at index: $index');
   }
 
-  void _onPlayTap(List<Track> episodes, bool isThisActiveSource) {
+  void _onPlayTap(
+    Program program,
+    List<Track> episodes,
+    bool isThisActiveSource,
+  ) {
     if (isThisActiveSource) {
       ref.read(playerStateProvider.notifier).togglePlayPause();
       return;
@@ -61,37 +82,68 @@ class _ProgramDetailsScreenState extends ConsumerState<ProgramDetailsScreen> {
         .playQueue(
           episodes,
           source: QueueSource.program(
-            id: widget.program.id,
-            title: widget.program.title,
-            imageUrl: widget.program.imageUrl,
+            id: program.id,
+            title: program.title,
+            imageUrl: program.imageUrl,
           ),
         );
   }
 
   @override
   Widget build(BuildContext context) {
+    // Auto-play the pushed episode once the episodes list arrives.
+    if (widget.playEpisodeId != null) {
+      ref.listen(programDetailsControllerProvider(widget.programId), (
+        prev,
+        next,
+      ) {
+        if (_autoPlayHandled) return;
+        next.whenOrNull(
+          data: (program, episodes) {
+            _autoPlayHandled = true; // one attempt, whatever the outcome
+            if (program == null) return;
+            final index = episodes.indexWhere(
+              (e) => e.id == widget.playEpisodeId,
+            );
+            if (index == -1) return; // episode gone — just show the program
+            _onTrackTap(program, episodes, index);
+          },
+        );
+      });
+    }
+
     final episodesState = ref.watch(
-      programDetailsControllerProvider(widget.program.id),
+      programDetailsControllerProvider(widget.programId),
     );
     final isLiked = ref.watch(
       likeRegistryProvider.select(
-        (s) => s.likedPrograms.any((p) => p.id == widget.program.id),
+        (s) => s.likedPrograms.any((p) => p.id == widget.programId),
       ),
     );
     final isThisActiveSource = ref.watch(
       playerStateProvider.select(
-        (s) => s.source?.id == widget.program.id && !s.isRadioMode,
+        (s) => s.source?.id == widget.programId && !s.isRadioMode,
       ),
     );
     final isThisPlaying = ref.watch(
       playerStateProvider.select(
         (s) =>
-            s.source?.id == widget.program.id && s.isPlaying && !s.isRadioMode,
+            s.source?.id == widget.programId && s.isPlaying && !s.isRadioMode,
       ),
     );
+
+    // Prefer the navigation hint for the hero — its cover URL is already
+    // cached by the list we came from. The freshly loaded program is used
+    // only for id-only opens (track options sheet). Null only while an
+    // id-only load is still in flight.
+    final loadedProgram = episodesState.whenOrNull(
+      data: (program, episodes) => program,
+    );
+    final program = widget.programHint ?? loadedProgram;
+
     final screenHeight = MediaQuery.of(context).size.height;
     final expandedHeight = screenHeight * 0.5;
-    final youtubeUrl = widget.program.youtubeUrl;
+    final youtubeUrl = program?.youtubeUrl;
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.light,
@@ -118,21 +170,26 @@ class _ProgramDetailsScreenState extends ConsumerState<ProgramDetailsScreen> {
                 const SearchButton(iconColor: DSColors.white),
               ],
               flexibleSpace: FlexibleSpaceBar(
-                background: ProgramHero(
-                  program: widget.program,
-                  isLiked: isLiked,
-                  isPlaying: isThisPlaying,
-                  onLikeTap: () => ref
-                      .read(likeRegistryProvider.notifier)
-                      .toggleProgramLike(widget.program),
-                  onPlayTap: () {
-                    final episodes = episodesState.mapOrNull(
-                      data: (data) => data.episodes,
-                    );
-                    if (episodes != null)
-                      _onPlayTap(episodes, isThisActiveSource);
-                  },
-                ),
+                background: program == null
+                    // Id-only open: program not loaded yet — plain backdrop
+                    // until the network fills it in.
+                    ? const ColoredBox(color: DSColors.black)
+                    : ProgramHero(
+                        program: program,
+                        isLiked: isLiked,
+                        isPlaying: isThisPlaying,
+                        onLikeTap: () => ref
+                            .read(likeRegistryProvider.notifier)
+                            .toggleProgramLike(program),
+                        onPlayTap: () {
+                          final episodes = episodesState.mapOrNull(
+                            data: (data) => data.episodes,
+                          );
+                          if (episodes != null) {
+                            _onPlayTap(program, episodes, isThisActiveSource);
+                          }
+                        },
+                      ),
               ),
               bottom: PreferredSize(
                 preferredSize: const Size.fromHeight(24),
@@ -171,7 +228,7 @@ class _ProgramDetailsScreenState extends ConsumerState<ProgramDetailsScreen> {
                         onPressed: () => ref
                             .read(
                               programDetailsControllerProvider(
-                                widget.program.id,
+                                widget.programId,
                               ).notifier,
                             )
                             .loadEpisodes(),
@@ -181,15 +238,22 @@ class _ProgramDetailsScreenState extends ConsumerState<ProgramDetailsScreen> {
                   ),
                 ),
               ),
-              data: (episodes) {
-                if (episodes.isEmpty) {
+              data: (loadedProgram, episodes) {
+                if (loadedProgram == null || episodes.isEmpty) {
                   return const SliverFillRemaining(
                     child: Center(child: Text('No episodes available')),
                   );
                 }
 
-                final playerState = ref.watch(playerStateProvider);
-                final playingTrackId = playerState.currentTrack?.id;
+                // Narrow selects: position ticks must not rebuild the list.
+                final playingTrackId = ref.watch(
+                  playerStateProvider.select((s) => s.currentTrack?.id),
+                );
+                final isPlaying = ref.watch(
+                  playerStateProvider.select(
+                    (s) => s.isPlaying && !s.isRadioMode,
+                  ),
+                );
 
                 return SliverPadding(
                   padding: const EdgeInsets.only(
@@ -200,7 +264,7 @@ class _ProgramDetailsScreenState extends ConsumerState<ProgramDetailsScreen> {
                       final episode = episodes[index];
                       final isCurrentTrack = episode.id == playingTrackId;
                       final bool? trackPlayingState = isCurrentTrack
-                          ? playerState.isPlaying && !playerState.isRadioMode
+                          ? isPlaying
                           : null;
 
                       return Column(
@@ -211,9 +275,9 @@ class _ProgramDetailsScreenState extends ConsumerState<ProgramDetailsScreen> {
                             index: index + 1,
                             isPlaying: trackPlayingState,
                             topPadding: index == 0 ? 20 : 8,
-                            onTap: () => _onTrackTap(episodes, index),
+                            onTap: () =>
+                                _onTrackTap(loadedProgram, episodes, index),
                             onMenuTap: () => _onTrackMenuTap(index),
-                            program: widget.program,
                           ),
                           if (index < episodes.length - 1)
                             const Padding(

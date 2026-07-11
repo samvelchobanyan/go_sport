@@ -28,7 +28,9 @@ class ProgramsRepositoryImpl implements ProgramsRepository {
   }
 
   @override
-  Future<List<Track>> getProgramEpisodes(String programId) async {
+  Future<({Program? program, List<Track> episodes})> getProgramDetails(
+    String programId,
+  ) async {
     final response = await _apiClient.get(
       '/api/episodes',
       queryParameters: {
@@ -39,9 +41,23 @@ class ProgramsRepositoryImpl implements ProgramsRepository {
     );
 
     final data = response.data['data'] as List<dynamic>;
-    return data
+    final episodes = data
         .map((e) => EpisodeDto.fromJson(e as Map<String, dynamic>).toDomain())
         .toList();
+
+    // Each episode embeds its populated Program — reuse the first one for the
+    // header instead of making a separate /api/programs/{id} request.
+    final firstProgramJson = data.isNotEmpty
+        ? (data.first as Map<String, dynamic>)['Program']
+              as Map<String, dynamic>?
+        : null;
+    final program = firstProgramJson != null
+        ? ProgramDto.fromJson(
+            firstProgramJson,
+          ).toDomain().copyWith(episodeCount: episodes.length)
+        : null;
+
+    return (program: program, episodes: episodes);
   }
 
   @override

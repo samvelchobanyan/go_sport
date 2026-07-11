@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:go_sport/core/di/repository_providers.dart';
+import 'package:go_sport/domain/entities/program.dart';
 import 'package:go_sport/domain/entities/track.dart';
 
 part 'program_details_controller.freezed.dart';
@@ -10,6 +11,8 @@ sealed class ProgramEpisodesState with _$ProgramEpisodesState {
   const factory ProgramEpisodesState.loading() = _ProgramEpisodesLoading;
 
   const factory ProgramEpisodesState.data({
+    // Derived from the episodes response; null when the program has none.
+    Program? program,
     required List<Track> episodes,
   }) = _ProgramEpisodesData;
 
@@ -30,10 +33,13 @@ class ProgramDetailsController
     state = const ProgramEpisodesState.loading();
 
     try {
-      final episodes = await ref
+      final details = await ref
           .read(programsRepositoryProvider)
-          .getProgramEpisodes(arg);
-      state = ProgramEpisodesState.data(episodes: episodes);
+          .getProgramDetails(arg);
+      state = ProgramEpisodesState.data(
+        program: details.program,
+        episodes: details.episodes,
+      );
     } catch (e) {
       state = ProgramEpisodesState.error(message: e.toString());
     }

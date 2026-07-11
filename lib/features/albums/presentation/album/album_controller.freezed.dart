@@ -20,19 +20,19 @@ mixin _$AlbumTracksState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(List<Track> tracks) data,
+    required TResult Function(Album album, List<Track> tracks) data,
     required TResult Function(String message) error,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function(List<Track> tracks)? data,
+    TResult? Function(Album album, List<Track> tracks)? data,
     TResult? Function(String message)? error,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(List<Track> tracks)? data,
+    TResult Function(Album album, List<Track> tracks)? data,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) => throw _privateConstructorUsedError;
@@ -123,7 +123,7 @@ class _$AlbumTracksLoadingImpl implements _AlbumTracksLoading {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(List<Track> tracks) data,
+    required TResult Function(Album album, List<Track> tracks) data,
     required TResult Function(String message) error,
   }) {
     return loading();
@@ -133,7 +133,7 @@ class _$AlbumTracksLoadingImpl implements _AlbumTracksLoading {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function(List<Track> tracks)? data,
+    TResult? Function(Album album, List<Track> tracks)? data,
     TResult? Function(String message)? error,
   }) {
     return loading?.call();
@@ -143,7 +143,7 @@ class _$AlbumTracksLoadingImpl implements _AlbumTracksLoading {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(List<Track> tracks)? data,
+    TResult Function(Album album, List<Track> tracks)? data,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -199,7 +199,9 @@ abstract class _$$AlbumTracksDataImplCopyWith<$Res> {
     $Res Function(_$AlbumTracksDataImpl) then,
   ) = __$$AlbumTracksDataImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({List<Track> tracks});
+  $Res call({Album album, List<Track> tracks});
+
+  $AlbumCopyWith<$Res> get album;
 }
 
 /// @nodoc
@@ -215,9 +217,13 @@ class __$$AlbumTracksDataImplCopyWithImpl<$Res>
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({Object? tracks = null}) {
+  $Res call({Object? album = null, Object? tracks = null}) {
     return _then(
       _$AlbumTracksDataImpl(
+        album: null == album
+            ? _value.album
+            : album // ignore: cast_nullable_to_non_nullable
+                  as Album,
         tracks: null == tracks
             ? _value._tracks
             : tracks // ignore: cast_nullable_to_non_nullable
@@ -225,14 +231,28 @@ class __$$AlbumTracksDataImplCopyWithImpl<$Res>
       ),
     );
   }
+
+  /// Create a copy of AlbumTracksState
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $AlbumCopyWith<$Res> get album {
+    return $AlbumCopyWith<$Res>(_value.album, (value) {
+      return _then(_value.copyWith(album: value));
+    });
+  }
 }
 
 /// @nodoc
 
 class _$AlbumTracksDataImpl implements _AlbumTracksData {
-  const _$AlbumTracksDataImpl({required final List<Track> tracks})
-    : _tracks = tracks;
+  const _$AlbumTracksDataImpl({
+    required this.album,
+    required final List<Track> tracks,
+  }) : _tracks = tracks;
 
+  @override
+  final Album album;
   final List<Track> _tracks;
   @override
   List<Track> get tracks {
@@ -243,7 +263,7 @@ class _$AlbumTracksDataImpl implements _AlbumTracksData {
 
   @override
   String toString() {
-    return 'AlbumTracksState.data(tracks: $tracks)';
+    return 'AlbumTracksState.data(album: $album, tracks: $tracks)';
   }
 
   @override
@@ -251,12 +271,16 @@ class _$AlbumTracksDataImpl implements _AlbumTracksData {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$AlbumTracksDataImpl &&
+            (identical(other.album, album) || other.album == album) &&
             const DeepCollectionEquality().equals(other._tracks, _tracks));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(_tracks));
+  int get hashCode => Object.hash(
+    runtimeType,
+    album,
+    const DeepCollectionEquality().hash(_tracks),
+  );
 
   /// Create a copy of AlbumTracksState
   /// with the given fields replaced by the non-null parameter values.
@@ -273,32 +297,32 @@ class _$AlbumTracksDataImpl implements _AlbumTracksData {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(List<Track> tracks) data,
+    required TResult Function(Album album, List<Track> tracks) data,
     required TResult Function(String message) error,
   }) {
-    return data(tracks);
+    return data(album, tracks);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function(List<Track> tracks)? data,
+    TResult? Function(Album album, List<Track> tracks)? data,
     TResult? Function(String message)? error,
   }) {
-    return data?.call(tracks);
+    return data?.call(album, tracks);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(List<Track> tracks)? data,
+    TResult Function(Album album, List<Track> tracks)? data,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
     if (data != null) {
-      return data(tracks);
+      return data(album, tracks);
     }
     return orElse();
   }
@@ -339,9 +363,12 @@ class _$AlbumTracksDataImpl implements _AlbumTracksData {
 }
 
 abstract class _AlbumTracksData implements AlbumTracksState {
-  const factory _AlbumTracksData({required final List<Track> tracks}) =
-      _$AlbumTracksDataImpl;
+  const factory _AlbumTracksData({
+    required final Album album,
+    required final List<Track> tracks,
+  }) = _$AlbumTracksDataImpl;
 
+  Album get album;
   List<Track> get tracks;
 
   /// Create a copy of AlbumTracksState
@@ -425,7 +452,7 @@ class _$AlbumTracksErrorImpl implements _AlbumTracksError {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(List<Track> tracks) data,
+    required TResult Function(Album album, List<Track> tracks) data,
     required TResult Function(String message) error,
   }) {
     return error(message);
@@ -435,7 +462,7 @@ class _$AlbumTracksErrorImpl implements _AlbumTracksError {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function(List<Track> tracks)? data,
+    TResult? Function(Album album, List<Track> tracks)? data,
     TResult? Function(String message)? error,
   }) {
     return error?.call(message);
@@ -445,7 +472,7 @@ class _$AlbumTracksErrorImpl implements _AlbumTracksError {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(List<Track> tracks)? data,
+    TResult Function(Album album, List<Track> tracks)? data,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {

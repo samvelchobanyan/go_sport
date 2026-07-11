@@ -5,6 +5,7 @@ class EpisodeDto {
   final String name;
   final int length;
   final String? fileUrl;
+  final String? programId;
   final String? programName;
   final String? programCoverUrl;
   final DateTime? streamed;
@@ -15,6 +16,7 @@ class EpisodeDto {
     required this.name,
     required this.length,
     this.fileUrl,
+    this.programId,
     this.programName,
     this.programCoverUrl,
     this.streamed,
@@ -32,6 +34,7 @@ class EpisodeDto {
       name: json['Name'] as String,
       length: json['Length'] as int? ?? 0,
       fileUrl: fileJson?['url'] as String?,
+      programId: programJson?['documentId'] as String?,
       programName: programJson?['Name'] as String?,
       programCoverUrl: coverJson?['url'] as String?,
       streamed: json['Streamed'] != null
@@ -49,6 +52,7 @@ class EpisodeDto {
       imageUrl: programCoverUrl,
       duration: Duration(seconds: length),
       audioUrl: fileUrl ?? '',
+      programId: programId,
       releaseDate: streamed,
       likeId: likeId,
     );
