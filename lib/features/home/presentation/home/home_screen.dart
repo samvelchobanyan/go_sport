@@ -5,6 +5,8 @@ import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 import 'package:go_sport/design_system/foundations/ds_icon_size.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
+import 'package:go_sport/domain/entities/banner.dart';
+import 'package:go_sport/features/home/presentation/home/widgets/banner/hero_banner_controller.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import 'package:go_sport/core/navigation/routes.dart';
 import 'package:go_sport/domain/entities/playlist.dart';
@@ -97,6 +99,7 @@ class HomeScreen extends ConsumerWidget {
     final newsState = ref.watch(newsStateProvider);
     final storiesState = ref.watch(storiesStateProvider);
     final playlistsState = ref.watch(featuredPlaylistsStateProvider);
+    final bannerState = ref.watch(bannerStateProvider);
 
     // Check if any data is still loading (initial load)
     final isLoading =
@@ -116,6 +119,7 @@ class HomeScreen extends ConsumerWidget {
     final stories = storiesState.storiesList;
     final news = newsState.articlesList;
     final playlists = playlistsState.playlistsList;
+    final banner = bannerState.banner;
     final avatarUrl = ref.watch(
       userStateProvider.select((s) => s.user?.avatar),
     );
@@ -154,6 +158,7 @@ class HomeScreen extends ConsumerWidget {
         stories: stories,
         news: news,
         playlists: playlists,
+        banner: banner,
       ),
     );
   }
@@ -167,6 +172,7 @@ class HomeScreen extends ConsumerWidget {
     required List<Story> stories,
     required List news,
     required List<Playlist> playlists,
+    HeroBanner? banner,
   }) {
     if (isLoading) {
       return const HomeSkeleton();
@@ -250,11 +256,7 @@ class HomeScreen extends ConsumerWidget {
                 top: DSSpacing.l,
                 bottom: DSSpacing.xl,
               ),
-              child: PodcastBanner(
-                onTap: () {
-                  // TODO: навигация
-                },
-              ),
+              child: PodcastBanner(banner: banner),
             ),
           ),
 

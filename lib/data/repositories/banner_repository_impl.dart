@@ -9,14 +9,13 @@ class BannerRepositoryImpl implements BannerRepository {
   BannerRepositoryImpl(this._apiClient);
 
   @override
-  Future<Banner?> getPodcastBanner() async {
+  Future<HeroBanner> getPodcastBanner() async {
     final response = await _apiClient.get(
       '/api/banner',
       queryParameters: {'populate': '*'},
     );
 
-    final data = response.data as Map<String, dynamic>?;
-    if (data == null || data['data'] == null) return null;
+    final data = response.data as Map<String, dynamic>;
 
     // 1. Parse the raw JSON map directly into the Data Layer DTO
     final bannerDto = BannerDto.fromJson(data);

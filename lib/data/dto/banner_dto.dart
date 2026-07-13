@@ -30,7 +30,7 @@ class BannerDto {
     );
   }
 
-  Banner toDomain() {
-    return Banner(id: id, redirectUrl: redirectUrl, imageUrl: imageUrl);
+  HeroBanner toDomain() {
+    return HeroBanner(id: id, redirectUrl: redirectUrl, imageUrl: imageUrl);
   }
 }

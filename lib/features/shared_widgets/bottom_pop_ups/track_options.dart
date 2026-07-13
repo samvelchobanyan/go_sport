@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:go_sport/design_system/components/network_image/ds_network_image.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -18,6 +19,13 @@ void showTrackOptionsBottomSheet({
   VoidCallback? onRemoveFromPlaylist,
   VoidCallback? onAddToPlaylist,
 }) {
+  final albumId = track.albumId;
+  final programId = track.programId;
+
+  // 💡 Check if a valid redirect target exists
+  final hasRedirection =
+      (programId != null && programId.isNotEmpty) ||
+      (albumId != null && albumId.isNotEmpty);
   showModalBottomSheet(
     context: context,
     isScrollControlled: true,
@@ -29,31 +37,28 @@ void showTrackOptionsBottomSheet({
         children: [
           // Track info
           GestureDetector(
-            onTap: () {
-              // The track knows where it came from: albumId for music tracks,
-              // programId for program episodes. The target screens load their
-              // own data by id, so no entity has to travel through the sheet.
-              final albumId = track.albumId;
-              final programId = track.programId;
+            onTap: !hasRedirection
+                ? null
+                : () {
+                    // Capture the router before closing the sheet — the sheet's own
+                    // context is unmounted after pop.
+                    final router = GoRouter.of(context);
+                    final currentPath = router.state.uri.path;
+                    final isAlreadyThere =
+                        (programId != null &&
+                            currentPath.contains('/program/$programId')) ||
+                        (albumId != null &&
+                            currentPath.contains('/album/$albumId'));
 
-              // Capture the router before closing the sheet — the sheet's own
-              // context is unmounted after pop.
-              final router = GoRouter.of(context);
-              final currentPath = router.state.uri.path;
-              final isAlreadyThere =
-                  (programId != null &&
-                      currentPath.contains('/program/$programId')) ||
-                  (albumId != null && currentPath.contains('/album/$albumId'));
+                    Navigator.of(context, rootNavigator: true).pop();
+                    if (isAlreadyThere) return;
 
-              Navigator.of(context, rootNavigator: true).pop();
-              if (isAlreadyThere) return;
-
-              if (programId != null && programId.isNotEmpty) {
-                router.push('/music/program/$programId');
-              } else if (albumId != null && albumId.isNotEmpty) {
-                router.push('/music/album/$albumId');
-              }
-            },
+                    if (programId != null && programId.isNotEmpty) {
+                      router.push('/music/program/$programId');
+                    } else if (albumId != null && albumId.isNotEmpty) {
+                      router.push('/music/album/$albumId');
+                    }
+                  },
             child: Row(
               children: [
                 Container(
@@ -95,6 +100,12 @@ void showTrackOptionsBottomSheet({
                     ],
                   ),
                 ),
+                if (hasRedirection)
+                  SvgPicture.asset(
+                    'assets/icons/arrow_right.svg',
+                    width: 20,
+                    height: 20,
+                  ),
               ],
             ),
           ),

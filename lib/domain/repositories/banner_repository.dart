@@ -5,5 +5,5 @@ abstract interface class BannerRepository {
   ///
   /// Returns a pure [Banner] entity if successful, or null if no
   /// active banner exists on the server.
-  Future<Banner?> getPodcastBanner();
+  Future<HeroBanner> getPodcastBanner();
 }
