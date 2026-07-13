@@ -22,9 +22,10 @@ class AlbumScreen extends ConsumerStatefulWidget {
   /// already hold the full [Album] (lists, search) pass it as [albumHint]
   /// for an instant first paint; the track options sheet passes only the id.
   final String albumId;
+  final String? fromPath;
   final Album? albumHint;
 
-  const AlbumScreen({super.key, required this.albumId, this.albumHint});
+  const AlbumScreen({super.key, required this.albumId, this.albumHint, this.fromPath});
 
   @override
   ConsumerState<AlbumScreen> createState() => _AlbumScreenState();
@@ -103,7 +104,15 @@ class _AlbumScreenState extends ConsumerState<AlbumScreen> {
             backgroundColor: DSColors.black.withValues(alpha: 0.9),
             leading: IconButton(
               icon: SvgPicture.asset('assets/icons/arrow-Left.svg'),
-              onPressed: () => context.pop(),
+              onPressed: () => {
+                if (widget.fromPath != null && widget.fromPath!.isNotEmpty)
+                  {
+                    // If we came from notifications, jump back to notifications!
+                    context.go(widget.fromPath!),
+                  }
+                else
+                  {context.pop()},
+              },
             ),
             actions: [
               // Share — functionality not implemented yet, hidden for now.
@@ -160,7 +169,9 @@ class _AlbumScreenState extends ConsumerState<AlbumScreen> {
                     const SizedBox(height: DSSpacing.m),
                     ElevatedButton(
                       onPressed: () => ref
-                          .read(albumControllerProvider(widget.albumId).notifier)
+                          .read(
+                            albumControllerProvider(widget.albumId).notifier,
+                          )
                           .loadTracks(),
                       child: const Text('Retry'),
                     ),
@@ -198,8 +209,7 @@ class _AlbumScreenState extends ConsumerState<AlbumScreen> {
                           track: track,
                           index: index + 1,
                           isPlaying: trackPlayingState,
-                          onTap: () =>
-                              _onTrackTap(loadedAlbum, tracks, index),
+                          onTap: () => _onTrackTap(loadedAlbum, tracks, index),
                           onMenuTap: () {},
                           topPadding: index == 0 ? 0 : 8,
                         ),

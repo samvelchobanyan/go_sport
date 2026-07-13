@@ -31,7 +31,7 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
   Widget build(BuildContext context) {
     // Watch the state of your notifications provider
     final state = ref.watch(notificationsControllerProvider);
-
+    print('state nooooooooooot: ${state.items}');
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.dark,
       child: Scaffold(
@@ -105,9 +105,34 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
                             NotificationTile(
                               title: item.title,
                               subtitle: item.body,
-                              // Replace placeholder image path with your design system path
-                              imagePath: 'assets/images/login_bg.png',
+                              imagePath: item.coverUrl,
+                              isSeen: item.isRead,
                               onTap: () {
+                                final String target = item.targetId ?? '';
+                                final String type = item.type ?? '';
+
+                                // 1. Capture the router instance safely right away
+                                final router = GoRouter.of(context);
+
+                                if (type == 'episode') {
+                                  router.go(
+                                    '/music/program/$target?from=/profile/notifications',
+                                  );
+                                } else if (type == 'article') {
+                                  router.go(
+                                    '/news/$target?from=/profile/notifications',
+                                  );
+                                } else if (type == 'album') {
+                                  router.go(
+                                    '/music/album/$target?from=/profile/notifications',
+                                  );
+                                } else if (type == 'playlist') {
+                                  // done check!! doesnt have playlist by that documentId
+                                  router.go(
+                                    '/music/playlist/$target?from=/profile/notifications',
+                                  );
+                                }
+
                                 ref
                                     .read(
                                       notificationsControllerProvider.notifier,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_sport/design_system/components/network_image/ds_network_image.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_spacing.dart';
@@ -7,14 +8,16 @@ import 'package:go_sport/design_system/foundations/ds_radius.dart';
 class NotificationTile extends StatelessWidget {
   final String title;
   final String subtitle;
-  final String imagePath;
+  final String? imagePath;
   final VoidCallback onTap;
+  final bool isSeen;
 
   const NotificationTile({
     super.key,
     required this.title,
     required this.subtitle,
-    required this.imagePath,
+    this.imagePath,
+    required this.isSeen,
     required this.onTap,
   });
 
@@ -29,33 +32,40 @@ class NotificationTile extends StatelessWidget {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(DSRadius.s),
-              child: Image.asset(
-                imagePath,
-                width: 52,
-                height: 52,
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) => Container(
-                  width: 52,
-                  height: 52,
-                  color: DSColors.blue10,
-                  child: const Icon(Icons.notifications, color: DSColors.blue),
-                ),
-              ),
+              child: DSNetworkImage(imageUrl: imagePath, width: 52, height: 52),
             ),
 
             const SizedBox(width: DSSpacing.s14),
 
-            // Text Content
+            // Title
             Expanded(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    title,
-                    style: context.subtitleM,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Flexible(
+                        child: Text(
+                          title,
+                          style: context.subtitleM,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      if (!isSeen) ...[
+                        const SizedBox(width: DSSpacing.xs),
+                        Container(
+                          width: 6,
+                          height: 6,
+                          decoration: const BoxDecoration(
+                            color: DSColors.orange,
+                            shape: BoxShape.circle,
+                          ),
+                        ),
+                      ],
+                    ],
                   ),
                   const SizedBox(height: DSSpacing.xs),
                   Text(

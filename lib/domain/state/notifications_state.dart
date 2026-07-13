@@ -64,18 +64,61 @@ class NotificationsController extends AutoDisposeNotifier<NotificationsState> {
     }
   }
 
+  // Future<void> readNotification(String documentId) async {
+  //   try {
+  //     final notification = await _notificationsRepository.readNotification(
+  //       documentId,
+  //     );
+  //     final updatedItems = state.items
+  //         .map((item) => item.documentId == documentId ? notification : item)
+  //         .toList();
+  //     state = state.copyWith(
+  //       items: updatedItems,
+  //       selectedNotification: notification,
+  //     );
+
+  //     // Re-read the authoritative count so the badge stays in sync.
+  //     await getUnseenCount();
+  //   } catch (e) {
+  //     state = state.copyWith(error: _messageFromError(e));
+  //   }
+  // }
+
   Future<void> readNotification(String documentId) async {
     try {
+      // 1. Send the read request to the backend
       final notification = await _notificationsRepository.readNotification(
         documentId,
       );
-      final updatedItems = state.items
-          .map((item) => item.documentId == documentId ? notification : item)
-          .toList();
+
+      // 2. Safely merge the state data
+      final updatedItems = state.items.map((item) {
+        if (item.documentId == documentId) {
+          // Use the new update payload, but preserve the old coverUrl if the incoming one is null or empty
+          return notification.copyWith(
+            coverUrl:
+                (notification.coverUrl != null &&
+                    notification.coverUrl!.isNotEmpty)
+                ? notification.coverUrl
+                : item.coverUrl, // <--- THIS SAVES YOUR IMAGE DATA ENVELOPE
+          );
+        }
+        return item;
+      }).toList();
+
       state = state.copyWith(
         items: updatedItems,
-        selectedNotification: notification,
+        selectedNotification: notification.copyWith(
+          coverUrl:
+              (notification.coverUrl != null &&
+                  notification.coverUrl!.isNotEmpty)
+              ? notification.coverUrl
+              : state.items
+                    .firstWhere((i) => i.documentId == documentId)
+                    .coverUrl,
+        ),
       );
+
       // Re-read the authoritative count so the badge stays in sync.
       await getUnseenCount();
     } catch (e) {

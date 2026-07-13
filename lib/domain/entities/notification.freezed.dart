@@ -24,7 +24,9 @@ mixin _$Notification {
   bool get isRead => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
   String? get type => throw _privateConstructorUsedError;
-  String? get targetId => throw _privateConstructorUsedError;
+  String? get targetId =>
+      throw _privateConstructorUsedError; // Renamed from payload to clearly reflect what it holds
+  String? get coverUrl => throw _privateConstructorUsedError;
 
   /// Create a copy of Notification
   /// with the given fields replaced by the non-null parameter values.
@@ -49,6 +51,7 @@ abstract class $NotificationCopyWith<$Res> {
     DateTime createdAt,
     String? type,
     String? targetId,
+    String? coverUrl,
   });
 }
 
@@ -75,6 +78,7 @@ class _$NotificationCopyWithImpl<$Res, $Val extends Notification>
     Object? createdAt = null,
     Object? type = freezed,
     Object? targetId = freezed,
+    Object? coverUrl = freezed,
   }) {
     return _then(
       _value.copyWith(
@@ -110,6 +114,10 @@ class _$NotificationCopyWithImpl<$Res, $Val extends Notification>
                 ? _value.targetId
                 : targetId // ignore: cast_nullable_to_non_nullable
                       as String?,
+            coverUrl: freezed == coverUrl
+                ? _value.coverUrl
+                : coverUrl // ignore: cast_nullable_to_non_nullable
+                      as String?,
           )
           as $Val,
     );
@@ -134,6 +142,7 @@ abstract class _$$NotificationImplCopyWith<$Res>
     DateTime createdAt,
     String? type,
     String? targetId,
+    String? coverUrl,
   });
 }
 
@@ -159,6 +168,7 @@ class __$$NotificationImplCopyWithImpl<$Res>
     Object? createdAt = null,
     Object? type = freezed,
     Object? targetId = freezed,
+    Object? coverUrl = freezed,
   }) {
     return _then(
       _$NotificationImpl(
@@ -194,6 +204,10 @@ class __$$NotificationImplCopyWithImpl<$Res>
             ? _value.targetId
             : targetId // ignore: cast_nullable_to_non_nullable
                   as String?,
+        coverUrl: freezed == coverUrl
+            ? _value.coverUrl
+            : coverUrl // ignore: cast_nullable_to_non_nullable
+                  as String?,
       ),
     );
   }
@@ -211,6 +225,7 @@ class _$NotificationImpl implements _Notification {
     required this.createdAt,
     this.type,
     this.targetId,
+    this.coverUrl,
   });
 
   @override
@@ -230,10 +245,13 @@ class _$NotificationImpl implements _Notification {
   final String? type;
   @override
   final String? targetId;
+  // Renamed from payload to clearly reflect what it holds
+  @override
+  final String? coverUrl;
 
   @override
   String toString() {
-    return 'Notification(id: $id, title: $title, body: $body, documentId: $documentId, isRead: $isRead, createdAt: $createdAt, type: $type, targetId: $targetId)';
+    return 'Notification(id: $id, title: $title, body: $body, documentId: $documentId, isRead: $isRead, createdAt: $createdAt, type: $type, targetId: $targetId, coverUrl: $coverUrl)';
   }
 
   @override
@@ -251,7 +269,9 @@ class _$NotificationImpl implements _Notification {
                 other.createdAt == createdAt) &&
             (identical(other.type, type) || other.type == type) &&
             (identical(other.targetId, targetId) ||
-                other.targetId == targetId));
+                other.targetId == targetId) &&
+            (identical(other.coverUrl, coverUrl) ||
+                other.coverUrl == coverUrl));
   }
 
   @override
@@ -265,6 +285,7 @@ class _$NotificationImpl implements _Notification {
     createdAt,
     type,
     targetId,
+    coverUrl,
   );
 
   /// Create a copy of Notification
@@ -286,6 +307,7 @@ abstract class _Notification implements Notification {
     required final DateTime createdAt,
     final String? type,
     final String? targetId,
+    final String? coverUrl,
   }) = _$NotificationImpl;
 
   @override
@@ -303,7 +325,9 @@ abstract class _Notification implements Notification {
   @override
   String? get type;
   @override
-  String? get targetId;
+  String? get targetId; // Renamed from payload to clearly reflect what it holds
+  @override
+  String? get coverUrl;
 
   /// Create a copy of Notification
   /// with the given fields replaced by the non-null parameter values.

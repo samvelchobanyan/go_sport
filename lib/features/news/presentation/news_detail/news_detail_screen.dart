@@ -16,8 +16,9 @@ import 'package:intl/intl.dart';
 
 class NewsDetailScreen extends ConsumerWidget {
   final String articleId;
+  final String? fromPath;
 
-  const NewsDetailScreen({super.key, required this.articleId});
+  const NewsDetailScreen({super.key, required this.articleId, this.fromPath});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -39,13 +40,14 @@ class NewsDetailScreen extends ConsumerWidget {
       );
     }
 
-    return _buildContent(context, ref, article);
+    return _buildContent(context, ref, article, fromPath);
   }
 
   Widget _buildContent(
     BuildContext context,
     WidgetRef ref,
     NewsArticle article,
+    String? fromPath,
   ) {
     return Scaffold(
       backgroundColor: DSColors.white,
@@ -54,7 +56,15 @@ class NewsDetailScreen extends ConsumerWidget {
         elevation: 0,
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: DSColors.black),
-          onPressed: () => context.canPop() ? context.pop() : context.go('/'),
+          onPressed: () => {
+            if (fromPath != null && fromPath.isNotEmpty)
+              {
+                // If we came from notifications, jump back to notifications!
+                context.go(fromPath),
+              }
+            else
+              {context.pop()},
+          },
         ),
         actions: [
           if (article.author != 'Unknown')

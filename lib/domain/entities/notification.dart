@@ -13,5 +13,6 @@ class Notification with _$Notification {
     required DateTime createdAt,
     String? type,
     String? targetId, // Renamed from payload to clearly reflect what it holds
+    String? coverUrl,
   }) = _Notification;
 }

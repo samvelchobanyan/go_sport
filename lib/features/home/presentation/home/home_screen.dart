@@ -19,7 +19,7 @@ import '../../../shared_widgets/user_avatar_button.dart';
 import '../../../shared_widgets/search_button.dart';
 import '../../../shared_widgets/dotted_divider.dart';
 
-import 'widgets/hero_banner.dart';
+import 'widgets/banner/hero_banner.dart';
 import 'widgets/story_item.dart';
 import 'widgets/news_item.dart';
 import 'widgets/home_skeleton.dart';
