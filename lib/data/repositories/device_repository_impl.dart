@@ -30,7 +30,6 @@ class DeviceRepositoryImpl implements DeviceRepository {
         'data': {'Token': token, 'Platform': platform},
       },
     );
-
     return response.data['data']['documentId'] as String;
   }
 

@@ -163,13 +163,13 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: DSSpacing.xs),
-                  Text(
-                    user.phone != null
-                        ? '+${user.phone}'
-                        : 'Phone not available',
-                    style: context.textL,
-                    textAlign: TextAlign.center,
-                  ),
+                  if (user.phone != null) ...[
+                    Text(
+                      '+${user.phone}',
+                      style: context.textL,
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
                   const SizedBox(height: DSSpacing.l),
                 ],
               ),

@@ -117,7 +117,7 @@ class HomeScreen extends ConsumerWidget {
 
     // Get data from states
     final stories = storiesState.storiesList;
-    final news = newsState.articlesList;
+    final news = newsState.articlesList.reversed.toList();
     final playlists = playlistsState.playlistsList;
     final banner = bannerState.banner;
     final avatarUrl = ref.watch(

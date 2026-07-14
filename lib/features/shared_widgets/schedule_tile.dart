@@ -1,5 +1,7 @@
+import 'package:go_sport/core/auth/auth_state.dart';
 import 'package:go_sport/design_system/components/network_image/ds_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_sport/design_system/components/icons/ds_notification_icon.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
@@ -8,7 +10,7 @@ import 'package:go_sport/design_system/foundations/ds_icon_size.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/domain/entities/scheduled_program.dart';
 
-class ScheduleTile extends StatelessWidget {
+class ScheduleTile extends ConsumerWidget {
   final ScheduledProgram program;
   final bool isLive;
   final bool isSubscribed;
@@ -23,12 +25,14 @@ class ScheduleTile extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final String startTime =
         "${program.startDate.hour}:${program.startDate.minute.toString().padLeft(2, '0')}";
     final String endTime =
         "${program.endDate.hour}:${program.endDate.minute.toString().padLeft(2, '0')}";
+    final authState = ref.watch(authProvider);
 
+    final isGuest = authState is! AuthAuthenticated;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: DSSpacing.s8),
       child: Row(
@@ -77,7 +81,7 @@ class ScheduleTile extends StatelessWidget {
           ),
           const SizedBox(width: DSSpacing.s6),
           GestureDetector(
-            onTap: onSubscribeToggle,
+            onTap: isGuest ? null : onSubscribeToggle,
             behavior: HitTestBehavior.opaque,
             child: Container(
               width: 27,

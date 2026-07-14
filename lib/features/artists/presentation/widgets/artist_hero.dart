@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_sport/design_system/components/network_image/ds_network_image.dart';
-import 'package:go_sport/design_system/components/icons/ds_heart_icon.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 import 'package:go_sport/design_system/foundations/ds_layout.dart';
-import 'package:go_sport/design_system/foundations/ds_icon_size.dart';
 import 'package:go_sport/domain/entities/artist.dart';
+import 'package:go_sport/features/shared_widgets/hero_like_button.dart';
 
 class ArtistHero extends StatelessWidget {
   final Artist artist;
@@ -45,30 +44,15 @@ class ArtistHero extends StatelessWidget {
         Align(
           alignment: Alignment.bottomCenter,
           child: Padding(
-            padding: const EdgeInsets.only(bottom: DSLayout.heroContentBottom, left: DSSpacing.l, right: DSSpacing.l),
+            padding: const EdgeInsets.only(
+              bottom: DSLayout.heroContentBottom,
+              left: DSSpacing.l,
+              right: DSSpacing.l,
+            ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                GestureDetector(
-                  onTap: onLikeTap,
-                  child: Container(
-                    width: 48,
-                    height: 48,
-                    decoration: BoxDecoration(
-                      color: isLiked
-                          ? DSColors.orange
-                          : DSColors.white.withValues(alpha: 0.25),
-                      shape: BoxShape.circle,
-                    ),
-                    child: Center(
-                      child: DSHeartIcon(
-                        color: DSColors.white,
-                        size: DSIconSize.s32,
-                        isFilled: isLiked,
-                      ),
-                    ),
-                  ),
-                ),
+                HeroLikeButton(isLiked: isLiked, onActionTap: onLikeTap),
                 const SizedBox(height: DSSpacing.m),
                 Text(
                   artist.artistName,

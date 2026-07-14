@@ -1,3 +1,4 @@
+import 'package:go_sport/core/auth/auth_state.dart';
 import 'package:go_sport/design_system/components/network_image/ds_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -49,6 +50,9 @@ class NewsDetailScreen extends ConsumerWidget {
     NewsArticle article,
     String? fromPath,
   ) {
+    final authState = ref.watch(authProvider);
+
+    final isGuest = authState is! AuthAuthenticated;
     return Scaffold(
       backgroundColor: DSColors.white,
       appBar: AppBar(
@@ -200,11 +204,13 @@ class NewsDetailScreen extends ConsumerWidget {
                 children: [
                   // Like button
                   GestureDetector(
-                    onTap: () {
-                      ref
-                          .read(newsStateProvider.notifier)
-                          .toggleLike(article.id);
-                    },
+                    onTap: isGuest
+                        ? null
+                        : () {
+                            ref
+                                .read(newsStateProvider.notifier)
+                                .toggleLike(article.id);
+                          },
                     child: Container(
                       width: 48,
                       height: 48,

@@ -65,7 +65,8 @@ class NewsListScreen extends ConsumerWidget {
       );
     }
 
-    final articles = state.articlesList;
+    final articles = state.articlesList.reversed.toList();
+    
 
     if (articles.isEmpty) {
       return const Center(child: Text('No news available'));

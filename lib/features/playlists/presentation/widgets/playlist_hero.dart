@@ -5,9 +5,8 @@ import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 import 'package:go_sport/design_system/foundations/ds_layout.dart';
-import 'package:go_sport/design_system/foundations/ds_icon_size.dart';
-import 'package:go_sport/design_system/components/icons/ds_heart_icon.dart';
 import 'package:go_sport/domain/entities/playlist.dart';
+import 'package:go_sport/features/shared_widgets/hero_like_button.dart';
 
 class PlaylistHero extends StatelessWidget {
   final Playlist playlist;
@@ -62,7 +61,11 @@ class PlaylistHero extends StatelessWidget {
         Align(
           alignment: Alignment.bottomCenter,
           child: Padding(
-            padding: const EdgeInsets.only(bottom: DSLayout.heroContentBottom, left: DSSpacing.l, right: DSSpacing.l),
+            padding: const EdgeInsets.only(
+              bottom: DSLayout.heroContentBottom,
+              left: DSSpacing.l,
+              right: DSSpacing.l,
+            ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -70,39 +73,12 @@ class PlaylistHero extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    // Action button
-                    GestureDetector(
-                      onTap: onActionTap,
-                      child: Container(
-                        width: 48,
-                        height: 48,
-                        decoration: BoxDecoration(
-                          // Orange fill only for the liked featured-playlist heart;
-                          // custom playlists show a lime "+" action — keep it translucent.
-                          color: (!isCustom && isLiked)
-                              ? DSColors.orange
-                              : DSColors.white.withValues(alpha: 0.25),
-                          shape: BoxShape.circle,
-                        ),
-                        child: Center(
-                          child: isCustom
-                              ? SvgPicture.asset(
-                                  'assets/icons/plus.svg',
-                                  width: 18,
-                                  height: 18,
-                                  colorFilter: const ColorFilter.mode(
-                                    DSColors.lime,
-                                    BlendMode.srcIn,
-                                  ),
-                                )
-                              : DSHeartIcon(
-                                  color: DSColors.white,
-                                  size: DSIconSize.s32,
-                                  isFilled: isLiked,
-                                ),
-                        ),
-                      ),
+                    HeroLikeButton(
+                      isLiked: isLiked,
+                      onActionTap: onActionTap,
+                      isCustom: isCustom,
                     ),
+
                     if (showPlayButton) ...[
                       const SizedBox(width: DSSpacing.m),
                       // Play button

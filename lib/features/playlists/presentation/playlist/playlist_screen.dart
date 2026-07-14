@@ -88,6 +88,7 @@ class _PlaylistScreenState extends ConsumerState<PlaylistScreen> {
       track: track,
       onAddToPlaylist: () =>
           showAddToPlaylistBottomSheet(context: context, track: track),
+
       onRemoveFromPlaylist: widget.type == PlaylistType.custom
           ? () => showDeleteConfirmBottomSheet(
               context: context,

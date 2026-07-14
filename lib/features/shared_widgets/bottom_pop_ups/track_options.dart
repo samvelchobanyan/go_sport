@@ -37,6 +37,7 @@ void showTrackOptionsBottomSheet({
         children: [
           // Track info
           GestureDetector(
+            behavior: HitTestBehavior.opaque,
             onTap: !hasRedirection
                 ? null
                 : () {

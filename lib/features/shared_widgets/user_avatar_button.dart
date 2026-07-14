@@ -40,7 +40,11 @@ class UserAvatarButton extends StatelessWidget {
   Widget _buildPlaceholder() {
     return Container(
       color: DSColors.gray20,
-      child: SvgPicture.asset('assets/icons/avatar.svg', width: size * 0.6, height: size * 0.6),
+      child: SvgPicture.asset(
+        'assets/icons/avatar.svg',
+        width: size * 0.6,
+        height: size * 0.6,
+      ),
     );
   }
 }

@@ -21,14 +21,24 @@ class UserState with _$UserState {
 }
 
 class UserNotifier extends Notifier<UserState> {
-  late final ProfileRepository _repository;
-  late final GoogleAuthService _googleAuthService;
+  late ProfileRepository _repository;
+  late GoogleAuthService _googleAuthService;
 
   @override
+ 
   UserState build() {
     _repository = ref.watch(profileRepositoryProvider);
     _googleAuthService = ref.watch(googleAuthServiceProvider);
-    Future.microtask(() => getUser());
+
+    // 1. Read the auth state to see if we should fetch data on startup/rebuild
+    final authState = ref.watch(authProvider);
+
+    if (authState is AuthAuthenticated) {
+      Future.microtask(() => getUser());
+      return const UserState(isLoading: true);
+    }
+
+    // Default state for Guests or Unauthorized users (no automatic fetch!)
     return const UserState();
   }
 
@@ -73,6 +83,15 @@ class UserNotifier extends Notifier<UserState> {
     } catch (e) {
       state = state.copyWith(isLoading: false, error: 'Failed to delete user.');
     }
+  }
+
+  resetUser() {
+    state = state.copyWith(
+      isLoading: false,
+      isDeleted: false,
+      user: null,
+      error: null,
+    );
   }
 }
 

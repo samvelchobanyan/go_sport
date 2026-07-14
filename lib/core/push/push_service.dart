@@ -7,7 +7,11 @@ class PushService {
   final DeviceRepository _deviceRepository;
   final PushLocalStorage _localStorage;
 
-  PushService(this._firebaseService, this._deviceRepository, this._localStorage);
+  PushService(
+    this._firebaseService,
+    this._deviceRepository,
+    this._localStorage,
+  );
 
   // todo handle token refresh:
   //   1. subscribe to FirebaseMessaging.onTokenRefresh while app is running
@@ -25,7 +29,6 @@ class PushService {
     final documentId =
         existingId ??
         await _deviceRepository.register(token: token, platform: platform);
-
     await _localStorage.saveDocumentId(documentId);
   }
 
