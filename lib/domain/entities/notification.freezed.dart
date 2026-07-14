@@ -25,7 +25,9 @@ mixin _$Notification {
   DateTime get createdAt => throw _privateConstructorUsedError;
   String? get type => throw _privateConstructorUsedError;
   String? get targetId =>
-      throw _privateConstructorUsedError; // Renamed from payload to clearly reflect what it holds
+      throw _privateConstructorUsedError; // documentId of the entity this notification points to
+  String? get programId =>
+      throw _privateConstructorUsedError; // parent program — sent only for episode notifications
   String? get coverUrl => throw _privateConstructorUsedError;
 
   /// Create a copy of Notification
@@ -51,6 +53,7 @@ abstract class $NotificationCopyWith<$Res> {
     DateTime createdAt,
     String? type,
     String? targetId,
+    String? programId,
     String? coverUrl,
   });
 }
@@ -78,6 +81,7 @@ class _$NotificationCopyWithImpl<$Res, $Val extends Notification>
     Object? createdAt = null,
     Object? type = freezed,
     Object? targetId = freezed,
+    Object? programId = freezed,
     Object? coverUrl = freezed,
   }) {
     return _then(
@@ -114,6 +118,10 @@ class _$NotificationCopyWithImpl<$Res, $Val extends Notification>
                 ? _value.targetId
                 : targetId // ignore: cast_nullable_to_non_nullable
                       as String?,
+            programId: freezed == programId
+                ? _value.programId
+                : programId // ignore: cast_nullable_to_non_nullable
+                      as String?,
             coverUrl: freezed == coverUrl
                 ? _value.coverUrl
                 : coverUrl // ignore: cast_nullable_to_non_nullable
@@ -142,6 +150,7 @@ abstract class _$$NotificationImplCopyWith<$Res>
     DateTime createdAt,
     String? type,
     String? targetId,
+    String? programId,
     String? coverUrl,
   });
 }
@@ -168,6 +177,7 @@ class __$$NotificationImplCopyWithImpl<$Res>
     Object? createdAt = null,
     Object? type = freezed,
     Object? targetId = freezed,
+    Object? programId = freezed,
     Object? coverUrl = freezed,
   }) {
     return _then(
@@ -204,6 +214,10 @@ class __$$NotificationImplCopyWithImpl<$Res>
             ? _value.targetId
             : targetId // ignore: cast_nullable_to_non_nullable
                   as String?,
+        programId: freezed == programId
+            ? _value.programId
+            : programId // ignore: cast_nullable_to_non_nullable
+                  as String?,
         coverUrl: freezed == coverUrl
             ? _value.coverUrl
             : coverUrl // ignore: cast_nullable_to_non_nullable
@@ -225,6 +239,7 @@ class _$NotificationImpl implements _Notification {
     required this.createdAt,
     this.type,
     this.targetId,
+    this.programId,
     this.coverUrl,
   });
 
@@ -245,13 +260,16 @@ class _$NotificationImpl implements _Notification {
   final String? type;
   @override
   final String? targetId;
-  // Renamed from payload to clearly reflect what it holds
+  // documentId of the entity this notification points to
+  @override
+  final String? programId;
+  // parent program — sent only for episode notifications
   @override
   final String? coverUrl;
 
   @override
   String toString() {
-    return 'Notification(id: $id, title: $title, body: $body, documentId: $documentId, isRead: $isRead, createdAt: $createdAt, type: $type, targetId: $targetId, coverUrl: $coverUrl)';
+    return 'Notification(id: $id, title: $title, body: $body, documentId: $documentId, isRead: $isRead, createdAt: $createdAt, type: $type, targetId: $targetId, programId: $programId, coverUrl: $coverUrl)';
   }
 
   @override
@@ -270,6 +288,8 @@ class _$NotificationImpl implements _Notification {
             (identical(other.type, type) || other.type == type) &&
             (identical(other.targetId, targetId) ||
                 other.targetId == targetId) &&
+            (identical(other.programId, programId) ||
+                other.programId == programId) &&
             (identical(other.coverUrl, coverUrl) ||
                 other.coverUrl == coverUrl));
   }
@@ -285,6 +305,7 @@ class _$NotificationImpl implements _Notification {
     createdAt,
     type,
     targetId,
+    programId,
     coverUrl,
   );
 
@@ -307,6 +328,7 @@ abstract class _Notification implements Notification {
     required final DateTime createdAt,
     final String? type,
     final String? targetId,
+    final String? programId,
     final String? coverUrl,
   }) = _$NotificationImpl;
 
@@ -325,7 +347,9 @@ abstract class _Notification implements Notification {
   @override
   String? get type;
   @override
-  String? get targetId; // Renamed from payload to clearly reflect what it holds
+  String? get targetId; // documentId of the entity this notification points to
+  @override
+  String? get programId; // parent program — sent only for episode notifications
   @override
   String? get coverUrl;
 

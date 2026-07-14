@@ -164,22 +164,12 @@ class _MainAppState extends ConsumerState<MainApp> {
     }
   }
 
-  /// Maps an FCM data payload ({type, documentId, ...}) to an in-app route.
-  /// Screens load their own data by id, so the push only carries the address.
   void _handlePushMessage(RemoteMessage message) {
-    final type = message.data['type'];
-    final documentId = message.data['documentId'];
-    final programId = message.data['programId'];
-    if (documentId is! String || documentId.isEmpty) return;
-
-    final route = switch (type) {
-      'article' => '/news/$documentId',
-      'album' => '/music/album/$documentId',
-      // Open the program and auto-play the pushed episode once it loads.
-      'episode' when programId is String && programId.isNotEmpty =>
-        '/music/program/$programId?play=$documentId',
-      _ => null, // unknown type — ignore silently
-    };
+    final route = AppRoutes.contentRoute(
+      type: message.data['type'] as String?,
+      documentId: message.data['documentId'] as String?,
+      programId: message.data['programId'] as String?,
+    );
     if (route != null) _router.push(route);
   }
 

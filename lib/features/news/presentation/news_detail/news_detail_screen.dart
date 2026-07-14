@@ -17,16 +17,14 @@ import 'package:intl/intl.dart';
 
 class NewsDetailScreen extends ConsumerWidget {
   final String articleId;
-  final String? fromPath;
 
-  const NewsDetailScreen({super.key, required this.articleId, this.fromPath});
+  const NewsDetailScreen({super.key, required this.articleId});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final newsState = ref.watch(newsStateProvider);
     final article = newsState.getArticle(articleId);
 
-    print(' article=$article');
     // If article not in cache, try to load it
     if (article == null) {
       // Trigger load if not already loading
@@ -41,14 +39,13 @@ class NewsDetailScreen extends ConsumerWidget {
       );
     }
 
-    return _buildContent(context, ref, article, fromPath);
+    return _buildContent(context, ref, article);
   }
 
   Widget _buildContent(
     BuildContext context,
     WidgetRef ref,
     NewsArticle article,
-    String? fromPath,
   ) {
     final authState = ref.watch(authProvider);
 
@@ -60,15 +57,7 @@ class NewsDetailScreen extends ConsumerWidget {
         elevation: 0,
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: DSColors.black),
-          onPressed: () => {
-            if (fromPath != null && fromPath.isNotEmpty)
-              {
-                // If we came from notifications, jump back to notifications!
-                context.go(fromPath),
-              }
-            else
-              {context.pop()},
-          },
+          onPressed: () => context.pop(),
         ),
         actions: [
           if (article.author != 'Unknown')

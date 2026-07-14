@@ -26,7 +26,6 @@ class ProgramDetailsScreen extends ConsumerStatefulWidget {
   /// [programHint] for an instant first paint; the track options sheet
   /// passes only the id.
   final String programId;
-  final String? fromPath;
   final Program? programHint;
 
   /// Episode to auto-play once episodes load (deep link / push).
@@ -38,7 +37,6 @@ class ProgramDetailsScreen extends ConsumerStatefulWidget {
     required this.programId,
     this.programHint,
     this.playEpisodeId,
-    this.fromPath,
   });
 
   @override
@@ -161,15 +159,7 @@ class _ProgramDetailsScreenState extends ConsumerState<ProgramDetailsScreen> {
               backgroundColor: DSColors.black.withValues(alpha: 0.9),
               leading: IconButton(
                 icon: SvgPicture.asset('assets/icons/arrow-Left.svg'),
-                onPressed: () => {
-                  if (widget.fromPath != null && widget.fromPath!.isNotEmpty)
-                    {
-                      // If we came from notifications, jump back to notifications!
-                      context.go(widget.fromPath!),
-                    }
-                  else
-                    {context.pop()},
-                },
+                onPressed: () => context.pop(),
               ),
               actions: [
                 // Share — functionality not implemented yet, hidden for now.

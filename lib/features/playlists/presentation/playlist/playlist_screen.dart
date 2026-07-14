@@ -29,7 +29,6 @@ import '../edit_playlist/edit_playlist_screen.dart';
 
 class PlaylistScreen extends ConsumerStatefulWidget {
   final String playlistId;
-  final String? fromPath;
   final PlaylistType type;
   final Playlist? playlist;
 
@@ -38,7 +37,6 @@ class PlaylistScreen extends ConsumerStatefulWidget {
     required this.playlistId,
     this.type = PlaylistType.featured,
     this.playlist,
-    this.fromPath,
   });
 
   @override
@@ -168,15 +166,7 @@ class _PlaylistScreenState extends ConsumerState<PlaylistScreen> {
           elevation: 0,
           leading: IconButton(
             icon: const Icon(Icons.arrow_back, color: DSColors.black),
-            onPressed: () => {
-              if (widget.fromPath != null && widget.fromPath!.isNotEmpty)
-                {
-                  // If we came from notifications, jump back to notifications!
-                  context.go(widget.fromPath!),
-                }
-              else
-                {context.pop()},
-            },
+            onPressed: () => context.pop(),
           ),
         ),
         body: const Center(child: Text('Playlist not found')),

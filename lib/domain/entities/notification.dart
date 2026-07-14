@@ -12,7 +12,8 @@ class Notification with _$Notification {
     @Default(false) bool isRead,
     required DateTime createdAt,
     String? type,
-    String? targetId, // Renamed from payload to clearly reflect what it holds
+    String? targetId, // documentId of the entity this notification points to
+    String? programId, // parent program — sent only for episode notifications
     String? coverUrl,
   }) = _Notification;
 }

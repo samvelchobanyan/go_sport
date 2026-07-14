@@ -1,4 +1,27 @@
 class AppRoutes {
+  /// Maps a content reference ({type, documentId, ...}) to an in-app route.
+  /// Single source of truth for FCM push taps (main.dart) and in-app
+  /// notification taps. Screens load their own data by id, so the route only
+  /// carries the address. Returns null for unknown types or a missing id —
+  /// callers skip navigation silently.
+  static String? contentRoute({
+    required String? type,
+    required String? documentId,
+    String? programId,
+  }) {
+    if (documentId == null || documentId.isEmpty) return null;
+    return switch (type?.toLowerCase()) {
+      'article' => '/news/$documentId',
+      'album' => '/music/album/$documentId',
+      'playlist' => '/music/playlist/$documentId',
+      // No standalone episode screen: open the program and auto-play the
+      // episode once it loads.
+      'episode' when programId != null && programId.isNotEmpty =>
+        '/music/program/$programId?play=$documentId',
+      _ => null,
+    };
+  }
+
   static const String login = '/login';
 
   // Profile screens

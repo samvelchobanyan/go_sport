@@ -209,12 +209,7 @@ GoRouter createAppRouter(TokenStorage tokenStorage) {
                     path: 'news/:id',
                     builder: (context, state) {
                       final id = state.pathParameters['id']!;
-                      final fromPath = state.uri.queryParameters['from'];
-
-                      return NewsDetailScreen(
-                        articleId: id,
-                        fromPath: fromPath,
-                      );
+                      return NewsDetailScreen(articleId: id);
                     },
                   ),
                 ],
@@ -236,7 +231,6 @@ GoRouter createAppRouter(TokenStorage tokenStorage) {
                     builder: (context, state) {
                       final id = state.pathParameters['id']!;
                       final typeStr = state.uri.queryParameters['type'];
-                      final fromPath = state.uri.queryParameters['from'];
                       final type = typeStr == 'custom'
                           ? PlaylistType.custom
                           : PlaylistType.featured;
@@ -245,7 +239,6 @@ GoRouter createAppRouter(TokenStorage tokenStorage) {
                         playlistId: id,
                         type: type,
                         playlist: playlist,
-                        fromPath: fromPath,
                       );
                     },
                   ),
@@ -255,12 +248,7 @@ GoRouter createAppRouter(TokenStorage tokenStorage) {
                     builder: (context, state) {
                       final id = state.pathParameters['id']!;
                       final albumHint = state.extra as Album?;
-                      final fromPath = state.uri.queryParameters['from'];
-                      return AlbumScreen(
-                        albumId: id,
-                        albumHint: albumHint,
-                        fromPath: fromPath,
-                      );
+                      return AlbumScreen(albumId: id, albumHint: albumHint);
                     },
                   ),
                   // Artist route
@@ -313,12 +301,10 @@ GoRouter createAppRouter(TokenStorage tokenStorage) {
                       // Deep link / push: ?play=<episodeId> auto-plays that
                       // episode once the list loads.
                       final playEpisodeId = state.uri.queryParameters['play'];
-                      final fromPath = state.uri.queryParameters['from'];
                       return ProgramDetailsScreen(
                         programId: id,
                         programHint: programHint,
                         playEpisodeId: playEpisodeId,
-                        fromPath: fromPath,
                       );
                     },
                   ),

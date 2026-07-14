@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:go_sport/core/navigation/routes.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_spacing.dart';
@@ -31,7 +32,7 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
   Widget build(BuildContext context) {
     // Watch the state of your notifications provider
     final state = ref.watch(notificationsControllerProvider);
-    print('state nooooooooooot: ${state.items}');
+
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.dark,
       child: Scaffold(
@@ -108,30 +109,14 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
                               imagePath: item.coverUrl,
                               isSeen: item.isRead,
                               onTap: () {
-                                final String target = item.targetId ?? '';
-                                final String type = item.type ?? '';
-
-                                // 1. Capture the router instance safely right away
-                                final router = GoRouter.of(context);
-
-                                if (type == 'episode') {
-                                  router.go(
-                                    '/music/program/$target?from=/profile/notifications',
-                                  );
-                                } else if (type == 'article') {
-                                  router.go(
-                                    '/news/$target?from=/profile/notifications',
-                                  );
-                                } else if (type == 'album') {
-                                  router.go(
-                                    '/music/album/$target?from=/profile/notifications',
-                                  );
-                                } else if (type == 'playlist') {
-                                  // done check!! doesnt have playlist by that documentId
-                                  router.go(
-                                    '/music/playlist/$target?from=/profile/notifications',
-                                  );
-                                }
+                                final route = AppRoutes.contentRoute(
+                                  type: item.type,
+                                  documentId: item.targetId,
+                                  programId: item.programId,
+                                );
+                                // Pushed on top of the stack, so back
+                                // (button and system gesture) returns here.
+                                if (route != null) context.push(route);
 
                                 ref
                                     .read(
