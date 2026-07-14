@@ -20,6 +20,16 @@ class MainShell extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isGuest = ref.watch(authProvider) is AuthGuest;
+    // Profile routes live inside the shell only so pushes from them work
+    // (see app_router.dart); visually they stay full-screen — no tab bar,
+    // no mini player, exactly as when they were root-level routes.
+    final onProfile = GoRouterState.of(
+      context,
+    ).uri.path.startsWith(AppRoutes.profile);
+
+    if (onProfile) {
+      return Scaffold(body: navigationShell);
+    }
 
     return Scaffold(
       body: navigationShell,

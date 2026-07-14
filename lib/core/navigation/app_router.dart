@@ -128,41 +128,6 @@ GoRouter createAppRouter(TokenStorage tokenStorage) {
       ),
 
       GoRoute(
-        path: AppRoutes.profile,
-        builder: (context, state) => const ProfileScreen(),
-        routes: [
-          GoRoute(
-            path: 'for-business',
-            builder: (context, state) => const ForBusinessScreen(),
-          ),
-          GoRoute(
-            path: 'edit-profile',
-            builder: (context, state) => const EditProfileScreen(),
-          ),
-          GoRoute(
-            path: 'change-password',
-            builder: (context, state) => const ProfileChangePasswordScreen(),
-          ),
-          GoRoute(
-            path: 'delete-account',
-            builder: (context, state) => const DeleteScreen(),
-          ),
-          GoRoute(
-            path: 'confirm-delete',
-            builder: (context, state) => const ConfirmDeleteScreen(),
-          ),
-          GoRoute(
-            path: 'delete-success',
-            builder: (context, state) => const DeleteSuccessScreen(),
-          ),
-          GoRoute(
-            path: 'notifications',
-            builder: (context, state) => const NotificationsScreen(),
-          ),
-        ],
-      ),
-
-      GoRoute(
         path: AppRoutes.expiredGuest,
         builder: (context, state) => const ExpiredGuestScreen(),
       ),
@@ -211,6 +176,48 @@ GoRouter createAppRouter(TokenStorage tokenStorage) {
                       final id = state.pathParameters['id']!;
                       return NewsDetailScreen(articleId: id);
                     },
+                  ),
+                  // Profile routes live inside the shell (home branch) so that
+                  // screens above them (e.g. notifications) can push routes of
+                  // other branches — go_router forbids pushing into the shell
+                  // from a route outside it (duplicate page keys assertion).
+                  // MainShell hides the bottom panel while on /profile.
+                  GoRoute(
+                    path: 'profile',
+                    builder: (context, state) => const ProfileScreen(),
+                    routes: [
+                      GoRoute(
+                        path: 'for-business',
+                        builder: (context, state) => const ForBusinessScreen(),
+                      ),
+                      GoRoute(
+                        path: 'edit-profile',
+                        builder: (context, state) => const EditProfileScreen(),
+                      ),
+                      GoRoute(
+                        path: 'change-password',
+                        builder: (context, state) =>
+                            const ProfileChangePasswordScreen(),
+                      ),
+                      GoRoute(
+                        path: 'delete-account',
+                        builder: (context, state) => const DeleteScreen(),
+                      ),
+                      GoRoute(
+                        path: 'confirm-delete',
+                        builder: (context, state) => const ConfirmDeleteScreen(),
+                      ),
+                      GoRoute(
+                        path: 'delete-success',
+                        builder: (context, state) =>
+                            const DeleteSuccessScreen(),
+                      ),
+                      GoRoute(
+                        path: 'notifications',
+                        builder: (context, state) =>
+                            const NotificationsScreen(),
+                      ),
+                    ],
                   ),
                 ],
               ),
