@@ -190,6 +190,7 @@ class _MiniPlayerWidgetState extends ConsumerState<MiniPlayerWidget>
             program: (_, __, img) => img,
             favorites: (_, __, img) => img,
             episodes: (_, __, img) => img,
+            artist: (_, __, img) => img,
           ),
         ),
       ),

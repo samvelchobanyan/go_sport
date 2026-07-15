@@ -42,8 +42,10 @@ class TrackDto {
   final int length;
   final _FileDto? file;
   final List<_ArtistDto> artists;
+  final String? coverUrl;
   final String? albumCoverUrl;
   final String? albumId;
+  final int? year;
   final String? likeId;
 
   TrackDto({
@@ -52,14 +54,17 @@ class TrackDto {
     required this.length,
     required this.file,
     required this.artists,
+    this.coverUrl,
     this.albumCoverUrl,
     this.albumId,
+    this.year,
     this.likeId,
   });
 
   factory TrackDto.fromJson(Map<String, dynamic> json) {
     final album = json['Album'] as Map<String, dynamic>?;
-    final coverJson = album?['Cover'] as Map<String, dynamic>?;
+    final albumCoverJson = album?['Cover'] as Map<String, dynamic>?;
+    final coverJson = json['Cover'] as Map<String, dynamic>?;
     final likeJson = json['Like'] as Map<String, dynamic>?;
 
     return TrackDto(
@@ -74,26 +79,28 @@ class TrackDto {
               ?.map((e) => _ArtistDto.fromJson(e as Map<String, dynamic>))
               .toList() ??
           [],
-      albumCoverUrl: coverJson != null
-          ? _CoverDto.fromJson(coverJson).url
+      coverUrl: coverJson != null ? _CoverDto.fromJson(coverJson).url : null,
+      albumCoverUrl: albumCoverJson != null
+          ? _CoverDto.fromJson(albumCoverJson).url
           : null,
       albumId: album?['documentId'] as String?,
+      year: json['Year'] as int?,
       likeId: likeJson?['documentId'] as String?,
     );
   }
 
   Track toDomain() {
     log('"$name" → audioUrl: "${file?.url ?? ''}"', name: 'TrackDto');
-    log('"$name" → imageUrl: "$albumCoverUrl"', name: 'TrackDto');
     return Track(
       id: documentId,
       title: name,
       artistName: artists.isNotEmpty ? artists.first.name : '',
       artistId: artists.isNotEmpty ? artists.first.documentId : null,
-      imageUrl: albumCoverUrl,
+      imageUrl: coverUrl ?? albumCoverUrl,
       duration: Duration(seconds: length),
       audioUrl: file?.url ?? '',
       albumId: albumId,
+      year: year,
       likeId: likeId,
     );
   }

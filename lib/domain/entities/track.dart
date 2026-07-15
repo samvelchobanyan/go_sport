@@ -15,6 +15,7 @@ class Track with _$Track {
     required Duration duration,
     required String audioUrl,
     DateTime? releaseDate,
+    int? year,
     String? likeId,
   }) = _Track;
 }

@@ -50,6 +50,7 @@ sealed class QueueSource with _$QueueSource {
     QueueSourceProgram(:final id) => id,
     QueueSourceFavorites(:final id) => id,
     QueueSourceEpisodes(:final id) => id,
+    QueueSourceArtist(:final id) => id,
   };
 
   const factory QueueSource.album({
@@ -81,6 +82,12 @@ sealed class QueueSource with _$QueueSource {
     required String title,
     required String imageUrl,
   }) = QueueSourceEpisodes;
+
+  const factory QueueSource.artist({
+    required String id,
+    required String title,
+    required String imageUrl,
+  }) = QueueSourceArtist;
 }
 
 // === State ===
@@ -207,6 +214,7 @@ extension PlayerStateX on PlayerState {
       program: (_, __, imageUrl) => imageUrl,
       favorites: (_, __, imageUrl) => imageUrl,
       episodes: (_, __, imageUrl) => imageUrl,
+      artist: (_, __, imageUrl) => imageUrl,
     );
   }
 }
@@ -309,6 +317,8 @@ class PlayerNotifier extends Notifier<PlayerState> {
             id: s.sourceId, title: s.sourceTitle, imageUrl: s.sourceImageUrl),
         'episodes' => QueueSource.episodes(
             id: s.sourceId, title: s.sourceTitle, imageUrl: s.sourceImageUrl),
+        'artist' => QueueSource.artist(
+            id: s.sourceId, title: s.sourceTitle, imageUrl: s.sourceImageUrl),
         _ => QueueSource.playlist(
             id: s.sourceId, title: s.sourceTitle, imageUrl: s.sourceImageUrl),
       };
@@ -365,6 +375,8 @@ class PlayerNotifier extends Notifier<PlayerState> {
           ('favorites', id, title, imageUrl),
         QueueSourceEpisodes(:final id, :final title, :final imageUrl) =>
           ('episodes', id, title, imageUrl),
+        QueueSourceArtist(:final id, :final title, :final imageUrl) =>
+          ('artist', id, title, imageUrl),
       };
 
   void _listenToAudioHandler() {
@@ -485,12 +497,18 @@ class PlayerNotifier extends Notifier<PlayerState> {
     // Same source — just skip to the track. Only when the player actually
     // has the queue loaded: after a playback error (or stop) the native
     // player is idle and a bare seek silently does nothing — fall through
-    // to the full reload below instead.
+    // to the full reload below instead. The queue must also still match the
+    // list the user tapped in: with paginated sources (artist, favorites)
+    // the on-screen list can outgrow the loaded queue, so verify the tapped
+    // index exists and holds the same track before a bare skip.
     final playerAlive = state.status != PlayerStatus.error &&
         state.status != PlayerStatus.idle;
+    final queueMatches = startIndex < state.tracks.length &&
+        state.tracks[startIndex].id == tracks[startIndex].id;
     if (state.source?.id == source.id &&
         state.mode == PlaybackMode.music &&
-        playerAlive) {
+        playerAlive &&
+        queueMatches) {
       state = state.copyWith(currentIndex: startIndex);
       await skipTo(startIndex);
       _saveSession();

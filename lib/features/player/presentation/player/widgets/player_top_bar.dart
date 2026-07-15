@@ -18,6 +18,7 @@ class PlayerTopBar extends ConsumerWidget {
 			program: (id, title, imageUrl) => 'Program "$title"',
 			favorites: (id, title, imageUrl) => title,
 			episodes: (id, title, imageUrl) => title,
+			artist: (id, title, imageUrl) => title,
 		) ?? '';
 
 		return Padding(

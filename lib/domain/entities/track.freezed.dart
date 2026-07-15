@@ -27,6 +27,7 @@ mixin _$Track {
   Duration get duration => throw _privateConstructorUsedError;
   String get audioUrl => throw _privateConstructorUsedError;
   DateTime? get releaseDate => throw _privateConstructorUsedError;
+  int? get year => throw _privateConstructorUsedError;
   String? get likeId => throw _privateConstructorUsedError;
 
   /// Create a copy of Track
@@ -51,6 +52,7 @@ abstract class $TrackCopyWith<$Res> {
     Duration duration,
     String audioUrl,
     DateTime? releaseDate,
+    int? year,
     String? likeId,
   });
 }
@@ -80,6 +82,7 @@ class _$TrackCopyWithImpl<$Res, $Val extends Track>
     Object? duration = null,
     Object? audioUrl = null,
     Object? releaseDate = freezed,
+    Object? year = freezed,
     Object? likeId = freezed,
   }) {
     return _then(
@@ -124,6 +127,10 @@ class _$TrackCopyWithImpl<$Res, $Val extends Track>
                 ? _value.releaseDate
                 : releaseDate // ignore: cast_nullable_to_non_nullable
                       as DateTime?,
+            year: freezed == year
+                ? _value.year
+                : year // ignore: cast_nullable_to_non_nullable
+                      as int?,
             likeId: freezed == likeId
                 ? _value.likeId
                 : likeId // ignore: cast_nullable_to_non_nullable
@@ -153,6 +160,7 @@ abstract class _$$TrackImplCopyWith<$Res> implements $TrackCopyWith<$Res> {
     Duration duration,
     String audioUrl,
     DateTime? releaseDate,
+    int? year,
     String? likeId,
   });
 }
@@ -181,6 +189,7 @@ class __$$TrackImplCopyWithImpl<$Res>
     Object? duration = null,
     Object? audioUrl = null,
     Object? releaseDate = freezed,
+    Object? year = freezed,
     Object? likeId = freezed,
   }) {
     return _then(
@@ -225,6 +234,10 @@ class __$$TrackImplCopyWithImpl<$Res>
             ? _value.releaseDate
             : releaseDate // ignore: cast_nullable_to_non_nullable
                   as DateTime?,
+        year: freezed == year
+            ? _value.year
+            : year // ignore: cast_nullable_to_non_nullable
+                  as int?,
         likeId: freezed == likeId
             ? _value.likeId
             : likeId // ignore: cast_nullable_to_non_nullable
@@ -248,6 +261,7 @@ class _$TrackImpl implements _Track {
     required this.duration,
     required this.audioUrl,
     this.releaseDate,
+    this.year,
     this.likeId,
   });
 
@@ -272,11 +286,13 @@ class _$TrackImpl implements _Track {
   @override
   final DateTime? releaseDate;
   @override
+  final int? year;
+  @override
   final String? likeId;
 
   @override
   String toString() {
-    return 'Track(id: $id, title: $title, artistName: $artistName, artistId: $artistId, imageUrl: $imageUrl, albumId: $albumId, programId: $programId, duration: $duration, audioUrl: $audioUrl, releaseDate: $releaseDate, likeId: $likeId)';
+    return 'Track(id: $id, title: $title, artistName: $artistName, artistId: $artistId, imageUrl: $imageUrl, albumId: $albumId, programId: $programId, duration: $duration, audioUrl: $audioUrl, releaseDate: $releaseDate, year: $year, likeId: $likeId)';
   }
 
   @override
@@ -301,6 +317,7 @@ class _$TrackImpl implements _Track {
                 other.audioUrl == audioUrl) &&
             (identical(other.releaseDate, releaseDate) ||
                 other.releaseDate == releaseDate) &&
+            (identical(other.year, year) || other.year == year) &&
             (identical(other.likeId, likeId) || other.likeId == likeId));
   }
 
@@ -317,6 +334,7 @@ class _$TrackImpl implements _Track {
     duration,
     audioUrl,
     releaseDate,
+    year,
     likeId,
   );
 
@@ -341,6 +359,7 @@ abstract class _Track implements Track {
     required final Duration duration,
     required final String audioUrl,
     final DateTime? releaseDate,
+    final int? year,
     final String? likeId,
   }) = _$TrackImpl;
 
@@ -364,6 +383,8 @@ abstract class _Track implements Track {
   String get audioUrl;
   @override
   DateTime? get releaseDate;
+  @override
+  int? get year;
   @override
   String? get likeId;
 

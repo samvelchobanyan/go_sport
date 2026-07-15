@@ -30,6 +30,7 @@ mixin _$QueueSource {
     favorites,
     required TResult Function(String id, String title, String imageUrl)
     episodes,
+    required TResult Function(String id, String title, String imageUrl) artist,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
@@ -38,6 +39,7 @@ mixin _$QueueSource {
     TResult? Function(String id, String title, String imageUrl)? program,
     TResult? Function(String id, String title, String imageUrl)? favorites,
     TResult? Function(String id, String title, String imageUrl)? episodes,
+    TResult? Function(String id, String title, String imageUrl)? artist,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
@@ -46,6 +48,7 @@ mixin _$QueueSource {
     TResult Function(String id, String title, String imageUrl)? program,
     TResult Function(String id, String title, String imageUrl)? favorites,
     TResult Function(String id, String title, String imageUrl)? episodes,
+    TResult Function(String id, String title, String imageUrl)? artist,
     required TResult orElse(),
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -55,6 +58,7 @@ mixin _$QueueSource {
     required TResult Function(QueueSourceProgram value) program,
     required TResult Function(QueueSourceFavorites value) favorites,
     required TResult Function(QueueSourceEpisodes value) episodes,
+    required TResult Function(QueueSourceArtist value) artist,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
@@ -63,6 +67,7 @@ mixin _$QueueSource {
     TResult? Function(QueueSourceProgram value)? program,
     TResult? Function(QueueSourceFavorites value)? favorites,
     TResult? Function(QueueSourceEpisodes value)? episodes,
+    TResult? Function(QueueSourceArtist value)? artist,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
@@ -71,6 +76,7 @@ mixin _$QueueSource {
     TResult Function(QueueSourceProgram value)? program,
     TResult Function(QueueSourceFavorites value)? favorites,
     TResult Function(QueueSourceEpisodes value)? episodes,
+    TResult Function(QueueSourceArtist value)? artist,
     required TResult orElse(),
   }) => throw _privateConstructorUsedError;
 
@@ -236,6 +242,7 @@ class _$QueueSourceAlbumImpl extends QueueSourceAlbum {
     favorites,
     required TResult Function(String id, String title, String imageUrl)
     episodes,
+    required TResult Function(String id, String title, String imageUrl) artist,
   }) {
     return album(id, title, imageUrl);
   }
@@ -248,6 +255,7 @@ class _$QueueSourceAlbumImpl extends QueueSourceAlbum {
     TResult? Function(String id, String title, String imageUrl)? program,
     TResult? Function(String id, String title, String imageUrl)? favorites,
     TResult? Function(String id, String title, String imageUrl)? episodes,
+    TResult? Function(String id, String title, String imageUrl)? artist,
   }) {
     return album?.call(id, title, imageUrl);
   }
@@ -260,6 +268,7 @@ class _$QueueSourceAlbumImpl extends QueueSourceAlbum {
     TResult Function(String id, String title, String imageUrl)? program,
     TResult Function(String id, String title, String imageUrl)? favorites,
     TResult Function(String id, String title, String imageUrl)? episodes,
+    TResult Function(String id, String title, String imageUrl)? artist,
     required TResult orElse(),
   }) {
     if (album != null) {
@@ -276,6 +285,7 @@ class _$QueueSourceAlbumImpl extends QueueSourceAlbum {
     required TResult Function(QueueSourceProgram value) program,
     required TResult Function(QueueSourceFavorites value) favorites,
     required TResult Function(QueueSourceEpisodes value) episodes,
+    required TResult Function(QueueSourceArtist value) artist,
   }) {
     return album(this);
   }
@@ -288,6 +298,7 @@ class _$QueueSourceAlbumImpl extends QueueSourceAlbum {
     TResult? Function(QueueSourceProgram value)? program,
     TResult? Function(QueueSourceFavorites value)? favorites,
     TResult? Function(QueueSourceEpisodes value)? episodes,
+    TResult? Function(QueueSourceArtist value)? artist,
   }) {
     return album?.call(this);
   }
@@ -300,6 +311,7 @@ class _$QueueSourceAlbumImpl extends QueueSourceAlbum {
     TResult Function(QueueSourceProgram value)? program,
     TResult Function(QueueSourceFavorites value)? favorites,
     TResult Function(QueueSourceEpisodes value)? episodes,
+    TResult Function(QueueSourceArtist value)? artist,
     required TResult orElse(),
   }) {
     if (album != null) {
@@ -438,6 +450,7 @@ class _$QueueSourcePlaylistImpl extends QueueSourcePlaylist {
     favorites,
     required TResult Function(String id, String title, String imageUrl)
     episodes,
+    required TResult Function(String id, String title, String imageUrl) artist,
   }) {
     return playlist(id, title, imageUrl);
   }
@@ -450,6 +463,7 @@ class _$QueueSourcePlaylistImpl extends QueueSourcePlaylist {
     TResult? Function(String id, String title, String imageUrl)? program,
     TResult? Function(String id, String title, String imageUrl)? favorites,
     TResult? Function(String id, String title, String imageUrl)? episodes,
+    TResult? Function(String id, String title, String imageUrl)? artist,
   }) {
     return playlist?.call(id, title, imageUrl);
   }
@@ -462,6 +476,7 @@ class _$QueueSourcePlaylistImpl extends QueueSourcePlaylist {
     TResult Function(String id, String title, String imageUrl)? program,
     TResult Function(String id, String title, String imageUrl)? favorites,
     TResult Function(String id, String title, String imageUrl)? episodes,
+    TResult Function(String id, String title, String imageUrl)? artist,
     required TResult orElse(),
   }) {
     if (playlist != null) {
@@ -478,6 +493,7 @@ class _$QueueSourcePlaylistImpl extends QueueSourcePlaylist {
     required TResult Function(QueueSourceProgram value) program,
     required TResult Function(QueueSourceFavorites value) favorites,
     required TResult Function(QueueSourceEpisodes value) episodes,
+    required TResult Function(QueueSourceArtist value) artist,
   }) {
     return playlist(this);
   }
@@ -490,6 +506,7 @@ class _$QueueSourcePlaylistImpl extends QueueSourcePlaylist {
     TResult? Function(QueueSourceProgram value)? program,
     TResult? Function(QueueSourceFavorites value)? favorites,
     TResult? Function(QueueSourceEpisodes value)? episodes,
+    TResult? Function(QueueSourceArtist value)? artist,
   }) {
     return playlist?.call(this);
   }
@@ -502,6 +519,7 @@ class _$QueueSourcePlaylistImpl extends QueueSourcePlaylist {
     TResult Function(QueueSourceProgram value)? program,
     TResult Function(QueueSourceFavorites value)? favorites,
     TResult Function(QueueSourceEpisodes value)? episodes,
+    TResult Function(QueueSourceArtist value)? artist,
     required TResult orElse(),
   }) {
     if (playlist != null) {
@@ -640,6 +658,7 @@ class _$QueueSourceProgramImpl extends QueueSourceProgram {
     favorites,
     required TResult Function(String id, String title, String imageUrl)
     episodes,
+    required TResult Function(String id, String title, String imageUrl) artist,
   }) {
     return program(id, title, imageUrl);
   }
@@ -652,6 +671,7 @@ class _$QueueSourceProgramImpl extends QueueSourceProgram {
     TResult? Function(String id, String title, String imageUrl)? program,
     TResult? Function(String id, String title, String imageUrl)? favorites,
     TResult? Function(String id, String title, String imageUrl)? episodes,
+    TResult? Function(String id, String title, String imageUrl)? artist,
   }) {
     return program?.call(id, title, imageUrl);
   }
@@ -664,6 +684,7 @@ class _$QueueSourceProgramImpl extends QueueSourceProgram {
     TResult Function(String id, String title, String imageUrl)? program,
     TResult Function(String id, String title, String imageUrl)? favorites,
     TResult Function(String id, String title, String imageUrl)? episodes,
+    TResult Function(String id, String title, String imageUrl)? artist,
     required TResult orElse(),
   }) {
     if (program != null) {
@@ -680,6 +701,7 @@ class _$QueueSourceProgramImpl extends QueueSourceProgram {
     required TResult Function(QueueSourceProgram value) program,
     required TResult Function(QueueSourceFavorites value) favorites,
     required TResult Function(QueueSourceEpisodes value) episodes,
+    required TResult Function(QueueSourceArtist value) artist,
   }) {
     return program(this);
   }
@@ -692,6 +714,7 @@ class _$QueueSourceProgramImpl extends QueueSourceProgram {
     TResult? Function(QueueSourceProgram value)? program,
     TResult? Function(QueueSourceFavorites value)? favorites,
     TResult? Function(QueueSourceEpisodes value)? episodes,
+    TResult? Function(QueueSourceArtist value)? artist,
   }) {
     return program?.call(this);
   }
@@ -704,6 +727,7 @@ class _$QueueSourceProgramImpl extends QueueSourceProgram {
     TResult Function(QueueSourceProgram value)? program,
     TResult Function(QueueSourceFavorites value)? favorites,
     TResult Function(QueueSourceEpisodes value)? episodes,
+    TResult Function(QueueSourceArtist value)? artist,
     required TResult orElse(),
   }) {
     if (program != null) {
@@ -843,6 +867,7 @@ class _$QueueSourceFavoritesImpl extends QueueSourceFavorites {
     favorites,
     required TResult Function(String id, String title, String imageUrl)
     episodes,
+    required TResult Function(String id, String title, String imageUrl) artist,
   }) {
     return favorites(id, title, imageUrl);
   }
@@ -855,6 +880,7 @@ class _$QueueSourceFavoritesImpl extends QueueSourceFavorites {
     TResult? Function(String id, String title, String imageUrl)? program,
     TResult? Function(String id, String title, String imageUrl)? favorites,
     TResult? Function(String id, String title, String imageUrl)? episodes,
+    TResult? Function(String id, String title, String imageUrl)? artist,
   }) {
     return favorites?.call(id, title, imageUrl);
   }
@@ -867,6 +893,7 @@ class _$QueueSourceFavoritesImpl extends QueueSourceFavorites {
     TResult Function(String id, String title, String imageUrl)? program,
     TResult Function(String id, String title, String imageUrl)? favorites,
     TResult Function(String id, String title, String imageUrl)? episodes,
+    TResult Function(String id, String title, String imageUrl)? artist,
     required TResult orElse(),
   }) {
     if (favorites != null) {
@@ -883,6 +910,7 @@ class _$QueueSourceFavoritesImpl extends QueueSourceFavorites {
     required TResult Function(QueueSourceProgram value) program,
     required TResult Function(QueueSourceFavorites value) favorites,
     required TResult Function(QueueSourceEpisodes value) episodes,
+    required TResult Function(QueueSourceArtist value) artist,
   }) {
     return favorites(this);
   }
@@ -895,6 +923,7 @@ class _$QueueSourceFavoritesImpl extends QueueSourceFavorites {
     TResult? Function(QueueSourceProgram value)? program,
     TResult? Function(QueueSourceFavorites value)? favorites,
     TResult? Function(QueueSourceEpisodes value)? episodes,
+    TResult? Function(QueueSourceArtist value)? artist,
   }) {
     return favorites?.call(this);
   }
@@ -907,6 +936,7 @@ class _$QueueSourceFavoritesImpl extends QueueSourceFavorites {
     TResult Function(QueueSourceProgram value)? program,
     TResult Function(QueueSourceFavorites value)? favorites,
     TResult Function(QueueSourceEpisodes value)? episodes,
+    TResult Function(QueueSourceArtist value)? artist,
     required TResult orElse(),
   }) {
     if (favorites != null) {
@@ -1045,6 +1075,7 @@ class _$QueueSourceEpisodesImpl extends QueueSourceEpisodes {
     favorites,
     required TResult Function(String id, String title, String imageUrl)
     episodes,
+    required TResult Function(String id, String title, String imageUrl) artist,
   }) {
     return episodes(id, title, imageUrl);
   }
@@ -1057,6 +1088,7 @@ class _$QueueSourceEpisodesImpl extends QueueSourceEpisodes {
     TResult? Function(String id, String title, String imageUrl)? program,
     TResult? Function(String id, String title, String imageUrl)? favorites,
     TResult? Function(String id, String title, String imageUrl)? episodes,
+    TResult? Function(String id, String title, String imageUrl)? artist,
   }) {
     return episodes?.call(id, title, imageUrl);
   }
@@ -1069,6 +1101,7 @@ class _$QueueSourceEpisodesImpl extends QueueSourceEpisodes {
     TResult Function(String id, String title, String imageUrl)? program,
     TResult Function(String id, String title, String imageUrl)? favorites,
     TResult Function(String id, String title, String imageUrl)? episodes,
+    TResult Function(String id, String title, String imageUrl)? artist,
     required TResult orElse(),
   }) {
     if (episodes != null) {
@@ -1085,6 +1118,7 @@ class _$QueueSourceEpisodesImpl extends QueueSourceEpisodes {
     required TResult Function(QueueSourceProgram value) program,
     required TResult Function(QueueSourceFavorites value) favorites,
     required TResult Function(QueueSourceEpisodes value) episodes,
+    required TResult Function(QueueSourceArtist value) artist,
   }) {
     return episodes(this);
   }
@@ -1097,6 +1131,7 @@ class _$QueueSourceEpisodesImpl extends QueueSourceEpisodes {
     TResult? Function(QueueSourceProgram value)? program,
     TResult? Function(QueueSourceFavorites value)? favorites,
     TResult? Function(QueueSourceEpisodes value)? episodes,
+    TResult? Function(QueueSourceArtist value)? artist,
   }) {
     return episodes?.call(this);
   }
@@ -1109,6 +1144,7 @@ class _$QueueSourceEpisodesImpl extends QueueSourceEpisodes {
     TResult Function(QueueSourceProgram value)? program,
     TResult Function(QueueSourceFavorites value)? favorites,
     TResult Function(QueueSourceEpisodes value)? episodes,
+    TResult Function(QueueSourceArtist value)? artist,
     required TResult orElse(),
   }) {
     if (episodes != null) {
@@ -1138,6 +1174,214 @@ abstract class QueueSourceEpisodes extends QueueSource {
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$QueueSourceEpisodesImplCopyWith<_$QueueSourceEpisodesImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$QueueSourceArtistImplCopyWith<$Res>
+    implements $QueueSourceCopyWith<$Res> {
+  factory _$$QueueSourceArtistImplCopyWith(
+    _$QueueSourceArtistImpl value,
+    $Res Function(_$QueueSourceArtistImpl) then,
+  ) = __$$QueueSourceArtistImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({String id, String title, String imageUrl});
+}
+
+/// @nodoc
+class __$$QueueSourceArtistImplCopyWithImpl<$Res>
+    extends _$QueueSourceCopyWithImpl<$Res, _$QueueSourceArtistImpl>
+    implements _$$QueueSourceArtistImplCopyWith<$Res> {
+  __$$QueueSourceArtistImplCopyWithImpl(
+    _$QueueSourceArtistImpl _value,
+    $Res Function(_$QueueSourceArtistImpl) _then,
+  ) : super(_value, _then);
+
+  /// Create a copy of QueueSource
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = null,
+    Object? title = null,
+    Object? imageUrl = null,
+  }) {
+    return _then(
+      _$QueueSourceArtistImpl(
+        id: null == id
+            ? _value.id
+            : id // ignore: cast_nullable_to_non_nullable
+                  as String,
+        title: null == title
+            ? _value.title
+            : title // ignore: cast_nullable_to_non_nullable
+                  as String,
+        imageUrl: null == imageUrl
+            ? _value.imageUrl
+            : imageUrl // ignore: cast_nullable_to_non_nullable
+                  as String,
+      ),
+    );
+  }
+}
+
+/// @nodoc
+
+class _$QueueSourceArtistImpl extends QueueSourceArtist {
+  const _$QueueSourceArtistImpl({
+    required this.id,
+    required this.title,
+    required this.imageUrl,
+  }) : super._();
+
+  @override
+  final String id;
+  @override
+  final String title;
+  @override
+  final String imageUrl;
+
+  @override
+  String toString() {
+    return 'QueueSource.artist(id: $id, title: $title, imageUrl: $imageUrl)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$QueueSourceArtistImpl &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.title, title) || other.title == title) &&
+            (identical(other.imageUrl, imageUrl) ||
+                other.imageUrl == imageUrl));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, id, title, imageUrl);
+
+  /// Create a copy of QueueSource
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$QueueSourceArtistImplCopyWith<_$QueueSourceArtistImpl> get copyWith =>
+      __$$QueueSourceArtistImplCopyWithImpl<_$QueueSourceArtistImpl>(
+        this,
+        _$identity,
+      );
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String id, String title, String imageUrl) album,
+    required TResult Function(String id, String title, String imageUrl)
+    playlist,
+    required TResult Function(String id, String title, String imageUrl) program,
+    required TResult Function(String id, String title, String imageUrl)
+    favorites,
+    required TResult Function(String id, String title, String imageUrl)
+    episodes,
+    required TResult Function(String id, String title, String imageUrl) artist,
+  }) {
+    return artist(id, title, imageUrl);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String id, String title, String imageUrl)? album,
+    TResult? Function(String id, String title, String imageUrl)? playlist,
+    TResult? Function(String id, String title, String imageUrl)? program,
+    TResult? Function(String id, String title, String imageUrl)? favorites,
+    TResult? Function(String id, String title, String imageUrl)? episodes,
+    TResult? Function(String id, String title, String imageUrl)? artist,
+  }) {
+    return artist?.call(id, title, imageUrl);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String id, String title, String imageUrl)? album,
+    TResult Function(String id, String title, String imageUrl)? playlist,
+    TResult Function(String id, String title, String imageUrl)? program,
+    TResult Function(String id, String title, String imageUrl)? favorites,
+    TResult Function(String id, String title, String imageUrl)? episodes,
+    TResult Function(String id, String title, String imageUrl)? artist,
+    required TResult orElse(),
+  }) {
+    if (artist != null) {
+      return artist(id, title, imageUrl);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(QueueSourceAlbum value) album,
+    required TResult Function(QueueSourcePlaylist value) playlist,
+    required TResult Function(QueueSourceProgram value) program,
+    required TResult Function(QueueSourceFavorites value) favorites,
+    required TResult Function(QueueSourceEpisodes value) episodes,
+    required TResult Function(QueueSourceArtist value) artist,
+  }) {
+    return artist(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(QueueSourceAlbum value)? album,
+    TResult? Function(QueueSourcePlaylist value)? playlist,
+    TResult? Function(QueueSourceProgram value)? program,
+    TResult? Function(QueueSourceFavorites value)? favorites,
+    TResult? Function(QueueSourceEpisodes value)? episodes,
+    TResult? Function(QueueSourceArtist value)? artist,
+  }) {
+    return artist?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(QueueSourceAlbum value)? album,
+    TResult Function(QueueSourcePlaylist value)? playlist,
+    TResult Function(QueueSourceProgram value)? program,
+    TResult Function(QueueSourceFavorites value)? favorites,
+    TResult Function(QueueSourceEpisodes value)? episodes,
+    TResult Function(QueueSourceArtist value)? artist,
+    required TResult orElse(),
+  }) {
+    if (artist != null) {
+      return artist(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class QueueSourceArtist extends QueueSource {
+  const factory QueueSourceArtist({
+    required final String id,
+    required final String title,
+    required final String imageUrl,
+  }) = _$QueueSourceArtistImpl;
+  const QueueSourceArtist._() : super._();
+
+  @override
+  String get id;
+  @override
+  String get title;
+  @override
+  String get imageUrl;
+
+  /// Create a copy of QueueSource
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$QueueSourceArtistImplCopyWith<_$QueueSourceArtistImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 

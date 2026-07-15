@@ -72,6 +72,7 @@ class PlayerSession {
         'durationMs': t.duration.inMilliseconds,
         'audioUrl': t.audioUrl,
         'releaseDate': t.releaseDate?.toIso8601String(),
+        'year': t.year,
         'likeId': t.likeId,
       };
 
@@ -86,6 +87,7 @@ class PlayerSession {
         releaseDate: m['releaseDate'] != null
             ? DateTime.parse(m['releaseDate'] as String)
             : null,
+        year: m['year'] as int?,
         likeId: m['likeId'] as String?,
       );
 }
