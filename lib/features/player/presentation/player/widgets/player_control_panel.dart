@@ -1,3 +1,4 @@
+import 'package:go_sport/core/auth/auth_state.dart';
 import 'package:go_sport/design_system/components/network_image/ds_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -85,10 +86,17 @@ class PlayerControlPanel extends ConsumerWidget {
   }
 
   Widget _buildTrackInfo(
-      BuildContext context, WidgetRef ref, track, String? imageUrl) {
+    BuildContext context,
+    WidgetRef ref,
+    track,
+    String? imageUrl,
+  ) {
     final title = track?.title ?? '';
     final artist = track?.artistName ?? '';
+    final authState = ref.watch(authProvider);
 
+    // Disable interactions if the user is a guest or unauthorized
+    final isGuest = authState is! AuthAuthenticated;
     return Row(
       children: [
         // Small album art
@@ -144,21 +152,24 @@ class PlayerControlPanel extends ConsumerWidget {
             final isLiked = track == null
                 ? false
                 : ref.watch(
-                    likeRegistryProvider.select((s) =>
-                        track.releaseDate != null
-                            ? s.likedEpisodes.any((e) => e.id == track.id)
-                            : s.likedTracks.any((t) => t.id == track.id)),
+                    likeRegistryProvider.select(
+                      (s) => track.releaseDate != null
+                          ? s.likedEpisodes.any((e) => e.id == track.id)
+                          : s.likedTracks.any((t) => t.id == track.id),
+                    ),
                   );
             return GestureDetector(
-              onTap: () {
-                if (track == null) return;
-                final registry = ref.read(likeRegistryProvider.notifier);
-                if (track.releaseDate != null) {
-                  registry.toggleEpisodeLike(track);
-                } else {
-                  registry.toggleTrackLike(track);
-                }
-              },
+              onTap: isGuest
+                  ? null
+                  : () {
+                      if (track == null) return;
+                      final registry = ref.read(likeRegistryProvider.notifier);
+                      if (track.releaseDate != null) {
+                        registry.toggleEpisodeLike(track);
+                      } else {
+                        registry.toggleTrackLike(track);
+                      }
+                    },
               child: Container(
                 width: 40,
                 height: 40,
@@ -174,7 +185,6 @@ class PlayerControlPanel extends ConsumerWidget {
                   ),
                 ),
               ),
-
             );
           },
         ),
@@ -203,10 +213,10 @@ class PlayerControlPanel extends ConsumerWidget {
         GestureDetector(
           onTap: canGoPrev
               ? () => controller.animateToPage(
-                    0,
-                    duration: _kSwipeDuration,
-                    curve: Curves.easeOut,
-                  )
+                  0,
+                  duration: _kSwipeDuration,
+                  curve: Curves.easeOut,
+                )
               : null,
           child: SvgPicture.asset(
             'assets/icons/skip_prev.svg',
@@ -267,10 +277,10 @@ class PlayerControlPanel extends ConsumerWidget {
         GestureDetector(
           onTap: canGoNext
               ? () => controller.animateToPage(
-                    2,
-                    duration: _kSwipeDuration,
-                    curve: Curves.easeOut,
-                  )
+                  2,
+                  duration: _kSwipeDuration,
+                  curve: Curves.easeOut,
+                )
               : null,
           child: SvgPicture.asset(
             'assets/icons/skip_next.svg',
@@ -299,8 +309,7 @@ class PlayerControlPanel extends ConsumerWidget {
       children: [
         // Shuffle
         GestureDetector(
-          onTap: () =>
-              ref.read(playerStateProvider.notifier).toggleShuffle(),
+          onTap: () => ref.read(playerStateProvider.notifier).toggleShuffle(),
           child: Opacity(
             opacity: shuffleEnabled ? 1.0 : 0.4,
             child: SvgPicture.asset(
@@ -317,8 +326,7 @@ class PlayerControlPanel extends ConsumerWidget {
 
         // Repeat
         GestureDetector(
-          onTap: () =>
-              ref.read(playerStateProvider.notifier).cycleRepeatMode(),
+          onTap: () => ref.read(playerStateProvider.notifier).cycleRepeatMode(),
           child: Opacity(
             opacity: repeatActive ? 1.0 : 0.4,
             child: Stack(
@@ -343,10 +351,7 @@ class PlayerControlPanel extends ConsumerWidget {
                       decoration: BoxDecoration(
                         color: DSColors.blue,
                         shape: BoxShape.circle,
-                        border: Border.all(
-                          color: DSColors.white,
-                          width: 1,
-                        ),
+                        border: Border.all(color: DSColors.white, width: 1),
                       ),
                     ),
                   ),
