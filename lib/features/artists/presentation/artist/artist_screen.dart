@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_spacing.dart';
-import 'package:go_sport/design_system/foundations/ds_layout.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/domain/entities/artist.dart';
 import 'package:go_sport/domain/entities/track.dart';
@@ -29,11 +28,7 @@ class ArtistScreen extends ConsumerStatefulWidget {
   final String artistId;
   final Artist? artistHint;
 
-  const ArtistScreen({
-    super.key,
-    required this.artistId,
-    this.artistHint,
-  });
+  const ArtistScreen({super.key, required this.artistId, this.artistHint});
 
   @override
   ConsumerState<ArtistScreen> createState() => _ArtistScreenState();
@@ -72,7 +67,9 @@ class _ArtistScreenState extends ConsumerState<ArtistScreen> {
   }
 
   void _onTrackTap(Artist? artist, List<Track> tracks, int index) {
-    ref.read(playerStateProvider.notifier).playQueue(
+    ref
+        .read(playerStateProvider.notifier)
+        .playQueue(
           tracks,
           source: QueueSource.artist(
             id: widget.artistId,
@@ -96,8 +93,9 @@ class _ArtistScreenState extends ConsumerState<ArtistScreen> {
   Widget build(BuildContext context) {
     final state = ref.watch(artistControllerProvider(widget.artistId));
     final isLiked = ref.watch(
-      likeRegistryProvider
-          .select((s) => s.likedArtists.any((a) => a.id == widget.artistId)),
+      likeRegistryProvider.select(
+        (s) => s.likedArtists.any((a) => a.id == widget.artistId),
+      ),
     );
 
     // Prefer the navigation hint for the hero. Its cover URL is already cached
@@ -232,16 +230,13 @@ class _ArtistScreenState extends ConsumerState<ArtistScreen> {
         ArtistTab.albums => _buildAlbumsList(state),
         ArtistTab.singles => _buildSinglesList(state),
       },
-      SliverPadding(
-        padding: const EdgeInsets.only(bottom: DSLayout.bottomBarClearance),
-        sliver: SliverToBoxAdapter(
-          child: isLoadingMore
-              ? const Padding(
-                  padding: EdgeInsets.symmetric(vertical: DSSpacing.m),
-                  child: Center(child: CircularProgressIndicator()),
-                )
-              : null,
-        ),
+      SliverToBoxAdapter(
+        child: isLoadingMore
+            ? const Padding(
+                padding: EdgeInsets.symmetric(vertical: DSSpacing.m),
+                child: Center(child: CircularProgressIndicator()),
+              )
+            : null,
       ),
     ];
   }
@@ -298,10 +293,9 @@ class _ArtistScreenState extends ConsumerState<ArtistScreen> {
               albumName: album.title,
               artistName: album.artist,
               releaseYear: album.releaseYear,
-              onTap: () => context.push(
-                '/music/album/${album.id}',
-                extra: album,
-              ),
+              onTap: () =>
+                  context.push('/music/album/${album.id}', extra: album),
+              topPadding: index == 0 ? 0 : 8,
             ),
             if (index < albums.length - 1)
               const Padding(
@@ -333,6 +327,7 @@ class _ArtistScreenState extends ConsumerState<ArtistScreen> {
               // TODO(singles): tap behavior not decided yet (single screen
               // vs. adapted album screen).
               onTap: () {},
+              topPadding: index == 0 ? 0 : 8,
             ),
             if (index < singles.length - 1)
               const Padding(
@@ -346,31 +341,36 @@ class _ArtistScreenState extends ConsumerState<ArtistScreen> {
   }
 }
 
-/// Placeholder matching [ArtistTabChips] height so the list below does not
-/// jump when the loaded header becomes chips (or a section title).
+/// Placeholder matching [ArtistTabChips] structure, padding, and height exactly
+/// so the screen does not jump when shifting from the skeleton to loaded chips.
 class _HeaderSkeleton extends StatelessWidget {
   const _HeaderSkeleton();
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: ArtistTabChips.height,
-      child: ListView.separated(
-        scrollDirection: Axis.horizontal,
-        physics: const NeverScrollableScrollPhysics(),
-        padding: const EdgeInsets.symmetric(
-          horizontal: DSSpacing.m,
-          vertical: DSSpacing.s8,
-        ),
-        itemCount: 3,
-        separatorBuilder: (_, __) => const SizedBox(width: DSSpacing.s8),
-        itemBuilder: (_, __) => Container(
-          width: 96,
-          decoration: BoxDecoration(
-            color: DSColors.gray20,
-            borderRadius: BorderRadius.circular(DSRadius.circular),
-          ),
-        ),
+    return Padding(
+      padding: const EdgeInsets.only(
+        bottom: DSSpacing.s18, // Match 18px bottom padding
+        left: DSSpacing.m, // Match 20px horizontal left margin
+        right: DSSpacing.m, // Match 20px horizontal right margin
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          for (int i = 0; i < 3; i++) ...[
+            Container(
+              width: 96,
+              height:
+                  36, // Precise height matching the loaded chip structure (16px content + 20px padding)
+              decoration: BoxDecoration(
+                color: DSColors.gray20,
+                borderRadius: BorderRadius.circular(DSRadius.circular),
+              ),
+            ),
+            if (i < 2)
+              const SizedBox(width: DSSpacing.s8), // Identical separation gaps
+          ],
+        ],
       ),
     );
   }

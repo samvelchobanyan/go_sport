@@ -9,8 +9,6 @@ import 'package:go_sport/features/artists/presentation/artist/artist_controller.
 /// Pill chips switching the artist screen tabs. Only the tabs the artist
 /// actually has content for are passed in [tabs].
 class ArtistTabChips extends StatelessWidget {
-  static const double height = 48;
-
   final List<ArtistTab> tabs;
   final ArtistTab selected;
   final ValueChanged<ArtistTab> onTap;
@@ -24,24 +22,24 @@ class ArtistTabChips extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: height,
-      child: ListView.separated(
-        scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.symmetric(
-          horizontal: DSSpacing.m,
-          vertical: DSSpacing.s8,
-        ),
-        itemCount: tabs.length,
-        separatorBuilder: (_, __) => const SizedBox(width: DSSpacing.s8),
-        itemBuilder: (context, index) {
-          final tab = tabs[index];
-          return _Chip(
-            tab: tab,
-            isActive: tab == selected,
-            onTap: () => onTap(tab),
-          );
-        },
+    return Padding(
+      padding: const EdgeInsets.only(
+        bottom: DSSpacing.s18, // 20px vertical padding
+        left: DSSpacing.m, // 20px horizontal padding
+        right: DSSpacing.m, // 20px horizontal padding
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          for (int i = 0; i < tabs.length; i++) ...[
+            _Chip(
+              tab: tabs[i],
+              isActive: tabs[i] == selected,
+              onTap: () => onTap(tabs[i]),
+            ),
+            if (i < tabs.length - 1) const SizedBox(width: DSSpacing.s8),
+          ],
+        ],
       ),
     );
   }
@@ -52,23 +50,19 @@ class _Chip extends StatelessWidget {
   final bool isActive;
   final VoidCallback onTap;
 
-  const _Chip({
-    required this.tab,
-    required this.isActive,
-    required this.onTap,
-  });
+  const _Chip({required this.tab, required this.isActive, required this.onTap});
 
   String get _label => switch (tab) {
-        ArtistTab.tracks => 'Tracks',
-        ArtistTab.albums => 'Albums',
-        ArtistTab.singles => 'Singles',
-      };
+    ArtistTab.tracks => 'Tracks',
+    ArtistTab.albums => 'Albums',
+    ArtistTab.singles => 'Singles',
+  };
 
   String get _iconAsset => switch (tab) {
-        ArtistTab.tracks => 'assets/icons/music_tab.svg',
-        ArtistTab.albums => 'assets/icons/albums_tab.svg',
-        ArtistTab.singles => 'assets/icons/singles_tab.svg',
-      };
+    ArtistTab.tracks => 'assets/icons/music_tab.svg',
+    ArtistTab.albums => 'assets/icons/albums_tab.svg',
+    ArtistTab.singles => 'assets/icons/singles_tab.svg',
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +72,7 @@ class _Chip extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(
           horizontal: DSSpacing.m,
-          vertical: DSSpacing.s6,
+          vertical: DSSpacing.s10,
         ),
         decoration: BoxDecoration(
           color: isActive ? DSColors.blue10 : DSColors.white,
@@ -87,13 +81,16 @@ class _Chip extends StatelessWidget {
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SvgPicture.asset(
               _iconAsset,
               width: 16,
               height: 16,
-              colorFilter:
-                  const ColorFilter.mode(DSColors.blue, BlendMode.srcIn),
+              colorFilter: const ColorFilter.mode(
+                DSColors.blue,
+                BlendMode.srcIn,
+              ),
             ),
             const SizedBox(width: DSSpacing.s6),
             Text(
