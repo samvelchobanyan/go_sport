@@ -226,9 +226,10 @@ class _ArtistScreenState extends ConsumerState<ArtistScreen> {
 
     return [
       switch (state.selectedTab) {
-        ArtistTab.tracks => _buildTracksList(state, artist),
+        ArtistTab.tracks => _buildTrackList(state.tracks.items, artist),
         ArtistTab.albums => _buildAlbumsList(state),
-        ArtistTab.singles => _buildSinglesList(state),
+        // Singles are plain tracks: same tiles, same tap-to-play behavior.
+        ArtistTab.singles => _buildTrackList(state.singles.items, artist),
       },
       SliverToBoxAdapter(
         child: isLoadingMore
@@ -241,8 +242,7 @@ class _ArtistScreenState extends ConsumerState<ArtistScreen> {
     ];
   }
 
-  Widget _buildTracksList(ArtistState state, Artist? artist) {
-    final tracks = state.tracks.items;
+  Widget _buildTrackList(List<Track> tracks, Artist? artist) {
     // Narrow selects: position ticks must not rebuild the list.
     final playingTrackId = ref.watch(
       playerStateProvider.select((s) => s.currentTrack?.id),
@@ -308,37 +308,6 @@ class _ArtistScreenState extends ConsumerState<ArtistScreen> {
     );
   }
 
-  /// Album-less tracks rendered as one-track pseudo-albums.
-  Widget _buildSinglesList(ArtistState state) {
-    final singles = state.singles.items;
-
-    return SliverList(
-      delegate: SliverChildBuilderDelegate((context, index) {
-        final single = singles[index];
-
-        return Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            AlbumTile(
-              imageUrl: single.imageUrl ?? '',
-              albumName: single.title,
-              artistName: single.artistName,
-              releaseYear: single.year?.toString() ?? '',
-              // TODO(singles): tap behavior not decided yet (single screen
-              // vs. adapted album screen).
-              onTap: () {},
-              topPadding: index == 0 ? 0 : 8,
-            ),
-            if (index < singles.length - 1)
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: DSSpacing.m),
-                child: DottedDivider(),
-              ),
-          ],
-        );
-      }, childCount: singles.length),
-    );
-  }
 }
 
 /// Placeholder matching [ArtistTabChips] structure, padding, and height exactly
