@@ -29,13 +29,15 @@ class ArtistTabChips extends StatelessWidget {
         right: DSSpacing.m, // 20px horizontal padding
       ),
       child: Row(
-        mainAxisSize: MainAxisSize.min,
+        // mainAxisSize: MainAxisSize.min,
         children: [
           for (int i = 0; i < tabs.length; i++) ...[
-            _Chip(
-              tab: tabs[i],
-              isActive: tabs[i] == selected,
-              onTap: () => onTap(tabs[i]),
+            Expanded(
+              child: _Chip(
+                tab: tabs[i],
+                isActive: tabs[i] == selected,
+                onTap: () => onTap(tabs[i]),
+              ),
             ),
             if (i < tabs.length - 1) const SizedBox(width: DSSpacing.s8),
           ],
@@ -71,7 +73,7 @@ class _Chip extends StatelessWidget {
       behavior: HitTestBehavior.opaque,
       child: Container(
         padding: const EdgeInsets.symmetric(
-          horizontal: DSSpacing.m,
+          horizontal: DSSpacing.xs,
           vertical: DSSpacing.s10,
         ),
         decoration: BoxDecoration(
@@ -80,8 +82,9 @@ class _Chip extends StatelessWidget {
           borderRadius: BorderRadius.circular(DSRadius.circular),
         ),
         child: Row(
-          mainAxisSize: MainAxisSize.min,
+          // mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SvgPicture.asset(
               _iconAsset,
