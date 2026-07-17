@@ -324,16 +324,16 @@ class _HeaderSkeleton extends StatelessWidget {
         right: DSSpacing.m, // Match 20px horizontal right margin
       ),
       child: Row(
-        mainAxisSize: MainAxisSize.min,
         children: [
           for (int i = 0; i < 3; i++) ...[
-            Container(
-              width: 96,
-              height:
-                  36, // Precise height matching the loaded chip structure (16px content + 20px padding)
-              decoration: BoxDecoration(
-                color: DSColors.gray20,
-                borderRadius: BorderRadius.circular(DSRadius.circular),
+            Expanded(
+              child: Container(
+                height:
+                    36, // Precise height matching the loaded chip structure (16px content + 20px padding)
+                decoration: BoxDecoration(
+                  color: DSColors.gray20,
+                  borderRadius: BorderRadius.circular(DSRadius.circular),
+                ),
               ),
             ),
             if (i < 2)
