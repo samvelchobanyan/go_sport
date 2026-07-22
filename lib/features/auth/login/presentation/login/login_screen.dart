@@ -40,7 +40,16 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       if (next.isAuthenticated) {
         context.go('/'); // Navigate to home
       }
-      if (next.error != null) {
+      // if (next.error != null) {
+      //   ScaffoldMessenger.of(
+      //     context,
+      //   ).showSnackBar(SnackBar(content: Text(next.error!)));
+      // }
+
+      if (next.error != null && previous?.error != next.error) {
+        ScaffoldMessenger.of(
+          context,
+        ).hideCurrentSnackBar(); // Clear any previous snackbar
         ScaffoldMessenger.of(
           context,
         ).showSnackBar(SnackBar(content: Text(next.error!)));
@@ -91,7 +100,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     // Main Content Container
                     Container(
                       width: screenWidth,
-                      padding: const EdgeInsets.only(top: DSSpacing.s20, bottom: 0),
+                      padding: const EdgeInsets.only(
+                        top: DSSpacing.s20,
+                        bottom: 0,
+                      ),
                       decoration: BoxDecoration(
                         color: DSColors.white,
                         borderRadius: const BorderRadius.only(
@@ -287,7 +299,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                               onPressed: () {
                                 // Sets both the persisted choseGuest flag (for the
                                 // router) and the AuthGuest state (for the guest bar).
-                                ref.read(authProvider.notifier).continueAsGuest();
+                                ref
+                                    .read(authProvider.notifier)
+                                    .continueAsGuest();
 
                                 context.go('/');
                               },

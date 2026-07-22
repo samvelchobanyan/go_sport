@@ -16,6 +16,7 @@ import 'package:go_sport/features/user_profile/profile/presentation/widgets/soci
 import 'package:go_sport/features/shared_widgets/dotted_divider.dart';
 import 'package:go_sport/features/shared_widgets/user_avatar_button.dart';
 import 'package:go_router/go_router.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({super.key});
@@ -347,21 +348,36 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                                     Icons.facebook,
                                     color: DSColors.blue,
                                   ),
-                                  onTap: () => {},
+                                  onTap: () => launchUrl(
+                                    Uri.parse(
+                                      'https://www.facebook.com/go.fm96.3',
+                                    ),
+                                    mode: LaunchMode.externalApplication,
+                                  ),
                                 ),
                                 const SizedBox(width: DSSpacing.s10),
                                 SocialMediaButton(
                                   icon: SvgPicture.asset(
                                     'assets/icons/youtube_blue.svg',
                                   ),
-                                  onTap: () => {},
+                                  onTap: () => launchUrl(
+                                    Uri.parse(
+                                      'https://www.youtube.com/@go.fm96.3',
+                                    ),
+                                    mode: LaunchMode.externalApplication,
+                                  ),
                                 ),
                                 const SizedBox(width: DSSpacing.s10),
                                 SocialMediaButton(
                                   icon: SvgPicture.asset(
                                     'assets/icons/inst.svg',
                                   ),
-                                  onTap: () => {},
+                                  onTap: () => launchUrl(
+                                    Uri.parse(
+                                      'https://www.instagram.com/go.fm96.3/',
+                                    ),
+                                    mode: LaunchMode.externalApplication,
+                                  ),
                                 ),
                               ],
                             ),
