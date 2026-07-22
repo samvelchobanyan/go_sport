@@ -168,7 +168,6 @@ class RadioPageScreen extends ConsumerWidget {
   ) {
     final playerState = ref.watch(playerStateProvider);
     final playingTrackId = playerState.currentTrack?.id;
-
     if (episodes.isEmpty) {
       return SliverToBoxAdapter(
         child: Center(
@@ -191,6 +190,7 @@ class RadioPageScreen extends ConsumerWidget {
         final bool? trackPlayingState = isCurrentTrack
             ? playerState.isPlaying && playerState.isRadioMode == false
             : null;
+        // print('episode $episode');
 
         return Column(
           children: [

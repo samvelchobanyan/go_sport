@@ -81,7 +81,6 @@ class NewEpisodesScreen extends ConsumerWidget {
   ) {
     final playerState = ref.watch(playerStateProvider);
     final playingTrackId = playerState.currentTrack?.id;
-
     if (episodes.isEmpty) {
       return Center(
         child: Text('No episodes yet', style: context.subtitleLBold),
@@ -109,7 +108,6 @@ class NewEpisodesScreen extends ConsumerWidget {
           final bool? trackPlayingState = isCurrentTrack
               ? playerState.isPlaying && playerState.isRadioMode == false
               : null;
-
           return EpisodeTile(
             episode: episode,
             isPlaying: trackPlayingState,

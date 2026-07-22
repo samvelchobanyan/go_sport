@@ -25,6 +25,19 @@ class NewsDetailScreen extends ConsumerWidget {
     final newsState = ref.watch(newsStateProvider);
     final article = newsState.getArticle(articleId);
 
+    ref.listen<NewsState>(newsStateProvider, (previous, next) {
+      // final isFinishedLoading = previous?.isLoading == true && !next.isLoading;
+      final hasError = next.error != null;
+      final isMissingArticle = next.getArticle(articleId) == null;
+
+      // Redirect if loading completed with an error OR if article doesn't exist
+      if (hasError || isMissingArticle) {
+        if (context.mounted) {
+          context.go('/');
+        }
+      }
+    });
+
     // If article not in cache, try to load it
     if (article == null) {
       // Trigger load if not already loading

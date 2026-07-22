@@ -45,10 +45,10 @@ class _CreatePasswordScreenState extends ConsumerState<CreatePasswordScreen> {
       return;
     }
 
-      if (password.length < 6) {
+      if (password.length < 8) {
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(const SnackBar(content: Text('Password must contain at least six characters')));
+      ).showSnackBar(const SnackBar(content: Text('Password must contain at least 8 characters')));
       return;
     }
 
@@ -137,7 +137,7 @@ class _CreatePasswordScreenState extends ConsumerState<CreatePasswordScreen> {
 
                           const SizedBox(height: DSSpacing.s14),
                           Text(
-                            'Your password must contain at least six characters',
+                            'Your password must contain at least 8 characters',
                             style: context.bodyL?.copyWith(
                               color: DSColors.gray70,
                             ),
@@ -152,7 +152,6 @@ class _CreatePasswordScreenState extends ConsumerState<CreatePasswordScreen> {
                             keyboardType: TextInputType.text,
                             obscureText: true,
                           ),
-
                           const SizedBox(height: DSSpacing.m),
 
                           CustomInput(

@@ -153,7 +153,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                   obscureText: true,
                                 ),
 
-                                const SizedBox(height: DSSpacing.s8),
+                                // const SizedBox(height: DSSpacing.xs),
 
                                 // Forgot Password
                                 Align(
@@ -307,6 +307,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                               },
                               style: TextButton.styleFrom(
                                 backgroundColor: DSColors.blue5,
+                                padding: EdgeInsets.symmetric(vertical:DSSpacing.s8),
                                 shape: const RoundedRectangleBorder(
                                   borderRadius: BorderRadius.zero,
                                 ),

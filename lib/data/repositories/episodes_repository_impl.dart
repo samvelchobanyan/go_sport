@@ -2,6 +2,8 @@ import 'package:go_sport/core/network/api_client.dart';
 import 'package:go_sport/data/dto/episode_dto.dart';
 import 'package:go_sport/domain/entities/track.dart';
 import 'package:go_sport/domain/repositories/episodes_repository.dart';
+import 'dart:developer';
+import 'dart:convert';
 
 class EpisodesRepositoryImpl implements EpisodesRepository {
   final ApiClient _apiClient;
@@ -14,13 +16,19 @@ class EpisodesRepositoryImpl implements EpisodesRepository {
       '/api/episodes',
       queryParameters: {
         'populate[File][populate]': '*',
-        'populate[Program][populate][Cover][populate]': '*',
+        'populate[Cover][populate]': '*', // Primary: Episode cover
+        'populate[Program][populate][Cover][populate]':
+            '*', // Fallback: Program cover
         'filters[Featured][\$eq]': true,
         'sort[0]': 'Weight:desc',
       },
     );
 
     final data = response.data['data'] as List<dynamic>;
+    final encoder = JsonEncoder.withIndent('  ');
+    final prettyJson = encoder.convert(response.data['data']);
+
+    log(prettyJson);
     return data
         .map((e) => EpisodeDto.fromJson(e as Map<String, dynamic>).toDomain())
         .toList();
@@ -35,7 +43,10 @@ class EpisodesRepositoryImpl implements EpisodesRepository {
       '/api/user-episodes',
       queryParameters: {
         'populate[Episode][populate][File][populate]': '*',
-        'populate[Episode][populate][Program][populate][Cover][populate]': '*',
+        'populate[Episode][populate][Cover][populate]':
+            '*', // Primary: Episode cover
+        'populate[Episode][populate][Program][populate][Cover][populate]':
+            '*', // Fallback: Program cover
         'sort[0]': 'createdAt:desc',
         'pagination[page]': page,
         'pagination[pageSize]': pageSize,
@@ -50,8 +61,7 @@ class EpisodesRepositoryImpl implements EpisodesRepository {
       return EpisodeDto.fromJson(episodeJson).toDomain();
     }).toList();
 
-    final pageCount =
-        response.data['meta']['pagination']['pageCount'] as int;
+    final pageCount = response.data['meta']['pagination']['pageCount'] as int;
     return (items: items, hasMore: page < pageCount);
   }
 

@@ -109,6 +109,9 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
                               imagePath: item.coverUrl,
                               isSeen: item.isRead,
                               onTap: () {
+                                // print('aaaaaaa ${item.targetId}');
+                                // print('aaaaaaa ${item.programId}');
+
                                 final route = AppRoutes.contentRoute(
                                   type: item.type,
                                   documentId: item.targetId,
@@ -116,6 +119,7 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
                                 );
                                 // Pushed on top of the stack, so back
                                 // (button and system gesture) returns here.
+
                                 if (route != null) context.push(route);
 
                                 ref

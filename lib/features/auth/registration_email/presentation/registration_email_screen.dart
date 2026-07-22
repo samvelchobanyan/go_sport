@@ -43,6 +43,13 @@ class _RegistrationEmailScreenState
     super.dispose();
   }
 
+  bool _isValidEmail(String email) {
+    final emailRegex = RegExp(
+      r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
+    );
+    return emailRegex.hasMatch(email);
+  }
+
   void _onContinue() {
     final email = _emailController.text.trim();
 
@@ -53,13 +60,12 @@ class _RegistrationEmailScreenState
       return;
     }
 
-    if (!email.contains('@')) {
+    if (!_isValidEmail(email)) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Please enter a valid email address')),
       );
       return;
     }
-
     ref.read(registrationControllerProvider.notifier).registerEmail(email);
   }
 
@@ -98,7 +104,6 @@ class _RegistrationEmailScreenState
         backgroundColor: DSColors.white,
         body: Stack(
           children: [
-    
             Positioned(
               top: 0,
               left: 0,
@@ -125,7 +130,7 @@ class _RegistrationEmailScreenState
                     topRight: Radius.circular(DSRadius.m),
                   ),
                 ),
-              
+
                 child: SingleChildScrollView(
                   padding: EdgeInsets.symmetric(
                     horizontal: DSSpacing.m,
@@ -143,10 +148,7 @@ class _RegistrationEmailScreenState
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Icon(
-                                Icons.person_rounded,
-                                color: DSColors.blue,
-                              ),
+                              Icon(Icons.person_rounded, color: DSColors.blue),
                               SizedBox(width: DSSpacing.s8),
                               Text('Registration', style: context.h2),
                             ],
@@ -197,7 +199,9 @@ class _RegistrationEmailScreenState
                               backgroundColor: DSColors.blue,
                               minimumSize: const Size.fromHeight(DSSpacing.xxl),
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(DSRadius.xxl),
+                                borderRadius: BorderRadius.circular(
+                                  DSRadius.xxl,
+                                ),
                               ),
                             ),
                           ),
@@ -213,7 +217,9 @@ class _RegistrationEmailScreenState
                               backgroundColor: DSColors.blue5,
                               side: BorderSide.none,
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(DSRadius.xxl),
+                                borderRadius: BorderRadius.circular(
+                                  DSRadius.xxl,
+                                ),
                               ),
                             ),
                             child: Row(
