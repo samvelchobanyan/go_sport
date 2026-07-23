@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:go_sport/design_system/components/network_image/ds_network_image.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 import 'package:go_sport/design_system/foundations/ds_layout.dart';
 import 'package:go_sport/domain/entities/playlist.dart';
-import 'package:go_sport/features/shared_widgets/hero_like_button.dart';
 
-class PlaylistHero extends StatelessWidget {
+class CustomPlaylistHero extends StatelessWidget {
   final Playlist playlist;
   final bool isLiked;
   final bool isPlaying;
@@ -16,7 +14,7 @@ class PlaylistHero extends StatelessWidget {
   final VoidCallback onPlayTap;
   final bool showPlayButton;
 
-  const PlaylistHero({
+  const CustomPlaylistHero({
     super.key,
     required this.playlist,
     required this.isLiked,
@@ -32,7 +30,10 @@ class PlaylistHero extends StatelessWidget {
       fit: StackFit.expand,
       children: [
         // Background image
-        DSNetworkImage(imageUrl: playlist.imageUrl),
+        Image.asset(
+          'assets/images/custom_playlist_cover.png',
+          fit: BoxFit.cover,
+        ),
 
         // Gradient overlay
         const DecoratedBox(
@@ -66,9 +67,31 @@ class PlaylistHero extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    HeroLikeButton(isLiked: isLiked, onActionTap: onActionTap),
-
                     if (showPlayButton) ...[
+                      GestureDetector(
+                        onTap: onActionTap,
+                        behavior: HitTestBehavior.opaque,
+                        child: Container(
+                          width: 48,
+                          height: 48,
+                          decoration: BoxDecoration(
+                            // Orange fill only for liked featured playlists. Custom playlists stay translucent.
+                            color: DSColors.white.withValues(alpha: 0.25),
+                            shape: BoxShape.circle,
+                          ),
+                          child: Center(
+                            child: SvgPicture.asset(
+                              'assets/icons/plus.svg',
+                              width: 18,
+                              height: 18,
+                              colorFilter: const ColorFilter.mode(
+                                DSColors.lime,
+                                BlendMode.srcIn,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
                       const SizedBox(width: DSSpacing.m),
                       // Play button
                       GestureDetector(

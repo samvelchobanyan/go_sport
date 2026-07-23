@@ -12,6 +12,7 @@ import 'package:go_sport/domain/entities/playlist.dart';
 import 'package:go_sport/domain/entities/track.dart';
 import 'package:go_sport/domain/state/like_registry.dart';
 import 'package:go_sport/domain/state/player_state.dart';
+import 'package:go_sport/features/playlists/presentation/widgets/custom_playlist_hero.dart';
 import 'package:go_sport/features/shared_widgets/dotted_divider.dart';
 
 import 'custom_playlist_controller.dart';
@@ -194,7 +195,12 @@ class _PlaylistScreenState extends ConsumerState<PlaylistScreen> {
         tracksState.mapOrNull(data: (d) => d.tracks) ?? const <Track>[];
     final screenHeight = MediaQuery.of(context).size.height;
     final expandedHeight = screenHeight * 0.5;
+    final hasTracks =
+        tracksState.mapOrNull(data: (data) => data.tracks.isNotEmpty) ?? false;
+    final isCustom = widget.playlist!.type == PlaylistType.custom;
 
+    print('widget.playlist,  ${widget.playlist!.type}');
+    print('hasTracks,  $hasTracks');
     return Scaffold(
       backgroundColor: DSColors.white,
       body: CustomScrollView(
@@ -282,17 +288,13 @@ class _PlaylistScreenState extends ConsumerState<PlaylistScreen> {
               //   ),
             ],
             flexibleSpace: FlexibleSpaceBar(
-              background: PlaylistHero(
-                playlist: pl,
-                isLiked: isLikedFromRegistry,
-                isPlaying: isThisPlaying,
-                showPlayButton:
-                    tracksState.mapOrNull(
-                      data: (data) => data.tracks.isNotEmpty,
-                    ) ??
-                    false,
-                onActionTap: widget.type == PlaylistType.custom
-                    ? () => showAddTracksBottomSheet(
+              background: isCustom
+                  ? CustomPlaylistHero(
+                      playlist: pl,
+                      isLiked: isLikedFromRegistry,
+                      isPlaying: isThisPlaying,
+                      showPlayButton: hasTracks,
+                      onActionTap: () => showAddTracksBottomSheet(
                         context: context,
                         existingTrackIds: currentTracks
                             .map((t) => t.id)
@@ -304,23 +306,43 @@ class _PlaylistScreenState extends ConsumerState<PlaylistScreen> {
                               ).notifier,
                             )
                             .addTracks(tracks),
-                      )
-                    : () => _onLikeTap(ref, pl),
-                onPlayTap: () {
-                  final tracksValue = tracksState.mapOrNull(
-                    data: (data) => data.tracks,
-                  );
-                  if (tracksValue != null) {
-                    _onPlayTap(
-                      ref,
-                      tracksValue,
-                      pl.title,
-                      pl.imageUrl,
-                      isThisActiveSource,
-                    );
-                  }
-                },
-              ),
+                      ),
+                      onPlayTap: () {
+                        final tracksValue = tracksState.mapOrNull(
+                          data: (data) => data.tracks,
+                        );
+                        if (tracksValue != null) {
+                          _onPlayTap(
+                            ref,
+                            tracksValue,
+                            pl.title,
+                            pl.imageUrl,
+                            isThisActiveSource,
+                          );
+                        }
+                      },
+                    )
+                  : PlaylistHero(
+                      playlist: pl,
+                      isLiked: isLikedFromRegistry,
+                      isPlaying: isThisPlaying,
+                      showPlayButton: hasTracks,
+                      onActionTap: () => _onLikeTap(ref, pl),
+                      onPlayTap: () {
+                        final tracksValue = tracksState.mapOrNull(
+                          data: (data) => data.tracks,
+                        );
+                        if (tracksValue != null) {
+                          _onPlayTap(
+                            ref,
+                            tracksValue,
+                            pl.title,
+                            pl.imageUrl,
+                            isThisActiveSource,
+                          );
+                        }
+                      },
+                    ),
             ),
             bottom: PreferredSize(
               preferredSize: const Size.fromHeight(24),
@@ -390,18 +412,55 @@ class _PlaylistScreenState extends ConsumerState<PlaylistScreen> {
                     child: Stack(
                       fit: StackFit.expand,
                       children: [
-                        Image.asset(
-                          'assets/images/empty_playlist.png',
-                          fit: BoxFit.cover,
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(12),
+                          child: Image.asset(
+                            'assets/images/empty_playlist.png',
+                            fit: BoxFit.cover,
+                          ),
                         ),
                         Positioned(
                           top: 40,
                           left: 0,
                           right: 0,
-                          child: Text(
-                            'Start adding songs\nthey\'ll appear here.',
-                            textAlign: TextAlign.center,
-                            style: context.subtitleMBold,
+                          child: Column(
+                            children: [
+                              Text(
+                                'Start adding songs\nthey\'ll appear here.',
+                                textAlign: TextAlign.center,
+                                style: context.subtitleMBold,
+                              ),
+                              SizedBox(height: 22),
+                              ElevatedButton.icon(
+                                onPressed: () => showAddTracksBottomSheet(
+                                  context: context,
+                                  existingTrackIds: currentTracks
+                                      .map((t) => t.id)
+                                      .toSet(),
+                                  onSave: (tracks) => ref
+                                      .read(
+                                        customPlaylistControllerProvider(
+                                          widget.playlistId,
+                                        ).notifier,
+                                      )
+                                      .addTracks(tracks),
+                                ),
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: DSColors.blue,
+                                ),
+                                icon: SvgPicture.asset(
+                                  'assets/icons/plus.svg',
+                                  height: 22,
+                                  width: 22,
+                                ),
+                                label: Text(
+                                  'Add Track',
+                                  style: context.subtitleLBold?.copyWith(
+                                    color: DSColors.lime,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ],
