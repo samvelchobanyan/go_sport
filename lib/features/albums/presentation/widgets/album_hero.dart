@@ -15,6 +15,9 @@ class AlbumHero extends StatelessWidget {
   final VoidCallback onLikeTap;
   final VoidCallback onPlayTap;
 
+  /// Tap on the artist name. Null disables the tap (e.g. artist id unknown).
+  final VoidCallback? onArtistTap;
+
   const AlbumHero({
     super.key,
     required this.album,
@@ -22,6 +25,7 @@ class AlbumHero extends StatelessWidget {
     required this.isPlaying,
     required this.onLikeTap,
     required this.onPlayTap,
+    this.onArtistTap,
   });
 
   @override
@@ -90,12 +94,28 @@ class AlbumHero extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: DSSpacing.m),
-                Text(
-                  '${album.artist} • ${album.releaseYear}',
-                  style: context.textL?.copyWith(color: DSColors.white),
-                  textAlign: TextAlign.center,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Flexible(
+                      child: GestureDetector(
+                        onTap: onArtistTap,
+                        behavior: HitTestBehavior.opaque,
+                        child: Text(
+                          album.artist,
+                          style: context.textL?.copyWith(color: DSColors.white),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ),
+                    Text(
+                      ' • ${album.releaseYear}',
+                      style: context.textL?.copyWith(color: DSColors.white),
+                      maxLines: 1,
+                    ),
+                  ],
                 ),
                 const SizedBox(height: DSSpacing.s12),
                 Text(

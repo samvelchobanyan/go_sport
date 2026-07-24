@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_sport/design_system/components/network_image/ds_network_image.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_spacing.dart';
@@ -241,15 +242,20 @@ class _PlaylistSelectionTile extends StatelessWidget {
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(DSRadius.s),
-              child: Image.asset(
-                playlist
-                    .imageUrl, // Кастомные плейлисты используют локальные ассеты
-                width: 50,
-                height: 50,
-                fit: BoxFit.cover,
-                errorBuilder: (_, __, ___) =>
-                    Container(width: 50, height: 50, color: DSColors.gray20),
-              ),
+              child:
+                  playlist.type == PlaylistType.custom &&
+                      playlist.imageUrl.isEmpty
+                  ? Image.asset(
+                      'assets/images/custom_playlist_cover.png',
+                      width: 50,
+                      height: 50,
+                      fit: BoxFit.cover,
+                    )
+                  : DSNetworkImage(
+                      imageUrl: playlist.imageUrl,
+                      width: 50,
+                      height: 50,
+                    ),
             ),
           ),
           const SizedBox(width: DSSpacing.s12),

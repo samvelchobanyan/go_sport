@@ -125,6 +125,10 @@ class _AlbumScreenState extends ConsumerState<AlbumScreen> {
                       onLikeTap: () => ref
                           .read(likeRegistryProvider.notifier)
                           .toggleAlbumLike(album),
+                      onArtistTap: album.artistId == null
+                          ? null
+                          : () =>
+                                context.push('/music/artist/${album.artistId}'),
                       onPlayTap: () {
                         final tracks = tracksState.mapOrNull(
                           data: (data) => data.tracks,

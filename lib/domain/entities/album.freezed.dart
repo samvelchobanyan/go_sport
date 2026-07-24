@@ -21,6 +21,7 @@ mixin _$Album {
   String get title => throw _privateConstructorUsedError;
   String get imageUrl => throw _privateConstructorUsedError;
   String get artist => throw _privateConstructorUsedError;
+  String? get artistId => throw _privateConstructorUsedError;
   int get trackCount => throw _privateConstructorUsedError;
   String get releaseYear => throw _privateConstructorUsedError;
   String? get likeId => throw _privateConstructorUsedError;
@@ -41,6 +42,7 @@ abstract class $AlbumCopyWith<$Res> {
     String title,
     String imageUrl,
     String artist,
+    String? artistId,
     int trackCount,
     String releaseYear,
     String? likeId,
@@ -66,6 +68,7 @@ class _$AlbumCopyWithImpl<$Res, $Val extends Album>
     Object? title = null,
     Object? imageUrl = null,
     Object? artist = null,
+    Object? artistId = freezed,
     Object? trackCount = null,
     Object? releaseYear = null,
     Object? likeId = freezed,
@@ -88,6 +91,10 @@ class _$AlbumCopyWithImpl<$Res, $Val extends Album>
                 ? _value.artist
                 : artist // ignore: cast_nullable_to_non_nullable
                       as String,
+            artistId: freezed == artistId
+                ? _value.artistId
+                : artistId // ignore: cast_nullable_to_non_nullable
+                      as String?,
             trackCount: null == trackCount
                 ? _value.trackCount
                 : trackCount // ignore: cast_nullable_to_non_nullable
@@ -119,6 +126,7 @@ abstract class _$$AlbumImplCopyWith<$Res> implements $AlbumCopyWith<$Res> {
     String title,
     String imageUrl,
     String artist,
+    String? artistId,
     int trackCount,
     String releaseYear,
     String? likeId,
@@ -143,6 +151,7 @@ class __$$AlbumImplCopyWithImpl<$Res>
     Object? title = null,
     Object? imageUrl = null,
     Object? artist = null,
+    Object? artistId = freezed,
     Object? trackCount = null,
     Object? releaseYear = null,
     Object? likeId = freezed,
@@ -165,6 +174,10 @@ class __$$AlbumImplCopyWithImpl<$Res>
             ? _value.artist
             : artist // ignore: cast_nullable_to_non_nullable
                   as String,
+        artistId: freezed == artistId
+            ? _value.artistId
+            : artistId // ignore: cast_nullable_to_non_nullable
+                  as String?,
         trackCount: null == trackCount
             ? _value.trackCount
             : trackCount // ignore: cast_nullable_to_non_nullable
@@ -190,6 +203,7 @@ class _$AlbumImpl implements _Album {
     required this.title,
     required this.imageUrl,
     required this.artist,
+    this.artistId,
     required this.trackCount,
     required this.releaseYear,
     this.likeId,
@@ -204,6 +218,8 @@ class _$AlbumImpl implements _Album {
   @override
   final String artist;
   @override
+  final String? artistId;
+  @override
   final int trackCount;
   @override
   final String releaseYear;
@@ -212,7 +228,7 @@ class _$AlbumImpl implements _Album {
 
   @override
   String toString() {
-    return 'Album(id: $id, title: $title, imageUrl: $imageUrl, artist: $artist, trackCount: $trackCount, releaseYear: $releaseYear, likeId: $likeId)';
+    return 'Album(id: $id, title: $title, imageUrl: $imageUrl, artist: $artist, artistId: $artistId, trackCount: $trackCount, releaseYear: $releaseYear, likeId: $likeId)';
   }
 
   @override
@@ -225,6 +241,8 @@ class _$AlbumImpl implements _Album {
             (identical(other.imageUrl, imageUrl) ||
                 other.imageUrl == imageUrl) &&
             (identical(other.artist, artist) || other.artist == artist) &&
+            (identical(other.artistId, artistId) ||
+                other.artistId == artistId) &&
             (identical(other.trackCount, trackCount) ||
                 other.trackCount == trackCount) &&
             (identical(other.releaseYear, releaseYear) ||
@@ -239,6 +257,7 @@ class _$AlbumImpl implements _Album {
     title,
     imageUrl,
     artist,
+    artistId,
     trackCount,
     releaseYear,
     likeId,
@@ -259,6 +278,7 @@ abstract class _Album implements Album {
     required final String title,
     required final String imageUrl,
     required final String artist,
+    final String? artistId,
     required final int trackCount,
     required final String releaseYear,
     final String? likeId,
@@ -272,6 +292,8 @@ abstract class _Album implements Album {
   String get imageUrl;
   @override
   String get artist;
+  @override
+  String? get artistId;
   @override
   int get trackCount;
   @override

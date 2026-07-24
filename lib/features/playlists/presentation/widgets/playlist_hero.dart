@@ -34,7 +34,7 @@ class PlaylistHero extends StatelessWidget {
       fit: StackFit.expand,
       children: [
         // Background image
-        isCustom
+        isCustom && playlist.imageUrl.isEmpty
             ? Image.asset(
                 'assets/images/custom_playlist_cover.png',
                 fit: BoxFit.cover,
