@@ -132,7 +132,7 @@ void showTrackOptionsBottomSheet({
                 const SizedBox(height: DSSpacing.s10),
               ],
 
-              // Like
+              // Like — if onRemoveFromPlaylist is null, this is the last element, so wrap in SafeArea
               Consumer(
                 builder: (context, ref, _) {
                   final isEpisode = track.releaseDate != null;
@@ -143,7 +143,8 @@ void showTrackOptionsBottomSheet({
                           : s.likedTracks.any((t) => t.id == track.id),
                     ),
                   );
-                  return ActionButton(
+
+                  Widget likeButton = ActionButton(
                     icon: isLiked
                         ? 'assets/icons/heart_bg_darker.svg'
                         : 'assets/icons/heart_bg_stroke.svg',
@@ -155,24 +156,41 @@ void showTrackOptionsBottomSheet({
                       } else {
                         registry.toggleTrackLike(track);
                       }
-                      // Navigator.pop(context);
                     },
                   );
+
+                  // Apply SafeArea only if Like is the last item
+                  if (onRemoveFromPlaylist == null) {
+                    return SafeArea(
+                      top: false,
+                      left: false,
+                      right: false,
+                      child: likeButton,
+                    );
+                  }
+
+                  return likeButton;
                 },
               ),
+              const SizedBox(height: DSSpacing.s10),
 
               // Remove from this playlist
               if (onRemoveFromPlaylist != null) ...[
-                const SizedBox(height: DSSpacing.s10),
-                ActionButton(
-                  icon: 'assets/icons/delete_bg.svg',
-                  label: 'Remove from this playlist',
-                  onTap: () {
-                    Navigator.pop(context);
-                    onRemoveFromPlaylist();
-                  },
+                SafeArea(
+                  top: false,
+                  right: false,
+                  left: false,
+                  child: ActionButton(
+                    icon: 'assets/icons/delete_bg.svg',
+                    label: 'Remove from this playlist',
+                    onTap: () {
+                      Navigator.pop(context);
+                      onRemoveFromPlaylist();
+                    },
+                  ),
                 ),
               ],
+              const SizedBox(height: DSSpacing.s10),
               // const SizedBox(height: DSSpacing.s10),
 
               // Share — functionality not implemented yet, hidden for now.
