@@ -12,7 +12,6 @@ import 'package:go_sport/domain/entities/playlist.dart';
 import 'package:go_sport/domain/entities/track.dart';
 import 'package:go_sport/domain/state/like_registry.dart';
 import 'package:go_sport/domain/state/player_state.dart';
-import 'package:go_sport/features/playlists/presentation/widgets/custom_playlist_hero.dart';
 import 'package:go_sport/features/shared_widgets/dotted_divider.dart';
 
 import 'custom_playlist_controller.dart';
@@ -197,10 +196,7 @@ class _PlaylistScreenState extends ConsumerState<PlaylistScreen> {
     final expandedHeight = screenHeight * 0.5;
     final hasTracks =
         tracksState.mapOrNull(data: (data) => data.tracks.isNotEmpty) ?? false;
-    final isCustom = widget.playlist!.type == PlaylistType.custom;
 
-    print('widget.playlist,  ${widget.playlist!.type}');
-    print('hasTracks,  $hasTracks');
     return Scaffold(
       backgroundColor: DSColors.white,
       body: CustomScrollView(
@@ -288,13 +284,13 @@ class _PlaylistScreenState extends ConsumerState<PlaylistScreen> {
               //   ),
             ],
             flexibleSpace: FlexibleSpaceBar(
-              background: isCustom
-                  ? CustomPlaylistHero(
-                      playlist: pl,
-                      isLiked: isLikedFromRegistry,
-                      isPlaying: isThisPlaying,
-                      showPlayButton: hasTracks,
-                      onActionTap: () => showAddTracksBottomSheet(
+              background: PlaylistHero(
+                playlist: pl,
+                isLiked: isLikedFromRegistry,
+                isPlaying: isThisPlaying,
+                showPlayButton: hasTracks,
+                onActionTap: widget.type == PlaylistType.custom
+                    ? () => showAddTracksBottomSheet(
                         context: context,
                         existingTrackIds: currentTracks
                             .map((t) => t.id)
@@ -306,43 +302,23 @@ class _PlaylistScreenState extends ConsumerState<PlaylistScreen> {
                               ).notifier,
                             )
                             .addTracks(tracks),
-                      ),
-                      onPlayTap: () {
-                        final tracksValue = tracksState.mapOrNull(
-                          data: (data) => data.tracks,
-                        );
-                        if (tracksValue != null) {
-                          _onPlayTap(
-                            ref,
-                            tracksValue,
-                            pl.title,
-                            pl.imageUrl,
-                            isThisActiveSource,
-                          );
-                        }
-                      },
-                    )
-                  : PlaylistHero(
-                      playlist: pl,
-                      isLiked: isLikedFromRegistry,
-                      isPlaying: isThisPlaying,
-                      showPlayButton: hasTracks,
-                      onActionTap: () => _onLikeTap(ref, pl),
-                      onPlayTap: () {
-                        final tracksValue = tracksState.mapOrNull(
-                          data: (data) => data.tracks,
-                        );
-                        if (tracksValue != null) {
-                          _onPlayTap(
-                            ref,
-                            tracksValue,
-                            pl.title,
-                            pl.imageUrl,
-                            isThisActiveSource,
-                          );
-                        }
-                      },
-                    ),
+                      )
+                    : () => _onLikeTap(ref, pl),
+                onPlayTap: () {
+                  final tracksValue = tracksState.mapOrNull(
+                    data: (data) => data.tracks,
+                  );
+                  if (tracksValue != null) {
+                    _onPlayTap(
+                      ref,
+                      tracksValue,
+                      pl.title,
+                      pl.imageUrl,
+                      isThisActiveSource,
+                    );
+                  }
+                },
+              ),
             ),
             bottom: PreferredSize(
               preferredSize: const Size.fromHeight(24),

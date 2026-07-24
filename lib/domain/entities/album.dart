@@ -9,6 +9,7 @@ class Album with _$Album {
     required String title,
     required String imageUrl,
     required String artist,
+    String? artistId,
     required int trackCount,
     required String releaseYear,
     String? likeId,

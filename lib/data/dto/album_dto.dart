@@ -11,12 +11,16 @@ class _CoverDto {
 }
 
 class _ArtistDto {
+  final String documentId;
   final String name;
 
-  _ArtistDto({required this.name});
+  _ArtistDto({required this.documentId, required this.name});
 
   factory _ArtistDto.fromJson(Map<String, dynamic> json) {
-    return _ArtistDto(name: json['Name'] as String);
+    return _ArtistDto(
+      documentId: json['documentId'] as String,
+      name: json['Name'] as String,
+    );
   }
 }
 
@@ -24,6 +28,7 @@ class AlbumDto {
   final String documentId;
   final String name;
   final String artist;
+  final String? artistId;
   final String coverUrl;
   final int cnt;
   final int year;
@@ -33,6 +38,7 @@ class AlbumDto {
     required this.documentId,
     required this.name,
     required this.artist,
+    required this.artistId,
     required this.coverUrl,
     required this.cnt,
     required this.year,
@@ -41,13 +47,15 @@ class AlbumDto {
 
   factory AlbumDto.fromJson(Map<String, dynamic> json) {
     final artistJson = json['Artist'] as Map<String, dynamic>?;
+    final artist = artistJson != null ? _ArtistDto.fromJson(artistJson) : null;
     final coverJson = json['Cover'] as Map<String, dynamic>?;
     final likeJson = json['Like'] as Map<String, dynamic>?;
 
     return AlbumDto(
       documentId: json['documentId'] as String,
       name: json['Name'] as String,
-      artist: artistJson != null ? _ArtistDto.fromJson(artistJson).name : '',
+      artist: artist?.name ?? '',
+      artistId: artist?.documentId,
       coverUrl: coverJson != null ? _CoverDto.fromJson(coverJson).url : '',
       cnt: json['cnt'] as int? ?? 0,
       year: json['Year'] as int? ?? 0,
@@ -60,6 +68,7 @@ class AlbumDto {
       id: documentId,
       title: name,
       artist: artist,
+      artistId: artistId,
       imageUrl: coverUrl,
       trackCount: cnt,
       releaseYear: year.toString(),

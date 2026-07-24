@@ -28,11 +28,18 @@ class PlaylistHero extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isCustom = playlist.type == PlaylistType.custom;
+
     return Stack(
       fit: StackFit.expand,
       children: [
         // Background image
-        DSNetworkImage(imageUrl: playlist.imageUrl),
+        isCustom && playlist.imageUrl.isEmpty
+            ? Image.asset(
+                'assets/images/custom_playlist_cover.png',
+                fit: BoxFit.cover,
+              )
+            : DSNetworkImage(imageUrl: playlist.imageUrl),
 
         // Gradient overlay
         const DecoratedBox(
@@ -66,7 +73,11 @@ class PlaylistHero extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    HeroLikeButton(isLiked: isLiked, onActionTap: onActionTap),
+                    HeroLikeButton(
+                      isLiked: isLiked,
+                      onActionTap: onActionTap,
+                      isCustom: isCustom,
+                    ),
 
                     if (showPlayButton) ...[
                       const SizedBox(width: DSSpacing.m),

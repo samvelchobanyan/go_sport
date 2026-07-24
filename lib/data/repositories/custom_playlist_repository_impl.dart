@@ -4,8 +4,6 @@ import 'package:go_sport/domain/entities/playlist.dart';
 import 'package:go_sport/domain/entities/track.dart';
 import 'package:go_sport/domain/repositories/custom_playlist_repository.dart';
 
-const _customPlaylistCover = 'assets/images/custom_playlist_cover.png';
-
 class CustomPlaylistRepositoryImpl implements CustomPlaylistRepository {
   final ApiClient _apiClient;
 
@@ -17,6 +15,8 @@ class CustomPlaylistRepositoryImpl implements CustomPlaylistRepository {
       '/api/custom-playlists',
       queryParameters: {
         'populate[Tracks][fields][0]': 'documentId',
+        'populate[Tracks][populate][Cover][populate]': '*',
+        'populate[Tracks][populate][Album][populate]': 'Cover',
       },
     );
 
@@ -28,7 +28,7 @@ class CustomPlaylistRepositoryImpl implements CustomPlaylistRepository {
       return Playlist(
         id: entry['documentId'] as String,
         title: entry['Name'] as String,
-        imageUrl: _customPlaylistCover,
+        imageUrl: _firstTrackCover(tracks),
         trackCount: tracks.length,
         trackDocIds: trackDocIds,
         type: PlaylistType.custom,
@@ -67,7 +67,7 @@ class CustomPlaylistRepositoryImpl implements CustomPlaylistRepository {
     return Playlist(
       id: entry['documentId'] as String,
       title: entry['Name'] as String,
-      imageUrl: _customPlaylistCover,
+      imageUrl: '',
       trackCount: 0,
       type: PlaylistType.custom,
     );
@@ -87,13 +87,19 @@ class CustomPlaylistRepositoryImpl implements CustomPlaylistRepository {
           'Tracks': trackDocIds,
         },
       },
+      queryParameters: {
+        'populate[Tracks][fields][0]': 'documentId',
+        'populate[Tracks][populate][Cover][populate]': '*',
+        'populate[Tracks][populate][Album][populate]': 'Cover',
+      },
     );
 
     final entry = response.data['data'] as Map<String, dynamic>;
+    final tracks = entry['Tracks'] as List<dynamic>? ?? [];
     return Playlist(
       id: entry['documentId'] as String,
       title: entry['Name'] as String,
-      imageUrl: _customPlaylistCover,
+      imageUrl: _firstTrackCover(tracks),
       trackCount: trackDocIds.length,
       trackDocIds: trackDocIds,
       type: PlaylistType.custom,
@@ -103,5 +109,16 @@ class CustomPlaylistRepositoryImpl implements CustomPlaylistRepository {
   @override
   Future<void> deleteCustomPlaylist(String id) async {
     await _apiClient.delete('/api/custom-playlists/$id');
+  }
+
+  /// Обложка кастомного плейлиста = обложка первого трека (или его альбома).
+  /// Пусто, если треков нет — вызывающий UI покажет брендовый фолбэк.
+  String _firstTrackCover(List<dynamic> tracks) {
+    if (tracks.isEmpty) return '';
+    final first = tracks.first as Map<String, dynamic>;
+    final cover = first['Cover'] as Map<String, dynamic>?;
+    final album = first['Album'] as Map<String, dynamic>?;
+    final albumCover = album?['Cover'] as Map<String, dynamic>?;
+    return (cover?['url'] as String?) ?? (albumCover?['url'] as String?) ?? '';
   }
 }

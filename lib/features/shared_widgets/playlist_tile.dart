@@ -40,9 +40,11 @@ class PlaylistTile extends StatelessWidget {
               ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(DSRadius.s),
-                child: playlist.type == PlaylistType.custom
+                child:
+                    playlist.type == PlaylistType.custom &&
+                        playlist.imageUrl.isEmpty
                     ? Image.asset(
-                        playlist.imageUrl,
+                        'assets/images/custom_playlist_cover.png',
                         width: 50,
                         height: 50,
                         fit: BoxFit.cover,
