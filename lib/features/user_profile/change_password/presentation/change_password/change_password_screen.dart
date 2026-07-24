@@ -174,35 +174,42 @@ class _ProfileChangePasswordScreenState
                           const SizedBox(height: DSSpacing.l),
 
                           // Action Button
-                          ElevatedButton.icon(
-                            icon: state.isLoading
-                                ? const SizedBox(
-                                    width: 20,
-                                    height: 20,
-                                    child: CircularProgressIndicator(
-                                      color: DSColors.lime,
-                                      strokeWidth: 2,
+                          SafeArea(
+                            top: false, 
+                            left: false, 
+                            right: false,
+                            child: ElevatedButton.icon(
+                              icon: state.isLoading
+                                  ? const SizedBox(
+                                      width: 20,
+                                      height: 20,
+                                      child: CircularProgressIndicator(
+                                        color: DSColors.lime,
+                                        strokeWidth: 2,
+                                      ),
+                                    )
+                                  : SvgPicture.asset(
+                                      'assets/icons/check_lime.svg',
                                     ),
-                                  )
-                                : SvgPicture.asset(
-                                    'assets/icons/check_lime.svg',
-                                  ),
-                            label: Text(
-                              "Change Password",
-                              style: context.subtitleLBold?.copyWith(
-                                color: DSColors.lime,
-                              ),
-                            ),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: DSColors.blue,
-                              minimumSize: const Size.fromHeight(DSSpacing.xxl),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(
-                                  DSRadius.xxl,
+                              label: Text(
+                                "Change Password",
+                                style: context.subtitleLBold?.copyWith(
+                                  color: DSColors.lime,
                                 ),
                               ),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: DSColors.blue,
+                                minimumSize: const Size.fromHeight(
+                                  DSSpacing.xxl,
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(
+                                    DSRadius.xxl,
+                                  ),
+                                ),
+                              ),
+                              onPressed: state.isLoading ? null : _onSave,
                             ),
-                            onPressed: state.isLoading ? null : _onSave,
                           ),
                         ],
                       ),
