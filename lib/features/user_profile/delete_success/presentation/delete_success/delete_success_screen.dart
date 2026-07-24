@@ -92,30 +92,38 @@ class _DeleteSuccessScreenState extends ConsumerState<DeleteSuccessScreen> {
                         ),
                       ),
                       const Spacer(),
+
                       // Action Button
-                      SizedBox(
-                        width: double.infinity,
-                        child: ElevatedButton.icon(
-                          icon: SvgPicture.asset('assets/icons/login.svg'),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: DSColors.blue,
-                            padding: const EdgeInsets.symmetric(
-                              vertical: DSSpacing.m,
+                      SafeArea(
+                        top: false,
+                        left: false,
+                        right: false,
+                        child: SizedBox(
+                          width: double.infinity,
+                          child: ElevatedButton.icon(
+                            icon: SvgPicture.asset('assets/icons/login.svg'),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: DSColors.blue,
+                              padding: const EdgeInsets.symmetric(
+                                vertical: DSSpacing.m,
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(
+                                  DSRadius.xxl,
+                                ),
+                              ),
                             ),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(DSRadius.xxl),
-                            ),
-                          ),
-                          onPressed: () => context.go('/login'),
-                          label: Text(
-                            "Back to Login",
-                            style: context.subtitleLBold?.copyWith(
-                              color: DSColors.lime,
+                            onPressed: () => context.go('/login'),
+                            label: Text(
+                              "Back to Login",
+                              style: context.subtitleLBold?.copyWith(
+                                color: DSColors.lime,
+                              ),
                             ),
                           ),
                         ),
                       ),
-                      const SizedBox(height: DSSpacing.s20),
+                      const SizedBox(height: DSSpacing.s12),
                     ],
                   ),
                 ),

@@ -119,7 +119,9 @@ class _ConfirmDeleteScreenState extends ConsumerState<ConfirmDeleteScreen> {
                         children: [
                           Text(
                             'Please enter your password \nto delete your account',
-                            style: context.subtitleLBold?.copyWith(fontSize: 18),
+                            style: context.subtitleLBold?.copyWith(
+                              fontSize: 18,
+                            ),
                             textAlign: TextAlign.center,
                           ),
                           const SizedBox(height: DSSpacing.s12),
@@ -133,30 +135,41 @@ class _ConfirmDeleteScreenState extends ConsumerState<ConfirmDeleteScreen> {
                           const Spacer(),
 
                           // Action Button
-                          ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: DSColors.blue,
-                              minimumSize: const Size.fromHeight(DSSpacing.xxl),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(DSRadius.xxl),
-                              ),
-                            ),
-                            onPressed: state.isLoading ? null : () => deleteUser(),
-                            child: state.isLoading
-                                ? const SizedBox(
-                                    height: 20,
-                                    width: 20,
-                                    child: CircularProgressIndicator(
-                                      color: DSColors.lime,
-                                      strokeWidth: 2,
-                                    ),
-                                  )
-                                : Text(
-                                    "Confirm",
-                                    style: context.subtitleLBold?.copyWith(
-                                      color: DSColors.lime,
-                                    ),
+                          SafeArea(
+                            top: false,
+                            left: false,
+                            right: false,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: DSColors.blue,
+                                minimumSize: const Size.fromHeight(
+                                  DSSpacing.xxl,
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(
+                                    DSRadius.xxl,
                                   ),
+                                ),
+                              ),
+                              onPressed: state.isLoading
+                                  ? null
+                                  : () => deleteUser(),
+                              child: state.isLoading
+                                  ? const SizedBox(
+                                      height: 20,
+                                      width: 20,
+                                      child: CircularProgressIndicator(
+                                        color: DSColors.lime,
+                                        strokeWidth: 2,
+                                      ),
+                                    )
+                                  : Text(
+                                      "Confirm",
+                                      style: context.subtitleLBold?.copyWith(
+                                        color: DSColors.lime,
+                                      ),
+                                    ),
+                            ),
                           ),
                         ],
                       ),

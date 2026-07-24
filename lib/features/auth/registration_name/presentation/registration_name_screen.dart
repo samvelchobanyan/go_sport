@@ -144,24 +144,32 @@ class _RegistrationNameScreenState
                           ),
 
                           const Spacer(),
-
-                          ElevatedButton.icon(
-                            onPressed: _onFinish,
-                            icon: const Icon(
-                              Icons.check_circle,
-                              color: DSColors.lime,
-                            ),
-                            label: Text(
-                              'Finish',
-                              style: context.subtitleLBold?.copyWith(
+                          SafeArea(
+                            top: false,
+                            right: false,
+                            left: false,
+                            child: ElevatedButton.icon(
+                              onPressed: _onFinish,
+                              icon: const Icon(
+                                Icons.check_circle,
                                 color: DSColors.lime,
                               ),
-                            ),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: DSColors.blue,
-                              minimumSize: const Size.fromHeight(DSSpacing.xxl),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(DSRadius.xxl),
+                              label: Text(
+                                'Finish',
+                                style: context.subtitleLBold?.copyWith(
+                                  color: DSColors.lime,
+                                ),
+                              ),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: DSColors.blue,
+                                minimumSize: const Size.fromHeight(
+                                  DSSpacing.xxl,
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(
+                                    DSRadius.xxl,
+                                  ),
+                                ),
                               ),
                             ),
                           ),

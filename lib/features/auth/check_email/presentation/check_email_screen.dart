@@ -89,10 +89,7 @@ class _CheckEmailScreenState extends ConsumerState<CheckEmailScreen> {
               ),
             ),
 
-            RoundBackButton(
-              cardHeight: _cardHeight,
-              goBackTo: '/login',
-            ),
+            RoundBackButton(cardHeight: _cardHeight, goBackTo: '/login'),
 
             Align(
               alignment: Alignment.bottomCenter,
@@ -148,27 +145,33 @@ class _CheckEmailScreenState extends ConsumerState<CheckEmailScreen> {
                           ),
 
                           const Spacer(),
-
-                          ElevatedButton.icon(
-                            onPressed: forgotPasswordState.isLoading
-                                ? null
-                                : _onContinue,
-                            icon: Icon(
-                              Icons.arrow_forward,
-                              color: DSColors.lime,
-                            ),
-                            label: Text(
-                              'Continue',
-                              style: context.subtitleLBold?.copyWith(
+                          SafeArea(
+                            top: false,
+                            right: false,
+                            left: false,
+                            child: ElevatedButton.icon(
+                              onPressed: forgotPasswordState.isLoading
+                                  ? null
+                                  : _onContinue,
+                              icon: Icon(
+                                Icons.arrow_forward,
                                 color: DSColors.lime,
                               ),
-                            ),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: DSColors.blue,
-                              minimumSize: const Size.fromHeight(DSSpacing.xxl),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(
-                                  DSRadius.xxl,
+                              label: Text(
+                                'Continue',
+                                style: context.subtitleLBold?.copyWith(
+                                  color: DSColors.lime,
+                                ),
+                              ),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: DSColors.blue,
+                                minimumSize: const Size.fromHeight(
+                                  DSSpacing.xxl,
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(
+                                    DSRadius.xxl,
+                                  ),
                                 ),
                               ),
                             ),

@@ -158,24 +158,32 @@ class _ChangePasswordScreenState extends ConsumerState<ChangePasswordScreen> {
                           ),
 
                           const Spacer(),
-
-                          ElevatedButton.icon(
-                            onPressed: _onContinue,
-                            icon: const Icon(
-                              Icons.check_circle,
-                              color: DSColors.lime,
-                            ),
-                            label: Text(
-                              'Change password',
-                              style: context.subtitleLBold?.copyWith(
+                          SafeArea(
+                            top: false,
+                            right: false,
+                            left: false,
+                            child: ElevatedButton.icon(
+                              onPressed: _onContinue,
+                              icon: const Icon(
+                                Icons.check_circle,
                                 color: DSColors.lime,
                               ),
-                            ),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: DSColors.blue,
-                              minimumSize: const Size.fromHeight(DSSpacing.xxl),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(DSRadius.xxl),
+                              label: Text(
+                                'Change password',
+                                style: context.subtitleLBold?.copyWith(
+                                  color: DSColors.lime,
+                                ),
+                              ),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: DSColors.blue,
+                                minimumSize: const Size.fromHeight(
+                                  DSSpacing.xxl,
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(
+                                    DSRadius.xxl,
+                                  ),
+                                ),
                               ),
                             ),
                           ),

@@ -292,30 +292,37 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           const SizedBox(height: DSSpacing.xl),
 
                           // Continue as Guest
-                          SizedBox(
-                            height: DSSpacing.xxl,
-                            width: screenWidth,
-                            child: TextButton(
-                              onPressed: () {
-                                // Sets both the persisted choseGuest flag (for the
-                                // router) and the AuthGuest state (for the guest bar).
-                                ref
-                                    .read(authProvider.notifier)
-                                    .continueAsGuest();
+                          SafeArea(
+                            top: false,
+                            right: false,
+                            left: false,
+                            child: SizedBox(
+                              height: DSSpacing.xxl,
+                              width: screenWidth,
+                              child: TextButton(
+                                onPressed: () {
+                                  // Sets both the persisted choseGuest flag (for the
+                                  // router) and the AuthGuest state (for the guest bar).
+                                  ref
+                                      .read(authProvider.notifier)
+                                      .continueAsGuest();
 
-                                context.go('/');
-                              },
-                              style: TextButton.styleFrom(
-                                backgroundColor: DSColors.blue5,
-                                padding: EdgeInsets.symmetric(vertical:DSSpacing.s8),
-                                shape: const RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.zero,
+                                  context.go('/');
+                                },
+                                style: TextButton.styleFrom(
+                                  backgroundColor: DSColors.blue5,
+                                  padding: EdgeInsets.symmetric(
+                                    vertical: DSSpacing.s8,
+                                  ),
+                                  shape: const RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.zero,
+                                  ),
                                 ),
-                              ),
-                              child: Text(
-                                'Continue as guest',
-                                style: context.subtitleMBold?.copyWith(
-                                  color: DSColors.blue,
+                                child: Text(
+                                  'Continue as guest',
+                                  style: context.subtitleMBold?.copyWith(
+                                    color: DSColors.blue,
+                                  ),
                                 ),
                               ),
                             ),

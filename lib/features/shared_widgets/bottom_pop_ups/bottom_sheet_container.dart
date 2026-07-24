@@ -51,7 +51,7 @@ class BottomSheetContainer extends StatelessWidget {
                 padding: EdgeInsets.only(
                   left: DSSpacing.m,
                   right: DSSpacing.m,
-                  bottom: DSSpacing.xl,
+                  // bottom: DSSpacing.xl,
                 ),
                 child: child,
               ),
@@ -61,7 +61,7 @@ class BottomSheetContainer extends StatelessWidget {
               padding: EdgeInsets.only(
                 left: DSSpacing.m,
                 right: DSSpacing.m,
-                bottom: DSSpacing.xl,
+                // bottom: DSSpacing.xl,
               ),
 
               child: child,

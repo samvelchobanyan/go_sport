@@ -184,34 +184,42 @@ class _ConfirmEmailScreenState extends ConsumerState<ConfirmEmailScreen> {
 
                           const SizedBox(height: DSSpacing.s8),
 
-                          TextButton(
-                            onPressed: registrationState.isLoading
-                                ? null
-                                : () async {
-                                    await ref
-                                        .read(
-                                          registrationControllerProvider
-                                              .notifier,
-                                        )
-                                        .resendEmailOtp();
+                          SafeArea(
+                            top: false,
+                            right: false,
+                            left: false,
+                            child: TextButton(
+                              onPressed: registrationState.isLoading
+                                  ? null
+                                  : () async {
+                                      await ref
+                                          .read(
+                                            registrationControllerProvider
+                                                .notifier,
+                                          )
+                                          .resendEmailOtp();
 
-                                    for (var controller in _controllers) {
-                                      controller.clear();
-                                    }
-                                    FocusScope.of(context).unfocus();
-                                  },
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(Icons.email_rounded, color: DSColors.blue),
-                                const SizedBox(width: DSSpacing.s8),
-                                Text(
-                                  'Resend Code',
-                                  style: context.subtitleMBold?.copyWith(
+                                      for (var controller in _controllers) {
+                                        controller.clear();
+                                      }
+                                      FocusScope.of(context).unfocus();
+                                    },
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.email_rounded,
                                     color: DSColors.blue,
                                   ),
-                                ),
-                              ],
+                                  const SizedBox(width: DSSpacing.s8),
+                                  Text(
+                                    'Resend Code',
+                                    style: context.subtitleMBold?.copyWith(
+                                      color: DSColors.blue,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ],

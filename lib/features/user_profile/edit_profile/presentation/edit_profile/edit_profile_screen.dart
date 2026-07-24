@@ -296,35 +296,46 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
 
                       const Spacer(),
 
-                      SizedBox(
-                        width: double.infinity,
-                        child: ElevatedButton.icon(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: DSColors.blue,
-                            padding: const EdgeInsets.symmetric(vertical: DSSpacing.s14),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(DSRadius.xxl),
+                      SafeArea(
+                        top: false,
+                        left: false,
+                        right: false,
+                        child: SizedBox(
+                          width: double.infinity,
+                          child: ElevatedButton.icon(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: DSColors.blue,
+                              padding: const EdgeInsets.symmetric(
+                                vertical: DSSpacing.s14,
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(
+                                  DSRadius.xxl,
+                                ),
+                              ),
                             ),
-                          ),
-                          onPressed: editState.isLoading ? null : _onSave,
-                          icon: editState.isLoading
-                              ? const SizedBox(
-                                  width: 20,
-                                  height: 20,
-                                  child: CircularProgressIndicator(
-                                    strokeWidth: 2,
+                            onPressed: editState.isLoading ? null : _onSave,
+                            icon: editState.isLoading
+                                ? const SizedBox(
+                                    width: 20,
+                                    height: 20,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                    ),
+                                  )
+                                : SvgPicture.asset(
+                                    'assets/icons/check_lime.svg',
                                   ),
-                                )
-                              : SvgPicture.asset('assets/icons/check_lime.svg'),
-                          label: Text(
-                            editState.isLoading ? "Saving..." : "Save",
-                            style: context.subtitleLBold?.copyWith(
-                              color: DSColors.lime,
+                            label: Text(
+                              editState.isLoading ? "Saving..." : "Save",
+                              style: context.subtitleLBold?.copyWith(
+                                color: DSColors.lime,
+                              ),
                             ),
                           ),
                         ),
                       ),
-                      const SizedBox(height: DSSpacing.s20),
+                      const SizedBox(height: DSSpacing.s12),
                     ],
                   ),
                 ),

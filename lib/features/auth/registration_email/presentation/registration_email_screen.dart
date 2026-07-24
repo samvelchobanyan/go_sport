@@ -208,34 +208,41 @@ class _RegistrationEmailScreenState
                           const SizedBox(height: DSSpacing.s14),
 
                           // Google Login Button
-                          TextButton(
-                            onPressed: () => ref
-                                .read(registrationControllerProvider.notifier)
-                                .loginWithGoogle(),
-                            style: TextButton.styleFrom(
-                              minimumSize: const Size.fromHeight(DSSpacing.xxl),
-                              backgroundColor: DSColors.blue5,
-                              side: BorderSide.none,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(
-                                  DSRadius.xxl,
+                          SafeArea(
+                            top: false,
+                            right: false,
+                            left: false,
+                            child: TextButton(
+                              onPressed: () => ref
+                                  .read(registrationControllerProvider.notifier)
+                                  .loginWithGoogle(),
+                              style: TextButton.styleFrom(
+                                minimumSize: const Size.fromHeight(
+                                  DSSpacing.xxl,
                                 ),
-                              ),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                SvgPicture.asset(
-                                  'assets/icons/google_logo.svg',
-                                ),
-                                const SizedBox(width: DSSpacing.s8),
-                                Text(
-                                  'Login with Google',
-                                  style: context.subtitleLBold?.copyWith(
-                                    color: DSColors.gray60,
+                                backgroundColor: DSColors.blue5,
+                                side: BorderSide.none,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(
+                                    DSRadius.xxl,
                                   ),
                                 ),
-                              ],
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  SvgPicture.asset(
+                                    'assets/icons/google_logo.svg',
+                                  ),
+                                  const SizedBox(width: DSSpacing.s8),
+                                  Text(
+                                    'Login with Google',
+                                    style: context.subtitleLBold?.copyWith(
+                                      color: DSColors.gray60,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ],

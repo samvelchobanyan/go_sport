@@ -186,33 +186,41 @@ class _ConfirmPhoneScreenState extends ConsumerState<ConfirmPhoneScreen> {
 
                           const SizedBox(height: DSSpacing.s8),
 
-                          TextButton(
-                            onPressed: registrationState.isLoading
-                                ? null
-                                : () async {
-                                    await ref
-                                        .read(
-                                          registrationControllerProvider
-                                              .notifier,
-                                        )
-                                        .resendPhoneOtp();
-                                    for (var controller in _controllers) {
-                                      controller.clear();
-                                    }
-                                    FocusScope.of(context).unfocus();
-                                  },
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(Icons.phone_rounded, color: DSColors.blue),
-                                const SizedBox(width: DSSpacing.s8),
-                                Text(
-                                  'Resend Code',
-                                  style: context.subtitleMBold?.copyWith(
+                          SafeArea(
+                            top: false,
+                            right: false,
+                            left: false,
+                            child: TextButton(
+                              onPressed: registrationState.isLoading
+                                  ? null
+                                  : () async {
+                                      await ref
+                                          .read(
+                                            registrationControllerProvider
+                                                .notifier,
+                                          )
+                                          .resendPhoneOtp();
+                                      for (var controller in _controllers) {
+                                        controller.clear();
+                                      }
+                                      FocusScope.of(context).unfocus();
+                                    },
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.phone_rounded,
                                     color: DSColors.blue,
                                   ),
-                                ),
-                              ],
+                                  const SizedBox(width: DSSpacing.s8),
+                                  Text(
+                                    'Resend Code',
+                                    style: context.subtitleMBold?.copyWith(
+                                      color: DSColors.blue,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ],

@@ -192,18 +192,26 @@ class _RegistrationPhoneScreenState
                             ),
                           ),
                           const SizedBox(height: DSSpacing.s14),
-
-                          TextButton(
-                            onPressed: () {
-                              ref
-                                  .read(registrationControllerProvider.notifier)
-                                  .skipPhone();
-                            },
-                            style: TextButton.styleFrom(side: BorderSide.none),
-                            child: Text(
-                              'Skip',
-                              style: context.subtitleLBold?.copyWith(
-                                color: DSColors.blue,
+                          SafeArea(
+                            top: false,
+                            right: false,
+                            left: false,
+                            child: TextButton(
+                              onPressed: () {
+                                ref
+                                    .read(
+                                      registrationControllerProvider.notifier,
+                                    )
+                                    .skipPhone();
+                              },
+                              style: TextButton.styleFrom(
+                                side: BorderSide.none,
+                              ),
+                              child: Text(
+                                'Skip',
+                                style: context.subtitleLBold?.copyWith(
+                                  color: DSColors.blue,
+                                ),
                               ),
                             ),
                           ),

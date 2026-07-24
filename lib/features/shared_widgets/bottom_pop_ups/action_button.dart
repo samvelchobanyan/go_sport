@@ -23,21 +23,26 @@ class ActionButton extends ConsumerWidget {
 
     final isGuest = authState is! AuthAuthenticated;
 
-    return GestureDetector(
-      onTap: isGuest ? null : onTap,
-      behavior: HitTestBehavior.opaque, // Makes the entire empty area tappable
-      child: Row(
-        children: [
-          SvgPicture.asset(icon, width: 32, height: 32),
-          const SizedBox(width: DSSpacing.s10),
-          Text(
-            label,
-            style: context.subtitleMBold,
-            textAlign: TextAlign.center,
-          ),
-        ],
+    return SafeArea(
+      top: false,
+      right: false,
+      left: false,
+      child: GestureDetector(
+        onTap: isGuest ? null : onTap,
+        behavior:
+            HitTestBehavior.opaque, // Makes the entire empty area tappable
+        child: Row(
+          children: [
+            SvgPicture.asset(icon, width: 32, height: 32),
+            const SizedBox(width: DSSpacing.s10),
+            Text(
+              label,
+              style: context.subtitleMBold,
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
       ),
-      // ),
     );
   }
 }

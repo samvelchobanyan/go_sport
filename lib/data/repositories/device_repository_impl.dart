@@ -35,7 +35,6 @@ class DeviceRepositoryImpl implements DeviceRepository {
 
   @override
   Future<void> delete(String documentId) async {
-    // todo check if Arman fixed 403 error
     await _apiClient.delete('/api/devices/$documentId');
   }
 }

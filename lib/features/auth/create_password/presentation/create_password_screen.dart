@@ -45,13 +45,14 @@ class _CreatePasswordScreenState extends ConsumerState<CreatePasswordScreen> {
       return;
     }
 
-      if (password.length < 8) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('Password must contain at least 8 characters')));
+    if (password.length < 8) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Password must contain at least 8 characters'),
+        ),
+      );
       return;
     }
-
 
     if (password != confirmPassword) {
       ScaffoldMessenger.of(
@@ -164,24 +165,31 @@ class _CreatePasswordScreenState extends ConsumerState<CreatePasswordScreen> {
 
                           const Spacer(),
 
-                          ElevatedButton.icon(
-                            onPressed: _onContinue,
-                            icon: const Icon(
-                              Icons.arrow_forward,
-                              color: DSColors.lime,
-                            ),
-                            label: Text(
-                              'Continue',
-                              style: context.subtitleLBold?.copyWith(
+                          SafeArea(
+                            top: false,
+                            right: false,
+                            left: false,
+                            child: ElevatedButton.icon(
+                              onPressed: _onContinue,
+                              icon: const Icon(
+                                Icons.arrow_forward,
                                 color: DSColors.lime,
                               ),
-                            ),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: DSColors.blue,
-                              minimumSize: const Size.fromHeight(DSSpacing.xxl),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(
-                                  DSRadius.xxl,
+                              label: Text(
+                                'Continue',
+                                style: context.subtitleLBold?.copyWith(
+                                  color: DSColors.lime,
+                                ),
+                              ),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: DSColors.blue,
+                                minimumSize: const Size.fromHeight(
+                                  DSSpacing.xxl,
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(
+                                    DSRadius.xxl,
+                                  ),
                                 ),
                               ),
                             ),

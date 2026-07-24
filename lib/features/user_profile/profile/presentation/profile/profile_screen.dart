@@ -10,6 +10,7 @@ import 'package:go_sport/core/auth/auth_state.dart';
 import 'package:go_sport/core/navigation/routes.dart';
 import 'package:go_sport/domain/state/user_state.dart';
 import 'package:go_sport/domain/state/notifications_state.dart';
+import 'package:go_sport/features/user_profile/profile/presentation/profile/profile_controller.dart';
 import 'package:go_sport/features/user_profile/profile/presentation/widgets/action_row.dart';
 import 'package:go_sport/features/user_profile/profile/presentation/widgets/contact_info.dart';
 import 'package:go_sport/features/user_profile/profile/presentation/widgets/social_media_button.dart';
@@ -32,12 +33,15 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     // Fetch the unseen count on load to keep the badge accurate
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ref.read(notificationsControllerProvider.notifier).getUnseenCount();
+      ref.read(socialLinksControllerProvider.notifier).getSocialLinks();
     });
   }
 
   @override
   Widget build(BuildContext context) {
     final userState = ref.watch(userStateProvider);
+    final socialLinksState = ref.watch(socialLinksControllerProvider);
+
     final unseenCount = ref.watch(
       notificationsControllerProvider.select((s) => s.unseenCount),
     );
@@ -51,8 +55,30 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       }
     });
 
-    final user = userState.user;
+    Future<void> openUrl(String? urlString) async {
+      if (urlString == null || urlString.trim().isEmpty) return;
 
+      // 1. Ensure https:// scheme exists
+      String formattedUrl = urlString.trim();
+      if (!formattedUrl.startsWith('http://') &&
+          !formattedUrl.startsWith('https://')) {
+        formattedUrl = 'https://$formattedUrl';
+      }
+
+      final Uri? uri = Uri.tryParse(formattedUrl);
+      if (uri == null) return;
+
+      // 2. Launch directly inside try/catch
+      try {
+        await launchUrl(uri, mode: LaunchMode.externalApplication);
+      } catch (e) {
+        print('Could not launch URL $formattedUrl: $e');
+      }
+    }
+
+    final user = userState.user;
+    final socialLinks = socialLinksState.socialLinks;
+    print('socialLinks $socialLinks');
     // Error and no data — show error with retry
     if (userState.error != null && user == null) {
       return Scaffold(
@@ -305,7 +331,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                               text: '0002 Yrevan, Hanrapetutyan street 4',
                             ),
                             const SizedBox(height: DSSpacing.s12),
-
                             ContactInfoItem(
                               icon: SvgPicture.asset(
                                 'assets/icons/phone.svg',
@@ -314,7 +339,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                               text: '+010 96 456 456',
                             ),
                             const SizedBox(height: DSSpacing.s12),
-
                             ContactInfoItem(
                               icon: SvgPicture.asset(
                                 'assets/icons/email.svg',
@@ -323,7 +347,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                               text: 'Info@gosport.fm',
                             ),
                             const SizedBox(height: DSSpacing.s12),
-
                             ContactInfoItem(
                               icon: SvgPicture.asset(
                                 'assets/icons/world.svg',
@@ -331,71 +354,75 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                               ),
                               text: 'gosport.fm',
                             ),
-                            const SizedBox(height: DSSpacing.l),
 
                             // Social Media Icons
-                            Text(
-                              'Social media',
-                              style: context.textL?.copyWith(
-                                color: DSColors.blue,
+                            if (socialLinks != null) ...[
+                              const SizedBox(height: DSSpacing.l),
+                              Text(
+                                'Social media',
+                                style: context.textL?.copyWith(
+                                  color: DSColors.blue,
+                                ),
                               ),
-                            ),
-                            SizedBox(height: DSSpacing.s6),
-                            Row(
-                              children: [
-                                SocialMediaButton(
-                                  icon: const Icon(
-                                    Icons.facebook,
-                                    color: DSColors.blue,
-                                  ),
-                                  onTap: () => launchUrl(
-                                    Uri.parse(
-                                      'https://www.facebook.com/go.fm96.3',
+                              const SizedBox(height: DSSpacing.s6),
+                              Row(
+                                children: [
+                                  if (socialLinks.facebookUrl != null &&
+                                      socialLinks.facebookUrl!.isNotEmpty) ...[
+                                    SocialMediaButton(
+                                      icon: const Icon(
+                                        Icons.facebook,
+                                        color: DSColors.blue,
+                                      ),
+                                      onTap: () =>
+                                          openUrl(socialLinks.facebookUrl),
                                     ),
-                                    mode: LaunchMode.externalApplication,
-                                  ),
-                                ),
-                                const SizedBox(width: DSSpacing.s10),
-                                SocialMediaButton(
-                                  icon: SvgPicture.asset(
-                                    'assets/icons/youtube_blue.svg',
-                                  ),
-                                  onTap: () => launchUrl(
-                                    Uri.parse(
-                                      'https://www.youtube.com/@go.fm96.3',
+                                    const SizedBox(width: DSSpacing.s10),
+                                  ],
+                                  if (socialLinks.youtubeUrl != null &&
+                                      socialLinks.youtubeUrl!.isNotEmpty) ...[
+                                    SocialMediaButton(
+                                      icon: SvgPicture.asset(
+                                        'assets/icons/youtube_blue.svg',
+                                      ),
+                                      onTap: () =>
+                                          openUrl(socialLinks.youtubeUrl),
                                     ),
-                                    mode: LaunchMode.externalApplication,
-                                  ),
-                                ),
-                                const SizedBox(width: DSSpacing.s10),
-                                SocialMediaButton(
-                                  icon: SvgPicture.asset(
-                                    'assets/icons/inst.svg',
-                                  ),
-                                  onTap: () => launchUrl(
-                                    Uri.parse(
-                                      'https://www.instagram.com/go.fm96.3/',
+                                    const SizedBox(width: DSSpacing.s10),
+                                  ],
+                                  if (socialLinks.instagramUrl != null &&
+                                      socialLinks.instagramUrl!.isNotEmpty) ...[
+                                    SocialMediaButton(
+                                      icon: SvgPicture.asset(
+                                        'assets/icons/inst.svg',
+                                      ),
+                                      onTap: () =>
+                                          openUrl(socialLinks.instagramUrl),
                                     ),
-                                    mode: LaunchMode.externalApplication,
-                                  ),
-                                ),
-                              ],
-                            ),
+                                  ],
+                                ],
+                              ),
+                            ],
+
+                            // const SizedBox(height: DSSpacing.l),
                           ],
                         ),
                       ),
                       const SizedBox(height: DSSpacing.l),
                       DottedDivider(),
                       const SizedBox(height: DSSpacing.s14),
-                      ActionRow(
-                        icon: SvgPicture.asset(
-                          'assets/icons/delete_orange_bg.svg',
+                      SafeArea(
+                        top: false,
+                        right: false,
+                        left: false,
+                        child: ActionRow(
+                          icon: SvgPicture.asset(
+                            'assets/icons/delete_orange_bg.svg',
+                          ),
+                          text: 'Delete Account',
+                          onTap: () => context.push(AppRoutes.deleteAccount),
                         ),
-                        text: 'Delete Account',
-                        onTap: () => context.push(AppRoutes.deleteAccount),
                       ),
-
-                      const SizedBox(height: DSSpacing.l),
                     ],
                   ),
                 ),

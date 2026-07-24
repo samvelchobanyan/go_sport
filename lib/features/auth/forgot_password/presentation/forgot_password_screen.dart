@@ -94,7 +94,6 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
               ),
             ),
 
-  
             RoundBackButton(cardHeight: _cardHeight, goBackTo: '/login'),
             Align(
               alignment: Alignment.bottomCenter,
@@ -149,33 +148,40 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
 
                           const Spacer(),
 
-                          ElevatedButton.icon(
-                            onPressed: state.isLoading ? null : _onContinue,
-                            icon: state.isLoading
-                                ? const SizedBox(
-                                    width: 20,
-                                    height: 20,
-                                    child: CircularProgressIndicator(
-                                      strokeWidth: 2,
-                                      color: DSColors.white,
+                          SafeArea(
+                            top: false,
+                            right: false,
+                            left: false,
+                            child: ElevatedButton.icon(
+                              onPressed: state.isLoading ? null : _onContinue,
+                              icon: state.isLoading
+                                  ? const SizedBox(
+                                      width: 20,
+                                      height: 20,
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 2,
+                                        color: DSColors.white,
+                                      ),
+                                    )
+                                  : Icon(
+                                      Icons.arrow_forward,
+                                      color: DSColors.lime,
                                     ),
-                                  )
-                                : Icon(
-                                    Icons.arrow_forward,
-                                    color: DSColors.lime,
-                                  ),
-                            label: Text(
-                              state.isLoading ? 'Processing...' : 'Continue',
-                              style: context.subtitleLBold?.copyWith(
-                                color: DSColors.lime,
+                              label: Text(
+                                state.isLoading ? 'Processing...' : 'Continue',
+                                style: context.subtitleLBold?.copyWith(
+                                  color: DSColors.lime,
+                                ),
                               ),
-                            ),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: DSColors.blue,
-                              minimumSize: const Size.fromHeight(DSSpacing.xxl),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(
-                                  DSRadius.xxl,
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: DSColors.blue,
+                                minimumSize: const Size.fromHeight(
+                                  DSSpacing.xxl,
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(
+                                    DSRadius.xxl,
+                                  ),
                                 ),
                               ),
                             ),

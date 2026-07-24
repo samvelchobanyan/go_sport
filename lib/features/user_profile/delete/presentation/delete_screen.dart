@@ -115,7 +115,9 @@ class _DeleteScreenState extends ConsumerState<DeleteScreen> {
                         ),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: DSColors.orange,
-                          padding: const EdgeInsets.symmetric(vertical: DSSpacing.m),
+                          padding: const EdgeInsets.symmetric(
+                            vertical: DSSpacing.m,
+                          ),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(DSRadius.xxl),
                           ),
@@ -126,26 +128,33 @@ class _DeleteScreenState extends ConsumerState<DeleteScreen> {
                       ),
                     ),
                     SizedBox(height: DSSpacing.s14),
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: DSColors.blue,
-                          padding: const EdgeInsets.symmetric(vertical: DSSpacing.m),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(DSRadius.xxl),
+                    SafeArea(
+                      top: false,
+                      left: false,
+                      right: false,
+                      child: SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: DSColors.blue,
+                            padding: const EdgeInsets.symmetric(
+                              vertical: DSSpacing.m,
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(DSRadius.xxl),
+                            ),
                           ),
-                        ),
-                        onPressed: () => context.pop(),
-                        child: Text(
-                          "No, keep my account",
-                          style: context.subtitleLBold?.copyWith(
-                            color: DSColors.lime,
+                          onPressed: () => context.pop(),
+                          child: Text(
+                            "No, keep my account",
+                            style: context.subtitleLBold?.copyWith(
+                              color: DSColors.lime,
+                            ),
                           ),
                         ),
                       ),
                     ),
-                    const SizedBox(height: DSSpacing.s20),
+                    const SizedBox(height: DSSpacing.s12),
                   ],
                 ),
               ),

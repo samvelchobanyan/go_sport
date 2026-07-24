@@ -5,6 +5,7 @@ import 'package:go_sport/data/repositories/banner_repository_impl.dart';
 import 'package:go_sport/data/repositories/device_repository_impl.dart';
 import 'package:go_sport/data/repositories/profile_repository_impl.dart';
 import 'package:go_sport/data/repositories/notifications_repository_impl.dart';
+import 'package:go_sport/data/repositories/social_media_impl.dart';
 import 'package:go_sport/domain/repositories/auth_repository.dart';
 import 'package:go_sport/data/repositories/artists_repository_impl.dart';
 import 'package:go_sport/data/repositories/episodes_repository_impl.dart';
@@ -18,6 +19,7 @@ import 'package:go_sport/domain/repositories/episodes_repository.dart';
 import 'package:go_sport/domain/repositories/profile_repository.dart';
 import 'package:go_sport/domain/repositories/programs_repository.dart';
 import 'package:go_sport/domain/repositories/schedule_repository.dart';
+import 'package:go_sport/domain/repositories/social_media_repository.dart';
 
 import '../../data/repositories/news_repository_impl.dart';
 import '../../data/repositories/custom_playlist_repository_impl.dart';
@@ -102,4 +104,8 @@ final deviceRepositoryProvider = Provider<DeviceRepository>((ref) {
 
 final bannerRepositoryProvider = Provider<BannerRepository>((ref) {
   return BannerRepositoryImpl(ref.read(apiClientProvider));
+});
+
+final socialLinksRepositoryProvider = Provider<SocialLinksRepository>((ref) {
+  return SocialLinksRepositoryImpl(ref.read(apiClientProvider));
 });

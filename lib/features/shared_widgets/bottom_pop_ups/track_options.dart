@@ -173,7 +173,7 @@ void showTrackOptionsBottomSheet({
                   },
                 ),
               ],
-              const SizedBox(height: DSSpacing.s10),
+              // const SizedBox(height: DSSpacing.s10),
 
               // Share — functionality not implemented yet, hidden for now.
               // ActionButton(

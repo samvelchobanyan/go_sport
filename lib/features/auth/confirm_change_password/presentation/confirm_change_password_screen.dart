@@ -149,28 +149,38 @@ class _ConfirmChangePasswordScreenState
                           ),
 
                           const Spacer(),
-
-                          ElevatedButton.icon(
-                            onPressed: loginState.isLoading
-                                ? null
-                                : () {
-                                    loginNotifier.login(
-                                      _emailController.text,
-                                      _passwordController.text,
-                                    );
-                                  },
-                            icon: SvgPicture.asset('assets/icons/login.svg'),
-                            label: Text(
-                              loginState.isLoading ? 'Processing...' : 'Log in',
-                              style: context.subtitleLBold?.copyWith(
-                                color: DSColors.lime,
+                          SafeArea(
+                            top: false,
+                            right: false,
+                            left: false,
+                            child: ElevatedButton.icon(
+                              onPressed: loginState.isLoading
+                                  ? null
+                                  : () {
+                                      loginNotifier.login(
+                                        _emailController.text,
+                                        _passwordController.text,
+                                      );
+                                    },
+                              icon: SvgPicture.asset('assets/icons/login.svg'),
+                              label: Text(
+                                loginState.isLoading
+                                    ? 'Processing...'
+                                    : 'Log in',
+                                style: context.subtitleLBold?.copyWith(
+                                  color: DSColors.lime,
+                                ),
                               ),
-                            ),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: DSColors.blue,
-                              minimumSize: const Size.fromHeight(DSSpacing.xxl),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(DSRadius.xxl),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: DSColors.blue,
+                                minimumSize: const Size.fromHeight(
+                                  DSSpacing.xxl,
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(
+                                    DSRadius.xxl,
+                                  ),
+                                ),
                               ),
                             ),
                           ),

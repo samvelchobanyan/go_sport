@@ -66,7 +66,9 @@ class _ExpiredGuestScreenState extends ConsumerState<ExpiredGuestScreen> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: DSSpacing.m),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: DSSpacing.m,
+                      ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
@@ -106,7 +108,9 @@ class _ExpiredGuestScreenState extends ConsumerState<ExpiredGuestScreen> {
                             ),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: DSColors.blue,
-                              padding: const EdgeInsets.symmetric(vertical: DSSpacing.s14),
+                              padding: const EdgeInsets.symmetric(
+                                vertical: DSSpacing.s14,
+                              ),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(
                                   DSRadius.xxl,
@@ -117,33 +121,42 @@ class _ExpiredGuestScreenState extends ConsumerState<ExpiredGuestScreen> {
                           const SizedBox(height: DSSpacing.s14),
 
                           // Login Button
-                          TextButton(
-                            onPressed: () {
-                              context.go('/login');
-                            },
-                            style: TextButton.styleFrom(
-                              padding: const EdgeInsets.symmetric(vertical: DSSpacing.s14),
-                              backgroundColor: DSColors.blue5,
-                              // This ensures no border is drawn
-                              side: BorderSide.none,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(
-                                  DSRadius.xxl,
+                          SafeArea(
+                            top: false,
+                            right: false,
+                            left: false,
+                            child: TextButton(
+                              onPressed: () {
+                                context.go('/login');
+                              },
+                              style: TextButton.styleFrom(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: DSSpacing.s14,
                                 ),
-                              ),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                SvgPicture.asset('assets/icons/login_blue.svg'),
-                                const SizedBox(width: DSSpacing.s8),
-                                Text(
-                                  'Login',
-                                  style: context.subtitleLBold?.copyWith(
-                                    color: DSColors.blue,
+                                backgroundColor: DSColors.blue5,
+                                // This ensures no border is drawn
+                                side: BorderSide.none,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(
+                                    DSRadius.xxl,
                                   ),
                                 ),
-                              ],
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  SvgPicture.asset(
+                                    'assets/icons/login_blue.svg',
+                                  ),
+                                  const SizedBox(width: DSSpacing.s8),
+                                  Text(
+                                    'Login',
+                                    style: context.subtitleLBold?.copyWith(
+                                      color: DSColors.blue,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
 
