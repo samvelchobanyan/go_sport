@@ -132,6 +132,7 @@ class ArtistsRepositoryImpl implements ArtistsRepository {
         'populate[Cover][populate]': '*',
         if (!onlySingles) 'populate[Album][populate][Cover][populate]': '*',
         'populate[Artists][fields][0]': 'Name',
+        'populate[Artists][populate][Cover][populate]': '*',
         'pagination[page]': page,
         'pagination[pageSize]': pageSize,
       },

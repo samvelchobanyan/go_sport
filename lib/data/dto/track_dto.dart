@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:go_sport/domain/entities/track.dart';
+import 'package:go_sport/domain/entities/artist.dart';
 
 class _FileDto {
   final String url;
@@ -15,15 +16,34 @@ class _FileDto {
 class _ArtistDto {
   final String documentId;
   final String name;
+  final String? imageUrl;
+  final String? likeId;
 
-  _ArtistDto({required this.documentId, required this.name});
+  _ArtistDto({
+    required this.documentId,
+    required this.name,
+    this.imageUrl,
+    this.likeId,
+  });
 
   factory _ArtistDto.fromJson(Map<String, dynamic> json) {
+    final coverJson = json['Cover'] as Map<String, dynamic>?;
+    final likeJson = json['Like'] as Map<String, dynamic>?;
+
     return _ArtistDto(
       documentId: json['documentId'] as String,
       name: json['Name'] as String,
+      imageUrl: coverJson != null ? _CoverDto.fromJson(coverJson).url : null,
+      likeId: likeJson?['documentId'] as String?,
     );
   }
+
+  Artist toDomain() => Artist(
+    id: documentId,
+    artistName: name,
+    imageUrl: imageUrl ?? '',
+    likeId: likeId,
+  );
 }
 
 class _CoverDto {
@@ -94,8 +114,7 @@ class TrackDto {
     return Track(
       id: documentId,
       title: name,
-      artistName: artists.isNotEmpty ? artists.first.name : '',
-      artistId: artists.isNotEmpty ? artists.first.documentId : null,
+      artists: artists.map((a) => a.toDomain()).toList(),
       imageUrl: coverUrl ?? albumCoverUrl,
       duration: Duration(seconds: length),
       audioUrl: file?.url ?? '',

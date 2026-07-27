@@ -16,6 +16,7 @@ import 'package:go_sport/design_system/components/icons/ds_bit_icon.dart';
 import 'package:go_sport/domain/state/like_registry.dart';
 import 'package:go_sport/domain/state/player_state.dart';
 import 'package:go_sport/domain/state/player_state_selectors.dart';
+import 'package:go_sport/domain/entities/track.dart';
 
 const double _kMiniPlayerHeight = 55.0;
 const double _kInactivePanelWidth = 48.0;
@@ -228,7 +229,7 @@ class _MiniPlayerWidgetState extends ConsumerState<MiniPlayerWidget>
                 _ => null,
               };
               final trackTitle = track?.title ?? 'No track';
-              final artistName = track?.artistName ?? '';
+              final artistName = track?.displayArtistName ?? '';
               final imageUrl = track?.imageUrl ?? swipeData.sourceImageUrl;
 
               return Padding(

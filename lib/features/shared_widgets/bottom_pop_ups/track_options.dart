@@ -87,10 +87,10 @@ void showTrackOptionsBottomSheet({
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
-                      if (track.artistName.isNotEmpty) ...[
+                      if (track.displayArtistName.isNotEmpty) ...[
                         const SizedBox(height: DSSpacing.xs),
                         Text(
-                          track.artistName,
+                          track.displayArtistName,
                           style: context.textL?.copyWith(
                             color: DSColors.gray60,
                           ),

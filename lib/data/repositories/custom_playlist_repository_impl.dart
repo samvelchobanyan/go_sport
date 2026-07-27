@@ -44,6 +44,7 @@ class CustomPlaylistRepositoryImpl implements CustomPlaylistRepository {
         'populate[Tracks][populate][Album][populate]': 'Cover',
         'populate[Tracks][populate][File][populate]': '*',
         'populate[Tracks][populate][Artists][fields][0]': 'Name',
+        'populate[Tracks][populate][Artists][populate][Cover][populate]': '*',
       },
     );
 

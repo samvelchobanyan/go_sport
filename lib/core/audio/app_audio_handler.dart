@@ -239,7 +239,7 @@ class AppAudioHandler extends BaseAudioHandler with QueueHandler, SeekHandler {
         id: track.id,
         album: 'Go Sport Music',
         title: track.title,
-        artist: track.artistName,
+        artist: track.displayArtistName,
         duration: track.duration,
         artUri: _networkUri(track.imageUrl) ??
             _networkUri(fallbackArtUrl) ??

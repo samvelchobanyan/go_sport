@@ -1,4 +1,5 @@
 import 'package:go_sport/domain/entities/track.dart';
+import 'package:go_sport/domain/entities/artist.dart';
 
 class EpisodeDto {
   final String documentId;
@@ -59,11 +60,20 @@ class EpisodeDto {
   }
 
   Track toDomain() {
+    final List<Artist> artists = programId != null && programName != null
+        ? [
+            Artist(
+              id: programId!,
+              artistName: programName!,
+              imageUrl: coverUrl ?? '',
+            )
+          ]
+        : [];
+
     return Track(
       id: documentId,
       title: name,
-      artistName: programName ?? '',
-      // imageUrl: programCoverUrl,
+      artists: artists,
       imageUrl: coverUrl,
       duration: Duration(seconds: length),
       audioUrl: fileUrl ?? '',

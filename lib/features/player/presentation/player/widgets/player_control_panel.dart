@@ -13,6 +13,8 @@ import 'package:go_sport/design_system/components/icons/ds_heart_icon.dart';
 import 'package:go_sport/domain/state/like_registry.dart';
 import 'package:go_sport/domain/state/player_state.dart';
 import 'package:go_sport/domain/state/player_state_selectors.dart';
+import 'package:go_sport/domain/entities/track.dart';
+import 'package:go_sport/features/shared_widgets/bottom_pop_ups/artists_bottom_sheet.dart';
 
 import 'player_seek_bar.dart';
 
@@ -88,11 +90,11 @@ class PlayerControlPanel extends ConsumerWidget {
   Widget _buildTrackInfo(
     BuildContext context,
     WidgetRef ref,
-    track,
+    Track? track,
     String? imageUrl,
   ) {
     final title = track?.title ?? '';
-    final artist = track?.artistName ?? '';
+    final artist = track?.displayArtistName ?? '';
     final authState = ref.watch(authProvider);
 
     // Disable interactions if the user is a guest or unauthorized
@@ -111,15 +113,24 @@ class PlayerControlPanel extends ConsumerWidget {
 
         const SizedBox(width: DSSpacing.s8),
 
-        // Title + Artist — tap opens the artist page (when we know the id)
+        // Title + Artist — tap opens the artist page or shows list of artists
         Expanded(
           child: GestureDetector(
             behavior: HitTestBehavior.opaque,
             onTap: () {
-              final artistId = track?.artistId;
-              if (artistId == null) return;
-              context.push('/music/artist/$artistId');
-              Navigator.of(context).pop(); // close the full-player sheet
+              if (track == null || track.artists.isEmpty) return;
+
+              // Один артист — закрываем full-player и открываем экран артиста
+              if (track.artists.length == 1) {
+                final router = GoRouter.of(context);
+                Navigator.of(context, rootNavigator: true).pop();
+                router.push('/music/artist/${track.firstArtist!.id}');
+                return;
+              }
+
+              // Несколько артистов — открываем sheet поверх full-player.
+              // Оба модала закроются позже, при выборе артиста внутри sheet.
+              showArtistsBottomSheet(context, track.artists);
             },
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

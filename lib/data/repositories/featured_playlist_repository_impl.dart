@@ -35,6 +35,7 @@ class FeaturedPlaylistRepositoryImpl implements FeaturedPlaylistRepository {
         'populate[Tracks][populate][Album][populate]': 'Cover',
         'populate[Tracks][populate][File][populate]': '*',
         'populate[Tracks][populate][Artists][fields][0]': 'Name',
+        'populate[Tracks][populate][Artists][populate][Cover][populate]': '*',
         'populate[Cover][populate]': '*',
       },
     );
@@ -78,6 +79,7 @@ class FeaturedPlaylistRepositoryImpl implements FeaturedPlaylistRepository {
         'populate[Track][populate][Album][populate]': 'Cover',
         'populate[Track][populate][File][populate]': '*',
         'populate[Track][populate][Artists][fields][0]': 'Name',
+        'populate[Track][populate][Artists][populate][Cover][populate]': '*',
         'sort[0]': 'createdAt:desc',
         'pagination[page]': page,
         'pagination[pageSize]': pageSize,

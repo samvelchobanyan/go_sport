@@ -82,7 +82,7 @@ class AddTrackTile extends StatelessWidget {
                         ),
                         const SizedBox(height: DSSpacing.xs),
                         Text(
-                          track.artistName,
+                          track.displayArtistName,
                           style: context.textL?.copyWith(color: DSColors.gray60),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,

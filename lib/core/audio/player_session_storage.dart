@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../domain/entities/track.dart';
+import '../../domain/entities/artist.dart';
 
 /// Provides the singleton [PlayerSessionStorage].
 /// Must be overridden in main.dart with the initialized instance.
@@ -66,8 +67,14 @@ class PlayerSession {
   static Map<String, dynamic> _trackToMap(Track t) => {
         'id': t.id,
         'title': t.title,
-        'artistName': t.artistName,
-        'artistId': t.artistId,
+        'artists': t.artists
+            .map((a) => {
+                  'id': a.id,
+                  'artistName': a.artistName,
+                  'imageUrl': a.imageUrl,
+                  'likeId': a.likeId,
+                })
+            .toList(),
         'imageUrl': t.imageUrl,
         'durationMs': t.duration.inMilliseconds,
         'audioUrl': t.audioUrl,
@@ -76,20 +83,31 @@ class PlayerSession {
         'likeId': t.likeId,
       };
 
-  static Track _trackFromMap(Map<String, dynamic> m) => Track(
-        id: m['id'] as String,
-        title: m['title'] as String,
-        artistName: m['artistName'] as String,
-        artistId: m['artistId'] as String?,
-        imageUrl: m['imageUrl'] as String?,
-        duration: Duration(milliseconds: m['durationMs'] as int),
-        audioUrl: m['audioUrl'] as String,
-        releaseDate: m['releaseDate'] != null
-            ? DateTime.parse(m['releaseDate'] as String)
-            : null,
-        year: m['year'] as int?,
-        likeId: m['likeId'] as String?,
-      );
+  static Track _trackFromMap(Map<String, dynamic> m) {
+    final artistsList = (m['artists'] as List?)
+            ?.map((a) => Artist(
+                  id: a['id'] as String,
+                  artistName: a['artistName'] as String,
+                  imageUrl: a['imageUrl'] as String,
+                  likeId: a['likeId'] as String?,
+                ))
+            .toList() ??
+        [];
+
+    return Track(
+      id: m['id'] as String,
+      title: m['title'] as String,
+      artists: artistsList,
+      imageUrl: m['imageUrl'] as String?,
+      duration: Duration(milliseconds: m['durationMs'] as int),
+      audioUrl: m['audioUrl'] as String,
+      releaseDate: m['releaseDate'] != null
+          ? DateTime.parse(m['releaseDate'] as String)
+          : null,
+      year: m['year'] as int?,
+      likeId: m['likeId'] as String?,
+    );
+  }
 }
 
 /// Wrapper over SharedPreferences that persists the last player session.

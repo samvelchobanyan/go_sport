@@ -107,6 +107,7 @@ Future<void> main() async {
     debugPrintStack(stackTrace: stackTrace);
     runApp(
       MaterialApp(
+        builder: _lockTextScale,
         home: Scaffold(
           body: Center(
             child: Padding(
@@ -232,6 +233,7 @@ class _MainAppState extends ConsumerState<MainApp> {
         debugShowCheckedModeBanner: false,
         theme: DSThemeData.mainTheme,
         home: NoConnectionScreen(),
+        builder: _lockTextScale,
       );
     }
 
@@ -241,6 +243,16 @@ class _MainAppState extends ConsumerState<MainApp> {
       debugShowCheckedModeBanner: false,
       theme: DSThemeData.mainTheme,
       routerConfig: _router,
+      builder: _lockTextScale,
     );
   }
+}
+
+/// Locks text scaling to the app's default across the whole tree, ignoring the
+/// OS "font size" accessibility setting so layouts don't break when users
+/// enlarge the system font. Applied at every [MaterialApp] root.
+Widget _lockTextScale(BuildContext context, Widget? child) {
+  return MediaQuery.withNoTextScaling(
+    child: child ?? const SizedBox.shrink(),
+  );
 }
