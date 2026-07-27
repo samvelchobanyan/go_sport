@@ -62,6 +62,7 @@ class CustomPlaylistRepositoryImpl implements CustomPlaylistRepository {
         'data': {'Name': name},
       },
     );
+    print('!!res  $response');
 
     final entry = response.data['data'] as Map<String, dynamic>;
     return Playlist(
@@ -82,10 +83,7 @@ class CustomPlaylistRepositoryImpl implements CustomPlaylistRepository {
     final response = await _apiClient.put(
       '/api/custom-playlists/$id',
       data: {
-        'data': {
-          'Name': name,
-          'Tracks': trackDocIds,
-        },
+        'data': {'Name': name, 'Tracks': trackDocIds},
       },
       queryParameters: {
         'populate[Tracks][fields][0]': 'documentId',

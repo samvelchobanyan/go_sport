@@ -173,18 +173,37 @@ class _MainAppState extends ConsumerState<MainApp> {
     if (route != null) _router.push(route);
   }
 
-  void _showNetworkError(NetworkErrorKind kind) {
+  // void _showNetworkError(NetworkErrorKind kind) {
+  //   _messengerKey.currentState
+  //     ?..hideCurrentSnackBar()
+  //     ..showSnackBar(
+  //       SnackBar(
+  //         content: Text(_networkErrorMessage(kind)),
+  //         duration: const Duration(seconds: 2),
+  //       ),
+  //     );
+  // }
+
+  void _showCustomOrNetworkError(dynamic error) {
+    final String message;
+
+    if (error is String) {
+      message = error;
+    } else if (error is NetworkErrorKind) {
+      message = _networkErrorMessage(error);
+    } else {
+      message = 'Something went wrong';
+    }
+
     _messengerKey.currentState
       ?..hideCurrentSnackBar()
       ..showSnackBar(
-        SnackBar(
-          content: Text(_networkErrorMessage(kind)),
-          duration: const Duration(seconds: 2),
-        ),
+        SnackBar(content: Text(message), duration: const Duration(seconds: 3)),
       );
   }
 
   String _networkErrorMessage(NetworkErrorKind kind) {
+    print('KIND $kind');
     switch (kind) {
       case NetworkErrorKind.noConnection:
         return 'No internet connection';
@@ -204,11 +223,8 @@ class _MainAppState extends ConsumerState<MainApp> {
       next.whenData(_handleNotificationPayload);
     });
 
-    ref.listen<AsyncValue<NetworkErrorKind>>(networkErrorProvider, (
-      prev,
-      next,
-    ) {
-      next.whenData(_showNetworkError);
+    ref.listen<AsyncValue<dynamic>>(networkErrorProvider, (prev, next) {
+      next.whenData(_showCustomOrNetworkError);
     });
 
     if (!online) {

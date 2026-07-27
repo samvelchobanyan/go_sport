@@ -8,5 +8,5 @@ final apiClientProvider = Provider<ApiClient>((_) =>
 final networkErrorServiceProvider = Provider<NetworkErrorService>((_) =>
   throw UnimplementedError('networkErrorServiceProvider must be overridden in ProviderScope'));
 
-final networkErrorProvider = StreamProvider<NetworkErrorKind>((ref) =>
+final networkErrorProvider = StreamProvider<dynamic>((ref) =>
   ref.watch(networkErrorServiceProvider).onError);

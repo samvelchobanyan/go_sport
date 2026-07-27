@@ -18,8 +18,25 @@ class ErrorInterceptor extends Interceptor {
     final method = err.requestOptions.method.toUpperCase();
     final silent = err.requestOptions.extra['silent'] == true;
 
+    final responseData = err.response?.data;
+    String? customMessage;
+
+    if (responseData is Map<String, dynamic>) {
+      if (responseData['error'] is Map &&
+          responseData['error']['message'] != null) {
+        customMessage = responseData['error']['message'].toString();
+      } else if (responseData['message'] != null) {
+        customMessage = responseData['message'].toString();
+      }
+    }
+
     if (method != 'GET' && !silent) {
-      _errorService.emit(_classify(err));
+      if (customMessage != null) {
+        // If you update NetworkErrorService to accept String messages:
+        _errorService.emitCustomMessage(customMessage);
+      } else {
+        _errorService.emit(_classify(err));
+      }
     }
 
     handler.next(err);
@@ -35,7 +52,9 @@ class ErrorInterceptor extends Interceptor {
         return NetworkErrorKind.timeout;
       case DioExceptionType.badResponse:
         final status = err.response?.statusCode ?? 0;
-        return status >= 500 ? NetworkErrorKind.server : NetworkErrorKind.unknown;
+        return status >= 500
+            ? NetworkErrorKind.server
+            : NetworkErrorKind.unknown;
       default:
         return NetworkErrorKind.unknown;
     }
