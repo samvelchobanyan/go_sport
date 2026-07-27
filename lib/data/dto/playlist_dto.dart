@@ -16,6 +16,7 @@ class PlaylistDto {
   final _CoverDto? cover;
   final int cnt;
   final String? likeId;
+  final DateTime? createdAt;
 
   PlaylistDto({
     required this.documentId,
@@ -23,10 +24,12 @@ class PlaylistDto {
     required this.cover,
     required this.cnt,
     this.likeId,
+    this.createdAt,
   });
 
   factory PlaylistDto.fromJson(Map<String, dynamic> json) {
     final likeJson = json['Like'] as Map<String, dynamic>?;
+    final createdAtRaw = json['createdAt'] as String?;
 
     return PlaylistDto(
       documentId: json['documentId'] as String,
@@ -36,6 +39,7 @@ class PlaylistDto {
           : null,
       cnt: json['cnt'] as int? ?? 0,
       likeId: likeJson?['documentId'] as String?,
+      createdAt: createdAtRaw != null ? DateTime.tryParse(createdAtRaw) : null,
     );
   }
 
@@ -46,6 +50,7 @@ class PlaylistDto {
       imageUrl: cover?.url ?? '',
       trackCount: cnt,
       likeId: likeId,
+      createdAt: createdAt,
     );
   }
 }

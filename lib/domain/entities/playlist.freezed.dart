@@ -23,7 +23,12 @@ mixin _$Playlist {
   int get trackCount => throw _privateConstructorUsedError;
   List<String> get trackDocIds => throw _privateConstructorUsedError;
   PlaylistType get type => throw _privateConstructorUsedError;
-  String? get likeId => throw _privateConstructorUsedError;
+  String? get likeId =>
+      throw _privateConstructorUsedError; // Момент попадания в списки пользователя: для кастомного — время создания,
+  // для лайкнутого — время лайка. Используется для хронологической сортировки
+  // на экране My Playlists. Nullable для обратной совместимости со старыми
+  // местами конструирования; в стейт всегда кладём заполненным.
+  DateTime? get createdAt => throw _privateConstructorUsedError;
 
   /// Create a copy of Playlist
   /// with the given fields replaced by the non-null parameter values.
@@ -45,6 +50,7 @@ abstract class $PlaylistCopyWith<$Res> {
     List<String> trackDocIds,
     PlaylistType type,
     String? likeId,
+    DateTime? createdAt,
   });
 }
 
@@ -70,6 +76,7 @@ class _$PlaylistCopyWithImpl<$Res, $Val extends Playlist>
     Object? trackDocIds = null,
     Object? type = null,
     Object? likeId = freezed,
+    Object? createdAt = freezed,
   }) {
     return _then(
       _value.copyWith(
@@ -101,6 +108,10 @@ class _$PlaylistCopyWithImpl<$Res, $Val extends Playlist>
                 ? _value.likeId
                 : likeId // ignore: cast_nullable_to_non_nullable
                       as String?,
+            createdAt: freezed == createdAt
+                ? _value.createdAt
+                : createdAt // ignore: cast_nullable_to_non_nullable
+                      as DateTime?,
           )
           as $Val,
     );
@@ -124,6 +135,7 @@ abstract class _$$PlaylistImplCopyWith<$Res>
     List<String> trackDocIds,
     PlaylistType type,
     String? likeId,
+    DateTime? createdAt,
   });
 }
 
@@ -148,6 +160,7 @@ class __$$PlaylistImplCopyWithImpl<$Res>
     Object? trackDocIds = null,
     Object? type = null,
     Object? likeId = freezed,
+    Object? createdAt = freezed,
   }) {
     return _then(
       _$PlaylistImpl(
@@ -179,6 +192,10 @@ class __$$PlaylistImplCopyWithImpl<$Res>
             ? _value.likeId
             : likeId // ignore: cast_nullable_to_non_nullable
                   as String?,
+        createdAt: freezed == createdAt
+            ? _value.createdAt
+            : createdAt // ignore: cast_nullable_to_non_nullable
+                  as DateTime?,
       ),
     );
   }
@@ -195,6 +212,7 @@ class _$PlaylistImpl implements _Playlist {
     final List<String> trackDocIds = const [],
     this.type = PlaylistType.featured,
     this.likeId,
+    this.createdAt,
   }) : _trackDocIds = trackDocIds;
 
   @override
@@ -219,10 +237,16 @@ class _$PlaylistImpl implements _Playlist {
   final PlaylistType type;
   @override
   final String? likeId;
+  // Момент попадания в списки пользователя: для кастомного — время создания,
+  // для лайкнутого — время лайка. Используется для хронологической сортировки
+  // на экране My Playlists. Nullable для обратной совместимости со старыми
+  // местами конструирования; в стейт всегда кладём заполненным.
+  @override
+  final DateTime? createdAt;
 
   @override
   String toString() {
-    return 'Playlist(id: $id, title: $title, imageUrl: $imageUrl, trackCount: $trackCount, trackDocIds: $trackDocIds, type: $type, likeId: $likeId)';
+    return 'Playlist(id: $id, title: $title, imageUrl: $imageUrl, trackCount: $trackCount, trackDocIds: $trackDocIds, type: $type, likeId: $likeId, createdAt: $createdAt)';
   }
 
   @override
@@ -241,7 +265,9 @@ class _$PlaylistImpl implements _Playlist {
               _trackDocIds,
             ) &&
             (identical(other.type, type) || other.type == type) &&
-            (identical(other.likeId, likeId) || other.likeId == likeId));
+            (identical(other.likeId, likeId) || other.likeId == likeId) &&
+            (identical(other.createdAt, createdAt) ||
+                other.createdAt == createdAt));
   }
 
   @override
@@ -254,6 +280,7 @@ class _$PlaylistImpl implements _Playlist {
     const DeepCollectionEquality().hash(_trackDocIds),
     type,
     likeId,
+    createdAt,
   );
 
   /// Create a copy of Playlist
@@ -274,6 +301,7 @@ abstract class _Playlist implements Playlist {
     final List<String> trackDocIds,
     final PlaylistType type,
     final String? likeId,
+    final DateTime? createdAt,
   }) = _$PlaylistImpl;
 
   @override
@@ -289,7 +317,12 @@ abstract class _Playlist implements Playlist {
   @override
   PlaylistType get type;
   @override
-  String? get likeId;
+  String? get likeId; // Момент попадания в списки пользователя: для кастомного — время создания,
+  // для лайкнутого — время лайка. Используется для хронологической сортировки
+  // на экране My Playlists. Nullable для обратной совместимости со старыми
+  // местами конструирования; в стейт всегда кладём заполненным.
+  @override
+  DateTime? get createdAt;
 
   /// Create a copy of Playlist
   /// with the given fields replaced by the non-null parameter values.

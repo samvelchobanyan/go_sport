@@ -25,21 +25,13 @@ class MyPlaylistsStateNotifier extends Notifier<MyPlaylistsState> {
     _customRepo = ref.watch(customPlaylistRepositoryProvider);
 
     // Re-combine when registry's liked playlists change.
-    ref.listen(likeRegistryProvider.select((s) => s.likedPlaylists), (_, next) {
-      // Merge while avoiding duplicates (custom playlists may also be
-      // present in the liked list after registry now includes custom).
-      final merged = <String, Playlist>{};
-      for (final p in next) merged[p.id] = p;
-      // Ensure custom playlists take precedence so their metadata (title,
-      // trackCount) remains authoritative when updated.
-      for (final p in _customPlaylists) merged[p.id] = p;
-      state = state.copyWith(playlists: merged.values.toList());
+    ref.listen(likeRegistryProvider.select((s) => s.likedPlaylists), (_, __) {
+      state = state.copyWith(playlists: _recombine());
     });
 
     Future.microtask(loadFavorites);
 
-    final initialFeatured = ref.read(likeRegistryProvider).likedPlaylists;
-    return MyPlaylistsState(playlists: initialFeatured);
+    return MyPlaylistsState(playlists: _recombine());
   }
 
   /// Loads only custom playlists from API; featured-liked come from registry.
@@ -47,11 +39,8 @@ class MyPlaylistsStateNotifier extends Notifier<MyPlaylistsState> {
     state = state.copyWith(isLoading: true, error: null);
     try {
       _customPlaylists = await _customRepo.getCustomPlaylists();
-      final merged = <String, Playlist>{};
-      for (final p in _likedFeatured) merged[p.id] = p;
-      for (final p in _customPlaylists) merged[p.id] = p;
       state = state.copyWith(
-        playlists: merged.values.toList(),
+        playlists: _recombine(),
         isLoading: false,
       );
     } catch (e) {
@@ -66,32 +55,48 @@ class MyPlaylistsStateNotifier extends Notifier<MyPlaylistsState> {
 
   void removePlaylist(String id) {
     _customPlaylists = _customPlaylists.where((p) => p.id != id).toList();
-    final merged = <String, Playlist>{};
-    for (final p in _likedFeatured) merged[p.id] = p;
-    for (final p in _customPlaylists) merged[p.id] = p;
-    state = state.copyWith(playlists: merged.values.toList());
+    state = state.copyWith(playlists: _recombine());
   }
 
   void addPlaylist(Playlist playlist) {
     _customPlaylists = [playlist, ..._customPlaylists];
-    final merged = <String, Playlist>{};
-    for (final p in _likedFeatured) merged[p.id] = p;
-    for (final p in _customPlaylists) merged[p.id] = p;
-    state = state.copyWith(playlists: merged.values.toList());
+    state = state.copyWith(playlists: _recombine());
   }
 
   void updatePlaylist(Playlist playlist) {
     _customPlaylists = _customPlaylists
         .map((p) => p.id == playlist.id ? playlist : p)
         .toList();
-    final merged = <String, Playlist>{};
-    for (final p in _likedFeatured) merged[p.id] = p;
-    for (final p in _customPlaylists) merged[p.id] = p;
-    state = state.copyWith(playlists: merged.values.toList());
+    state = state.copyWith(playlists: _recombine());
   }
 
   List<Playlist> get _likedFeatured =>
       ref.read(likeRegistryProvider).likedPlaylists;
+
+  /// Единая пересборка списка: сливает лайкнутые (из реестра) и кастомные,
+  /// затем сортирует по времени попадания в списки (createdAt) — свежие сверху.
+  /// Кастомные выигрывают при коллизии id, поэтому их метаданные (в т.ч.
+  /// createdAt = время создания) остаются авторитетными. Инвариант: у элементов
+  /// в стейте createdAt всегда заполнен, поэтому null-хвост — лишь страховка.
+  List<Playlist> _recombine() {
+    final merged = <String, Playlist>{};
+    for (final p in _likedFeatured) {
+      merged[p.id] = p;
+    }
+    for (final p in _customPlaylists) {
+      merged[p.id] = p;
+    }
+    final list = merged.values.toList();
+    list.sort((a, b) {
+      final ax = a.createdAt;
+      final bx = b.createdAt;
+      if (ax == null && bx == null) return 0;
+      if (ax == null) return 1; // null → в конец
+      if (bx == null) return -1;
+      return bx.compareTo(ax); // по убыванию: новое сверху
+    });
+    return list;
+  }
 }
 
 final myPlaylistsStateProvider =

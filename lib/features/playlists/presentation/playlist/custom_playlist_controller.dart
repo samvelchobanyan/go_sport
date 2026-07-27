@@ -146,16 +146,19 @@ class CustomPlaylistNotifier
     if (current is! PlaylistDetailsData) return;
 
     final trackDocIds = current.tracks.map((t) => t.id).toList();
-    await _repository.updateCustomPlaylist(
+    // Берём авторитетный Playlist из репо: у него пересчитана обложка
+    // (_firstTrackCover) и trackCount. Локально сохраняем уже загруженный
+    // полный список треков, подменяя только playlist — так обновляется и
+    // hero-хедер (imageUrl), и глобальный стейт (тайл в My Playlists).
+    final updated = await _repository.updateCustomPlaylist(
       id: arg,
       name: current.playlist.title,
       trackDocIds: trackDocIds,
     );
     final saved = state;
     if (saved is PlaylistDetailsData) {
-      ref
-          .read(myPlaylistsStateProvider.notifier)
-          .updatePlaylist(saved.playlist);
+      state = saved.copyWith(playlist: updated);
+      ref.read(myPlaylistsStateProvider.notifier).updatePlaylist(updated);
     }
   }
 

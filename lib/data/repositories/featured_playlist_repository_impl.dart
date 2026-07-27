@@ -63,6 +63,9 @@ class FeaturedPlaylistRepositoryImpl implements FeaturedPlaylistRepository {
       final playlistJson = entry['Playlist'] as Map<String, dynamic>;
       playlistJson['Like'] = {'documentId': entry['documentId']};
       playlistJson['cnt'] = entry['cnt'];
+      // Время попадания в список = время лайка (createdAt записи user-playlist),
+      // а не createdAt самого плейлиста.
+      playlistJson['createdAt'] = entry['createdAt'];
       return PlaylistDto.fromJson(playlistJson).toDomain();
     }).toList();
     return playlists;

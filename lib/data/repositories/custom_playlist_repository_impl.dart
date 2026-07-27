@@ -32,6 +32,7 @@ class CustomPlaylistRepositoryImpl implements CustomPlaylistRepository {
         trackCount: tracks.length,
         trackDocIds: trackDocIds,
         type: PlaylistType.custom,
+        createdAt: _parseCreatedAt(entry['createdAt']),
       );
     }).toList();
   }
@@ -72,6 +73,7 @@ class CustomPlaylistRepositoryImpl implements CustomPlaylistRepository {
       imageUrl: '',
       trackCount: 0,
       type: PlaylistType.custom,
+      createdAt: _parseCreatedAt(entry['createdAt']),
     );
   }
 
@@ -102,6 +104,7 @@ class CustomPlaylistRepositoryImpl implements CustomPlaylistRepository {
       trackCount: trackDocIds.length,
       trackDocIds: trackDocIds,
       type: PlaylistType.custom,
+      createdAt: _parseCreatedAt(entry['createdAt']),
     );
   }
 
@@ -109,6 +112,10 @@ class CustomPlaylistRepositoryImpl implements CustomPlaylistRepository {
   Future<void> deleteCustomPlaylist(String id) async {
     await _apiClient.delete('/api/custom-playlists/$id');
   }
+
+  /// Парсит Strapi-шный `createdAt` (ISO-строка) в DateTime; null при отсутствии.
+  DateTime? _parseCreatedAt(dynamic raw) =>
+      raw is String ? DateTime.tryParse(raw) : null;
 
   /// Обложка кастомного плейлиста = обложка первого трека (или его альбома).
   /// Пусто, если треков нет — вызывающий UI покажет брендовый фолбэк.

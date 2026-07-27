@@ -214,7 +214,11 @@ class LikeRegistry extends Notifier<LikeRegistryState> {
         state = state.copyWith(likedPlaylists: prevList);
       }
     } else {
-      state = state.copyWith(likedPlaylists: [playlist, ...prevList]);
+      // Время лайка сервер в ответе toggleLike не отдаёт (только likeId),
+      // поэтому штампуем момент лайка на клиенте. При следующей загрузке
+      // серверный createdAt записи лайка его заменит (≈ то же время).
+      final liked = playlist.copyWith(createdAt: DateTime.now());
+      state = state.copyWith(likedPlaylists: [liked, ...prevList]);
       try {
         final newLikeId = await ref
             .read(featuredPlaylistRepositoryProvider)
@@ -224,7 +228,7 @@ class LikeRegistry extends Notifier<LikeRegistryState> {
             likedPlaylists: state.likedPlaylists
                 .map(
                   (p) => p.id == playlist.id
-                      ? playlist.copyWith(likeId: newLikeId)
+                      ? liked.copyWith(likeId: newLikeId)
                       : p,
                 )
                 .toList(),
