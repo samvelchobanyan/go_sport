@@ -7,6 +7,7 @@ import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/features/shared_widgets/bottom_pop_ups/bottom_sheet_container.dart';
 import 'package:go_sport/domain/entities/track.dart';
+import 'package:go_sport/domain/state/player_state.dart';
 import 'package:go_sport/features/playlists/presentation/bottom_sheets/add_tracks_controller.dart';
 import 'package:go_sport/features/playlists/presentation/widgets/add_track_tile.dart';
 
@@ -201,11 +202,13 @@ class _AddTracksSheetState extends ConsumerState<_AddTracksSheet> {
                           final track = state.tracks[index];
                           final alreadyAdded =
                               widget.existingTrackIds.contains(track.id);
-                          return AddTrackTile(
+                          return _AddTrackRow(
                             track: track,
                             isSelected: alreadyAdded ||
                                 state.selectedTrackIds.contains(track.id),
                             enabled: !alreadyAdded,
+                            queue: state.tracks,
+                            index: index,
                             onToggle: () => ref
                                 .read(addTracksControllerProvider.notifier)
                                 .toggleTrack(track.id),
@@ -219,4 +222,60 @@ class _AddTracksSheetState extends ConsumerState<_AddTracksSheet> {
     );
   }
 
+}
+
+/// Оборачивает [AddTrackTile], подмешивая состояние плеера через `select`,
+/// чтобы на тик позиции перестраивался только текущий ряд, а не весь лист.
+class _AddTrackRow extends ConsumerWidget {
+  final Track track;
+  final bool isSelected;
+  final bool enabled;
+  final List<Track> queue;
+  final int index;
+  final VoidCallback onToggle;
+
+  const _AddTrackRow({
+    required this.track,
+    required this.isSelected,
+    required this.enabled,
+    required this.queue,
+    required this.index,
+    required this.onToggle,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final bool? isPlaying = ref.watch(
+      playerStateProvider.select((s) {
+        final isCurrent =
+            s.currentTrack?.id == track.id && !s.isRadioMode;
+        return isCurrent ? s.isPlaying : null;
+      }),
+    );
+
+    return AddTrackTile(
+      track: track,
+      isSelected: isSelected,
+      enabled: enabled,
+      isPlaying: isPlaying,
+      onToggle: onToggle,
+      onTap: () {
+        final notifier = ref.read(playerStateProvider.notifier);
+        if (isPlaying != null) {
+          // Текущий трек — второй тап ставит на паузу / снимает с паузы.
+          notifier.togglePlayPause();
+        } else {
+          notifier.playQueue(
+            queue,
+            source: const QueueSource.favorites(
+              id: 'add-tracks',
+              title: 'Add Tracks',
+              imageUrl: '',
+            ),
+            startIndex: index,
+          );
+        }
+      },
+    );
+  }
 }

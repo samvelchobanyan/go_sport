@@ -99,6 +99,7 @@ class NotificationsController extends AutoDisposeNotifier<NotificationsState> {
   String _messageFromError(Object error) {
     if (error is DioException && error.response != null) {
       final errorData = error.response!.data;
+
       if (errorData != null &&
           errorData['error'] != null &&
           errorData['error']['message'] != null) {

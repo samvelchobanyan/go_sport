@@ -14,12 +14,16 @@ enum NetworkErrorKind { noConnection, timeout, server, unknown }
 /// triggered the request. Modelled as an event stream (not a state field) to
 /// avoid the same-value-dedup and manual-reset pitfalls of error-in-state.
 class NetworkErrorService {
-  final StreamController<NetworkErrorKind> _controller =
-      StreamController<NetworkErrorKind>.broadcast();
+  final StreamController<dynamic> _controller =
+      StreamController<dynamic>.broadcast();
 
-  Stream<NetworkErrorKind> get onError => _controller.stream;
+  Stream<dynamic> get onError => _controller.stream;
 
   void emit(NetworkErrorKind kind) => _controller.add(kind);
+
+  void emitCustomMessage(String message) {
+    _controller.add(message);
+  }
 
   void dispose() => _controller.close();
 }
