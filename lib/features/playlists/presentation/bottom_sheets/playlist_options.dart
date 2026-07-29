@@ -47,14 +47,20 @@ void showPlaylistBottomSheet({
             },
           ),
           const SizedBox(height: DSSpacing.s10),
-          ActionButton(
-            icon: 'assets/icons/delete_bg.svg',
-            label: 'Delete playlist',
-            onTap: () {
-              Navigator.pop(context);
-              onDelete();
-            },
+          SafeArea(
+            top: false,
+            left: false,
+            right: false,
+            child: ActionButton(
+              icon: 'assets/icons/delete_bg.svg',
+              label: 'Delete playlist',
+              onTap: () {
+                Navigator.pop(context);
+                onDelete();
+              },
+            ),
           ),
+          const SizedBox(height: DSSpacing.s10),
         ],
       ),
     ),
