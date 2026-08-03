@@ -616,23 +616,31 @@ class _TrackRow extends ConsumerWidget {
     final bool? isPlaying = isCurrentTrack
         ? playerState.isPlaying && !playerState.isRadioMode
         : null;
+    // Tapping the current track toggles it. In radio mode togglePlayPause
+    // would hit the stream instead, so fall through to playQueue and let it
+    // switch the mode back to music.
+    final canToggle = isCurrentTrack && !playerState.isRadioMode;
 
     return TrackTile(
       track: track,
       isPlaying: isPlaying,
       onTap: () {
+        final notifier = ref.read(playerStateProvider.notifier);
+        if (canToggle) {
+          notifier.togglePlayPause();
+          return;
+        }
+
         final startIndex = queue.indexWhere((t) => t.id == track.id);
-        ref
-            .read(playerStateProvider.notifier)
-            .playQueue(
-              queue,
-              source: QueueSource.favorites(
-                id: 'search',
-                title: 'Search',
-                imageUrl: '',
-              ),
-              startIndex: startIndex < 0 ? 0 : startIndex,
-            );
+        notifier.playQueue(
+          queue,
+          source: QueueSource.favorites(
+            id: 'search',
+            title: 'Search',
+            imageUrl: '',
+          ),
+          startIndex: startIndex < 0 ? 0 : startIndex,
+        );
       },
       onMenuTap: (t) => showTrackOptionsBottomSheet(
         context: context,
