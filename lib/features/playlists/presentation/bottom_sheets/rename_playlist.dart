@@ -27,10 +27,7 @@ void showRenamePlaylistBottomSheet({
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'Rename Playlist',
-              style: context.h2,
-            ),
+            Text('Rename Playlist', style: context.h2),
             const SizedBox(height: DSSpacing.m),
             TextField(
               controller: controller,
@@ -58,41 +55,47 @@ void showRenamePlaylistBottomSheet({
               ),
             ),
             const SizedBox(height: DSSpacing.s20),
-            Row(
-              children: [
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: () => Navigator.pop(context),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: DSColors.gray5,
-                      elevation: 0,
+            SafeArea(
+              top: false,
+              left: false,
+              right: false,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () => Navigator.pop(context),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: DSColors.gray5,
+                        elevation: 0,
+                      ),
+                      child: Text('Cancel', style: context.subtitleLBold),
                     ),
-                    child: Text('Cancel', style: context.subtitleLBold),
                   ),
-                ),
-                const SizedBox(width: DSSpacing.s10),
-                Expanded(
-                  child: ElevatedButton.icon(
-                    onPressed: () {
-                      final name = controller.text.trim();
-                      if (name.isEmpty) return;
-                      Navigator.pop(context);
-                      onSave(name);
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: DSColors.blue,
-                    ),
-                    icon: SvgPicture.asset('assets/icons/check_lime.svg'),
-                    label: Text(
-                      'Save',
-                      style: context.subtitleLBold?.copyWith(
-                        color: DSColors.lime,
+                  const SizedBox(width: DSSpacing.s10),
+                  Expanded(
+                    child: ElevatedButton.icon(
+                      onPressed: () {
+                        final name = controller.text.trim();
+                        if (name.isEmpty) return;
+                        Navigator.pop(context);
+                        onSave(name);
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: DSColors.blue,
+                      ),
+                      icon: SvgPicture.asset('assets/icons/check_lime.svg'),
+                      label: Text(
+                        'Save',
+                        style: context.subtitleLBold?.copyWith(
+                          color: DSColors.lime,
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
+            SizedBox(height: DSSpacing.s10),
           ],
         ),
       ),

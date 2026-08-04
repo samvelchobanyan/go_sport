@@ -58,26 +58,34 @@ void showCreatePlaylistBottomSheet({
               ),
             ),
             const SizedBox(height: DSSpacing.s20),
-            SizedBox(
-              width: double.infinity,
-              height: 48,
-              child: ElevatedButton.icon(
-                onPressed: () {
-                  final name = controller.text.trim();
-                  if (name.isEmpty) return;
-                  Navigator.pop(context);
-                  onSave(name);
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: DSColors.blue,
-                ),
-                icon: SvgPicture.asset('assets/icons/check_lime.svg'),
-                label: Text(
-                  'Create',
-                  style: context.subtitleLBold?.copyWith(color: DSColors.lime),
+            SafeArea(
+              top: false,
+              left: false,
+              right: false,
+              child: SizedBox(
+                width: double.infinity,
+                height: 48,
+                child: ElevatedButton.icon(
+                  onPressed: () {
+                    final name = controller.text.trim();
+                    if (name.isEmpty) return;
+                    Navigator.pop(context);
+                    onSave(name);
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: DSColors.blue,
+                  ),
+                  icon: SvgPicture.asset('assets/icons/check_lime.svg'),
+                  label: Text(
+                    'Create',
+                    style: context.subtitleLBold?.copyWith(
+                      color: DSColors.lime,
+                    ),
+                  ),
                 ),
               ),
             ),
+            const SizedBox(height: DSSpacing.s10),
           ],
         ),
       ),

@@ -29,39 +29,45 @@ void showDeleteConfirmBottomSheet({
             ),
             child: Text(text, style: context.h2, textAlign: TextAlign.center),
           ),
-          Row(
-            children: [
-              Expanded(
-                child: ElevatedButton.icon(
-                  onPressed: () {
-                    Navigator.pop(context);
-                    onConfirm();
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: DSColors.gray5,
-                    elevation: 0,
+          SafeArea(
+            top: false,
+            left: false,
+            right: false,
+            child: Row(
+              children: [
+                Expanded(
+                  child: ElevatedButton.icon(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      onConfirm();
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: DSColors.gray5,
+                      elevation: 0,
+                    ),
+                    icon: SvgPicture.asset('assets/icons/delete.svg'),
+                    label: Text('Yes, delete', style: context.subtitleLBold),
                   ),
-                  icon: SvgPicture.asset('assets/icons/delete.svg'),
-                  label: Text('Yes, delete', style: context.subtitleLBold),
                 ),
-              ),
-              const SizedBox(width: DSSpacing.s10),
-              Expanded(
-                child: ElevatedButton(
-                  onPressed: () => Navigator.pop(context),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: DSColors.blue,
-                  ),
-                  child: Text(
-                    'No, keep',
-                    style: context.subtitleLBold?.copyWith(
-                      color: DSColors.lime,
+                const SizedBox(width: DSSpacing.s10),
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: () => Navigator.pop(context),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: DSColors.blue,
+                    ),
+                    child: Text(
+                      'No, keep',
+                      style: context.subtitleLBold?.copyWith(
+                        color: DSColors.lime,
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
+         SizedBox(height: DSSpacing.s10)
         ],
       ),
     ),
