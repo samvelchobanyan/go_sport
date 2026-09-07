@@ -38,7 +38,7 @@ Future<void> main() async {
     debugPrintStack(stackTrace: stackTrace);
   }
 
-  const env = String.fromEnvironment('ENV', defaultValue: 'dev');
+  const env = String.fromEnvironment('ENV', defaultValue: 'prod');
   final config = env == 'prod' ? AppConfig.prod : AppConfig.dev;
 
   final tokenStorage = TokenStorage();
