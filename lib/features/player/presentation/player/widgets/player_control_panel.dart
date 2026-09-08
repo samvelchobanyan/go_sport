@@ -118,7 +118,20 @@ class PlayerControlPanel extends ConsumerWidget {
           child: GestureDetector(
             behavior: HitTestBehavior.opaque,
             onTap: () {
-              if (track == null || track.artists.isEmpty) return;
+              if (track == null) return;
+
+              // Эпизод программы: EpisodeDto кладёт в artists псевдо-артиста,
+              // собранного из программы, и его id — это id программы. Ведём на
+              // экран программы, иначе получим пустой экран артиста.
+              final programId = track.programId;
+              if (programId != null && programId.isNotEmpty) {
+                final router = GoRouter.of(context);
+                Navigator.of(context, rootNavigator: true).pop();
+                router.push('/music/program/$programId');
+                return;
+              }
+
+              if (track.artists.isEmpty) return;
 
               // Один артист — закрываем full-player и открываем экран артиста
               if (track.artists.length == 1) {
