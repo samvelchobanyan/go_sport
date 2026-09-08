@@ -165,7 +165,7 @@ class _MusicScreenState extends ConsumerState<MusicScreen> {
 
                     leading: Padding(
                       padding: const EdgeInsets.only(
-                        top: DSSpacing.s8,
+                        top: DSSpacing.s8, 
                         bottom: DSSpacing.s8,
                         left: DSSpacing.m,
                       ),

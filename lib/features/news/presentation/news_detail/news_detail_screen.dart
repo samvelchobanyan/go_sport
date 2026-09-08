@@ -152,7 +152,7 @@ class NewsDetailScreen extends ConsumerWidget {
             ),
             const SizedBox(height: DSSpacing.s8),
 
-            // Title
+             // Title
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: DSSpacing.l),
               child: Text(article.title, style: context.h2),

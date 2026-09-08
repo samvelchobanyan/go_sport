@@ -10,14 +10,13 @@ import 'package:go_sport/core/auth/auth_state.dart';
 import 'package:go_sport/core/navigation/routes.dart';
 import 'package:go_sport/domain/state/user_state.dart';
 import 'package:go_sport/domain/state/notifications_state.dart';
+import 'package:go_sport/features/shared_widgets/social_media_section.dart';
 import 'package:go_sport/features/user_profile/profile/presentation/profile/profile_controller.dart';
 import 'package:go_sport/features/user_profile/profile/presentation/widgets/action_row.dart';
 import 'package:go_sport/features/user_profile/profile/presentation/widgets/contact_info.dart';
-import 'package:go_sport/features/user_profile/profile/presentation/widgets/social_media_button.dart';
 import 'package:go_sport/features/shared_widgets/dotted_divider.dart';
 import 'package:go_sport/features/shared_widgets/user_avatar_button.dart';
 import 'package:go_router/go_router.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({super.key});
@@ -55,30 +54,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       }
     });
 
-    Future<void> openUrl(String? urlString) async {
-      if (urlString == null || urlString.trim().isEmpty) return;
-
-      // 1. Ensure https:// scheme exists
-      String formattedUrl = urlString.trim();
-      if (!formattedUrl.startsWith('http://') &&
-          !formattedUrl.startsWith('https://')) {
-        formattedUrl = 'https://$formattedUrl';
-      }
-
-      final Uri? uri = Uri.tryParse(formattedUrl);
-      if (uri == null) return;
-
-      // 2. Launch directly inside try/catch
-      try {
-        await launchUrl(uri, mode: LaunchMode.externalApplication);
-      } catch (e) {
-        print('Could not launch URL $formattedUrl: $e');
-      }
-    }
-
     final user = userState.user;
     final socialLinks = socialLinksState.socialLinks;
-    print('socialLinks $socialLinks');
     // Error and no data — show error with retry
     if (userState.error != null && user == null) {
       return Scaffold(
@@ -365,46 +342,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                                 ),
                               ),
                               const SizedBox(height: DSSpacing.s6),
-                              Row(
-                                children: [
-                                  if (socialLinks.facebookUrl != null &&
-                                      socialLinks.facebookUrl!.isNotEmpty) ...[
-                                    SocialMediaButton(
-                                      icon: const Icon(
-                                        Icons.facebook,
-                                        color: DSColors.blue,
-                                      ),
-                                      onTap: () =>
-                                          openUrl(socialLinks.facebookUrl),
-                                    ),
-                                    const SizedBox(width: DSSpacing.s10),
-                                  ],
-                                  if (socialLinks.youtubeUrl != null &&
-                                      socialLinks.youtubeUrl!.isNotEmpty) ...[
-                                    SocialMediaButton(
-                                      icon: SvgPicture.asset(
-                                        'assets/icons/youtube_blue.svg',
-                                      ),
-                                      onTap: () =>
-                                          openUrl(socialLinks.youtubeUrl),
-                                    ),
-                                    const SizedBox(width: DSSpacing.s10),
-                                  ],
-                                  if (socialLinks.instagramUrl != null &&
-                                      socialLinks.instagramUrl!.isNotEmpty) ...[
-                                    SocialMediaButton(
-                                      icon: SvgPicture.asset(
-                                        'assets/icons/inst.svg',
-                                      ),
-                                      onTap: () =>
-                                          openUrl(socialLinks.instagramUrl),
-                                    ),
-                                  ],
-                                ],
-                              ),
-                            ],
 
-                            // const SizedBox(height: DSSpacing.l),
+                              SocialMediaSection(socialLinks: socialLinks),
+                            ],
                           ],
                         ),
                       ),

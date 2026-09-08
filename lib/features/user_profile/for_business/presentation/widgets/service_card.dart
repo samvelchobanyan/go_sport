@@ -1,74 +1,54 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:go_sport/design_system/ds_extensions.dart';
 import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
+import 'package:go_sport/domain/entities/business_service.dart';
+import 'package:go_router/go_router.dart';
 
 class ServiceCard extends StatelessWidget {
-  final String title;
-  final String description;
-  final String price;
-  final VoidCallback? onTap;
+  final BusinessService service;
 
-  const ServiceCard({
-    super.key,
-    required this.title,
-    required this.description,
-    required this.price,
-    this.onTap,
-  });
-
+  const ServiceCard({super.key, required this.service});
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: () {
+        context.push('/profile/for-business/${service.documentId}');
+      },
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: DSSpacing.s12, horizontal: DSSpacing.m),
+        padding: const EdgeInsets.all(DSSpacing.m),
         decoration: BoxDecoration(
           // Using a subtle background with your DS Blue
           color: DSColors.blue10,
           borderRadius: BorderRadius.circular(DSRadius.s),
-          border: Border.all(color: DSColors.blue20),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+                SvgPicture.network(
+                  service.iconUrl ?? '',
+                  width: 22,
+                  height: 22,
+                  fit: BoxFit.cover,
+                  placeholderBuilder: (context) => Image.asset(
+                    'assets/images/noimage.png',
+                    width: 22,
+                    height: 22,
+                  ),
+                ),
+                SizedBox(width: DSSpacing.s8),
                 Expanded(
-                  child: Text(
-                    title,
-                    style: context.subtitleLBold?.copyWith(
-                      color: DSColors.blue,
-                    ),
-                  ),
+                  child: Text(service.name, style: context.subtitleLBold),
                 ),
-                const Icon(Icons.chevron_right, color: DSColors.blue),
-              ],
-            ),
-            const SizedBox(height: DSSpacing.s8),
-            Text(
-              description,
-              style: context.bodyL?.copyWith(
-                color: DSColors.gray70,
-              ),
-            ),
-            const SizedBox(height: DSSpacing.s12),
-            Divider(color: DSColors.blue10, height: 1),
-            const SizedBox(height: DSSpacing.s12),
-            Row(
-              children: [
-                Text(
-                  'Price',
-                  style: context.subtitleM?.copyWith(
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-                const Spacer(),
-                Text(
-                  price,
-                  style: context.subtitleLBold?.copyWith(color: DSColors.blue),
+                SvgPicture.asset(
+                  'assets/icons/arrow_right.svg',
+                  width: 20,
+                  height: 20,
                 ),
               ],
             ),

@@ -26,6 +26,7 @@ import 'package:go_sport/features/auth/login/presentation/login/login_screen.dar
 import 'package:go_sport/features/auth/registration_phone/presentation/registration_phone_screen.dart';
 import 'package:go_sport/features/auth/registration_email/presentation/registration_email_screen.dart';
 import 'package:go_sport/features/music/presentation/music/music_screen.dart';
+import 'package:go_sport/features/user_profile/for_business/presentation/single_service/single_service_screen.dart';
 import 'package:go_sport/features/user_profile/notifications/presentation/notifications/notifications_screen.dart';
 import 'package:go_sport/features/user_profile/profile/presentation/profile/profile_screen.dart';
 import 'package:go_sport/features/news/presentation/news_list/news_list_screen.dart';
@@ -189,6 +190,17 @@ GoRouter createAppRouter(TokenStorage tokenStorage) {
                       GoRoute(
                         path: 'for-business',
                         builder: (context, state) => const ForBusinessScreen(),
+                        routes: [
+                         GoRoute(
+          path: ':id', // 👈 Captures the service documentId
+          builder: (context, state) {
+            final serviceId = state.pathParameters['id']!;
+            
+            // Pass serviceId or extra data to your detail screen
+            return SingleServiceScreen(serviceId: serviceId);
+          },
+        ),
+                        ],
                       ),
                       GoRoute(
                         path: 'edit-profile',
@@ -205,7 +217,8 @@ GoRouter createAppRouter(TokenStorage tokenStorage) {
                       ),
                       GoRoute(
                         path: 'confirm-delete',
-                        builder: (context, state) => const ConfirmDeleteScreen(),
+                        builder: (context, state) =>
+                            const ConfirmDeleteScreen(),
                       ),
                       GoRoute(
                         path: 'delete-success',
