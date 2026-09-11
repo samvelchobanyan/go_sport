@@ -24,7 +24,11 @@
       "Bash(git stash *)",
       "PowerShell($paths = @\\(\"C:\\\\flutter\\\\bin\\\\dart.bat\",\"C:\\\\src\\\\flutter\\\\bin\\\\dart.bat\",\"C:\\\\tools\\\\flutter\\\\bin\\\\dart.bat\",\"$env:USERPROFILE\\\\flutter\\\\bin\\\\dart.bat\",\"$env:LOCALAPPDATA\\\\flutter\\\\bin\\\\dart.bat\",\"C:\\\\dev\\\\flutter\\\\bin\\\\dart.bat\"\\); $found = $paths | Where-Object { Test-Path $_ }; if \\($found\\) { Write-Output \"FOUND: $found\" } else { Write-Output \"not in common spots; searching...\"; Get-ChildItem -Path C:\\\\ -Filter flutter.bat -Recurse -ErrorAction SilentlyContinue -Depth 4 | Select-Object -First 3 -ExpandProperty FullName })",
       "Read(//c/Users/Samvel/AppData/Local/Pub/Cache/hosted/pub.dev/just_audio-0.9.46/darwin/just_audio/Sources/just_audio/**)",
-      "Bash(git log *)"
+      "Bash(git log *)",
+      "PowerShell(\"== flutter in PATH: $\\(\\(Get-Command flutter -ErrorAction SilentlyContinue\\).Source\\)\"; \"== C:\\\\mobiledev\\\\flutter exists: $\\(Test-Path 'C:\\\\mobiledev\\\\flutter\\\\bin\\\\flutter.bat'\\)\"; git -C C:\\\\mobiledev\\\\flutter remote -v; git -C C:\\\\mobiledev\\\\flutter status -sb | Select-Object -First 2; git -C C:\\\\mobiledev\\\\flutter describe --tags 2>$null; git -C C:\\\\mobiledev\\\\flutter rev-parse HEAD)",
+      "PowerShell(& \"C:\\\\mobiledev\\\\flutter\\\\bin\\\\flutter.bat\" --version)",
+      "PowerShell(& \"C:\\\\mobiledev\\\\flutter\\\\bin\\\\flutter.bat\" doctor -v)",
+      "PowerShell($sdk='C:\\\\Users\\\\Samvel\\\\AppData\\\\Local\\\\Android\\\\sdk'; foreach \\($d in 'ndk','build-tools','platforms','cmake'\\) { \"== $d\"; if \\(Test-Path \"$sdk\\\\$d\"\\) { \\(Get-ChildItem \"$sdk\\\\$d\" -Directory\\).Name } else { '\\(none\\)' } }; \"== JAVA_HOME: $env:JAVA_HOME\"; \"== ANDROID_HOME: $env:ANDROID_HOME\"; foreach \\($as in 'C:\\\\Program Files\\\\Android\\\\Android Studio','C:\\\\Program Files\\\\Android\\\\Android Studio1',\"$env:LOCALAPPDATA\\\\Programs\\\\Android Studio\"\\) { $f = Join-Path $as 'product-info.json'; if \\(Test-Path $f\\) { $p = Get-Content $f -Raw | ConvertFrom-Json; \"== AS at ${as}: $\\($p.name\\) $\\($p.version\\) build $\\($p.buildNumber\\)\" } })"
     ]
   }
 }
