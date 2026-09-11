@@ -324,9 +324,9 @@ class PlayerControlPanel extends ConsumerWidget {
     BuildContext context,
     WidgetRef ref, {
     required bool shuffleEnabled,
-    required RepeatMode repeatMode,
+    required PlayerRepeatMode repeatMode,
   }) {
-    final repeatActive = repeatMode != RepeatMode.off;
+    final repeatActive = repeatMode != PlayerRepeatMode.off;
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -365,7 +365,7 @@ class PlayerControlPanel extends ConsumerWidget {
                     BlendMode.srcIn,
                   ),
                 ),
-                if (repeatMode == RepeatMode.one)
+                if (repeatMode == PlayerRepeatMode.one)
                   Positioned(
                     right: -1,
                     bottom: -1,

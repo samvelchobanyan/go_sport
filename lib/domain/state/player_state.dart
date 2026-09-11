@@ -31,7 +31,7 @@ enum PlaybackMode {
   radio,
 }
 
-enum RepeatMode {
+enum PlayerRepeatMode {
   off,
   all,
   one,
@@ -111,7 +111,7 @@ class PlayerState with _$PlayerState {
 
     // Shuffle & Repeat
     @Default(false) bool shuffleEnabled,
-    @Default(RepeatMode.off) RepeatMode repeatMode,
+    @Default(PlayerRepeatMode.off) PlayerRepeatMode repeatMode,
     List<int>? shuffleIndices,
 
     // Radio
@@ -166,10 +166,10 @@ extension PlayerStateX on PlayerState {
   }
 
   /// Can move to a next track — respects repeat-all wrap and shuffle order
-  bool get canGoNext => repeatMode == RepeatMode.all || nextTrack != null;
+  bool get canGoNext => repeatMode == PlayerRepeatMode.all || nextTrack != null;
 
   /// Can move to a previous track — respects repeat-all wrap and shuffle order
-  bool get canGoPrev => repeatMode == RepeatMode.all || prevTrack != null;
+  bool get canGoPrev => repeatMode == PlayerRepeatMode.all || prevTrack != null;
 
   /// Actual duration: prefer player-reported duration, fallback to track metadata
   Duration get effectiveDuration =>
@@ -475,10 +475,10 @@ class PlayerNotifier extends Notifier<PlayerState> {
 
     // Sync repeat mode from audio handler
     final repeatMode = const {
-      AudioServiceRepeatMode.none: RepeatMode.off,
-      AudioServiceRepeatMode.all: RepeatMode.all,
-      AudioServiceRepeatMode.one: RepeatMode.one,
-    }[playbackState.repeatMode] ?? RepeatMode.off;
+      AudioServiceRepeatMode.none: PlayerRepeatMode.off,
+      AudioServiceRepeatMode.all: PlayerRepeatMode.all,
+      AudioServiceRepeatMode.one: PlayerRepeatMode.one,
+    }[playbackState.repeatMode] ?? PlayerRepeatMode.off;
     if (state.repeatMode != repeatMode) {
       state = state.copyWith(repeatMode: repeatMode);
     }
@@ -649,14 +649,14 @@ class PlayerNotifier extends Notifier<PlayerState> {
   Future<void> cycleRepeatMode() async {
     final previous = state.repeatMode;
     final next = switch (previous) {
-      RepeatMode.off => RepeatMode.all,
-      RepeatMode.all => RepeatMode.one,
-      RepeatMode.one => RepeatMode.off,
+      PlayerRepeatMode.off => PlayerRepeatMode.all,
+      PlayerRepeatMode.all => PlayerRepeatMode.one,
+      PlayerRepeatMode.one => PlayerRepeatMode.off,
     };
     final loopMode = switch (next) {
-      RepeatMode.off => LoopMode.off,
-      RepeatMode.all => LoopMode.all,
-      RepeatMode.one => LoopMode.one,
+      PlayerRepeatMode.off => LoopMode.off,
+      PlayerRepeatMode.all => LoopMode.all,
+      PlayerRepeatMode.one => LoopMode.one,
     };
 
     // Optimistic UI update

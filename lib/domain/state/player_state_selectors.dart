@@ -39,7 +39,7 @@ final playerInfoProvider = Provider<({
   String? radioImageUrl,
   String? radioNowPlaying,
   bool shuffleEnabled,
-  RepeatMode repeatMode,
+  PlayerRepeatMode repeatMode,
   bool canGoNext,
   bool canGoPrev,
 })>((ref) {

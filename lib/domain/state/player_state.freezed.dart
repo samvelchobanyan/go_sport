@@ -1398,7 +1398,7 @@ mixin _$PlayerState {
   Duration get totalDuration =>
       throw _privateConstructorUsedError; // Shuffle & Repeat
   bool get shuffleEnabled => throw _privateConstructorUsedError;
-  RepeatMode get repeatMode => throw _privateConstructorUsedError;
+  PlayerRepeatMode get repeatMode => throw _privateConstructorUsedError;
   List<int>? get shuffleIndices => throw _privateConstructorUsedError; // Radio
   String? get radioTitle => throw _privateConstructorUsedError;
   String? get radioStreamUrl => throw _privateConstructorUsedError;
@@ -1432,7 +1432,7 @@ abstract class $PlayerStateCopyWith<$Res> {
     Duration bufferedPosition,
     Duration totalDuration,
     bool shuffleEnabled,
-    RepeatMode repeatMode,
+    PlayerRepeatMode repeatMode,
     List<int>? shuffleIndices,
     String? radioTitle,
     String? radioStreamUrl,
@@ -1517,7 +1517,7 @@ class _$PlayerStateCopyWithImpl<$Res, $Val extends PlayerState>
             repeatMode: null == repeatMode
                 ? _value.repeatMode
                 : repeatMode // ignore: cast_nullable_to_non_nullable
-                      as RepeatMode,
+                      as PlayerRepeatMode,
             shuffleIndices: freezed == shuffleIndices
                 ? _value.shuffleIndices
                 : shuffleIndices // ignore: cast_nullable_to_non_nullable
@@ -1581,7 +1581,7 @@ abstract class _$$PlayerStateImplCopyWith<$Res>
     Duration bufferedPosition,
     Duration totalDuration,
     bool shuffleEnabled,
-    RepeatMode repeatMode,
+    PlayerRepeatMode repeatMode,
     List<int>? shuffleIndices,
     String? radioTitle,
     String? radioStreamUrl,
@@ -1666,7 +1666,7 @@ class __$$PlayerStateImplCopyWithImpl<$Res>
         repeatMode: null == repeatMode
             ? _value.repeatMode
             : repeatMode // ignore: cast_nullable_to_non_nullable
-                  as RepeatMode,
+                  as PlayerRepeatMode,
         shuffleIndices: freezed == shuffleIndices
             ? _value._shuffleIndices
             : shuffleIndices // ignore: cast_nullable_to_non_nullable
@@ -1709,7 +1709,7 @@ class _$PlayerStateImpl implements _PlayerState {
     this.bufferedPosition = Duration.zero,
     this.totalDuration = Duration.zero,
     this.shuffleEnabled = false,
-    this.repeatMode = RepeatMode.off,
+    this.repeatMode = PlayerRepeatMode.off,
     final List<int>? shuffleIndices,
     this.radioTitle,
     this.radioStreamUrl,
@@ -1758,7 +1758,7 @@ class _$PlayerStateImpl implements _PlayerState {
   final bool shuffleEnabled;
   @override
   @JsonKey()
-  final RepeatMode repeatMode;
+  final PlayerRepeatMode repeatMode;
   final List<int>? _shuffleIndices;
   @override
   List<int>? get shuffleIndices {
@@ -1866,7 +1866,7 @@ abstract class _PlayerState implements PlayerState {
     final Duration bufferedPosition,
     final Duration totalDuration,
     final bool shuffleEnabled,
-    final RepeatMode repeatMode,
+    final PlayerRepeatMode repeatMode,
     final List<int>? shuffleIndices,
     final String? radioTitle,
     final String? radioStreamUrl,
@@ -1895,7 +1895,7 @@ abstract class _PlayerState implements PlayerState {
   @override
   bool get shuffleEnabled;
   @override
-  RepeatMode get repeatMode;
+  PlayerRepeatMode get repeatMode;
   @override
   List<int>? get shuffleIndices; // Radio
   @override
