@@ -30,10 +30,10 @@ class AppConfig {
 
   static const prod = AppConfig._(
     env: AppEnv.prod,
-    apiBaseUrl: 'https://api.gosport.com/v1',
-    connectTimeout: Duration(seconds: 15),
-    receiveTimeout: Duration(seconds: 15),
+    apiBaseUrl: 'https://pretty-serenity-62cdc7cafb.strapiapp.com/',
+    connectTimeout: Duration(seconds: 30),
+    receiveTimeout: Duration(seconds: 30),
     enableLogging: false,
-    googleWebClientId: '',
+    googleWebClientId: '442164065269-v8kmbe1colucrq818qvvcjlmqlj705ta.apps.googleusercontent.com',
   );
 }
