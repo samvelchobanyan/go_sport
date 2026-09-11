@@ -25,6 +25,7 @@ import 'core/network/network_error_service.dart';
 import 'design_system/theme/ds_theme_data.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -65,6 +66,8 @@ Future<void> main() async {
 
   final playerSessionStorage = PlayerSessionStorage();
   await playerSessionStorage.init();
+
+  await _dropSessionIfApiChanged(config, tokenStorage, playerSessionStorage);
 
   // Perform initial connectivity check to avoid launching networked
   // screens while offline (prevents early DioExceptions).
@@ -246,6 +249,27 @@ class _MainAppState extends ConsumerState<MainApp> {
       builder: _lockTextScale,
     );
   }
+}
+
+/// Saved tokens and the player snapshot belong to the server that issued them,
+/// but they outlive app updates (and on iOS the Keychain even survives a
+/// reinstall). When the build talks to a different API than the one the saved
+/// session came from, drop that session once so the user lands on login instead
+/// of a "logged in but every request fails" state. The marker lives in
+/// SharedPreferences, which is wiped on uninstall — so a reinstall also starts
+/// clean.
+Future<void> _dropSessionIfApiChanged(
+  AppConfig config,
+  TokenStorage tokenStorage,
+  PlayerSessionStorage playerSessionStorage,
+) async {
+  const sessionApiKey = 'session_api_base_url';
+  final prefs = await SharedPreferences.getInstance();
+  if (prefs.getString(sessionApiKey) == config.apiBaseUrl) return;
+
+  await tokenStorage.clearTokens();
+  await playerSessionStorage.clear();
+  await prefs.setString(sessionApiKey, config.apiBaseUrl);
 }
 
 /// Locks text scaling to the app's default across the whole tree, ignoring the
