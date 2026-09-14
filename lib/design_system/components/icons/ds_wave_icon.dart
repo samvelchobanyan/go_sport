@@ -328,7 +328,7 @@ class _DSWaveIconState extends State<DSWaveIcon>
   Widget build(BuildContext context) {
     return DecoratedBox(
       decoration: BoxDecoration(
-        color: DSColors.white10,
+        color: DSColors.blue,
         borderRadius: BorderRadius.circular(DSRadius.s),
       ),
       child: SizedBox(
