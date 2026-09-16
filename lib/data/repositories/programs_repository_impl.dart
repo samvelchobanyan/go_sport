@@ -28,15 +28,15 @@ class ProgramsRepositoryImpl implements ProgramsRepository {
   }
 
   @override
-  Future<({Program? program, List<Track> episodes})> getProgramDetails(
-    String programId,
-  ) async {
+  Future<({Program? program, List<Track> episodes, bool hasMore})>
+  getProgramDetails(String programId, {int page = 1}) async {
     final response = await _apiClient.get(
       '/api/episodes',
       queryParameters: {
         'populate[File][populate]': '*',
         'populate[Program][populate][Cover][populate]': '*',
         'filters[Program][documentId][\$eq]': programId,
+        'pagination[page]': page,
       },
     );
 
@@ -45,8 +45,14 @@ class ProgramsRepositoryImpl implements ProgramsRepository {
         .map((e) => EpisodeDto.fromJson(e as Map<String, dynamic>).toDomain())
         .toList();
 
+    final pagination =
+        response.data['meta']['pagination'] as Map<String, dynamic>;
+    final pageCount = pagination['pageCount'] as int;
+
     // Each episode embeds its populated Program — reuse the first one for the
-    // header instead of making a separate /api/programs/{id} request.
+    // header instead of making a separate /api/programs/{id} request. The
+    // nested Program carries no `cnt`, so the episode count comes from the
+    // pagination meta: the full total, not just the pages loaded so far.
     final firstProgramJson = data.isNotEmpty
         ? (data.first as Map<String, dynamic>)['Program']
               as Map<String, dynamic>?
@@ -54,10 +60,14 @@ class ProgramsRepositoryImpl implements ProgramsRepository {
     final program = firstProgramJson != null
         ? ProgramDto.fromJson(
             firstProgramJson,
-          ).toDomain().copyWith(episodeCount: episodes.length)
+          ).toDomain().copyWith(episodeCount: pagination['total'] as int)
         : null;
 
-    return (program: program, episodes: episodes);
+    return (
+      program: program,
+      episodes: episodes,
+      hasMore: page < pageCount,
+    );
   }
 
   @override

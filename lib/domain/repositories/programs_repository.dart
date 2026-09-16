@@ -13,9 +13,11 @@ abstract interface class ProgramsRepository {
   /// Program header is derived from the episodes response (each episode
   /// carries its populated Program), so no extra request is needed.
   /// [program] is null when the program has no episodes.
-  Future<({Program? program, List<Track> episodes})> getProgramDetails(
-    String programId,
-  );
+  ///
+  /// Episodes are paginated: [page] 1 carries the header, every page reports
+  /// [hasMore] so the caller knows whether to ask for the next one.
+  Future<({Program? program, List<Track> episodes, bool hasMore})>
+  getProgramDetails(String programId, {int page = 1});
 
   Future<String?> toggleLike(String programId, [String? likeId]);
 }

@@ -20,19 +20,40 @@ mixin _$ProgramEpisodesState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(Program? program, List<Track> episodes) data,
+    required TResult Function(
+      Program? program,
+      List<Track> episodes,
+      int page,
+      bool hasMore,
+      bool isLoadingMore,
+    )
+    data,
     required TResult Function(String message) error,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function(Program? program, List<Track> episodes)? data,
+    TResult? Function(
+      Program? program,
+      List<Track> episodes,
+      int page,
+      bool hasMore,
+      bool isLoadingMore,
+    )?
+    data,
     TResult? Function(String message)? error,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(Program? program, List<Track> episodes)? data,
+    TResult Function(
+      Program? program,
+      List<Track> episodes,
+      int page,
+      bool hasMore,
+      bool isLoadingMore,
+    )?
+    data,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) => throw _privateConstructorUsedError;
@@ -128,7 +149,14 @@ class _$ProgramEpisodesLoadingImpl implements _ProgramEpisodesLoading {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(Program? program, List<Track> episodes) data,
+    required TResult Function(
+      Program? program,
+      List<Track> episodes,
+      int page,
+      bool hasMore,
+      bool isLoadingMore,
+    )
+    data,
     required TResult Function(String message) error,
   }) {
     return loading();
@@ -138,7 +166,14 @@ class _$ProgramEpisodesLoadingImpl implements _ProgramEpisodesLoading {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function(Program? program, List<Track> episodes)? data,
+    TResult? Function(
+      Program? program,
+      List<Track> episodes,
+      int page,
+      bool hasMore,
+      bool isLoadingMore,
+    )?
+    data,
     TResult? Function(String message)? error,
   }) {
     return loading?.call();
@@ -148,7 +183,14 @@ class _$ProgramEpisodesLoadingImpl implements _ProgramEpisodesLoading {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(Program? program, List<Track> episodes)? data,
+    TResult Function(
+      Program? program,
+      List<Track> episodes,
+      int page,
+      bool hasMore,
+      bool isLoadingMore,
+    )?
+    data,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -204,7 +246,13 @@ abstract class _$$ProgramEpisodesDataImplCopyWith<$Res> {
     $Res Function(_$ProgramEpisodesDataImpl) then,
   ) = __$$ProgramEpisodesDataImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({Program? program, List<Track> episodes});
+  $Res call({
+    Program? program,
+    List<Track> episodes,
+    int page,
+    bool hasMore,
+    bool isLoadingMore,
+  });
 
   $ProgramCopyWith<$Res>? get program;
 }
@@ -222,7 +270,13 @@ class __$$ProgramEpisodesDataImplCopyWithImpl<$Res>
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({Object? program = freezed, Object? episodes = null}) {
+  $Res call({
+    Object? program = freezed,
+    Object? episodes = null,
+    Object? page = null,
+    Object? hasMore = null,
+    Object? isLoadingMore = null,
+  }) {
     return _then(
       _$ProgramEpisodesDataImpl(
         program: freezed == program
@@ -233,6 +287,18 @@ class __$$ProgramEpisodesDataImplCopyWithImpl<$Res>
             ? _value._episodes
             : episodes // ignore: cast_nullable_to_non_nullable
                   as List<Track>,
+        page: null == page
+            ? _value.page
+            : page // ignore: cast_nullable_to_non_nullable
+                  as int,
+        hasMore: null == hasMore
+            ? _value.hasMore
+            : hasMore // ignore: cast_nullable_to_non_nullable
+                  as bool,
+        isLoadingMore: null == isLoadingMore
+            ? _value.isLoadingMore
+            : isLoadingMore // ignore: cast_nullable_to_non_nullable
+                  as bool,
       ),
     );
   }
@@ -258,6 +324,9 @@ class _$ProgramEpisodesDataImpl implements _ProgramEpisodesData {
   const _$ProgramEpisodesDataImpl({
     this.program,
     required final List<Track> episodes,
+    this.page = 1,
+    this.hasMore = false,
+    this.isLoadingMore = false,
   }) : _episodes = episodes;
 
   // Derived from the episodes response; null when the program has none.
@@ -272,8 +341,18 @@ class _$ProgramEpisodesDataImpl implements _ProgramEpisodesData {
   }
 
   @override
+  @JsonKey()
+  final int page;
+  @override
+  @JsonKey()
+  final bool hasMore;
+  @override
+  @JsonKey()
+  final bool isLoadingMore;
+
+  @override
   String toString() {
-    return 'ProgramEpisodesState.data(program: $program, episodes: $episodes)';
+    return 'ProgramEpisodesState.data(program: $program, episodes: $episodes, page: $page, hasMore: $hasMore, isLoadingMore: $isLoadingMore)';
   }
 
   @override
@@ -282,7 +361,11 @@ class _$ProgramEpisodesDataImpl implements _ProgramEpisodesData {
         (other.runtimeType == runtimeType &&
             other is _$ProgramEpisodesDataImpl &&
             (identical(other.program, program) || other.program == program) &&
-            const DeepCollectionEquality().equals(other._episodes, _episodes));
+            const DeepCollectionEquality().equals(other._episodes, _episodes) &&
+            (identical(other.page, page) || other.page == page) &&
+            (identical(other.hasMore, hasMore) || other.hasMore == hasMore) &&
+            (identical(other.isLoadingMore, isLoadingMore) ||
+                other.isLoadingMore == isLoadingMore));
   }
 
   @override
@@ -290,6 +373,9 @@ class _$ProgramEpisodesDataImpl implements _ProgramEpisodesData {
     runtimeType,
     program,
     const DeepCollectionEquality().hash(_episodes),
+    page,
+    hasMore,
+    isLoadingMore,
   );
 
   /// Create a copy of ProgramEpisodesState
@@ -307,32 +393,53 @@ class _$ProgramEpisodesDataImpl implements _ProgramEpisodesData {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(Program? program, List<Track> episodes) data,
+    required TResult Function(
+      Program? program,
+      List<Track> episodes,
+      int page,
+      bool hasMore,
+      bool isLoadingMore,
+    )
+    data,
     required TResult Function(String message) error,
   }) {
-    return data(program, episodes);
+    return data(program, episodes, page, hasMore, isLoadingMore);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function(Program? program, List<Track> episodes)? data,
+    TResult? Function(
+      Program? program,
+      List<Track> episodes,
+      int page,
+      bool hasMore,
+      bool isLoadingMore,
+    )?
+    data,
     TResult? Function(String message)? error,
   }) {
-    return data?.call(program, episodes);
+    return data?.call(program, episodes, page, hasMore, isLoadingMore);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(Program? program, List<Track> episodes)? data,
+    TResult Function(
+      Program? program,
+      List<Track> episodes,
+      int page,
+      bool hasMore,
+      bool isLoadingMore,
+    )?
+    data,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
     if (data != null) {
-      return data(program, episodes);
+      return data(program, episodes, page, hasMore, isLoadingMore);
     }
     return orElse();
   }
@@ -376,11 +483,17 @@ abstract class _ProgramEpisodesData implements ProgramEpisodesState {
   const factory _ProgramEpisodesData({
     final Program? program,
     required final List<Track> episodes,
+    final int page,
+    final bool hasMore,
+    final bool isLoadingMore,
   }) = _$ProgramEpisodesDataImpl;
 
   // Derived from the episodes response; null when the program has none.
   Program? get program;
   List<Track> get episodes;
+  int get page;
+  bool get hasMore;
+  bool get isLoadingMore;
 
   /// Create a copy of ProgramEpisodesState
   /// with the given fields replaced by the non-null parameter values.
@@ -464,7 +577,14 @@ class _$ProgramEpisodesErrorImpl implements _ProgramEpisodesError {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(Program? program, List<Track> episodes) data,
+    required TResult Function(
+      Program? program,
+      List<Track> episodes,
+      int page,
+      bool hasMore,
+      bool isLoadingMore,
+    )
+    data,
     required TResult Function(String message) error,
   }) {
     return error(message);
@@ -474,7 +594,14 @@ class _$ProgramEpisodesErrorImpl implements _ProgramEpisodesError {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function(Program? program, List<Track> episodes)? data,
+    TResult? Function(
+      Program? program,
+      List<Track> episodes,
+      int page,
+      bool hasMore,
+      bool isLoadingMore,
+    )?
+    data,
     TResult? Function(String message)? error,
   }) {
     return error?.call(message);
@@ -484,7 +611,14 @@ class _$ProgramEpisodesErrorImpl implements _ProgramEpisodesError {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(Program? program, List<Track> episodes)? data,
+    TResult Function(
+      Program? program,
+      List<Track> episodes,
+      int page,
+      bool hasMore,
+      bool isLoadingMore,
+    )?
+    data,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
