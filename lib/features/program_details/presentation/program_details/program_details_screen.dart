@@ -48,6 +48,30 @@ class _ProgramDetailsScreenState extends ConsumerState<ProgramDetailsScreen> {
   /// Guards the push-triggered auto-play so it fires at most once.
   bool _autoPlayHandled = false;
 
+  late final ScrollController _scrollController;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController()..addListener(_onScroll);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_onScroll);
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _onScroll() {
+    if (_scrollController.position.pixels >=
+        _scrollController.position.maxScrollExtent * 0.8) {
+      ref
+          .read(programDetailsControllerProvider(widget.programId).notifier)
+          .loadMore();
+    }
+  }
+
   void _onTrackTap(Program program, List<Track> episodes, int index) {
     ref
         .read(playerStateProvider.notifier)
@@ -99,7 +123,7 @@ class _ProgramDetailsScreenState extends ConsumerState<ProgramDetailsScreen> {
       ) {
         if (_autoPlayHandled) return;
         next.whenOrNull(
-          data: (program, episodes) {
+          data: (program, episodes, page, hasMore, isLoadingMore) {
             _autoPlayHandled = true; // one attempt, whatever the outcome
             if (program == null) return;
             final index = episodes.indexWhere(
@@ -137,7 +161,7 @@ class _ProgramDetailsScreenState extends ConsumerState<ProgramDetailsScreen> {
     // only for id-only opens (track options sheet). Null only while an
     // id-only load is still in flight.
     final loadedProgram = episodesState.whenOrNull(
-      data: (program, episodes) => program,
+      data: (program, episodes, page, hasMore, isLoadingMore) => program,
     );
     final program = widget.programHint ?? loadedProgram;
 
@@ -150,6 +174,7 @@ class _ProgramDetailsScreenState extends ConsumerState<ProgramDetailsScreen> {
       child: Scaffold(
         backgroundColor: DSColors.white,
         body: CustomScrollView(
+          controller: _scrollController,
           slivers: [
             SliverAppBar(
               expandedHeight: expandedHeight,
@@ -234,7 +259,7 @@ class _ProgramDetailsScreenState extends ConsumerState<ProgramDetailsScreen> {
                   ),
                 ),
               ),
-              data: (loadedProgram, episodes) {
+              data: (loadedProgram, episodes, page, hasMore, isLoadingMore) {
                 if (loadedProgram == null || episodes.isEmpty) {
                   return const SliverFillRemaining(
                     child: Center(child: Text('No episodes available')),
@@ -257,6 +282,15 @@ class _ProgramDetailsScreenState extends ConsumerState<ProgramDetailsScreen> {
                   ),
                   sliver: SliverList(
                     delegate: SliverChildBuilderDelegate((context, index) {
+                      // Next-page spinner: one extra row after the last
+                      // loaded episode, inside the list's bottom clearance.
+                      if (index == episodes.length) {
+                        return const Padding(
+                          padding: EdgeInsets.symmetric(vertical: DSSpacing.m),
+                          child: Center(child: CircularProgressIndicator()),
+                        );
+                      }
+
                       final episode = episodes[index];
                       final isCurrentTrack = episode.id == playingTrackId;
                       final bool? trackPlayingState = isCurrentTrack
@@ -284,7 +318,7 @@ class _ProgramDetailsScreenState extends ConsumerState<ProgramDetailsScreen> {
                             ),
                         ],
                       );
-                    }, childCount: episodes.length),
+                    }, childCount: episodes.length + (isLoadingMore ? 1 : 0)),
                   ),
                 );
               },

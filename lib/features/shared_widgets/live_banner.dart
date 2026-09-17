@@ -44,12 +44,12 @@ class LiveBanner extends StatelessWidget {
                       children: [
                         Text(
                           'Listen Live Now',
-                          style: context.h3?.copyWith(color: DSColors.white),
+                          style: context.h3?.copyWith(color: DSColors.gray70),
                         ),
                         // SizedBox(height: DSSpacing.xs),
                         Text(
                           'We Get the Cup',
-                          style: context.textL?.copyWith(color: DSColors.white),
+                          style: context.textL?.copyWith(color: DSColors.gray70),
                         ),
                       ],
                     ),

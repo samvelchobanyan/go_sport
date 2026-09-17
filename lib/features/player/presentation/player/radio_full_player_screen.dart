@@ -25,10 +25,8 @@ class RadioFullPlayerScreen extends ConsumerWidget {
       backgroundColor: DSColors.transparent,
       barrierColor: DSColors.black.withValues(alpha: 0.3),
       enableDrag: true,
-      builder: (_) => MediaQuery(
-        data: mq,
-        child: const RadioFullPlayerScreen(),
-      ),
+      builder: (_) =>
+          MediaQuery(data: mq, child: const RadioFullPlayerScreen()),
     );
   }
 
@@ -36,7 +34,7 @@ class RadioFullPlayerScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final radioTitle =
         ref.watch(playerInfoProvider.select((info) => info.radioTitle)) ??
-            'Radio Go Sport Live';
+        'GO. FM 96.3 Live';
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.dark,
@@ -95,7 +93,9 @@ class _TopBar extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(width: DSSpacing.xxl), // balances the leading IconButton
+          const SizedBox(
+            width: DSSpacing.xxl,
+          ), // balances the leading IconButton
         ],
       ),
     );
