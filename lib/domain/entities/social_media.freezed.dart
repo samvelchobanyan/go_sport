@@ -20,6 +20,10 @@ mixin _$SocialLinks {
   String? get youtubeUrl => throw _privateConstructorUsedError;
   String? get facebookUrl => throw _privateConstructorUsedError;
   String? get instagramUrl => throw _privateConstructorUsedError;
+  String? get phone => throw _privateConstructorUsedError;
+  String? get email => throw _privateConstructorUsedError;
+  String? get address => throw _privateConstructorUsedError;
+  String? get websiteUrl => throw _privateConstructorUsedError;
 
   /// Create a copy of SocialLinks
   /// with the given fields replaced by the non-null parameter values.
@@ -35,7 +39,15 @@ abstract class $SocialLinksCopyWith<$Res> {
     $Res Function(SocialLinks) then,
   ) = _$SocialLinksCopyWithImpl<$Res, SocialLinks>;
   @useResult
-  $Res call({String? youtubeUrl, String? facebookUrl, String? instagramUrl});
+  $Res call({
+    String? youtubeUrl,
+    String? facebookUrl,
+    String? instagramUrl,
+    String? phone,
+    String? email,
+    String? address,
+    String? websiteUrl,
+  });
 }
 
 /// @nodoc
@@ -56,6 +68,10 @@ class _$SocialLinksCopyWithImpl<$Res, $Val extends SocialLinks>
     Object? youtubeUrl = freezed,
     Object? facebookUrl = freezed,
     Object? instagramUrl = freezed,
+    Object? phone = freezed,
+    Object? email = freezed,
+    Object? address = freezed,
+    Object? websiteUrl = freezed,
   }) {
     return _then(
       _value.copyWith(
@@ -70,6 +86,22 @@ class _$SocialLinksCopyWithImpl<$Res, $Val extends SocialLinks>
             instagramUrl: freezed == instagramUrl
                 ? _value.instagramUrl
                 : instagramUrl // ignore: cast_nullable_to_non_nullable
+                      as String?,
+            phone: freezed == phone
+                ? _value.phone
+                : phone // ignore: cast_nullable_to_non_nullable
+                      as String?,
+            email: freezed == email
+                ? _value.email
+                : email // ignore: cast_nullable_to_non_nullable
+                      as String?,
+            address: freezed == address
+                ? _value.address
+                : address // ignore: cast_nullable_to_non_nullable
+                      as String?,
+            websiteUrl: freezed == websiteUrl
+                ? _value.websiteUrl
+                : websiteUrl // ignore: cast_nullable_to_non_nullable
                       as String?,
           )
           as $Val,
@@ -86,7 +118,15 @@ abstract class _$$SocialLinksImplCopyWith<$Res>
   ) = __$$SocialLinksImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String? youtubeUrl, String? facebookUrl, String? instagramUrl});
+  $Res call({
+    String? youtubeUrl,
+    String? facebookUrl,
+    String? instagramUrl,
+    String? phone,
+    String? email,
+    String? address,
+    String? websiteUrl,
+  });
 }
 
 /// @nodoc
@@ -106,6 +146,10 @@ class __$$SocialLinksImplCopyWithImpl<$Res>
     Object? youtubeUrl = freezed,
     Object? facebookUrl = freezed,
     Object? instagramUrl = freezed,
+    Object? phone = freezed,
+    Object? email = freezed,
+    Object? address = freezed,
+    Object? websiteUrl = freezed,
   }) {
     return _then(
       _$SocialLinksImpl(
@@ -121,6 +165,22 @@ class __$$SocialLinksImplCopyWithImpl<$Res>
             ? _value.instagramUrl
             : instagramUrl // ignore: cast_nullable_to_non_nullable
                   as String?,
+        phone: freezed == phone
+            ? _value.phone
+            : phone // ignore: cast_nullable_to_non_nullable
+                  as String?,
+        email: freezed == email
+            ? _value.email
+            : email // ignore: cast_nullable_to_non_nullable
+                  as String?,
+        address: freezed == address
+            ? _value.address
+            : address // ignore: cast_nullable_to_non_nullable
+                  as String?,
+        websiteUrl: freezed == websiteUrl
+            ? _value.websiteUrl
+            : websiteUrl // ignore: cast_nullable_to_non_nullable
+                  as String?,
       ),
     );
   }
@@ -133,6 +193,10 @@ class _$SocialLinksImpl implements _SocialLinks {
     this.youtubeUrl,
     this.facebookUrl,
     this.instagramUrl,
+    this.phone,
+    this.email,
+    this.address,
+    this.websiteUrl,
   });
 
   @override
@@ -141,10 +205,18 @@ class _$SocialLinksImpl implements _SocialLinks {
   final String? facebookUrl;
   @override
   final String? instagramUrl;
+  @override
+  final String? phone;
+  @override
+  final String? email;
+  @override
+  final String? address;
+  @override
+  final String? websiteUrl;
 
   @override
   String toString() {
-    return 'SocialLinks(youtubeUrl: $youtubeUrl, facebookUrl: $facebookUrl, instagramUrl: $instagramUrl)';
+    return 'SocialLinks(youtubeUrl: $youtubeUrl, facebookUrl: $facebookUrl, instagramUrl: $instagramUrl, phone: $phone, email: $email, address: $address, websiteUrl: $websiteUrl)';
   }
 
   @override
@@ -157,12 +229,25 @@ class _$SocialLinksImpl implements _SocialLinks {
             (identical(other.facebookUrl, facebookUrl) ||
                 other.facebookUrl == facebookUrl) &&
             (identical(other.instagramUrl, instagramUrl) ||
-                other.instagramUrl == instagramUrl));
+                other.instagramUrl == instagramUrl) &&
+            (identical(other.phone, phone) || other.phone == phone) &&
+            (identical(other.email, email) || other.email == email) &&
+            (identical(other.address, address) || other.address == address) &&
+            (identical(other.websiteUrl, websiteUrl) ||
+                other.websiteUrl == websiteUrl));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, youtubeUrl, facebookUrl, instagramUrl);
+  int get hashCode => Object.hash(
+    runtimeType,
+    youtubeUrl,
+    facebookUrl,
+    instagramUrl,
+    phone,
+    email,
+    address,
+    websiteUrl,
+  );
 
   /// Create a copy of SocialLinks
   /// with the given fields replaced by the non-null parameter values.
@@ -178,6 +263,10 @@ abstract class _SocialLinks implements SocialLinks {
     final String? youtubeUrl,
     final String? facebookUrl,
     final String? instagramUrl,
+    final String? phone,
+    final String? email,
+    final String? address,
+    final String? websiteUrl,
   }) = _$SocialLinksImpl;
 
   @override
@@ -186,6 +275,14 @@ abstract class _SocialLinks implements SocialLinks {
   String? get facebookUrl;
   @override
   String? get instagramUrl;
+  @override
+  String? get phone;
+  @override
+  String? get email;
+  @override
+  String? get address;
+  @override
+  String? get websiteUrl;
 
   /// Create a copy of SocialLinks
   /// with the given fields replaced by the non-null parameter values.

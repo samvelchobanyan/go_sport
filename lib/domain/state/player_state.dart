@@ -117,7 +117,6 @@ class PlayerState with _$PlayerState {
     // Radio
     String? radioTitle,
     String? radioStreamUrl,
-    String? radioImageUrl,
     String? radioNowPlaying, // "Artist - Song Name" from ICY metadata
 
     // Error
@@ -675,9 +674,8 @@ class PlayerNotifier extends Notifier<PlayerState> {
   /// Radio stream constants
   // static const _radioStreamUrl = 'https://ice1.somafm.com/groovesalad-128-mp3';
   static const _radioStreamUrl = 'https://gosport.webcaramba.com/gosport128.mp3';
-  static const _radioTitle = 'Go Sport Radio';
-  static const _radioImageUrl =
-      'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=300&q=80';
+  static const _radioTitle = 'GO. FM 96.3 Live';
+  static const radioCoverAsset = 'assets/images/radio_cover.png';
 
   /// Start playing radio stream
   Future<void> playRadio() async {
@@ -691,7 +689,6 @@ class PlayerNotifier extends Notifier<PlayerState> {
       mode: PlaybackMode.radio,
       radioTitle: _radioTitle,
       radioStreamUrl: _radioStreamUrl,
-      radioImageUrl: _radioImageUrl,
       status: PlayerStatus.loading,
       position: Duration.zero,
       radioNowPlaying: null,
@@ -703,7 +700,7 @@ class PlayerNotifier extends Notifier<PlayerState> {
       await _audioHandler.playRadioStream(
         url: _radioStreamUrl,
         title: _radioTitle,
-        imageUrl: _radioImageUrl,
+        artAsset: radioCoverAsset,
       );
     } catch (e) {
       state = state.copyWith(
