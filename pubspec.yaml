@@ -123,5 +123,10 @@ flutter:
 
         - family: Noah
           fonts:
-              - asset: assets/fonts/noah/Noh95_Am.ttf
+              - asset: assets/fonts/noah/Noh95_Am_NoCyrillic.ttf
                 weight: 500
+
+        - family: GolosText # Fallback для кириллицы в стилях Noah
+          fonts:
+              - asset: assets/fonts/golos/GolosText-Black.ttf
+                weight: 900
