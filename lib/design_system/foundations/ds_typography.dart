@@ -5,6 +5,7 @@ class DSTypography {
   // Крупный заголовок (например, на экране News или Home)
   static const TextStyle h1 = TextStyle(
     fontFamily: 'Noah',
+    fontFamilyFallback: ['GolosText'],
     fontSize: 28,
     fontWeight: FontWeight.w400,
     color: DSColors.black,
@@ -15,6 +16,7 @@ class DSTypography {
   // Заголовки разделов (Featured playlists, News)
   static const TextStyle h2 = TextStyle(
     fontFamily: 'Noah',
+    fontFamilyFallback: ['GolosText'],
     fontSize: 21,
     fontWeight: FontWeight.w500, // Noah Black файл с весом 500
     height: 1.19, // 25px / 21px
@@ -25,6 +27,7 @@ class DSTypography {
 
   static const TextStyle h3 = TextStyle(
     fontFamily: 'Noah',
+    fontFamilyFallback: ['GolosText'],
     fontSize: 18,
     fontWeight: FontWeight.w400,
     height: 1.22,

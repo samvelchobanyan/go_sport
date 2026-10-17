@@ -70,24 +70,26 @@ class AppAudioHandler extends BaseAudioHandler with QueueHandler, SeekHandler {
   /// command the player simultaneously.
   bool _loadingQueue = false;
 
-  /// file:// URI of the materialized [_noImageAsset]; null until first queue
-  /// load (or if materialization failed — then artUri just stays null).
-  Uri? _noImageArtUri;
+  /// file:// URIs of bundled artwork already materialized in this launch,
+  /// keyed by asset path.
+  final Map<String, Uri> _assetArtUris = {};
 
-  /// Copy [_noImageAsset] from the bundle to the app support directory once,
-  /// so the system player can read it via a file:// URI.
-  Future<void> _ensureNoImageArt() async {
-    if (_noImageArtUri != null) return;
+  /// Copy a bundled [asset] to the app support directory so the system player
+  /// can read it via a file:// URI. Rewritten once per launch, so an asset
+  /// replaced in a new release never leaves stale art on the lock screen.
+  /// Returns null if materialization failed — then artUri just stays null.
+  Future<Uri?> _assetArtUri(String asset) async {
+    final cached = _assetArtUris[asset];
+    if (cached != null) return cached;
     try {
       final dir = await getApplicationSupportDirectory();
-      final file = File('${dir.path}/noimage_lock_screen.png');
-      if (!await file.exists()) {
-        final bytes = await rootBundle.load(_noImageAsset);
-        await file.writeAsBytes(bytes.buffer.asUint8List());
-      }
-      _noImageArtUri = Uri.file(file.path);
+      final file = File('${dir.path}/${asset.split('/').last}');
+      final bytes = await rootBundle.load(asset);
+      await file.writeAsBytes(bytes.buffer.asUint8List());
+      return _assetArtUris[asset] = Uri.file(file.path);
     } catch (_) {
-      // Best-effort: no fallback art is better than a crash on queue load.
+      // Best-effort: no art is better than a crash on playback start.
+      return null;
     }
   }
 
@@ -231,7 +233,7 @@ class AppAudioHandler extends BaseAudioHandler with QueueHandler, SeekHandler {
   }) async {
     if (tracks.isEmpty) return;
 
-    await _ensureNoImageArt();
+    final noImageArt = await _assetArtUri(_noImageAsset);
 
     // 1. Create MediaItems
     final mediaItems = tracks.map((track) {
@@ -243,7 +245,7 @@ class AppAudioHandler extends BaseAudioHandler with QueueHandler, SeekHandler {
         duration: track.duration,
         artUri: _networkUri(track.imageUrl) ??
             _networkUri(fallbackArtUrl) ??
-            _noImageArtUri,
+            noImageArt,
         extras: {'audioUrl': track.audioUrl, 'imageUrl': track.imageUrl},
       );
     }).toList();
@@ -330,13 +332,14 @@ class AppAudioHandler extends BaseAudioHandler with QueueHandler, SeekHandler {
 
   // === Radio Stream ===
 
-  /// Play a live radio stream
+  /// Play a live radio stream. [artAsset] is the bundled station cover.
   Future<void> playRadioStream({
     required String url,
     required String title,
-    required String imageUrl,
+    required String artAsset,
   }) async {
-    await _ensureNoImageArt();
+    final artUri =
+        await _assetArtUri(artAsset) ?? await _assetArtUri(_noImageAsset);
 
     // 1. Clear system queue (radio has no queue)
     queue.add([]);
@@ -346,7 +349,7 @@ class AppAudioHandler extends BaseAudioHandler with QueueHandler, SeekHandler {
       id: 'radio',
       title: title,
       artist: 'Live',
-      artUri: _networkUri(imageUrl) ?? _noImageArtUri,
+      artUri: artUri,
       // duration is null for live streams
     ));
 

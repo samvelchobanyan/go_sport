@@ -23,7 +23,6 @@ class RadioPlayerUpperContent extends ConsumerWidget {
 
     final currentProgram = ref.watch(currentProgramProvider);
     final nowPlaying = _parseNowPlaying(info.radioNowPlaying);
-    final cardImageUrl = info.radioImageUrl ?? currentProgram?.imageUrl;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: DSSpacing.l),
@@ -57,7 +56,7 @@ class RadioPlayerUpperContent extends ConsumerWidget {
           ),
           const Spacer(),
           _NowPlayingCard(
-            imageUrl: cardImageUrl,
+            imageUrl: currentProgram?.imageUrl,
             title: nowPlaying.title,
             artist: nowPlaying.artist,
           ),
@@ -159,7 +158,13 @@ class _NowPlayingCard extends StatelessWidget {
             child: SizedBox(
               width: 36,
               height: 36,
-              child: DSNetworkImage(imageUrl: imageUrl),
+              // Program cover; station cover when the program has none
+              child: imageUrl != null
+                  ? DSNetworkImage(imageUrl: imageUrl)
+                  : Image.asset(
+                      PlayerNotifier.radioCoverAsset,
+                      fit: BoxFit.cover,
+                    ),
             ),
           ),
           const SizedBox(width: DSSpacing.s8),

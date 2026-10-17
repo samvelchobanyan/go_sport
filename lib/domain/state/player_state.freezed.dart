@@ -1402,7 +1402,6 @@ mixin _$PlayerState {
   List<int>? get shuffleIndices => throw _privateConstructorUsedError; // Radio
   String? get radioTitle => throw _privateConstructorUsedError;
   String? get radioStreamUrl => throw _privateConstructorUsedError;
-  String? get radioImageUrl => throw _privateConstructorUsedError;
   String? get radioNowPlaying =>
       throw _privateConstructorUsedError; // "Artist - Song Name" from ICY metadata
   // Error
@@ -1436,7 +1435,6 @@ abstract class $PlayerStateCopyWith<$Res> {
     List<int>? shuffleIndices,
     String? radioTitle,
     String? radioStreamUrl,
-    String? radioImageUrl,
     String? radioNowPlaying,
     String? errorMessage,
   });
@@ -1472,7 +1470,6 @@ class _$PlayerStateCopyWithImpl<$Res, $Val extends PlayerState>
     Object? shuffleIndices = freezed,
     Object? radioTitle = freezed,
     Object? radioStreamUrl = freezed,
-    Object? radioImageUrl = freezed,
     Object? radioNowPlaying = freezed,
     Object? errorMessage = freezed,
   }) {
@@ -1530,10 +1527,6 @@ class _$PlayerStateCopyWithImpl<$Res, $Val extends PlayerState>
                 ? _value.radioStreamUrl
                 : radioStreamUrl // ignore: cast_nullable_to_non_nullable
                       as String?,
-            radioImageUrl: freezed == radioImageUrl
-                ? _value.radioImageUrl
-                : radioImageUrl // ignore: cast_nullable_to_non_nullable
-                      as String?,
             radioNowPlaying: freezed == radioNowPlaying
                 ? _value.radioNowPlaying
                 : radioNowPlaying // ignore: cast_nullable_to_non_nullable
@@ -1585,7 +1578,6 @@ abstract class _$$PlayerStateImplCopyWith<$Res>
     List<int>? shuffleIndices,
     String? radioTitle,
     String? radioStreamUrl,
-    String? radioImageUrl,
     String? radioNowPlaying,
     String? errorMessage,
   });
@@ -1621,7 +1613,6 @@ class __$$PlayerStateImplCopyWithImpl<$Res>
     Object? shuffleIndices = freezed,
     Object? radioTitle = freezed,
     Object? radioStreamUrl = freezed,
-    Object? radioImageUrl = freezed,
     Object? radioNowPlaying = freezed,
     Object? errorMessage = freezed,
   }) {
@@ -1679,10 +1670,6 @@ class __$$PlayerStateImplCopyWithImpl<$Res>
             ? _value.radioStreamUrl
             : radioStreamUrl // ignore: cast_nullable_to_non_nullable
                   as String?,
-        radioImageUrl: freezed == radioImageUrl
-            ? _value.radioImageUrl
-            : radioImageUrl // ignore: cast_nullable_to_non_nullable
-                  as String?,
         radioNowPlaying: freezed == radioNowPlaying
             ? _value.radioNowPlaying
             : radioNowPlaying // ignore: cast_nullable_to_non_nullable
@@ -1713,7 +1700,6 @@ class _$PlayerStateImpl implements _PlayerState {
     final List<int>? shuffleIndices,
     this.radioTitle,
     this.radioStreamUrl,
-    this.radioImageUrl,
     this.radioNowPlaying,
     this.errorMessage,
   }) : _tracks = tracks,
@@ -1775,8 +1761,6 @@ class _$PlayerStateImpl implements _PlayerState {
   @override
   final String? radioStreamUrl;
   @override
-  final String? radioImageUrl;
-  @override
   final String? radioNowPlaying;
   // "Artist - Song Name" from ICY metadata
   // Error
@@ -1785,7 +1769,7 @@ class _$PlayerStateImpl implements _PlayerState {
 
   @override
   String toString() {
-    return 'PlayerState(mode: $mode, tracks: $tracks, currentIndex: $currentIndex, source: $source, status: $status, position: $position, bufferedPosition: $bufferedPosition, totalDuration: $totalDuration, shuffleEnabled: $shuffleEnabled, repeatMode: $repeatMode, shuffleIndices: $shuffleIndices, radioTitle: $radioTitle, radioStreamUrl: $radioStreamUrl, radioImageUrl: $radioImageUrl, radioNowPlaying: $radioNowPlaying, errorMessage: $errorMessage)';
+    return 'PlayerState(mode: $mode, tracks: $tracks, currentIndex: $currentIndex, source: $source, status: $status, position: $position, bufferedPosition: $bufferedPosition, totalDuration: $totalDuration, shuffleEnabled: $shuffleEnabled, repeatMode: $repeatMode, shuffleIndices: $shuffleIndices, radioTitle: $radioTitle, radioStreamUrl: $radioStreamUrl, radioNowPlaying: $radioNowPlaying, errorMessage: $errorMessage)';
   }
 
   @override
@@ -1817,8 +1801,6 @@ class _$PlayerStateImpl implements _PlayerState {
                 other.radioTitle == radioTitle) &&
             (identical(other.radioStreamUrl, radioStreamUrl) ||
                 other.radioStreamUrl == radioStreamUrl) &&
-            (identical(other.radioImageUrl, radioImageUrl) ||
-                other.radioImageUrl == radioImageUrl) &&
             (identical(other.radioNowPlaying, radioNowPlaying) ||
                 other.radioNowPlaying == radioNowPlaying) &&
             (identical(other.errorMessage, errorMessage) ||
@@ -1841,7 +1823,6 @@ class _$PlayerStateImpl implements _PlayerState {
     const DeepCollectionEquality().hash(_shuffleIndices),
     radioTitle,
     radioStreamUrl,
-    radioImageUrl,
     radioNowPlaying,
     errorMessage,
   );
@@ -1870,7 +1851,6 @@ abstract class _PlayerState implements PlayerState {
     final List<int>? shuffleIndices,
     final String? radioTitle,
     final String? radioStreamUrl,
-    final String? radioImageUrl,
     final String? radioNowPlaying,
     final String? errorMessage,
   }) = _$PlayerStateImpl;
@@ -1902,8 +1882,6 @@ abstract class _PlayerState implements PlayerState {
   String? get radioTitle;
   @override
   String? get radioStreamUrl;
-  @override
-  String? get radioImageUrl;
   @override
   String? get radioNowPlaying; // "Artist - Song Name" from ICY metadata
   // Error

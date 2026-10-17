@@ -6,17 +6,27 @@ import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 class ContactInfoItem extends StatelessWidget {
   final SvgPicture icon;
   final String text;
+  final VoidCallback? onTap;
 
-  const ContactInfoItem({super.key, required this.icon, required this.text});
+  const ContactInfoItem({
+    super.key,
+    required this.icon,
+    required this.text,
+    this.onTap,
+  });
   @override
   Widget build(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        icon,
-        const SizedBox(width: DSSpacing.s10),
-        Expanded(child: Text(text, style: context.subtitleM)),
-      ],
+    return GestureDetector(
+      onTap: onTap,
+      behavior: HitTestBehavior.opaque,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          icon,
+          const SizedBox(width: DSSpacing.s10),
+          Expanded(child: Text(text, style: context.subtitleM)),
+        ],
+      ),
     );
   }
 }

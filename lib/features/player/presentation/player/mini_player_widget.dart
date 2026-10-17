@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -409,10 +408,7 @@ class _MiniPlayerWidgetState extends ConsumerState<MiniPlayerWidget>
     final isRadioPlaying = isRadioMode && info.isPlaying;
     final isRadioLoading = isRadioMode && info.status == PlayerStatus.loading;
 
-    final radioTitle = info.radioTitle ?? 'Go Sport Radio';
-    final radioImageUrl =
-        info.radioImageUrl ??
-        'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=300&q=80';
+    final radioTitle = info.radioTitle ?? 'GO. FM 96.3 Live';
 
     return Padding(
       padding: const EdgeInsets.only(left: DSSpacing.s8, right: DSSpacing.s8),
@@ -426,7 +422,7 @@ class _MiniPlayerWidgetState extends ConsumerState<MiniPlayerWidget>
               color: DSColors.white,
               borderRadius: BorderRadius.circular(DSRadius.xs),
               image: DecorationImage(
-                image: CachedNetworkImageProvider(radioImageUrl),
+                image: AssetImage(PlayerNotifier.radioCoverAsset),
                 fit: BoxFit.cover,
               ),
             ),

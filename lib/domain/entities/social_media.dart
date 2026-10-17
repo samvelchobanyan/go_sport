@@ -8,5 +8,9 @@ class SocialLinks with _$SocialLinks {
     String? youtubeUrl,
     String? facebookUrl,
     String? instagramUrl,
+    String? phone,
+    String? email,
+    String? address,
+    String? websiteUrl,
   }) = _SocialLinks;
 }

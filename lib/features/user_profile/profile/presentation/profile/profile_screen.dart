@@ -17,6 +17,7 @@ import 'package:go_sport/features/user_profile/profile/presentation/widgets/cont
 import 'package:go_sport/features/shared_widgets/dotted_divider.dart';
 import 'package:go_sport/features/shared_widgets/user_avatar_button.dart';
 import 'package:go_router/go_router.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({super.key});
@@ -34,6 +35,14 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       ref.read(notificationsControllerProvider.notifier).getUnseenCount();
       ref.read(socialLinksControllerProvider.notifier).getSocialLinks();
     });
+  }
+
+  Future<void> _openWebsite(String url) async {
+    try {
+      await launchUrlString(url, mode: LaunchMode.externalApplication);
+    } catch (e) {
+      debugPrint('Could not launch website URL: $url — Error: $e');
+    }
   }
 
   @override
@@ -280,60 +289,70 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                       const DottedDivider(),
                       const SizedBox(height: DSSpacing.l),
 
-                      // Contact Us Container
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 22,
-                        ),
-                        decoration: BoxDecoration(
-                          color: DSColors.blue5,
-                          borderRadius: BorderRadius.circular(DSRadius.m),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Contact Us',
-                              style: context.textL?.copyWith(
-                                color: DSColors.blue,
+                      // Contact Us Container — appears once contacts are loaded
+                      if (socialLinks != null)
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 22,
+                          ),
+                          decoration: BoxDecoration(
+                            color: DSColors.blue5,
+                            borderRadius: BorderRadius.circular(DSRadius.m),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Contact Us',
+                                style: context.textL?.copyWith(
+                                  color: DSColors.blue,
+                                ),
                               ),
-                            ),
-                            const SizedBox(height: DSSpacing.s12),
-                            ContactInfoItem(
-                              icon: SvgPicture.asset(
-                                'assets/icons/pin.svg',
-                                width: 16,
-                              ),
-                              text: '0002 Yrevan, Hanrapetutyan street 4',
-                            ),
-                            const SizedBox(height: DSSpacing.s12),
-                            ContactInfoItem(
-                              icon: SvgPicture.asset(
-                                'assets/icons/phone.svg',
-                                width: 20,
-                              ),
-                              text: '+010 96 456 456',
-                            ),
-                            const SizedBox(height: DSSpacing.s12),
-                            ContactInfoItem(
-                              icon: SvgPicture.asset(
-                                'assets/icons/email.svg',
-                                width: 16,
-                              ),
-                              text: 'Info@gosport.fm',
-                            ),
-                            const SizedBox(height: DSSpacing.s12),
-                            ContactInfoItem(
-                              icon: SvgPicture.asset(
-                                'assets/icons/world.svg',
-                                width: 20,
-                              ),
-                              text: 'gosport.fm',
-                            ),
+                              if (socialLinks.address != null) ...[
+                                const SizedBox(height: DSSpacing.s12),
+                                ContactInfoItem(
+                                  icon: SvgPicture.asset(
+                                    'assets/icons/pin.svg',
+                                    width: 16,
+                                  ),
+                                  text: socialLinks.address!,
+                                ),
+                              ],
+                              if (socialLinks.phone != null) ...[
+                                const SizedBox(height: DSSpacing.s12),
+                                ContactInfoItem(
+                                  icon: SvgPicture.asset(
+                                    'assets/icons/phone.svg',
+                                    width: 20,
+                                  ),
+                                  text: socialLinks.phone!,
+                                ),
+                              ],
+                              if (socialLinks.email != null) ...[
+                                const SizedBox(height: DSSpacing.s12),
+                                ContactInfoItem(
+                                  icon: SvgPicture.asset(
+                                    'assets/icons/email.svg',
+                                    width: 16,
+                                  ),
+                                  text: socialLinks.email!,
+                                ),
+                              ],
+                              if (socialLinks.websiteUrl != null) ...[
+                                const SizedBox(height: DSSpacing.s12),
+                                ContactInfoItem(
+                                  icon: SvgPicture.asset(
+                                    'assets/icons/world.svg',
+                                    width: 20,
+                                  ),
+                                  text: socialLinks.websiteUrl!,
+                                  onTap: () =>
+                                      _openWebsite(socialLinks.websiteUrl!),
+                                ),
+                              ],
 
-                            // Social Media Icons
-                            if (socialLinks != null) ...[
+                              // Social Media Icons
                               const SizedBox(height: DSSpacing.l),
                               Text(
                                 'Social media',
@@ -345,9 +364,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
 
                               SocialMediaSection(socialLinks: socialLinks),
                             ],
-                          ],
+                          ),
                         ),
-                      ),
                       const SizedBox(height: DSSpacing.l),
                       DottedDivider(),
                       const SizedBox(height: DSSpacing.s14),
