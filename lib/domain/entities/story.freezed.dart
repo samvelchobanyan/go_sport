@@ -21,6 +21,7 @@ mixin _$Story {
   String get title => throw _privateConstructorUsedError;
   String get text => throw _privateConstructorUsedError;
   String get imageUrl => throw _privateConstructorUsedError;
+  String? get thumbnailUrl => throw _privateConstructorUsedError;
   bool get isViewed => throw _privateConstructorUsedError;
   String get ctaLabel => throw _privateConstructorUsedError;
   String get ctaTargetType => throw _privateConstructorUsedError;
@@ -42,6 +43,7 @@ abstract class $StoryCopyWith<$Res> {
     String title,
     String text,
     String imageUrl,
+    String? thumbnailUrl,
     bool isViewed,
     String ctaLabel,
     String ctaTargetType,
@@ -68,6 +70,7 @@ class _$StoryCopyWithImpl<$Res, $Val extends Story>
     Object? title = null,
     Object? text = null,
     Object? imageUrl = null,
+    Object? thumbnailUrl = freezed,
     Object? isViewed = null,
     Object? ctaLabel = null,
     Object? ctaTargetType = null,
@@ -91,6 +94,10 @@ class _$StoryCopyWithImpl<$Res, $Val extends Story>
                 ? _value.imageUrl
                 : imageUrl // ignore: cast_nullable_to_non_nullable
                       as String,
+            thumbnailUrl: freezed == thumbnailUrl
+                ? _value.thumbnailUrl
+                : thumbnailUrl // ignore: cast_nullable_to_non_nullable
+                      as String?,
             isViewed: null == isViewed
                 ? _value.isViewed
                 : isViewed // ignore: cast_nullable_to_non_nullable
@@ -126,6 +133,7 @@ abstract class _$$StoryImplCopyWith<$Res> implements $StoryCopyWith<$Res> {
     String title,
     String text,
     String imageUrl,
+    String? thumbnailUrl,
     bool isViewed,
     String ctaLabel,
     String ctaTargetType,
@@ -151,6 +159,7 @@ class __$$StoryImplCopyWithImpl<$Res>
     Object? title = null,
     Object? text = null,
     Object? imageUrl = null,
+    Object? thumbnailUrl = freezed,
     Object? isViewed = null,
     Object? ctaLabel = null,
     Object? ctaTargetType = null,
@@ -174,6 +183,10 @@ class __$$StoryImplCopyWithImpl<$Res>
             ? _value.imageUrl
             : imageUrl // ignore: cast_nullable_to_non_nullable
                   as String,
+        thumbnailUrl: freezed == thumbnailUrl
+            ? _value.thumbnailUrl
+            : thumbnailUrl // ignore: cast_nullable_to_non_nullable
+                  as String?,
         isViewed: null == isViewed
             ? _value.isViewed
             : isViewed // ignore: cast_nullable_to_non_nullable
@@ -203,6 +216,7 @@ class _$StoryImpl implements _Story {
     required this.title,
     required this.text,
     required this.imageUrl,
+    this.thumbnailUrl,
     this.isViewed = false,
     required this.ctaLabel,
     required this.ctaTargetType,
@@ -218,6 +232,8 @@ class _$StoryImpl implements _Story {
   @override
   final String imageUrl;
   @override
+  final String? thumbnailUrl;
+  @override
   @JsonKey()
   final bool isViewed;
   @override
@@ -229,7 +245,7 @@ class _$StoryImpl implements _Story {
 
   @override
   String toString() {
-    return 'Story(id: $id, title: $title, text: $text, imageUrl: $imageUrl, isViewed: $isViewed, ctaLabel: $ctaLabel, ctaTargetType: $ctaTargetType, ctaTargetId: $ctaTargetId)';
+    return 'Story(id: $id, title: $title, text: $text, imageUrl: $imageUrl, thumbnailUrl: $thumbnailUrl, isViewed: $isViewed, ctaLabel: $ctaLabel, ctaTargetType: $ctaTargetType, ctaTargetId: $ctaTargetId)';
   }
 
   @override
@@ -242,6 +258,8 @@ class _$StoryImpl implements _Story {
             (identical(other.text, text) || other.text == text) &&
             (identical(other.imageUrl, imageUrl) ||
                 other.imageUrl == imageUrl) &&
+            (identical(other.thumbnailUrl, thumbnailUrl) ||
+                other.thumbnailUrl == thumbnailUrl) &&
             (identical(other.isViewed, isViewed) ||
                 other.isViewed == isViewed) &&
             (identical(other.ctaLabel, ctaLabel) ||
@@ -259,6 +277,7 @@ class _$StoryImpl implements _Story {
     title,
     text,
     imageUrl,
+    thumbnailUrl,
     isViewed,
     ctaLabel,
     ctaTargetType,
@@ -280,6 +299,7 @@ abstract class _Story implements Story {
     required final String title,
     required final String text,
     required final String imageUrl,
+    final String? thumbnailUrl,
     final bool isViewed,
     required final String ctaLabel,
     required final String ctaTargetType,
@@ -294,6 +314,8 @@ abstract class _Story implements Story {
   String get text;
   @override
   String get imageUrl;
+  @override
+  String? get thumbnailUrl;
   @override
   bool get isViewed;
   @override

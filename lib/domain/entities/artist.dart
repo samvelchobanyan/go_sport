@@ -7,6 +7,7 @@ class Artist with _$Artist {
     required String id,
     required String artistName,
     required String imageUrl,
+    String? thumbnailUrl,
     String? likeId,
   }) = _Artist;
 }

@@ -8,6 +8,7 @@ class Album with _$Album {
     required String id,
     required String title,
     required String imageUrl,
+    String? thumbnailUrl,
     required String artist,
     String? artistId,
     required int trackCount,

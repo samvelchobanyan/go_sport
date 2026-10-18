@@ -130,6 +130,7 @@ class _StoryOverlayState extends ConsumerState<StoryOverlay>
             child: DSNetworkImage(
               key: ValueKey(story.id),
               imageUrl: story.imageUrl,
+              placeholderUrl: story.thumbnailUrl,
             ),
           ),
 

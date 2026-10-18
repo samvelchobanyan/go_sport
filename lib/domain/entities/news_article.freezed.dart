@@ -22,6 +22,7 @@ mixin _$NewsArticle {
   String? get subtitle => throw _privateConstructorUsedError;
   String get author => throw _privateConstructorUsedError;
   String get imageUrl => throw _privateConstructorUsedError;
+  String? get thumbnailUrl => throw _privateConstructorUsedError;
   DateTime get publishedAt => throw _privateConstructorUsedError;
   String get content => throw _privateConstructorUsedError;
   int get likesCount => throw _privateConstructorUsedError;
@@ -48,6 +49,7 @@ abstract class $NewsArticleCopyWith<$Res> {
     String? subtitle,
     String author,
     String imageUrl,
+    String? thumbnailUrl,
     DateTime publishedAt,
     String content,
     int likesCount,
@@ -76,6 +78,7 @@ class _$NewsArticleCopyWithImpl<$Res, $Val extends NewsArticle>
     Object? subtitle = freezed,
     Object? author = null,
     Object? imageUrl = null,
+    Object? thumbnailUrl = freezed,
     Object? publishedAt = null,
     Object? content = null,
     Object? likesCount = null,
@@ -104,6 +107,10 @@ class _$NewsArticleCopyWithImpl<$Res, $Val extends NewsArticle>
                 ? _value.imageUrl
                 : imageUrl // ignore: cast_nullable_to_non_nullable
                       as String,
+            thumbnailUrl: freezed == thumbnailUrl
+                ? _value.thumbnailUrl
+                : thumbnailUrl // ignore: cast_nullable_to_non_nullable
+                      as String?,
             publishedAt: null == publishedAt
                 ? _value.publishedAt
                 : publishedAt // ignore: cast_nullable_to_non_nullable
@@ -145,6 +152,7 @@ abstract class _$$NewsArticleImplCopyWith<$Res>
     String? subtitle,
     String author,
     String imageUrl,
+    String? thumbnailUrl,
     DateTime publishedAt,
     String content,
     int likesCount,
@@ -172,6 +180,7 @@ class __$$NewsArticleImplCopyWithImpl<$Res>
     Object? subtitle = freezed,
     Object? author = null,
     Object? imageUrl = null,
+    Object? thumbnailUrl = freezed,
     Object? publishedAt = null,
     Object? content = null,
     Object? likesCount = null,
@@ -200,6 +209,10 @@ class __$$NewsArticleImplCopyWithImpl<$Res>
             ? _value.imageUrl
             : imageUrl // ignore: cast_nullable_to_non_nullable
                   as String,
+        thumbnailUrl: freezed == thumbnailUrl
+            ? _value.thumbnailUrl
+            : thumbnailUrl // ignore: cast_nullable_to_non_nullable
+                  as String?,
         publishedAt: null == publishedAt
             ? _value.publishedAt
             : publishedAt // ignore: cast_nullable_to_non_nullable
@@ -234,6 +247,7 @@ class _$NewsArticleImpl implements _NewsArticle {
     this.subtitle,
     required this.author,
     required this.imageUrl,
+    this.thumbnailUrl,
     required this.publishedAt,
     required this.content,
     required this.likesCount,
@@ -252,6 +266,8 @@ class _$NewsArticleImpl implements _NewsArticle {
   @override
   final String imageUrl;
   @override
+  final String? thumbnailUrl;
+  @override
   final DateTime publishedAt;
   @override
   final String content;
@@ -264,7 +280,7 @@ class _$NewsArticleImpl implements _NewsArticle {
 
   @override
   String toString() {
-    return 'NewsArticle(id: $id, title: $title, subtitle: $subtitle, author: $author, imageUrl: $imageUrl, publishedAt: $publishedAt, content: $content, likesCount: $likesCount, isLiked: $isLiked, likeId: $likeId)';
+    return 'NewsArticle(id: $id, title: $title, subtitle: $subtitle, author: $author, imageUrl: $imageUrl, thumbnailUrl: $thumbnailUrl, publishedAt: $publishedAt, content: $content, likesCount: $likesCount, isLiked: $isLiked, likeId: $likeId)';
   }
 
   @override
@@ -279,6 +295,8 @@ class _$NewsArticleImpl implements _NewsArticle {
             (identical(other.author, author) || other.author == author) &&
             (identical(other.imageUrl, imageUrl) ||
                 other.imageUrl == imageUrl) &&
+            (identical(other.thumbnailUrl, thumbnailUrl) ||
+                other.thumbnailUrl == thumbnailUrl) &&
             (identical(other.publishedAt, publishedAt) ||
                 other.publishedAt == publishedAt) &&
             (identical(other.content, content) || other.content == content) &&
@@ -296,6 +314,7 @@ class _$NewsArticleImpl implements _NewsArticle {
     subtitle,
     author,
     imageUrl,
+    thumbnailUrl,
     publishedAt,
     content,
     likesCount,
@@ -319,6 +338,7 @@ abstract class _NewsArticle implements NewsArticle {
     final String? subtitle,
     required final String author,
     required final String imageUrl,
+    final String? thumbnailUrl,
     required final DateTime publishedAt,
     required final String content,
     required final int likesCount,
@@ -336,6 +356,8 @@ abstract class _NewsArticle implements NewsArticle {
   String get author;
   @override
   String get imageUrl;
+  @override
+  String? get thumbnailUrl;
   @override
   DateTime get publishedAt;
   @override

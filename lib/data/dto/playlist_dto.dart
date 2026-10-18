@@ -2,11 +2,20 @@ import 'package:go_sport/domain/entities/playlist.dart';
 
 class _CoverDto {
   final String url;
+  final String thumbnailUrl;
 
-  _CoverDto({required this.url});
+  _CoverDto({required this.url, required this.thumbnailUrl});
 
   factory _CoverDto.fromJson(Map<String, dynamic> json) {
-    return _CoverDto(url: json['url'] as String);
+    final url = json['url'] as String;
+    final formats = json['formats'] as Map<String, dynamic>?;
+    final small = formats?['small'] as Map<String, dynamic>?;
+    final thumbnail = formats?['thumbnail'] as Map<String, dynamic>?;
+    return _CoverDto(
+      url: url,
+      thumbnailUrl:
+          small?['url'] as String? ?? thumbnail?['url'] as String? ?? url,
+    );
   }
 }
 
@@ -48,6 +57,7 @@ class PlaylistDto {
       id: documentId,
       title: name,
       imageUrl: cover?.url ?? '',
+      thumbnailUrl: cover?.thumbnailUrl,
       trackCount: cnt,
       likeId: likeId,
       createdAt: createdAt,

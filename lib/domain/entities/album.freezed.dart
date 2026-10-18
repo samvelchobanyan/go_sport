@@ -20,6 +20,7 @@ mixin _$Album {
   String get id => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   String get imageUrl => throw _privateConstructorUsedError;
+  String? get thumbnailUrl => throw _privateConstructorUsedError;
   String get artist => throw _privateConstructorUsedError;
   String? get artistId => throw _privateConstructorUsedError;
   int get trackCount => throw _privateConstructorUsedError;
@@ -41,6 +42,7 @@ abstract class $AlbumCopyWith<$Res> {
     String id,
     String title,
     String imageUrl,
+    String? thumbnailUrl,
     String artist,
     String? artistId,
     int trackCount,
@@ -67,6 +69,7 @@ class _$AlbumCopyWithImpl<$Res, $Val extends Album>
     Object? id = null,
     Object? title = null,
     Object? imageUrl = null,
+    Object? thumbnailUrl = freezed,
     Object? artist = null,
     Object? artistId = freezed,
     Object? trackCount = null,
@@ -87,6 +90,10 @@ class _$AlbumCopyWithImpl<$Res, $Val extends Album>
                 ? _value.imageUrl
                 : imageUrl // ignore: cast_nullable_to_non_nullable
                       as String,
+            thumbnailUrl: freezed == thumbnailUrl
+                ? _value.thumbnailUrl
+                : thumbnailUrl // ignore: cast_nullable_to_non_nullable
+                      as String?,
             artist: null == artist
                 ? _value.artist
                 : artist // ignore: cast_nullable_to_non_nullable
@@ -125,6 +132,7 @@ abstract class _$$AlbumImplCopyWith<$Res> implements $AlbumCopyWith<$Res> {
     String id,
     String title,
     String imageUrl,
+    String? thumbnailUrl,
     String artist,
     String? artistId,
     int trackCount,
@@ -150,6 +158,7 @@ class __$$AlbumImplCopyWithImpl<$Res>
     Object? id = null,
     Object? title = null,
     Object? imageUrl = null,
+    Object? thumbnailUrl = freezed,
     Object? artist = null,
     Object? artistId = freezed,
     Object? trackCount = null,
@@ -170,6 +179,10 @@ class __$$AlbumImplCopyWithImpl<$Res>
             ? _value.imageUrl
             : imageUrl // ignore: cast_nullable_to_non_nullable
                   as String,
+        thumbnailUrl: freezed == thumbnailUrl
+            ? _value.thumbnailUrl
+            : thumbnailUrl // ignore: cast_nullable_to_non_nullable
+                  as String?,
         artist: null == artist
             ? _value.artist
             : artist // ignore: cast_nullable_to_non_nullable
@@ -202,6 +215,7 @@ class _$AlbumImpl implements _Album {
     required this.id,
     required this.title,
     required this.imageUrl,
+    this.thumbnailUrl,
     required this.artist,
     this.artistId,
     required this.trackCount,
@@ -216,6 +230,8 @@ class _$AlbumImpl implements _Album {
   @override
   final String imageUrl;
   @override
+  final String? thumbnailUrl;
+  @override
   final String artist;
   @override
   final String? artistId;
@@ -228,7 +244,7 @@ class _$AlbumImpl implements _Album {
 
   @override
   String toString() {
-    return 'Album(id: $id, title: $title, imageUrl: $imageUrl, artist: $artist, artistId: $artistId, trackCount: $trackCount, releaseYear: $releaseYear, likeId: $likeId)';
+    return 'Album(id: $id, title: $title, imageUrl: $imageUrl, thumbnailUrl: $thumbnailUrl, artist: $artist, artistId: $artistId, trackCount: $trackCount, releaseYear: $releaseYear, likeId: $likeId)';
   }
 
   @override
@@ -240,6 +256,8 @@ class _$AlbumImpl implements _Album {
             (identical(other.title, title) || other.title == title) &&
             (identical(other.imageUrl, imageUrl) ||
                 other.imageUrl == imageUrl) &&
+            (identical(other.thumbnailUrl, thumbnailUrl) ||
+                other.thumbnailUrl == thumbnailUrl) &&
             (identical(other.artist, artist) || other.artist == artist) &&
             (identical(other.artistId, artistId) ||
                 other.artistId == artistId) &&
@@ -256,6 +274,7 @@ class _$AlbumImpl implements _Album {
     id,
     title,
     imageUrl,
+    thumbnailUrl,
     artist,
     artistId,
     trackCount,
@@ -277,6 +296,7 @@ abstract class _Album implements Album {
     required final String id,
     required final String title,
     required final String imageUrl,
+    final String? thumbnailUrl,
     required final String artist,
     final String? artistId,
     required final int trackCount,
@@ -290,6 +310,8 @@ abstract class _Album implements Album {
   String get title;
   @override
   String get imageUrl;
+  @override
+  String? get thumbnailUrl;
   @override
   String get artist;
   @override

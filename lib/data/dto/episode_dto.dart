@@ -1,6 +1,17 @@
 import 'package:go_sport/domain/entities/track.dart';
 import 'package:go_sport/domain/entities/artist.dart';
 
+/// Smallest sensible Strapi format for list tiles: small -> thumbnail -> original.
+String? _thumbnailOf(Map<String, dynamic>? cover) {
+  if (cover == null) return null;
+  final formats = cover['formats'] as Map<String, dynamic>?;
+  final small = formats?['small'] as Map<String, dynamic>?;
+  final thumbnail = formats?['thumbnail'] as Map<String, dynamic>?;
+  return small?['url'] as String? ??
+      thumbnail?['url'] as String? ??
+      cover['url'] as String?;
+}
+
 class EpisodeDto {
   final String documentId;
   final String name;
@@ -10,6 +21,7 @@ class EpisodeDto {
   final String? programName;
   // final String? programCoverUrl;
   final String? coverUrl;
+  final String? coverThumbnailUrl;
   final DateTime? streamed;
   final String? likeId;
 
@@ -22,6 +34,7 @@ class EpisodeDto {
     this.programName,
     // this.programCoverUrl,
     this.coverUrl,
+    this.coverThumbnailUrl,
     this.streamed,
     this.likeId,
   });
@@ -42,6 +55,8 @@ class EpisodeDto {
     final coverUrl =
         (episodeCoverJson?['url'] as String?) ??
         (programCoverJson?['url'] as String?);
+    final coverThumbnailUrl =
+        _thumbnailOf(episodeCoverJson) ?? _thumbnailOf(programCoverJson);
 
     return EpisodeDto(
       documentId: json['documentId'] as String,
@@ -52,6 +67,7 @@ class EpisodeDto {
       programName: programJson?['Name'] as String?,
       // programCoverUrl: coverJson?['url'] as String?,
       coverUrl: coverUrl,
+      coverThumbnailUrl: coverThumbnailUrl,
       streamed: json['Streamed'] != null
           ? DateTime.parse(json['Streamed'] as String)
           : null,
@@ -66,6 +82,7 @@ class EpisodeDto {
               id: programId!,
               artistName: programName!,
               imageUrl: coverUrl ?? '',
+              thumbnailUrl: coverThumbnailUrl,
             )
           ]
         : [];
@@ -75,6 +92,7 @@ class EpisodeDto {
       title: name,
       artists: artists,
       imageUrl: coverUrl,
+      thumbnailUrl: coverThumbnailUrl,
       duration: Duration(seconds: length),
       audioUrl: fileUrl ?? '',
       programId: programId,

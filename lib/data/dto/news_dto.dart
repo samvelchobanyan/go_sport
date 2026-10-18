@@ -2,8 +2,9 @@ import 'package:go_sport/domain/entities/news_article.dart';
 
 class _CoverDto {
   final String url;
+  final String thumbnailUrl;
 
-  _CoverDto({required this.url});
+  _CoverDto({required this.url, required this.thumbnailUrl});
 
   factory _CoverDto.fromJson(Map<String, dynamic> json) {
     final url =
@@ -12,7 +13,15 @@ class _CoverDto {
             ? json['attributes']['url'] as String?
             : null);
 
-    return _CoverDto(url: url ?? '');
+    final formats = json['formats'] as Map<String, dynamic>?;
+    final small = formats?['small'] as Map<String, dynamic>?;
+    final thumbnail = formats?['thumbnail'] as Map<String, dynamic>?;
+
+    return _CoverDto(
+      url: url ?? '',
+      thumbnailUrl:
+          small?['url'] as String? ?? thumbnail?['url'] as String? ?? url ?? '',
+    );
   }
 }
 
@@ -87,6 +96,7 @@ class NewsDto {
           ? authorName!
           : 'Unknown',
       imageUrl: cover?.url ?? '',
+      thumbnailUrl: cover?.thumbnailUrl,
       // If publishedAt is null from API, defaults back to current time
       publishedAt: publishedAt ?? DateTime.now(),
       content: body,

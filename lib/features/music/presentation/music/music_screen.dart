@@ -271,6 +271,7 @@ class _MusicScreenState extends ConsumerState<MusicScreen> {
                                             artist:
                                                 featuredAlbums[index].artist,
                                             imageUrl:
+                                                featuredAlbums[index].thumbnailUrl ??
                                                 featuredAlbums[index].imageUrl,
                                             trackCount: featuredAlbums[index]
                                                 .trackCount,
@@ -326,6 +327,7 @@ class _MusicScreenState extends ConsumerState<MusicScreen> {
                                           name:
                                               featuredArtists[index].artistName,
                                           imageUrl:
+                                              featuredArtists[index].thumbnailUrl ??
                                               featuredArtists[index].imageUrl,
                                           onTap: () {
                                             context.push(

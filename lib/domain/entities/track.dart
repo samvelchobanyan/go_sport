@@ -10,6 +10,7 @@ class Track with _$Track {
     required String title,
     required List<Artist> artists,
     String? imageUrl,
+    String? thumbnailUrl,
     String? albumId,
     String? programId,
     required Duration duration,

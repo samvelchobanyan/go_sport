@@ -69,7 +69,7 @@ class EditTrackTile extends StatelessWidget {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(DSRadius.xs),
               child: DSNetworkImage(
-                imageUrl: track.imageUrl,
+                imageUrl: track.thumbnailUrl ?? track.imageUrl,
                 width: 48,
                 height: 48,
               ),

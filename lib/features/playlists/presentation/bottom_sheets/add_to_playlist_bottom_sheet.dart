@@ -252,7 +252,7 @@ class _PlaylistSelectionTile extends StatelessWidget {
                       fit: BoxFit.cover,
                     )
                   : DSNetworkImage(
-                      imageUrl: playlist.imageUrl,
+                      imageUrl: playlist.thumbnailUrl ?? playlist.imageUrl,
                       width: 50,
                       height: 50,
                     ),

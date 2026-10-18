@@ -135,6 +135,7 @@ class NewsDetailScreen extends ConsumerWidget {
                 borderRadius: BorderRadius.circular(DSRadius.s),
                 child: DSNetworkImage(
                   imageUrl: article.imageUrl,
+                  placeholderUrl: article.thumbnailUrl,
                   width: double.infinity,
                   height: 240,
                 ),

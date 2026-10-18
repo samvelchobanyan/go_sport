@@ -89,7 +89,7 @@ class MyProgramsScreen extends ConsumerWidget {
         itemBuilder: (context, index) {
           final program = programs[index];
           return ProgramTile(
-            imageUrl: program.imageUrl,
+            imageUrl: program.thumbnailUrl ?? program.imageUrl,
             title: program.title,
             episodeCount: program.episodeCount,
             topPadding: index == 0 ? 20 : 8,

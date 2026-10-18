@@ -27,6 +27,12 @@ class DSNetworkImage extends StatelessWidget {
   final int? memCacheWidth;
   final int? memCacheHeight;
 
+  /// Optional lighter version of the same image (usually a thumbnail that is
+  /// already in the cache from a list). Shown while [imageUrl] is loading
+  /// instead of the bundled placeholder. Ignored when null, empty or equal to
+  /// [imageUrl]. Load errors still fall back to the bundled placeholder.
+  final String? placeholderUrl;
+
   const DSNetworkImage({
     super.key,
     required this.imageUrl,
@@ -36,11 +42,16 @@ class DSNetworkImage extends StatelessWidget {
     this.borderRadius,
     this.memCacheWidth,
     this.memCacheHeight,
+    this.placeholderUrl,
   });
 
   @override
   Widget build(BuildContext context) {
     final hasUrl = imageUrl != null && imageUrl!.isNotEmpty;
+    final hasPlaceholderUrl =
+        placeholderUrl != null &&
+        placeholderUrl!.isNotEmpty &&
+        placeholderUrl != imageUrl;
 
     final Widget image = hasUrl
         ? CachedNetworkImage(
@@ -50,7 +61,8 @@ class DSNetworkImage extends StatelessWidget {
             fit: fit,
             memCacheWidth: memCacheWidth,
             memCacheHeight: memCacheHeight,
-            placeholder: (_, __) => _noImage(),
+            placeholder: (_, __) =>
+                hasPlaceholderUrl ? _placeholderImage() : _noImage(),
             errorWidget: (_, __, ___) => _noImage(),
           )
         : _noImage();
@@ -61,6 +73,17 @@ class DSNetworkImage extends StatelessWidget {
       child: image,
     );
   }
+
+  Widget _placeholderImage() => CachedNetworkImage(
+        imageUrl: placeholderUrl!,
+        width: width,
+        height: height,
+        fit: fit,
+        memCacheWidth: memCacheWidth,
+        memCacheHeight: memCacheHeight,
+        placeholder: (_, __) => _noImage(),
+        errorWidget: (_, __, ___) => _noImage(),
+      );
 
   Widget _noImage() => Image.asset(
         noImageAsset,

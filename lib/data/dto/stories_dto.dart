@@ -2,8 +2,9 @@ import 'package:go_sport/domain/entities/story.dart'; // Updated import to your 
 
 class _CoverDto {
   final String url;
+  final String thumbnailUrl;
 
-  _CoverDto({required this.url});
+  _CoverDto({required this.url, required this.thumbnailUrl});
 
   factory _CoverDto.fromJson(Map<String, dynamic> json) {
     // Falls back to formats if the top-level url isn't found (common in Strapi)
@@ -17,7 +18,14 @@ class _CoverDto {
             ? json['attributes']['url'] as String?
             : null);
 
-    return _CoverDto(url: url ?? '');
+    final small = formats?['small'] as Map<String, dynamic>?;
+    final thumbnail = formats?['thumbnail'] as Map<String, dynamic>?;
+
+    return _CoverDto(
+      url: url ?? '',
+      thumbnailUrl:
+          small?['url'] as String? ?? thumbnail?['url'] as String? ?? url ?? '',
+    );
   }
 }
 
@@ -71,6 +79,7 @@ class StoriesDto {
       title: title,
       text: body,
       imageUrl: cover?.url ?? '',
+      thumbnailUrl: cover?.thumbnailUrl,
       isViewed:
           false, // Defaulted as per your Freezed definition or local tracking
       ctaLabel: ctaLabel ?? '',

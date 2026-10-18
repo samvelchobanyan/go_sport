@@ -28,7 +28,9 @@ class PlaylistCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             MediaCardShell(
-              child: DSNetworkImage(imageUrl: playlist.imageUrl),
+              child: DSNetworkImage(
+                imageUrl: playlist.thumbnailUrl ?? playlist.imageUrl,
+              ),
             ),
             const SizedBox(height: DSSpacing.s6),
             Text(

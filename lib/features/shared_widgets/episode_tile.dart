@@ -72,7 +72,7 @@ class EpisodeTile extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(DSRadius.xs),
                   child: DSNetworkImage(
-                    imageUrl: episode.imageUrl,
+                    imageUrl: episode.thumbnailUrl ?? episode.imageUrl,
                     width: 48,
                     height: 48,
                   ),

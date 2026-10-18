@@ -34,7 +34,7 @@ class NewsItem extends StatelessWidget {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(DSRadius.s),
                 child: DSNetworkImage(
-                  imageUrl: article.imageUrl,
+                  imageUrl: article.thumbnailUrl ?? article.imageUrl,
                   width: 84,
                   height: 84,
                 ),

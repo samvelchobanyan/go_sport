@@ -89,7 +89,7 @@ class MyAlbumsScreen extends ConsumerWidget {
         itemBuilder: (context, index) {
           final album = albums[index];
           return AlbumTile(
-            imageUrl: album.imageUrl,
+            imageUrl: album.thumbnailUrl ?? album.imageUrl,
             albumName: album.title,
             artistName: album.artist,
             releaseYear: album.releaseYear,

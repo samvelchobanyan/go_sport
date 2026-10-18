@@ -21,6 +21,7 @@ mixin _$Track {
   String get title => throw _privateConstructorUsedError;
   List<Artist> get artists => throw _privateConstructorUsedError;
   String? get imageUrl => throw _privateConstructorUsedError;
+  String? get thumbnailUrl => throw _privateConstructorUsedError;
   String? get albumId => throw _privateConstructorUsedError;
   String? get programId => throw _privateConstructorUsedError;
   Duration get duration => throw _privateConstructorUsedError;
@@ -45,6 +46,7 @@ abstract class $TrackCopyWith<$Res> {
     String title,
     List<Artist> artists,
     String? imageUrl,
+    String? thumbnailUrl,
     String? albumId,
     String? programId,
     Duration duration,
@@ -74,6 +76,7 @@ class _$TrackCopyWithImpl<$Res, $Val extends Track>
     Object? title = null,
     Object? artists = null,
     Object? imageUrl = freezed,
+    Object? thumbnailUrl = freezed,
     Object? albumId = freezed,
     Object? programId = freezed,
     Object? duration = null,
@@ -99,6 +102,10 @@ class _$TrackCopyWithImpl<$Res, $Val extends Track>
             imageUrl: freezed == imageUrl
                 ? _value.imageUrl
                 : imageUrl // ignore: cast_nullable_to_non_nullable
+                      as String?,
+            thumbnailUrl: freezed == thumbnailUrl
+                ? _value.thumbnailUrl
+                : thumbnailUrl // ignore: cast_nullable_to_non_nullable
                       as String?,
             albumId: freezed == albumId
                 ? _value.albumId
@@ -147,6 +154,7 @@ abstract class _$$TrackImplCopyWith<$Res> implements $TrackCopyWith<$Res> {
     String title,
     List<Artist> artists,
     String? imageUrl,
+    String? thumbnailUrl,
     String? albumId,
     String? programId,
     Duration duration,
@@ -175,6 +183,7 @@ class __$$TrackImplCopyWithImpl<$Res>
     Object? title = null,
     Object? artists = null,
     Object? imageUrl = freezed,
+    Object? thumbnailUrl = freezed,
     Object? albumId = freezed,
     Object? programId = freezed,
     Object? duration = null,
@@ -200,6 +209,10 @@ class __$$TrackImplCopyWithImpl<$Res>
         imageUrl: freezed == imageUrl
             ? _value.imageUrl
             : imageUrl // ignore: cast_nullable_to_non_nullable
+                  as String?,
+        thumbnailUrl: freezed == thumbnailUrl
+            ? _value.thumbnailUrl
+            : thumbnailUrl // ignore: cast_nullable_to_non_nullable
                   as String?,
         albumId: freezed == albumId
             ? _value.albumId
@@ -242,6 +255,7 @@ class _$TrackImpl implements _Track {
     required this.title,
     required final List<Artist> artists,
     this.imageUrl,
+    this.thumbnailUrl,
     this.albumId,
     this.programId,
     required this.duration,
@@ -266,6 +280,8 @@ class _$TrackImpl implements _Track {
   @override
   final String? imageUrl;
   @override
+  final String? thumbnailUrl;
+  @override
   final String? albumId;
   @override
   final String? programId;
@@ -282,7 +298,7 @@ class _$TrackImpl implements _Track {
 
   @override
   String toString() {
-    return 'Track(id: $id, title: $title, artists: $artists, imageUrl: $imageUrl, albumId: $albumId, programId: $programId, duration: $duration, audioUrl: $audioUrl, releaseDate: $releaseDate, year: $year, likeId: $likeId)';
+    return 'Track(id: $id, title: $title, artists: $artists, imageUrl: $imageUrl, thumbnailUrl: $thumbnailUrl, albumId: $albumId, programId: $programId, duration: $duration, audioUrl: $audioUrl, releaseDate: $releaseDate, year: $year, likeId: $likeId)';
   }
 
   @override
@@ -295,6 +311,8 @@ class _$TrackImpl implements _Track {
             const DeepCollectionEquality().equals(other._artists, _artists) &&
             (identical(other.imageUrl, imageUrl) ||
                 other.imageUrl == imageUrl) &&
+            (identical(other.thumbnailUrl, thumbnailUrl) ||
+                other.thumbnailUrl == thumbnailUrl) &&
             (identical(other.albumId, albumId) || other.albumId == albumId) &&
             (identical(other.programId, programId) ||
                 other.programId == programId) &&
@@ -315,6 +333,7 @@ class _$TrackImpl implements _Track {
     title,
     const DeepCollectionEquality().hash(_artists),
     imageUrl,
+    thumbnailUrl,
     albumId,
     programId,
     duration,
@@ -339,6 +358,7 @@ abstract class _Track implements Track {
     required final String title,
     required final List<Artist> artists,
     final String? imageUrl,
+    final String? thumbnailUrl,
     final String? albumId,
     final String? programId,
     required final Duration duration,
@@ -356,6 +376,8 @@ abstract class _Track implements Track {
   List<Artist> get artists;
   @override
   String? get imageUrl;
+  @override
+  String? get thumbnailUrl;
   @override
   String? get albumId;
   @override

@@ -120,7 +120,7 @@ class RadioPageScreen extends ConsumerWidget {
                                       child: ProgramCard(
                                         id: program.id,
                                         title: program.title,
-                                        imageUrl: program.imageUrl,
+                                        imageUrl: program.thumbnailUrl ?? program.imageUrl,
                                         episodeCount: program.episodeCount,
                                         onTap: () => context.push(
                                           '/music/program/${program.id}',

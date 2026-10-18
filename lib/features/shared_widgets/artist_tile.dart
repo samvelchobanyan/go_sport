@@ -35,7 +35,7 @@ class ArtistTile extends StatelessWidget {
               decoration: BoxDecoration(shape: BoxShape.circle),
               child: ClipOval(
                 child: DSNetworkImage(
-                  imageUrl: artist.imageUrl,
+                  imageUrl: artist.thumbnailUrl ?? artist.imageUrl,
                   width: 72,
                   height: 72,
                 ),

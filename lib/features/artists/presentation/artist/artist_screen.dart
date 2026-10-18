@@ -289,7 +289,7 @@ class _ArtistScreenState extends ConsumerState<ArtistScreen> {
           mainAxisSize: MainAxisSize.min,
           children: [
             AlbumTile(
-              imageUrl: album.imageUrl,
+              imageUrl: album.thumbnailUrl ?? album.imageUrl,
               albumName: album.title,
               artistName: album.artist,
               releaseYear: album.releaseYear,

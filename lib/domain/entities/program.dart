@@ -8,6 +8,7 @@ class Program with _$Program {
     required String id,
     required String title,
     required String imageUrl,
+    String? thumbnailUrl,
     required int episodeCount,
     String? youtubeUrl,
     String? likeId,

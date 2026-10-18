@@ -660,7 +660,7 @@ class _AlbumRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlbumTile(
-      imageUrl: album.imageUrl,
+      imageUrl: album.thumbnailUrl ?? album.imageUrl,
       albumName: album.title,
       artistName: album.artist,
       releaseYear: album.releaseYear,
@@ -680,7 +680,7 @@ class _ProgramRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ProgramTile(
-      imageUrl: program.imageUrl,
+      imageUrl: program.thumbnailUrl ?? program.imageUrl,
       title: program.title,
       episodeCount: program.episodeCount,
       onTap: () {

@@ -20,6 +20,7 @@ mixin _$Program {
   String get id => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   String get imageUrl => throw _privateConstructorUsedError;
+  String? get thumbnailUrl => throw _privateConstructorUsedError;
   int get episodeCount => throw _privateConstructorUsedError;
   String? get youtubeUrl => throw _privateConstructorUsedError;
   String? get likeId => throw _privateConstructorUsedError;
@@ -39,6 +40,7 @@ abstract class $ProgramCopyWith<$Res> {
     String id,
     String title,
     String imageUrl,
+    String? thumbnailUrl,
     int episodeCount,
     String? youtubeUrl,
     String? likeId,
@@ -63,6 +65,7 @@ class _$ProgramCopyWithImpl<$Res, $Val extends Program>
     Object? id = null,
     Object? title = null,
     Object? imageUrl = null,
+    Object? thumbnailUrl = freezed,
     Object? episodeCount = null,
     Object? youtubeUrl = freezed,
     Object? likeId = freezed,
@@ -81,6 +84,10 @@ class _$ProgramCopyWithImpl<$Res, $Val extends Program>
                 ? _value.imageUrl
                 : imageUrl // ignore: cast_nullable_to_non_nullable
                       as String,
+            thumbnailUrl: freezed == thumbnailUrl
+                ? _value.thumbnailUrl
+                : thumbnailUrl // ignore: cast_nullable_to_non_nullable
+                      as String?,
             episodeCount: null == episodeCount
                 ? _value.episodeCount
                 : episodeCount // ignore: cast_nullable_to_non_nullable
@@ -111,6 +118,7 @@ abstract class _$$ProgramImplCopyWith<$Res> implements $ProgramCopyWith<$Res> {
     String id,
     String title,
     String imageUrl,
+    String? thumbnailUrl,
     int episodeCount,
     String? youtubeUrl,
     String? likeId,
@@ -134,6 +142,7 @@ class __$$ProgramImplCopyWithImpl<$Res>
     Object? id = null,
     Object? title = null,
     Object? imageUrl = null,
+    Object? thumbnailUrl = freezed,
     Object? episodeCount = null,
     Object? youtubeUrl = freezed,
     Object? likeId = freezed,
@@ -152,6 +161,10 @@ class __$$ProgramImplCopyWithImpl<$Res>
             ? _value.imageUrl
             : imageUrl // ignore: cast_nullable_to_non_nullable
                   as String,
+        thumbnailUrl: freezed == thumbnailUrl
+            ? _value.thumbnailUrl
+            : thumbnailUrl // ignore: cast_nullable_to_non_nullable
+                  as String?,
         episodeCount: null == episodeCount
             ? _value.episodeCount
             : episodeCount // ignore: cast_nullable_to_non_nullable
@@ -176,6 +189,7 @@ class _$ProgramImpl implements _Program {
     required this.id,
     required this.title,
     required this.imageUrl,
+    this.thumbnailUrl,
     required this.episodeCount,
     this.youtubeUrl,
     this.likeId,
@@ -188,6 +202,8 @@ class _$ProgramImpl implements _Program {
   @override
   final String imageUrl;
   @override
+  final String? thumbnailUrl;
+  @override
   final int episodeCount;
   @override
   final String? youtubeUrl;
@@ -196,7 +212,7 @@ class _$ProgramImpl implements _Program {
 
   @override
   String toString() {
-    return 'Program(id: $id, title: $title, imageUrl: $imageUrl, episodeCount: $episodeCount, youtubeUrl: $youtubeUrl, likeId: $likeId)';
+    return 'Program(id: $id, title: $title, imageUrl: $imageUrl, thumbnailUrl: $thumbnailUrl, episodeCount: $episodeCount, youtubeUrl: $youtubeUrl, likeId: $likeId)';
   }
 
   @override
@@ -208,6 +224,8 @@ class _$ProgramImpl implements _Program {
             (identical(other.title, title) || other.title == title) &&
             (identical(other.imageUrl, imageUrl) ||
                 other.imageUrl == imageUrl) &&
+            (identical(other.thumbnailUrl, thumbnailUrl) ||
+                other.thumbnailUrl == thumbnailUrl) &&
             (identical(other.episodeCount, episodeCount) ||
                 other.episodeCount == episodeCount) &&
             (identical(other.youtubeUrl, youtubeUrl) ||
@@ -221,6 +239,7 @@ class _$ProgramImpl implements _Program {
     id,
     title,
     imageUrl,
+    thumbnailUrl,
     episodeCount,
     youtubeUrl,
     likeId,
@@ -240,6 +259,7 @@ abstract class _Program implements Program {
     required final String id,
     required final String title,
     required final String imageUrl,
+    final String? thumbnailUrl,
     required final int episodeCount,
     final String? youtubeUrl,
     final String? likeId,
@@ -251,6 +271,8 @@ abstract class _Program implements Program {
   String get title;
   @override
   String get imageUrl;
+  @override
+  String? get thumbnailUrl;
   @override
   int get episodeCount;
   @override

@@ -24,7 +24,10 @@ class ArtistHero extends StatelessWidget {
     return Stack(
       fit: StackFit.expand,
       children: [
-        DSNetworkImage(imageUrl: artist.imageUrl),
+        DSNetworkImage(
+          imageUrl: artist.imageUrl,
+          placeholderUrl: artist.thumbnailUrl,
+        ),
 
         const DecoratedBox(
           decoration: BoxDecoration(

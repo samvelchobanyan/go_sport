@@ -20,6 +20,7 @@ mixin _$Artist {
   String get id => throw _privateConstructorUsedError;
   String get artistName => throw _privateConstructorUsedError;
   String get imageUrl => throw _privateConstructorUsedError;
+  String? get thumbnailUrl => throw _privateConstructorUsedError;
   String? get likeId => throw _privateConstructorUsedError;
 
   /// Create a copy of Artist
@@ -33,7 +34,13 @@ abstract class $ArtistCopyWith<$Res> {
   factory $ArtistCopyWith(Artist value, $Res Function(Artist) then) =
       _$ArtistCopyWithImpl<$Res, Artist>;
   @useResult
-  $Res call({String id, String artistName, String imageUrl, String? likeId});
+  $Res call({
+    String id,
+    String artistName,
+    String imageUrl,
+    String? thumbnailUrl,
+    String? likeId,
+  });
 }
 
 /// @nodoc
@@ -54,6 +61,7 @@ class _$ArtistCopyWithImpl<$Res, $Val extends Artist>
     Object? id = null,
     Object? artistName = null,
     Object? imageUrl = null,
+    Object? thumbnailUrl = freezed,
     Object? likeId = freezed,
   }) {
     return _then(
@@ -70,6 +78,10 @@ class _$ArtistCopyWithImpl<$Res, $Val extends Artist>
                 ? _value.imageUrl
                 : imageUrl // ignore: cast_nullable_to_non_nullable
                       as String,
+            thumbnailUrl: freezed == thumbnailUrl
+                ? _value.thumbnailUrl
+                : thumbnailUrl // ignore: cast_nullable_to_non_nullable
+                      as String?,
             likeId: freezed == likeId
                 ? _value.likeId
                 : likeId // ignore: cast_nullable_to_non_nullable
@@ -88,7 +100,13 @@ abstract class _$$ArtistImplCopyWith<$Res> implements $ArtistCopyWith<$Res> {
   ) = __$$ArtistImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String id, String artistName, String imageUrl, String? likeId});
+  $Res call({
+    String id,
+    String artistName,
+    String imageUrl,
+    String? thumbnailUrl,
+    String? likeId,
+  });
 }
 
 /// @nodoc
@@ -108,6 +126,7 @@ class __$$ArtistImplCopyWithImpl<$Res>
     Object? id = null,
     Object? artistName = null,
     Object? imageUrl = null,
+    Object? thumbnailUrl = freezed,
     Object? likeId = freezed,
   }) {
     return _then(
@@ -124,6 +143,10 @@ class __$$ArtistImplCopyWithImpl<$Res>
             ? _value.imageUrl
             : imageUrl // ignore: cast_nullable_to_non_nullable
                   as String,
+        thumbnailUrl: freezed == thumbnailUrl
+            ? _value.thumbnailUrl
+            : thumbnailUrl // ignore: cast_nullable_to_non_nullable
+                  as String?,
         likeId: freezed == likeId
             ? _value.likeId
             : likeId // ignore: cast_nullable_to_non_nullable
@@ -140,6 +163,7 @@ class _$ArtistImpl implements _Artist {
     required this.id,
     required this.artistName,
     required this.imageUrl,
+    this.thumbnailUrl,
     this.likeId,
   });
 
@@ -150,11 +174,13 @@ class _$ArtistImpl implements _Artist {
   @override
   final String imageUrl;
   @override
+  final String? thumbnailUrl;
+  @override
   final String? likeId;
 
   @override
   String toString() {
-    return 'Artist(id: $id, artistName: $artistName, imageUrl: $imageUrl, likeId: $likeId)';
+    return 'Artist(id: $id, artistName: $artistName, imageUrl: $imageUrl, thumbnailUrl: $thumbnailUrl, likeId: $likeId)';
   }
 
   @override
@@ -167,12 +193,14 @@ class _$ArtistImpl implements _Artist {
                 other.artistName == artistName) &&
             (identical(other.imageUrl, imageUrl) ||
                 other.imageUrl == imageUrl) &&
+            (identical(other.thumbnailUrl, thumbnailUrl) ||
+                other.thumbnailUrl == thumbnailUrl) &&
             (identical(other.likeId, likeId) || other.likeId == likeId));
   }
 
   @override
   int get hashCode =>
-      Object.hash(runtimeType, id, artistName, imageUrl, likeId);
+      Object.hash(runtimeType, id, artistName, imageUrl, thumbnailUrl, likeId);
 
   /// Create a copy of Artist
   /// with the given fields replaced by the non-null parameter values.
@@ -188,6 +216,7 @@ abstract class _Artist implements Artist {
     required final String id,
     required final String artistName,
     required final String imageUrl,
+    final String? thumbnailUrl,
     final String? likeId,
   }) = _$ArtistImpl;
 
@@ -197,6 +226,8 @@ abstract class _Artist implements Artist {
   String get artistName;
   @override
   String get imageUrl;
+  @override
+  String? get thumbnailUrl;
   @override
   String? get likeId;
 

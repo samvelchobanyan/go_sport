@@ -9,6 +9,7 @@ class Story with _$Story {
     required String title,
     required String text,
     required String imageUrl,
+    String? thumbnailUrl,
     @Default(false) bool isViewed,
     required String ctaLabel,
     required String ctaTargetType,

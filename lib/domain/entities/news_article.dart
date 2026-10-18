@@ -10,6 +10,7 @@ class NewsArticle with _$NewsArticle {
     String? subtitle,
     required String author,
     required String imageUrl,
+    String? thumbnailUrl,
     required DateTime publishedAt,
     required String content,
     required int likesCount,

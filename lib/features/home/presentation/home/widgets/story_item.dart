@@ -42,7 +42,9 @@ class StoryItem extends StatelessWidget {
               width: 62, // 72 - 2*(outerRing 2 + whiteRing 3) = 62
               height: 62,
               child: ClipOval(
-                child: DSNetworkImage(imageUrl: story.imageUrl),
+                child: DSNetworkImage(
+                  imageUrl: story.thumbnailUrl ?? story.imageUrl,
+                ),
               ),
             ),
           ),

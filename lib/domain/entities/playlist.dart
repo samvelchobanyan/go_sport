@@ -10,6 +10,7 @@ class Playlist with _$Playlist {
     required String id,
     required String title,
     required String imageUrl,
+    String? thumbnailUrl,
     required int trackCount,
     @Default([]) List<String> trackDocIds,
     @Default(PlaylistType.featured) PlaylistType type,

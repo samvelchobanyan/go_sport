@@ -17,12 +17,14 @@ class _ArtistDto {
   final String documentId;
   final String name;
   final String? imageUrl;
+  final String? thumbnailUrl;
   final String? likeId;
 
   _ArtistDto({
     required this.documentId,
     required this.name,
     this.imageUrl,
+    this.thumbnailUrl,
     this.likeId,
   });
 
@@ -34,6 +36,9 @@ class _ArtistDto {
       documentId: json['documentId'] as String,
       name: json['Name'] as String,
       imageUrl: coverJson != null ? _CoverDto.fromJson(coverJson).url : null,
+      thumbnailUrl: coverJson != null
+          ? _CoverDto.fromJson(coverJson).thumbnailUrl
+          : null,
       likeId: likeJson?['documentId'] as String?,
     );
   }
@@ -42,17 +47,27 @@ class _ArtistDto {
     id: documentId,
     artistName: name,
     imageUrl: imageUrl ?? '',
+    thumbnailUrl: thumbnailUrl,
     likeId: likeId,
   );
 }
 
 class _CoverDto {
   final String url;
+  final String thumbnailUrl;
 
-  _CoverDto({required this.url});
+  _CoverDto({required this.url, required this.thumbnailUrl});
 
   factory _CoverDto.fromJson(Map<String, dynamic> json) {
-    return _CoverDto(url: json['url'] as String);
+    final url = json['url'] as String;
+    final formats = json['formats'] as Map<String, dynamic>?;
+    final small = formats?['small'] as Map<String, dynamic>?;
+    final thumbnail = formats?['thumbnail'] as Map<String, dynamic>?;
+    return _CoverDto(
+      url: url,
+      thumbnailUrl:
+          small?['url'] as String? ?? thumbnail?['url'] as String? ?? url,
+    );
   }
 }
 
@@ -63,7 +78,9 @@ class TrackDto {
   final _FileDto? file;
   final List<_ArtistDto> artists;
   final String? coverUrl;
+  final String? coverThumbnailUrl;
   final String? albumCoverUrl;
+  final String? albumCoverThumbnailUrl;
   final String? albumId;
   final int? year;
   final String? likeId;
@@ -75,7 +92,9 @@ class TrackDto {
     required this.file,
     required this.artists,
     this.coverUrl,
+    this.coverThumbnailUrl,
     this.albumCoverUrl,
+    this.albumCoverThumbnailUrl,
     this.albumId,
     this.year,
     this.likeId,
@@ -100,8 +119,14 @@ class TrackDto {
               .toList() ??
           [],
       coverUrl: coverJson != null ? _CoverDto.fromJson(coverJson).url : null,
+      coverThumbnailUrl: coverJson != null
+          ? _CoverDto.fromJson(coverJson).thumbnailUrl
+          : null,
       albumCoverUrl: albumCoverJson != null
           ? _CoverDto.fromJson(albumCoverJson).url
+          : null,
+      albumCoverThumbnailUrl: albumCoverJson != null
+          ? _CoverDto.fromJson(albumCoverJson).thumbnailUrl
           : null,
       albumId: album?['documentId'] as String?,
       year: json['Year'] as int?,
@@ -116,6 +141,7 @@ class TrackDto {
       title: name,
       artists: artists.map((a) => a.toDomain()).toList(),
       imageUrl: coverUrl ?? albumCoverUrl,
+      thumbnailUrl: coverThumbnailUrl ?? albumCoverThumbnailUrl,
       duration: Duration(seconds: length),
       audioUrl: file?.url ?? '',
       albumId: albumId,

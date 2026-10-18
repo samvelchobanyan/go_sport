@@ -34,7 +34,10 @@ class AlbumHero extends StatelessWidget {
       fit: StackFit.expand,
       children: [
         // Background image
-        DSNetworkImage(imageUrl: album.imageUrl),
+        DSNetworkImage(
+          imageUrl: album.imageUrl,
+          placeholderUrl: album.thumbnailUrl,
+        ),
 
         // Gradient overlay
         const DecoratedBox(

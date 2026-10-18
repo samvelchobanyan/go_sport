@@ -2,11 +2,20 @@ import 'package:go_sport/domain/entities/album.dart';
 
 class _CoverDto {
   final String url;
+  final String thumbnailUrl;
 
-  _CoverDto({required this.url});
+  _CoverDto({required this.url, required this.thumbnailUrl});
 
   factory _CoverDto.fromJson(Map<String, dynamic> json) {
-    return _CoverDto(url: json['url'] as String);
+    final url = json['url'] as String;
+    final formats = json['formats'] as Map<String, dynamic>?;
+    final small = formats?['small'] as Map<String, dynamic>?;
+    final thumbnail = formats?['thumbnail'] as Map<String, dynamic>?;
+    return _CoverDto(
+      url: url,
+      thumbnailUrl:
+          small?['url'] as String? ?? thumbnail?['url'] as String? ?? url,
+    );
   }
 }
 
@@ -30,6 +39,7 @@ class AlbumDto {
   final String artist;
   final String? artistId;
   final String coverUrl;
+  final String? coverThumbnailUrl;
   final int cnt;
   final int year;
   final String? likeId;
@@ -40,6 +50,7 @@ class AlbumDto {
     required this.artist,
     required this.artistId,
     required this.coverUrl,
+    this.coverThumbnailUrl,
     required this.cnt,
     required this.year,
     this.likeId,
@@ -57,6 +68,9 @@ class AlbumDto {
       artist: artist?.name ?? '',
       artistId: artist?.documentId,
       coverUrl: coverJson != null ? _CoverDto.fromJson(coverJson).url : '',
+      coverThumbnailUrl: coverJson != null
+          ? _CoverDto.fromJson(coverJson).thumbnailUrl
+          : null,
       cnt: json['cnt'] as int? ?? 0,
       year: json['Year'] as int? ?? 0,
       likeId: likeJson?['documentId'] as String?,
@@ -70,6 +84,7 @@ class AlbumDto {
       artist: artist,
       artistId: artistId,
       imageUrl: coverUrl,
+      thumbnailUrl: coverThumbnailUrl,
       trackCount: cnt,
       releaseYear: year.toString(),
       likeId: likeId,

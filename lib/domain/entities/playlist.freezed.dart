@@ -20,6 +20,7 @@ mixin _$Playlist {
   String get id => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   String get imageUrl => throw _privateConstructorUsedError;
+  String? get thumbnailUrl => throw _privateConstructorUsedError;
   int get trackCount => throw _privateConstructorUsedError;
   List<String> get trackDocIds => throw _privateConstructorUsedError;
   PlaylistType get type => throw _privateConstructorUsedError;
@@ -46,6 +47,7 @@ abstract class $PlaylistCopyWith<$Res> {
     String id,
     String title,
     String imageUrl,
+    String? thumbnailUrl,
     int trackCount,
     List<String> trackDocIds,
     PlaylistType type,
@@ -72,6 +74,7 @@ class _$PlaylistCopyWithImpl<$Res, $Val extends Playlist>
     Object? id = null,
     Object? title = null,
     Object? imageUrl = null,
+    Object? thumbnailUrl = freezed,
     Object? trackCount = null,
     Object? trackDocIds = null,
     Object? type = null,
@@ -92,6 +95,10 @@ class _$PlaylistCopyWithImpl<$Res, $Val extends Playlist>
                 ? _value.imageUrl
                 : imageUrl // ignore: cast_nullable_to_non_nullable
                       as String,
+            thumbnailUrl: freezed == thumbnailUrl
+                ? _value.thumbnailUrl
+                : thumbnailUrl // ignore: cast_nullable_to_non_nullable
+                      as String?,
             trackCount: null == trackCount
                 ? _value.trackCount
                 : trackCount // ignore: cast_nullable_to_non_nullable
@@ -131,6 +138,7 @@ abstract class _$$PlaylistImplCopyWith<$Res>
     String id,
     String title,
     String imageUrl,
+    String? thumbnailUrl,
     int trackCount,
     List<String> trackDocIds,
     PlaylistType type,
@@ -156,6 +164,7 @@ class __$$PlaylistImplCopyWithImpl<$Res>
     Object? id = null,
     Object? title = null,
     Object? imageUrl = null,
+    Object? thumbnailUrl = freezed,
     Object? trackCount = null,
     Object? trackDocIds = null,
     Object? type = null,
@@ -176,6 +185,10 @@ class __$$PlaylistImplCopyWithImpl<$Res>
             ? _value.imageUrl
             : imageUrl // ignore: cast_nullable_to_non_nullable
                   as String,
+        thumbnailUrl: freezed == thumbnailUrl
+            ? _value.thumbnailUrl
+            : thumbnailUrl // ignore: cast_nullable_to_non_nullable
+                  as String?,
         trackCount: null == trackCount
             ? _value.trackCount
             : trackCount // ignore: cast_nullable_to_non_nullable
@@ -208,6 +221,7 @@ class _$PlaylistImpl implements _Playlist {
     required this.id,
     required this.title,
     required this.imageUrl,
+    this.thumbnailUrl,
     required this.trackCount,
     final List<String> trackDocIds = const [],
     this.type = PlaylistType.featured,
@@ -221,6 +235,8 @@ class _$PlaylistImpl implements _Playlist {
   final String title;
   @override
   final String imageUrl;
+  @override
+  final String? thumbnailUrl;
   @override
   final int trackCount;
   final List<String> _trackDocIds;
@@ -246,7 +262,7 @@ class _$PlaylistImpl implements _Playlist {
 
   @override
   String toString() {
-    return 'Playlist(id: $id, title: $title, imageUrl: $imageUrl, trackCount: $trackCount, trackDocIds: $trackDocIds, type: $type, likeId: $likeId, createdAt: $createdAt)';
+    return 'Playlist(id: $id, title: $title, imageUrl: $imageUrl, thumbnailUrl: $thumbnailUrl, trackCount: $trackCount, trackDocIds: $trackDocIds, type: $type, likeId: $likeId, createdAt: $createdAt)';
   }
 
   @override
@@ -258,6 +274,8 @@ class _$PlaylistImpl implements _Playlist {
             (identical(other.title, title) || other.title == title) &&
             (identical(other.imageUrl, imageUrl) ||
                 other.imageUrl == imageUrl) &&
+            (identical(other.thumbnailUrl, thumbnailUrl) ||
+                other.thumbnailUrl == thumbnailUrl) &&
             (identical(other.trackCount, trackCount) ||
                 other.trackCount == trackCount) &&
             const DeepCollectionEquality().equals(
@@ -276,6 +294,7 @@ class _$PlaylistImpl implements _Playlist {
     id,
     title,
     imageUrl,
+    thumbnailUrl,
     trackCount,
     const DeepCollectionEquality().hash(_trackDocIds),
     type,
@@ -297,6 +316,7 @@ abstract class _Playlist implements Playlist {
     required final String id,
     required final String title,
     required final String imageUrl,
+    final String? thumbnailUrl,
     required final int trackCount,
     final List<String> trackDocIds,
     final PlaylistType type,
@@ -310,6 +330,8 @@ abstract class _Playlist implements Playlist {
   String get title;
   @override
   String get imageUrl;
+  @override
+  String? get thumbnailUrl;
   @override
   int get trackCount;
   @override

@@ -39,7 +39,10 @@ class PlaylistHero extends StatelessWidget {
                 'assets/images/custom_playlist_cover.png',
                 fit: BoxFit.cover,
               )
-            : DSNetworkImage(imageUrl: playlist.imageUrl),
+            : DSNetworkImage(
+                imageUrl: playlist.imageUrl,
+                placeholderUrl: playlist.thumbnailUrl,
+              ),
 
         // Gradient overlay
         const DecoratedBox(
