@@ -1,7 +1,7 @@
 name: go_sport
 description: "A new Flutter project."
 publish_to: "none"
-version: 0.1.1+29
+version: 0.1.1+30
 
 environment:
     sdk: ^3.9.2
@@ -123,7 +123,7 @@ flutter:
 
         - family: Noah
           fonts:
-              - asset: assets/fonts/noah/Noh95_Am_NoCyrillic.ttf
+              - asset: assets/fonts/noah/NoahBlackExt.ttf
                 weight: 500
 
         - family: GolosText # Fallback для кириллицы в стилях Noah
