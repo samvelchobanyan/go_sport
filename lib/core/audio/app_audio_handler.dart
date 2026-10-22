@@ -239,7 +239,7 @@ class AppAudioHandler extends BaseAudioHandler with QueueHandler, SeekHandler {
     final mediaItems = tracks.map((track) {
       return MediaItem(
         id: track.id,
-        album: 'Go Sport Music',
+        album: 'Go Spot Music',
         title: track.title,
         artist: track.displayArtistName,
         duration: track.duration,
