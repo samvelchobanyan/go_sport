@@ -28,9 +28,10 @@ class DSNetworkImage extends StatelessWidget {
   final int? memCacheHeight;
 
   /// Optional lighter version of the same image (usually a thumbnail that is
-  /// already in the cache from a list). Shown while [imageUrl] is loading
-  /// instead of the bundled placeholder. Ignored when null, empty or equal to
-  /// [imageUrl]. Load errors still fall back to the bundled placeholder.
+  /// already in the cache from a list). It stays fully opaque underneath while
+  /// [imageUrl] fades in on top, so the image sharpens instead of flashing; if
+  /// [imageUrl] fails, the thumbnail remains. Ignored when null, empty or equal
+  /// to [imageUrl].
   final String? placeholderUrl;
 
   const DSNetworkImage({
@@ -53,19 +54,42 @@ class DSNetworkImage extends StatelessWidget {
         placeholderUrl!.isNotEmpty &&
         placeholderUrl != imageUrl;
 
-    final Widget image = hasUrl
-        ? CachedNetworkImage(
+    final Widget image;
+    if (!hasUrl) {
+      image = _noImage();
+    } else if (hasPlaceholderUrl) {
+      // Layered, not swapped: CachedNetworkImage cross-fades placeholder out
+      // and image in at the same time, and mid-way both are semi-transparent,
+      // so the background flashes through. Keeping the thumbnail opaque below
+      // the fading-in original removes that dip.
+      image = Stack(
+        fit: StackFit.passthrough,
+        children: [
+          _placeholderImage(),
+          CachedNetworkImage(
             imageUrl: imageUrl!,
             width: width,
             height: height,
             fit: fit,
             memCacheWidth: memCacheWidth,
             memCacheHeight: memCacheHeight,
-            placeholder: (_, __) =>
-                hasPlaceholderUrl ? _placeholderImage() : _noImage(),
-            errorWidget: (_, __, ___) => _noImage(),
-          )
-        : _noImage();
+            placeholder: (_, __) => const SizedBox.shrink(),
+            errorWidget: (_, __, ___) => const SizedBox.shrink(),
+          ),
+        ],
+      );
+    } else {
+      image = CachedNetworkImage(
+        imageUrl: imageUrl!,
+        width: width,
+        height: height,
+        fit: fit,
+        memCacheWidth: memCacheWidth,
+        memCacheHeight: memCacheHeight,
+        placeholder: (_, __) => _noImage(),
+        errorWidget: (_, __, ___) => _noImage(),
+      );
+    }
 
     if (borderRadius == null) return image;
     return ClipRRect(
