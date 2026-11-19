@@ -7,6 +7,7 @@ import 'package:go_sport/design_system/foundations/ds_colors.dart';
 import 'package:go_sport/design_system/foundations/ds_spacing.dart';
 import 'package:go_sport/design_system/foundations/ds_radius.dart';
 import 'package:go_sport/core/auth/auth_state.dart';
+import 'package:go_sport/core/config/app_config.dart';
 import 'package:go_sport/core/navigation/routes.dart';
 import 'package:go_sport/domain/state/user_state.dart';
 import 'package:go_sport/domain/state/notifications_state.dart';
@@ -373,12 +374,19 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                         top: false,
                         right: false,
                         left: false,
-                        child: ActionRow(
-                          icon: SvgPicture.asset(
-                            'assets/icons/delete_orange_bg.svg',
-                          ),
-                          text: 'Delete Account',
-                          onTap: () => context.push(AppRoutes.deleteAccount),
+                        child: Column(
+                          children: [
+                            ActionRow(
+                              icon: SvgPicture.asset(
+                                'assets/icons/delete_orange_bg.svg',
+                              ),
+                              text: 'Delete Account',
+                              onTap: () =>
+                                  context.push(AppRoutes.deleteAccount),
+                            ),
+                            const SizedBox(height: DSSpacing.s14),
+                            _LegalLinks(onOpen: _openWebsite),
+                          ],
                         ),
                       ),
                     ],
@@ -389,6 +397,36 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           ],
         ),
       ),
+    );
+  }
+}
+
+class _LegalLinks extends StatelessWidget {
+  const _LegalLinks({required this.onOpen});
+
+  final Future<void> Function(String url) onOpen;
+
+  @override
+  Widget build(BuildContext context) {
+    final linkStyle = context.label?.copyWith(color: DSColors.blue);
+    final separatorStyle = context.label?.copyWith(color: DSColors.gray50);
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        GestureDetector(
+          onTap: () => onOpen(AppConfig.privacyPolicyUrl),
+          child: Text('Privacy Policy', style: linkStyle),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: DSSpacing.s8),
+          child: Text('·', style: separatorStyle),
+        ),
+        GestureDetector(
+          onTap: () => onOpen(AppConfig.termsUrl),
+          child: Text('Terms & Conditions', style: linkStyle),
+        ),
+      ],
     );
   }
 }

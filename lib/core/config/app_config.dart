@@ -8,6 +8,9 @@ class AppConfig {
   final bool enableLogging;
   final String googleWebClientId;
 
+  static const privacyPolicyUrl = 'https://gosport.fm/privacy-policy/';
+  static const termsUrl = 'https://gosport.fm/terms-and-conditions/';
+
   const AppConfig._({
     required this.env,
     required this.apiBaseUrl,
