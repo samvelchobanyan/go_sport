@@ -59,11 +59,14 @@ class NewsNotifier extends Notifier<NewsState> {
     state = state.copyWith(isLoading: true, error: null);
 
     try {
-      await _ensureLikedIds();
+      // Лайки и новости грузим параллельно. Новости ждём первыми: лайки
+      // никогда не бросают, а ошибка новостей так сразу попадает в catch.
+      final likesLoaded = _ensureLikedIds();
       final articles = await _repository.getNews(
         page: page,
         pageSize: pageSize,
       );
+      await likesLoaded;
       final articlesMap = {
         ...state.articles,
         for (final article in articles) article.id: _withLike(article),
@@ -79,8 +82,10 @@ class NewsNotifier extends Notifier<NewsState> {
     if (state.articles.containsKey(id)) return;
 
     try {
-      await _ensureLikedIds();
+      // Параллельно, как в loadNews.
+      final likesLoaded = _ensureLikedIds();
       final article = await _repository.getArticle(id);
+      await likesLoaded;
       state = state.copyWith(
         articles: {...state.articles, article.id: _withLike(article)},
       );
